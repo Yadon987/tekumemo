@@ -2,7 +2,7 @@
   "name": "app",
   "private": true,
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build": "esbuild app/javascript/*.* --bundle --format=esm --outdir=app/assets/builds --public-path=/assets",
     "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
   },
   "devDependencies": {
@@ -10,5 +10,8 @@
     "@hotwired/turbo-rails": "^8.0.20",
     "@tailwindcss/cli": "^4.1.17",
     "esbuild": "^0.25.12"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.80.0"
   }
 }
