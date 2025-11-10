@@ -157,3 +157,4 @@ Renderの使用を決定
 
 ## 📝 変更履歴
 v1.3　ER図の作成と仕様変更
+# Auto Deploy Test - Mon Nov 10 18:40:54 JST 2025
