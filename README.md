@@ -106,13 +106,6 @@ Coming soon…
 | **低優先** | **フォロー機能** | 継続的なコミュニティ形成。本来は高優先度だがユーザーが少ないうちは低優先度|
 | **ボツ案** | **アチーブメント機能** | 目標達成の可視化 一つ一つリッチなデザインを考える時間がないためボツ |
 
-## 使用する技術スタック（仮）
-
-* **言語・フレームワーク:**  Ruby: 3.2.2 + Ruby on Rails7.2.x
-* **データベース:**  PostgreSQL
-* **デザイン:**  Google Stitch・Figma
-* **デプロイ先:**  Render
-
 ## 使用予定のライブラリ
 * **ユーザー認証系** Devise
 * **天気予報API連携系** net-http（Rails標準）
@@ -121,7 +114,7 @@ Coming soon…
 ## 使用する技術スタック
 ### **バックエンド**
 * **言語・フレームワーク:** Ruby 3.2.2 + Ruby on Rails 7.2.x
-* **データベース:** PostgreSQL
+* **データベース:** PostgreSQL(Supabase)
 * **認証:** Devise
 * **API連携:** net-http（Rails標準）or OpenWeatherMap API（天気予報）
 
