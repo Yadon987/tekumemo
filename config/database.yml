@@ -5,19 +5,19 @@ default: &default
 
 development:
   <<: *default
-  database: myapp_development
+  database: tekumemo_development
   username: postgres
   password: password
   host: db
-  port: 5432 
+  port: 5432
 
 test:
   <<: *default
-  database: myapp_test
+  database: tekumemo_test
   username: postgres
   password: password
   host: db
-  port: 5432 
+  port: 5432
 
 production:
   url: <%= ENV['DATABASE_URL'] %>

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: tekumemo-web
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tekumemo-db
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: 1
+
+databases:
+  - name: tekumemo-db
+    databaseName: tekumemo_production
+    user: tekumemo_user
+    plan: free
+    
