@@ -1,0 +1,59 @@
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: #f6f7f8;">
+  <!-- ヘッダー -->
+  <div style="padding: 20px; text-align: center; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h1 style="font-size: 24px; font-weight: bold; color: #4A90E2; margin: 0;">ログイン</h1>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <div style="flex: 1; padding: 20px;">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div style="background: white; padding: 24px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        
+        <div style="margin-bottom: 20px;">
+          <%= f.label :email, "メールアドレス", style: "display: block; margin-bottom: 8px; font-weight: 600; color: #333;" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", 
+              style: "width: 100%; padding: 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;" %>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <%= f.label :password, "パスワード", style: "display: block; margin-bottom: 8px; font-weight: 600; color: #333;" %>
+          <%= f.password_field :password, autocomplete: "current-password",
+              style: "width: 100%; padding: 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div style="margin-bottom: 24px; display: flex; align-items: center;">
+            <%= f.check_box :remember_me, style: "margin-right: 8px;" %>
+            <%= f.label :remember_me, "ログイン状態を保持", style: "font-size: 14px; color: #666;" %>
+          </div>
+        <% end %>
+
+        <div style="margin-bottom: 16px;">
+          <%= f.submit "ログイン", style: "width: 100%; padding: 16px; background: #4A90E2; color: white; border: none; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s;" %>
+        </div>
+
+      </div>
+    <% end %>
+
+    <!-- リンク -->
+    <div style="text-align: center; margin-top: 20px;">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+
+  <!-- ボトムナビゲーション -->
+  <div style="background: white; padding: 16px 20px; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around;">
+    <a href="/" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #666;">
+      <span style="font-size: 20px;">🏠</span>
+      <span style="font-size: 12px; margin-top: 4px;">ホーム</span>
+    </a>
+    <a href="/about" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #666;">
+      <span style="font-size: 20px;">ℹ️</span>
+      <span style="font-size: 12px; margin-top: 4px;">概要</span>
+    </a>
+    <a href="/contact" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #666;">
+      <span style="font-size: 20px;">📧</span>
+      <span style="font-size: 12px; margin-top: 4px;">お問い合わせ</span>
+    </a>
+  </div>
+</div>
