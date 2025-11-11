@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   # === 認証 ===
   devise_for :users
 
@@ -7,7 +6,7 @@ Rails.application.routes.draw do
   root "home#index"
 
   # === アプリケーション機能 ===
-  
+
   # === システム関連 ===
   get "up" => "rails/health#show", as: :rails_health_check
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
