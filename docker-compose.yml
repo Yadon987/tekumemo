@@ -14,6 +14,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'" #起動時に自動的にPIDファイルを削除
     user: "${UID:-1000}:${GID:-1000}" #個人開発なので権限確認を省略します
     tty: true
     stdin_open: true
