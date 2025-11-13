@@ -115,10 +115,16 @@ GEM
     drb (2.2.3)
     erb (5.1.3)
     erubi (1.13.1)
+    foreman (0.90.0)
+      thor (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    importmap-rails (2.2.2)
+      actionpack (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      railties (>= 6.0.0)
     io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -342,6 +348,8 @@ DEPENDENCIES
   cssbundling-rails
   debug
   devise
+  foreman
+  importmap-rails (>= 1.0.0)
   jbuilder
   jsbundling-rails
   pg (~> 1.1)

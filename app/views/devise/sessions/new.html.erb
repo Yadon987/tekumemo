@@ -1,156 +1,87 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>てくメモ - ログイン</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#1976D2",
-                        "background-light": "#F7F8FC",
-                        "background-dark": "#121212",
-                    },
-                    fontFamily: {
-                        display: ["Noto Sans JP", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "1rem", // 16px
-                    },
-                },
-            },
-        };
-    </script>
-    <style>
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-        }
+<!-- ページ固有のタイトルを 'application.html.erb' に渡す -->
+<% content_for :title, "てくメモ - ログイン" %>
 
-        .material-symbols-outlined {
-            font-variation-settings:
-                'FILL' 1,
-                'wght' 400,
-                'GRAD' 0,
-                'opsz' 24
-        }
-    </style>
-</head>
+<div class="flex flex-1 flex-col items-center justify-center p-4">
+  <div class="w-full max-w-md">
 
-<body class="bg-background-light dark:bg-background-dark font-display">
+    <!-- ▼▼▼ フォームの「外」の見出し ▼▼▼ -->
+    <div class="mb-8 flex flex-col items-center">
+      <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-xl bg-primary">
+        <span class="material-symbols-outlined text-5xl text-white">footprint</span>
+      </div>
+      <h1 class="text-3xl font-bold text-[#333333] dark:text-white">おかえりなさい</h1>
+      <p class="mt-2 text-base text-gray-600 dark:text-gray-400">てくメモへようこそ！</p>
+    </div>
 
-    <div class="flex flex-col min-h-screen">
+    <!-- ▼▼▼ ここからがRailsのフォームヘルパーです ▼▼▼ -->
+    <!-- 送信したい「入力欄」と「送信ボタン」だけを囲みます -->
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="w-full space-y-5">
 
-        <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
-            <div class="w-24"></div>
-
-            <div class="flex items-center space-x-3">
-                <img alt="てくメモ ロゴ" class="h-12 w-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9F-Lv70BzSLwp7RGKH_4UgLVwyypBlO7sCeIA1n8yDj8LqCWe9uvrxcNurG6AN3-OcnX2_jy9mF4czdlh8bMxxDMxdM1klXvZOFCV2HSgACr-ldF67ZwN4EFB3WmFLB9zFpaM6GSp7DwZ_EXe2xUNx9tE7W7hcf4m1ydMOd8wnFF3hDctW9mQq4nMHyPWxPD8CKY9T1k5KdwuhmGOFCGYcK6rasbhI9cW_AOtazzAoiqkKDRGjs0Mdrt1wdPUYzGqOWKHZe0nWVQ" />
-                <span class="text-3xl font-bold text-gray-800 dark:text-gray-200">てくメモ</span>
-                <img alt="てくメモ ロゴ" class="h-12 w-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9F-Lv70BzSLwp7RGKH_4UgLVwyypBlO7sCeIA1n8yDj8LqCWe9uvrxcNurG6AN3-OcnX2_jy9mF4czdlh8bMxxDMxdM1klXvZOFCV2HSgACr-ldF67ZwN4EFB3WmFLB9zFpaM6GSp7DwZ_EXe2xUNx9tE7W7hcf4m1ydMOd8wnFF3hDctW9mQq4nMHyPWxPD8CKY9T1k5KdwuhmGOFCGYcK6rasbhI9cW_AOtazzAoiqkKDRGjs0Mdrt1wdPUYzGqOWKHZe0nWVQ" />
-            </div>
-
-            <div class="w-24"></div>
-        </header>
-
-        <div class="relative flex min-h-screen w-full flex-col pb-24">
-            <div class="flex flex-1 flex-col items-center justify-center p-4">
-                <div class="w-full max-w-md">
-                    <div class="mb-8 flex flex-col items-center">
-                        <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-xl bg-primary">
-                            <span class="material-symbols-outlined text-5xl text-white">footprint</span>
-                        </div>
-                        <h1 class="text-3xl font-bold text-[#333333] dark:text-white">おかえりなさい</h1>
-                        <p class="mt-2 text-base text-gray-600 dark:text-gray-400">てくメモへようこそ！</p>
-                    </div>
-                    <div class="w-full space-y-5">
-                        <div class="flex flex-col">
-                            <label class="mb-2 text-base font-medium text-[#333333] dark:text-gray-300" for="email">メールアドレス</label>
-                            <div class="relative flex w-full items-center">
-                                <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">mail</span>
-                                <input class="form-input h-14 w-full rounded-lg border border-gray-300 bg-white p-4 pl-12 text-base text-[#333333] placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 dark:focus:border-primary" id="email" placeholder="メールアドレス" type="email" />
-                            </div>
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="mb-2 text-base font-medium text-[#333333] dark:text-gray-300" for="password">パスワード</label>
-                            <div class="relative flex w-full items-center">
-                                <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">lock</span>
-                                <input class="form-input h-14 w-full rounded-lg border border-gray-300 bg-white p-4 pl-12 pr-12 text-base text-[#333333] placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 dark:focus:border-primary" id="password" placeholder="パスワード" type="password" />
-                                <button class="absolute right-4 text-gray-400 dark:text-gray-500" type="button">
-                                    <span class="material-symbols-outlined">visibility</span>
-                                </button>
-                            </div>
-                            <div class="mt-4 flex items-center">
-                                <input class="form-checkbox h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-primary dark:focus:ring-primary" id="remember-me" type="checkbox" />
-                                <label class="ml-2 text-sm text-gray-700 dark:text-gray-300" for="remember-me">ログインしたままにする</label>
-                            </div>
-                        </div>
-                        <div>
-                            <button class="flex h-14 w-full cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary text-base font-bold text-white transition-colors hover:bg-green-600">
-                                <span class="truncate">ログインする</span>
-                            </button>
-                            <div class="mt-4 text-center">
-                                <a class="text-sm text-primary hover:underline" href="#">パスワードをお忘れですか？</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="my-8 flex items-center justify-center">
-                        <span class="h-px flex-grow bg-gray-300 dark:bg-gray-700"></span>
-                        <span class="mx-4 text-sm text-gray-500 dark:text-gray-400">または</span>
-                        <span class="h-px flex-grow bg-gray-300 dark:bg-gray-700"></span>
-                    </div>
-                    <button class="flex h-14 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white text-base font-medium text-[#333333] transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
-                        <svg class="mr-3 h-6 w-6" viewBox="0 0 48 48">
-                            <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" fill="#FFC107"></path>
-                            <path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" fill="#FF3D00"></path>
-                            <path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" fill="#4CAF50"></path>
-                            <path d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C41.38,36.43,44,30.63,44,24C44,22.659,43.862,21.35,43.611,20.083z" fill="#1976D2"></path>
-                        </svg>
-                        <span class="truncate">Googleでログイン</span>
-                    </button>
-                    <p class="mt-8 text-center text-base text-gray-600 dark:text-gray-400">
-                        アカウントをお持ちでないですか？
-                        <a class="font-medium text-primary hover:underline" href="#">新規登録</a>
-                    </p>
-                </div>
-            </div>
+        <!-- (3) メールアドレス入力 -->
+        <div class="flex flex-col">
+          <%= f.label :email, "メールアドレス", class: "mb-2 text-base font-medium text-[#333333] dark:text-gray-300" %>
+          <div class="relative flex w-full items-center">
+            <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">mail</span>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス", class: "form-input h-14 w-full rounded-lg border border-gray-300 bg-white p-4 pl-12 text-base text-[#333333] placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 dark:focus:border-primary" %>
+          </div>
         </div>
 
-        <button class="fixed bottom-24 right-4 bg-sky-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 transition-colors">
-            <span class="material-symbols-outlined text-3xl">add</span>
-        </button>
+        <!-- (4) パスワード入力 -->
+        <div class="flex flex-col">
+          <%= f.label :password, "パスワード", class: "mb-2 text-base font-medium text-[#333333] dark:text-gray-300" %>
+          <div class="relative flex w-full items-center">
+            <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">lock</span>
+            <%= f.password_field :password, autocomplete: "current-password", placeholder: "パスワード", class: "form-input h-14 w-full rounded-lg border border-gray-300 bg-white p-4 pl-12 pr-12 text-base text-[#333333] placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 dark:focus:border-primary" %>
+            <button class="absolute right-4 text-gray-400 dark:text-gray-500" type="button">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
+          </div>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)]">
-            <div class="flex justify-around items-center h-16 max-w-4xl mx-auto">
-                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
-                    <span class="material-symbols-outlined text-2xl">home</span>
-                    <span class="text-[10px] mt-0.5">ホーム</span>
-                </a>
-                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
-                    <span class="material-symbols-outlined text-2xl">footprint</span>
-                    <span class="text-[10px] mt-0.5">散歩</span>
-                </a>
-                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
-                    <span class="material-symbols-outlined text-2xl">groups</span>
-                    <span class="text-[10px] mt-0.5">投稿</span>
-                </a>
-                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
-                    <span class="material-symbols-outlined text-2xl">bar_chart</span>
-                    <span class="text-[10px] mt-0.5">記録</span>
-                </a>
-                <a class="flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300" href="#">
-                    <span class="material-symbols-outlined text-2xl">emoji_events</span>
-                    <span class="text-[10px] mt-0.5">ランキング</span>
-                </a>
+          <!-- (5) "ログインしたままにする" (Deviseの機能) -->
+          <% if devise_mapping.rememberable? %>
+            <div class="mt-4 flex items-center">
+              <%= f.check_box :remember_me, class: "form-checkbox h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-primary dark:focus:ring-primary" %>
+              <%= f.label :remember_me, "ログインしたままにする", class: "ml-2 text-sm text-gray-700 dark:text-gray-300" %>
             </div>
-        </nav>
+          <% end %>
+        </div>
 
-    </div> </body>
-</html>
+        <!-- (6) "ログインする" 送信ボタン -->
+        <div>
+          <%= f.submit "ログインする", class: "flex h-14 w-full cursor-pointer items-center justify-center overflow-hidden rounded-full bg-primary text-base font-bold text-white transition-colors hover:bg-green-600" %>
+          
+          <!-- (7) "パスワードをお忘れですか？" リンク -->
+          <div class="mt-4 text-center">
+            <% if devise_mapping.recoverable? %>
+              <%= link_to "パスワードをお忘れですか？", new_password_path(resource_name), class: "text-sm text-primary hover:underline" %>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+    <div class="my-8 flex items-center justify-center">
+      <span class="h-px flex-grow bg-gray-300 dark:bg-gray-700"></span>
+      <span class="mx-4 text-sm text-gray-500 dark:text-gray-400">または</span>
+      <span class="h-px flex-grow bg-gray-300 dark:bg-gray-700"></span>
+    </div>
+    <!-- Googleログイン (将来の実装) -->
+    <button class="flex h-14 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white text-base font-medium text-[#333333] transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">
+      <svg class="mr-3 h-6 w-6" viewBox="0 0 48 48">
+        <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" fill="#FFC107"></path>
+        <path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" fill="#FF3D00"></path>
+        <path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" fill="#4CAF50"></path>
+        <path d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C41.38,36.43,44,30.63,44,24C44,22.659,43.862,21.35,43.611,20.083z" fill="#1976D2"></path>
+      </svg>
+      <span class="truncate">Googleでログイン</span>
+    </button>
+    <p class="mt-8 text-center text-base text-gray-600 dark:text-gray-400">
+      アカウントをお持ちでないですか？
+      <% if devise_mapping.registerable? %>
+        <%= link_to "新規登録", new_registration_path(resource_name), class: "font-medium text-primary hover:underline" %>
+      <% end %>
+    </p>
+
+  </div>
+</div>
