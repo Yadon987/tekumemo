@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="ja" class=""> <head>
+<html lang="ja">
+<head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" /> 
     <title><%= content_for?(:title) ? yield(:title) : "てくメモ" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <script>
-      (function() {
-        const savedTheme = localStorage.getItem('theme');
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      })();
-    </script>
-    <%= favicon_link_tag 'favicon.ico', type: 'image/x-icon' %>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-
-    <!-- Rails標準のCSSやavaScriptを読み込む Turboは、ページ遷移を高速化する仕組みらしい -->
-<%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <!-- Rails標準のCSSやJSを読み込む Turboは、ページ遷移を高速化する仕組みらしい -->
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1976D2",
+                        "background-light": "#F7F8FC",
+                        "background-dark": "#121212",
+                    },
+                    fontFamily: {
+                        display: ["Noto Sans JP", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem", // 16px
+                    },
+                },
+            },
+        };
+    </script>
     <style>
         body {
             font-family: 'Noto Sans JP', sans-serif;
@@ -50,6 +57,7 @@
     <div class="flex flex-col min-h-screen">
 
         <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
+<<<<<<< HEAD
 
 <div class="w-24 flex items-center pl-2 sm:pl-0">
 <button 
@@ -81,12 +89,17 @@
 </div>
 
             <!-- 中央のロゴ -->
+=======
+            <div class="w-24"></div>
+
+>>>>>>> origin/main
             <div class="flex items-center space-x-3">
                 <!-- ロゴ画像は app/assets/images/ に置いて image_tag ヘルパーで読み込むのがベスト　そのうち変える -->
                 <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
                 <span class="text-3xl font-bold text-gray-800 dark:text-gray-200">てくメモ</span>
                 <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
             </div>
+<<<<<<< HEAD
             <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
               <% if user_signed_in? %>
                 <%= button_to destroy_user_session_path, method: :delete, class: "flex flex-col items-center justify-center text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2 rounded-lg" do %>
@@ -100,6 +113,10 @@
                 <% end %>
               <% end %>
             </div>
+=======
+
+            <div class="w-24"></div>
+>>>>>>> origin/main
         </header>
 
         <div class="relative flex min-h-screen w-full flex-col pb-24">

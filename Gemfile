@@ -63,3 +63,4 @@ gem "devise"
 gem "importmap-rails", ">= 1.0.0"
 gem "foreman"
 gem "tailwindcss-rails"
+
