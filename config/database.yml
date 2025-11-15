@@ -8,7 +8,7 @@ development:
   database: tekumemo_development
   username: postgres
   password: password
-  host: db
+  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>  # 環境変数で切り替え 理解不足なのであとで調べる
   port: 5432
 
 test:
@@ -16,7 +16,7 @@ test:
   database: tekumemo_test
   username: postgres
   password: password
-  host: db
+  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>  # 環境変数で切り替え 理解不足なのであとで調べる
   port: 5432
 
 production:

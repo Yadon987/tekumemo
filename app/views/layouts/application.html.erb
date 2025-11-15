@@ -1,23 +1,146 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+<html lang="ja" class=""> <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" /> 
+    <title><%= content_for?(:title) ? yield(:title) : "てくメモ" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= yield :head %>
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <%= favicon_link_tag 'favicon.ico', type: 'image/x-icon' %>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
-  </head>
+    <!-- Rails標準のCSSやavaScriptを読み込む Turboは、ページ遷移を高速化する仕組みらしい -->
+<%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
 
-  <body>
-    <%= yield %>
-  </body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+
+    <div class="flex flex-col min-h-screen">
+
+        <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
+
+<div class="w-24 flex items-center pl-2 sm:pl-0">
+<button 
+  id="theme-toggle"
+  data-controller="theme" 
+  data-action="click->theme#toggle"
+  data-theme-target="toggleButton"
+  type="button" 
+  class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+  aria-label="テーマ切り替え"
+  aria-pressed="false"
+>
+    <!-- 太陽アイコン（ダークモード時に表示） -->
+    <span 
+      data-theme-target="sunIcon"
+      class="material-symbols-outlined text-3xl text-yellow-500 hidden"
+    >
+      light_mode
+    </span>
+    
+    <!-- 月アイコン（ライトモード時に表示） -->
+    <span 
+      data-theme-target="moonIcon"
+      class="material-symbols-outlined text-3xl text-gray-700 dark:text-gray-300"
+    >
+      dark_mode
+    </span>
+  </button>
+</div>
+
+            <!-- 中央のロゴ -->
+            <div class="flex items-center space-x-3">
+                <!-- ロゴ画像は app/assets/images/ に置いて image_tag ヘルパーで読み込むのがベスト　そのうち変える -->
+                <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
+                <span class="text-3xl font-bold text-gray-800 dark:text-gray-200">てくメモ</span>
+                <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
+            </div>
+            <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
+              <% if user_signed_in? %>
+                <%= button_to destroy_user_session_path, method: :delete, class: "flex flex-col items-center justify-center text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2 rounded-lg" do %>
+                  <span class="material-symbols-outlined text-3xl">logout</span>
+                  <span class="text-[10px] mt-0.5 font-medium">ログアウト</span>
+                <% end %>
+              <% else %>
+                <%= link_to new_user_session_path, class: "flex flex-col items-center justify-center text-primary dark:text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors p-2 rounded-lg" do %>
+                  <span class="material-symbols-outlined text-3xl">login</span>
+                  <span class="text-[10px] mt-0.5 font-medium">ログイン</span>
+                <% end %>
+              <% end %>
+            </div>
+        </header>
+
+        <div class="relative flex min-h-screen w-full flex-col pb-24">
+            <!-- Deviseの通知表示 -->
+            <% if notice %>
+                <p class="bg-blue-100 text-blue-700 p-3 text-center"><%= notice %></p>
+            <% end %>
+            <% if alert %>
+                <p class="bg-red-100 text-red-700 p-3 text-center"><%= alert %></p>
+            <% end %>
+            <!-- ここに各ページの中身が挿入 -->
+            <%= yield %>
+        </div>
+
+       <button class="fixed bottom-24 right-4 bg-sky-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 transition-colors">
+            <span class="material-symbols-outlined text-3xl">add</span>
+        </button>
+
+        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)]">
+            <div class="flex justify-around items-center h-16 max-w-4xl mx-auto">
+                <%= link_to root_path, class: "relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+                    <span class="material-symbols-outlined text-2xl">home</span>
+                    <span class="text-[10px] mt-0.5">ホーム</span>
+                <% end %>
+                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
+                    <span class="material-symbols-outlined text-2xl">footprint</span>
+                    <span class="text-[10px] mt-0.5">散歩</span>
+                </a>
+                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
+                    <span class="material-symbols-outlined text-2xl">groups</span>
+                    <span class="text-[10px] mt-0.5">投稿</span>
+                </a>
+                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
+                    <span class="material-symbols-outlined text-2xl">bar_chart</span>
+                    <span class="text-[10px] mt-0.5">記録</span>
+                </a>
+                <a class="flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300" href="#">
+                    <span class="material-symbols-outlined text-2xl">emoji_events</span>
+                    <span class="text-[10px] mt-0.5">ランキング</span>
+                </a>
+            </div>
+        </nav>
+    </div> </body>
 </html>

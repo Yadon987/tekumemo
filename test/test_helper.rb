@@ -2,6 +2,10 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers  # この行を追加
+end
+
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
