@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="ja" class=""> <head>
 <html lang="ja">
 <head>
     <meta charset="utf-8" />
@@ -56,16 +57,66 @@
     <div class="flex flex-col min-h-screen">
 
         <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
+<<<<<<< HEAD
+
+<div class="w-24 flex items-center pl-2 sm:pl-0">
+<button 
+  id="theme-toggle"
+  data-controller="theme" 
+  data-action="click->theme#toggle"
+  data-theme-target="toggleButton"
+  type="button" 
+  class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+  aria-label="テーマ切り替え"
+  aria-pressed="false"
+>
+    <!-- 太陽アイコン（ダークモード時に表示） -->
+    <span 
+      data-theme-target="sunIcon"
+      class="material-symbols-outlined text-3xl text-yellow-500 hidden"
+    >
+      light_mode
+    </span>
+    
+    <!-- 月アイコン（ライトモード時に表示） -->
+    <span 
+      data-theme-target="moonIcon"
+      class="material-symbols-outlined text-3xl text-gray-700 dark:text-gray-300"
+    >
+      dark_mode
+    </span>
+  </button>
+</div>
+
+            <!-- 中央のロゴ -->
+=======
             <div class="w-24"></div>
 
+>>>>>>> origin/main
             <div class="flex items-center space-x-3">
                 <!-- ロゴ画像は app/assets/images/ に置いて image_tag ヘルパーで読み込むのがベスト　そのうち変える -->
                 <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
                 <span class="text-3xl font-bold text-gray-800 dark:text-gray-200">てくメモ</span>
                 <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
             </div>
+<<<<<<< HEAD
+            <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
+              <% if user_signed_in? %>
+                <%= button_to destroy_user_session_path, method: :delete, class: "flex flex-col items-center justify-center text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2 rounded-lg" do %>
+                  <span class="material-symbols-outlined text-3xl">logout</span>
+                  <span class="text-[10px] mt-0.5 font-medium">ログアウト</span>
+                <% end %>
+              <% else %>
+                <%= link_to new_user_session_path, class: "flex flex-col items-center justify-center text-primary dark:text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors p-2 rounded-lg" do %>
+                  <span class="material-symbols-outlined text-3xl">login</span>
+                  <span class="text-[10px] mt-0.5 font-medium">ログイン</span>
+                <% end %>
+              <% end %>
+            </div>
+=======
 
             <div class="w-24"></div>
+>>>>>>> origin/main
         </header>
 
         <div class="relative flex min-h-screen w-full flex-col pb-24">
