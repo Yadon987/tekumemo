@@ -60,5 +60,5 @@ end
 
 gem "devise"
 
-gem "importmap-rails", ">= 1.0.0"
+# gem "importmap-rails", ">= 1.0.0"
 gem "foreman"
