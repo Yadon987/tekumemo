@@ -1,14 +1,6 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-@import 'application.tailwind.css';
-
-/* カスタムスタイル */
-@layer base {
-  body {
-    @apply font-display;
-  }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Material Symbols のスタイル */
 .material-symbols-outlined {
