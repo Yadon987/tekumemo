@@ -17,6 +17,11 @@ Rails.application.configure do
   # Enable server timing.
   config.server_timing = true
 
+  # Debug mode disables concatenation and preprocessing of assets.
+  config.assets.debug = true
+  config.assets.digest = true
+  config.assets.compile = true
+
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join("tmp/caching-dev.txt").exist?
