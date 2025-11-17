@@ -11,6 +11,19 @@
     'opsz' 24;
 }
 
+/* グラデーション関連のカスタムユーティリティ */
+@layer utilities {
+  /* グラデーションテキスト用のユーティリティ */
+  .bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  
+  .text-fill-transparent {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
 /* ボタンのカーソルスタイルを確実に適用 */
 @layer components {
   button[type="submit"],

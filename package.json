@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --format=esm --outdir=app/assets/builds --public-path=/assets",
-    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/tailwind.css -o ./app/assets/builds/tailwind.css --minify"
   }
 }
 
