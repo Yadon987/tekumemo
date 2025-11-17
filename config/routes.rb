@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   authenticated :user do
     root "home#index", as: :authenticated_root
   end
-  
+
   # 未認証ユーザーはログイン画面へ
   root "devise/sessions#new"
 
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # ===== システム関連 =====
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
-  
+
   # PWA関連
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
