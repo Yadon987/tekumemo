@@ -8,7 +8,7 @@ development:
   database: tekumemo_development
   username: postgres
   password: password
-  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>  # 環境変数で切り替え 理解不足なのであとで調べる
+  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>
   port: 5432
 
 test:
@@ -16,8 +16,12 @@ test:
   database: tekumemo_test
   username: postgres
   password: password
-  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>  # 環境変数で切り替え 理解不足なのであとで調べる
+  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>
   port: 5432
 
 production:
+  <<: *default
   url: <%= ENV['DATABASE_URL'] %>
+  # Render等のサービスではDATABASE_URLが自動的に設定されます
+  # 以下の設定は必要に応じて追加してください
+  # pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>

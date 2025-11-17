@@ -1,120 +1,118 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" /> 
-    <title><%= content_for?(:title) ? yield(:title) : "てくメモ" %></title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= content_for?(:title) ? yield(:title) : "てくメモ" %></title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#1976D2",
-                        "background-light": "#F7F8FC",
-                        "background-dark": "#121212",
-                    },
-                    fontFamily: {
-                        display: ["Noto Sans JP", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "1rem", // 16px
-                    },
-                },
-            },
-        };
-    </script>
-    <style>
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-        }
-
-        .material-symbols-outlined {
-            font-variation-settings:
-                'FILL' 1,
-                'wght' 400,
-                'GRAD' 0,
-                'opsz' 24
-        }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display">
+  <div class="flex flex-col min-h-screen">
+    
+    <!-- Header -->
+    <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
+      <div class="w-24"></div>
 
-    <div class="flex flex-col min-h-screen">
+      <div class="flex items-center space-x-3">
+        <%= image_tag "logo.png", alt: "てくメモ ロゴ", class: "h-12 w-12" %>
+        <span class="text-3xl font-bold text-gray-800 dark:text-gray-200">てくメモ</span>
+        <%= image_tag "logo.png", alt: "てくメモ ロゴ", class: "h-12 w-12" %>
+      </div>
 
-        <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
-            <div class="w-24"></div>
+      <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
+        <% if user_signed_in? %>
+          <%= button_to destroy_user_session_path, 
+              method: :delete,
+              data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか?" },
+              form: { data: { turbo: "true" } },
+              class: "flex flex-col items-center justify-center text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2 rounded-lg" do %>
+            <span class="material-symbols-outlined text-2xl">logout</span>
+            <span class="text-[8px] mt-0.5 font-medium">ログアウト</span>
+          <% end %>
+        <% else %>
+          <%= link_to new_user_session_path, 
+              class: "flex flex-col items-center justify-center text-primary dark:text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-2 rounded-lg" do %>
+            <span class="material-symbols-outlined text-2xl">login</span>
+            <span class="text-[8px] mt-0.5 font-medium">ログイン</span>
+          <% end %>
+        <% end %>
+      </div>
+    </header>
 
-            <div class="flex items-center space-x-3">
-                <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
-                <span class="text-3xl font-bold text-gray-800 dark:text-gray-200">てくメモ</span>
-                <%= image_tag "logo.png", alt: "てくメモ ロゴ",class: "h-12 w-12" %>
-            </div>
-
-            <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
-              <% if user_signed_in? %>
-                <%= button_to destroy_user_session_path, method: :delete, class: "flex flex-col items-center justify-center text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2 rounded-lg" do %>
-                  <span class="material-symbols-outlined text-2xl">logout</span>
-                  <span class="text-[8px] mt-0.5 font-medium">ログアウト</span>
-                <% end %>
-              <% else %>
-<%= link_to new_user_session_path, class: "flex flex-col items-center justify-center text-primary dark:text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-2 rounded-lg" do %>
-                  <span class="material-symbols-outlined text-2xl">login</span>
-                  <span class="text-[8px] mt-0.5 font-medium">ログイン</span>
-                <% end %>
-              <% end %>
-            </div>
-        </header>
-
-        <div class="relative flex min-h-screen w-full flex-col pb-24">
-            <% if notice %>
-                <p class="bg-blue-100 text-blue-700 p-3 text-center"><%= notice %></p>
-            <% end %>
-            <% if alert %>
-                <p class="bg-red-100 text-red-700 p-3 text-center"><%= alert %></p>
-            <% end %>
-            <%= yield %>
+    <!-- Main Content -->
+    <main class="flex-1 w-full">
+      <!-- Flash Messages -->
+      <% if notice.present? %>
+        <div class="mx-auto max-w-4xl px-4 py-2">
+          <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline"><%= notice %></span>
+          </div>
         </div>
+      <% end %>
+      
+      <% if alert.present? %>
+        <div class="mx-auto max-w-4xl px-4 py-2">
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline"><%= alert %></span>
+          </div>
+        </div>
+      <% end %>
 
-       <button class="fixed bottom-24 right-4 bg-sky-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 transition-colors">
-            <span class="material-symbols-outlined text-3xl">add</span>
-        </button>
+      <%= yield %>
+    </main>
 
-        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)]">
-            <div class="flex justify-around items-center h-16 max-w-4xl mx-auto">
-                <%= link_to root_path, class: "relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
-                    <span class="material-symbols-outlined text-2xl">home</span>
-                    <span class="text-[10px] mt-0.5">ホーム</span>
-                <% end %>
-                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
-                    <span class="material-symbols-outlined text-2xl">footprint</span>
-                    <span class="text-[10px] mt-0.5">散歩</span>
-                </a>
-                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
-                    <span class="material-symbols-outlined text-2xl">groups</span>
-                    <span class="text-[10px] mt-0.5">投稿</span>
-                </a>
-                <a class="relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" href="#">
-                    <span class="material-symbols-outlined text-2xl">bar_chart</span>
-                    <span class="text-[10px] mt-0.5">記録</span>
-                </a>
-                <a class="flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300" href="#">
-                    <span class="material-symbols-outlined text-2xl">emoji_events</span>
-                    <span class="text-[10px] mt-0.5">ランキング</span>
-                </a>
-            </div>
-        </nav>
-    </div> </body>
+    <!-- Floating Add Button (logged in only) -->
+    <% if user_signed_in? %>
+      <button type="button" class="fixed bottom-24 right-4 bg-sky-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 transition-colors z-40">
+        <span class="material-symbols-outlined text-3xl">add</span>
+      </button>
+
+      <!-- Bottom Navigation (logged in only) -->
+      <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50">
+        <div class="flex justify-around items-center h-16 max-w-4xl mx-auto">
+          <%= link_to root_path, 
+              class: "relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-2xl">home</span>
+            <span class="text-[10px] mt-0.5">ホーム</span>
+          <% end %>
+          
+          <%= link_to "#", 
+              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-2xl">footprint</span>
+            <span class="text-[10px] mt-0.5">散歩</span>
+          <% end %>
+          
+          <%= link_to "#", 
+              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-2xl">groups</span>
+            <span class="text-[10px] mt-0.5">投稿</span>
+          <% end %>
+          
+          <%= link_to "#", 
+              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-2xl">bar_chart</span>
+            <span class="text-[10px] mt-0.5">記録</span>
+          <% end %>
+          
+          <%= link_to "#", 
+              class: "flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
+            <span class="material-symbols-outlined text-2xl">emoji_events</span>
+            <span class="text-[10px] mt-0.5">ランキング</span>
+          <% end %>
+        </div>
+      </nav>
+    <% end %>
+  </div>
+</body>
 </html>
