@@ -1,12 +1,52 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: [
-    './app/views/**/*.html.erb',
+    './public/*.html',
     './app/helpers/**/*.rb',
-    './app/assets/stylesheets/**/*.css',
-    './app/javascript/**/*.js'
+    './app/javascript/**/*.js',
+    './app/views/**/*.{erb,haml,html,slim}',
+    './app/assets/stylesheets/**/*.css'
   ],
+  // ダークモード設定: classベース
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        // プライマリカラー
+        primary: '#1976D2',
+        // 背景色
+        'background-light': '#F7F8FC',
+        'background-dark': '#121212',
+      },
+      fontFamily: {
+        // 日本語フォント設定
+        display: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
+        sans: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
+      },
+      borderRadius: {
+        DEFAULT: '1rem',
+      },
+      // グラデーション関連のユーティリティを有効化
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
+    },
   },
-  plugins: [],
+  // プラグイン設定
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+  // 重要: JITモードでのsafelist設定（必要に応じて）
+  safelist: [
+    'bg-gradient-to-r',
+    'bg-gradient-to-br',
+    'from-sky-400',
+    'from-sky-500',
+    'to-blue-500',
+    'to-blue-600',
+    'bg-clip-text',
+    'text-transparent',
+  ],
 }
