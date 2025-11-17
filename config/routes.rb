@@ -1,14 +1,24 @@
 Rails.application.routes.draw do
-  # === 認証 ===
+  # ===== 認証（Devise） =====
   devise_for :users
 
-  # === メインページ ===
-  root "home#index"
+  # ===== メインページ =====
+  # 認証済みユーザーのホーム画面
+  authenticated :user do
+    root "home#index", as: :authenticated_root
+  end
 
-  # === アプリケーション機能 ===
+  # 未認証ユーザーはログイン画面へ
+  root "devise/sessions#new"
 
-  # === システム関連 ===
+  # ===== アプリケーション機能 =====
+  # TODO: 散歩記録、投稿、ランキングなどのルートを追加
+
+  # ===== システム関連 =====
+  # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
+
+  # PWA関連
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 end
