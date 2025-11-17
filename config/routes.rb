@@ -3,13 +3,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   # ===== メインページ =====
-  # 認証済みユーザーのホーム画面
-  authenticated :user do
-    root "home#index", as: :authenticated_root
-  end
-
-  # 未認証ユーザーはログイン画面へ
-  root "devise/sessions#new"
+  # ログイン済みユーザー向けのルート
+  root "home#index"
 
   # ===== アプリケーション機能 =====
   # TODO: 散歩記録、投稿、ランキングなどのルートを追加

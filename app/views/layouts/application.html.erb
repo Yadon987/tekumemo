@@ -49,10 +49,10 @@
       <!-- 右側ログイン/ログアウトボタン -->
       <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
         <% if user_signed_in? %>
-          <%= button_to destroy_user_session_path,
+          <!-- Turbo対応のログアウトボタン -->
+          <%= link_to destroy_user_session_path,
               method: :delete,
               data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか?" },
-              form: { data: { turbo: "true" } },
               class: "flex flex-col items-center justify-center text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2 rounded-lg" do %>
             <span class="material-symbols-outlined text-2xl">logout</span>
             <span class="text-[8px] mt-0.5 font-medium">ログアウト</span>
