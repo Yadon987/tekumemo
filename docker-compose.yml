@@ -1,4 +1,5 @@
 services:
+  # PostgreSQLデータベース
   db:
     image: postgres:15
     environment:
@@ -15,11 +16,13 @@ services:
       timeout: 5s
       retries: 5
 
+  # Railsアプリケーション
   web:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: bash -c "bundle install && bundle exec rails db:prepare && rm -f tmp/pids/server.pid && ./bin/dev"
+    # アセットビルドを含むコマンド
+    command: bash -c "bundle install && yarn install && yarn build:css && yarn build && rm -f tmp/pids/server.pid && ./bin/dev"
     tty: true
     stdin_open: true
     volumes:

@@ -5,24 +5,21 @@
 
     <!-- Header -->
     <div class="mb-8 flex flex-col items-center">
-      <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-xl bg-primary">
-        <span class="material-symbols-outlined text-5xl text-white">footprint</span>
-      </div>
       <h1 class="text-3xl font-bold text-gray-800 dark:text-white">おかえりなさい</h1>
       <p class="mt-2 text-base text-gray-600 dark:text-gray-400">てくメモへようこそ!</p>
     </div>
 
     <!-- Login Form -->
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
-      
+
       <!-- Email Field -->
       <div class="space-y-2">
         <%= f.label :email, "メールアドレス", class: "block text-base font-medium text-gray-700 dark:text-gray-300" %>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">mail</span>
-          <%= f.email_field :email, 
-              autofocus: true, 
-              autocomplete: "email", 
+          <%= f.email_field :email,
+              autofocus: true,
+              autocomplete: "email",
               placeholder: "メールアドレス",
               class: "block w-full h-14 pl-12 pr-4 text-base text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" %>
         </div>
@@ -33,13 +30,13 @@
         <%= f.label :password, "パスワード", class: "block text-base font-medium text-gray-700 dark:text-gray-300" %>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">lock</span>
-          <%= f.password_field :password, 
-              autocomplete: "current-password", 
+          <%= f.password_field :password,
+              autocomplete: "current-password",
               placeholder: "パスワード",
               id: "login-password-field",
               class: "block w-full h-14 pl-12 pr-12 text-base text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" %>
-          <button type="button" 
-                  onclick="togglePasswordVisibility('login-password-field', 'login-password-icon')" 
+          <button type="button"
+                  onclick="togglePasswordVisibility('login-password-field', 'login-password-icon')"
                   class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300">
             <span class="material-symbols-outlined" id="login-password-icon">visibility</span>
           </button>
@@ -48,7 +45,7 @@
         <!-- Remember Me -->
         <% if devise_mapping.rememberable? %>
           <div class="flex items-center mt-3">
-            <%= f.check_box :remember_me, 
+            <%= f.check_box :remember_me,
                 class: "w-5 h-5 text-primary bg-white border-gray-300 rounded focus:ring-primary focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
             <%= f.label :remember_me, "ログインしたままにする", class: "ml-2 text-sm text-gray-700 dark:text-gray-300" %>
           </div>
@@ -57,29 +54,29 @@
 
       <!-- Submit Button -->
       <div class="space-y-4">
-        <%= f.submit "ログインする", 
+        <%= f.submit "ログインする",
             class: "w-full h-14 bg-primary hover:bg-blue-700 text-white text-base font-bold rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" %>
-        
+
         <!-- Forgot Password Link -->
         <% if devise_mapping.recoverable? %>
           <div class="text-center">
-            <%= link_to "パスワードをお忘れですか?", 
-                new_password_path(resource_name), 
+            <%= link_to "パスワードをお忘れですか?",
+                new_password_path(resource_name),
                 class: "text-sm text-primary hover:underline" %>
           </div>
         <% end %>
       </div>
     <% end %>
-    
+
     <!-- Divider -->
     <div class="my-8 flex items-center">
       <div class="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
       <span class="px-4 text-sm text-gray-500 dark:text-gray-400">または</span>
       <div class="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
     </div>
-    
+
     <!-- Google Login Button (Future Implementation) -->
-    <button type="button" 
+    <button type="button"
             disabled
             class="w-full h-14 flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
       <svg class="w-6 h-6 mr-3" viewBox="0 0 48 48">
@@ -90,7 +87,7 @@
       </svg>
       <span class="text-base font-medium text-gray-700 dark:text-gray-300">Googleでログイン</span>
     </button>
-    
+
     <!-- Sign Up Link -->
     <p class="mt-8 text-center text-base text-gray-600 dark:text-gray-400">
       アカウントをお持ちでないですか?
@@ -106,9 +103,9 @@
 function togglePasswordVisibility(fieldId, iconId) {
   const field = document.getElementById(fieldId);
   const icon = document.getElementById(iconId);
-  
+
   if (!field || !icon) return;
-  
+
   if (field.type === 'password') {
     field.type = 'text';
     icon.textContent = 'visibility_off';

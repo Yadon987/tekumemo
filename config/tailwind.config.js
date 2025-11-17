@@ -1,6 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
+  // コンテンツパスの設定
   content: [
     './public/*.html',
     './app/helpers/**/*.rb',
@@ -8,46 +9,35 @@ module.exports = {
     './app/views/**/*.{erb,haml,html,slim}',
     './app/assets/stylesheets/**/*.css'
   ],
-  // ダークモード設定: classベース
+  
+  // ダークモード設定
   darkMode: 'class',
+  
   theme: {
     extend: {
+      // カスタムカラー
       colors: {
-        // プライマリカラー
         primary: '#1976D2',
-        // 背景色
         'background-light': '#F7F8FC',
         'background-dark': '#121212',
       },
+      
+      // フォント設定
       fontFamily: {
-        // 日本語フォント設定
         display: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
         sans: ['Noto Sans JP', ...defaultTheme.fontFamily.sans],
       },
+      
+      // 角丸設定
       borderRadius: {
         DEFAULT: '1rem',
       },
-      // グラデーション関連のユーティリティを有効化
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-      },
     },
   },
-  // プラグイン設定
+  
+  // プラグイン
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
   ],
-  // 重要: JITモードでのsafelist設定（必要に応じて）
-  safelist: [
-    'bg-gradient-to-r',
-    'bg-gradient-to-br',
-    'from-sky-400',
-    'from-sky-500',
-    'to-blue-500',
-    'to-blue-600',
-    'bg-clip-text',
-    'text-transparent',
-  ],
 }
-
