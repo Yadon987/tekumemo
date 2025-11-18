@@ -12,8 +12,7 @@ class Walk < ApplicationRecord
   # 距離は必須で、0以上の数値のみ許可
   validates :distance, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  # 場所は必須項目
-  validates :location, presence: true
+  # 場所は任意項目（バリデーションなし）
 
   # デフォルトのソート順（新しい日付順）
   # 一覧表示時に自動的に日付順でソートされる
