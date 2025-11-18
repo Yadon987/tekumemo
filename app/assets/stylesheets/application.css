@@ -4,12 +4,13 @@
 @tailwind utilities;
 
 /* Material Symbols アイコンフォント設定 */
+/* アイコンの見た目を統一するための設定 */
 .material-symbols-outlined {
   font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
+    'FILL' 1,      /* アイコンを塗りつぶす（1 = 塗りつぶし、0 = 線のみ） */
+    'wght' 400,    /* 太さ（100〜700の範囲） */
+    'GRAD' 0,      /* グラデーション効果（-25〜200の範囲） */
+    'opsz' 24;     /* 光学サイズ（20〜48の範囲） */
 }
 
 /* ===== ダークモードボタン用のカスタムスタイル ===== */
