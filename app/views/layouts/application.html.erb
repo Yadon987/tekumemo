@@ -18,17 +18,66 @@
 
   <!-- Google Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <!-- ダークモード初期化スクリプト（FOUC防止） -->
+  <script>
+    // ページ読み込み前にダークモードを設定（フラッシュ防止）
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <!-- ダークモードボタン用のカスタムスタイル -->
+  <style>
+    /* ライトモード時: 月アイコンとダークテキストを表示 */
+    .theme-icon-light,
+    .theme-text-light {
+      display: inline;
+    }
+    .theme-icon-dark,
+    .theme-text-dark {
+      display: none;
+    }
+
+    /* ダークモード時: 太陽アイコンとライトテキストを表示 */
+    .dark .theme-icon-light,
+    .dark .theme-text-light {
+      display: none;
+    }
+    .dark .theme-icon-dark,
+    .dark .theme-text-dark {
+      display: inline;
+    }
+  </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark font-display">
+<body class="bg-background-light dark:bg-background-dark font-display transition-colors duration-200">
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== ヘッダー ===== -->
     <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
-      <!-- 左側スペーサー -->
-      <div class="w-24"></div>
+      <!-- 左側：ダークモード切り替えボタン -->
+      <div class="w-24 flex justify-start items-center pl-2 sm:pl-0">
+        <button
+          type="button"
+          id="darkModeToggle"
+          aria-label="ダークモード切り替え"
+          class="flex flex-col items-center justify-center text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-sky-400 transition-colors p-2 rounded-lg">
+          <!-- ライトモード時のアイコン（月） -->
+          <span class="material-symbols-outlined text-2xl theme-icon-light">dark_mode</span>
+          <!-- ダークモード時のアイコン（太陽） -->
+          <span class="material-symbols-outlined text-2xl theme-icon-dark">light_mode</span>
+          <!-- ライトモード時のテキスト -->
+          <span class="text-[8px] mt-0.5 font-medium theme-text-light">ダーク</span>
+          <!-- ダークモード時のテキスト -->
+          <span class="text-[8px] mt-0.5 font-medium theme-text-dark">ライト</span>
+        </button>
+      </div>
 
-      <!-- 中央ロゴ -->
+      <!-- 中央：ロゴ -->
       <div class="flex items-center space-x-3">
         <!-- 左側のアイコン -->
         <div class="h-12 w-12 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl shadow-md">
@@ -46,7 +95,7 @@
         </div>
       </div>
 
-      <!-- 右側ログイン/ログアウトボタン -->
+      <!-- 右側：ログイン/ログアウトボタン -->
       <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
         <% if user_signed_in? %>
           <!-- Turbo対応のログアウトボタン -->
@@ -72,7 +121,7 @@
       <!-- Flashメッセージ -->
       <% if notice.present? %>
         <div class="mx-auto max-w-4xl px-4 py-2">
-          <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+          <div class="bg-blue-100 dark:bg-blue-900/30 border border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-300 px-4 py-3 rounded relative" role="alert">
             <span class="block sm:inline"><%= notice %></span>
           </div>
         </div>
@@ -80,7 +129,7 @@
 
       <% if alert.present? %>
         <div class="mx-auto max-w-4xl px-4 py-2">
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded relative" role="alert">
             <span class="block sm:inline"><%= alert %></span>
           </div>
         </div>
@@ -91,7 +140,7 @@
 
     <!-- ===== フローティング追加ボタン（ログイン時のみ） ===== -->
     <% if user_signed_in? %>
-      <button type="button" class="fixed bottom-24 right-4 bg-sky-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 transition-colors z-40">
+      <button type="button" class="fixed bottom-24 right-4 bg-sky-500 dark:bg-sky-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 dark:hover:bg-sky-700 transition-colors z-40">
         <span class="material-symbols-outlined text-3xl">add</span>
       </button>
 
@@ -136,5 +185,29 @@
       </nav>
     <% end %>
   </div>
+
+  <!-- ダークモード切り替えスクリプト -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+
+      if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function() {
+          const html = document.documentElement;
+          const isDark = html.classList.contains('dark');
+
+          if (isDark) {
+            // ライトモードに切り替え
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+          } else {
+            // ダークモードに切り替え
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

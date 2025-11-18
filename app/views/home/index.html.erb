@@ -1,15 +1,15 @@
 <% content_for :title, "てくメモ - ホーム" %>
 
 <div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto space-y-4">
-  
-  <!-- Today's Walk Dashboard -->
-  <div class="bg-gradient-to-br from-blue-300 to-indigo-400 text-white p-6 rounded-lg shadow-lg">
+
+  <!-- 今日の散歩ダッシュボード -->
+  <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-lg shadow-lg">
     <p class="text-sm opacity-90">今日の散歩</p>
     <div class="flex justify-between items-baseline mt-2">
       <p class="text-4xl font-bold">5,234<span class="text-base font-medium ml-1">歩</span></p>
       <p class="text-sm opacity-90">目標 10,000歩</p>
     </div>
-    <!-- Progress Bar -->
+    <!-- プログレスバー -->
     <div class="w-full bg-white/30 rounded-full h-2.5 my-4">
       <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: 52%"></div>
     </div>
@@ -31,67 +31,67 @@
     </div>
   </div>
 
-  <!-- Weather and Ranking Grid -->
+  <!-- 天気とランキングのグリッド -->
   <div class="grid grid-cols-2 gap-4">
-    <!-- Weather Card -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-sky-400">
+    <!-- 天気カード -->
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-sky-400 dark:border-sky-500 transition-colors">
       <div>
         <h3 class="font-bold text-gray-900 dark:text-white">天気</h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">晴れ、22°C</p>
       </div>
       <div class="text-right mt-2">
-        <span class="material-symbols-outlined text-sky-500 text-5xl">sunny</span>
+        <span class="material-symbols-outlined text-sky-500 dark:text-sky-400 text-5xl">sunny</span>
       </div>
     </div>
-    
-    <!-- Ranking Card -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-red-500">
+
+    <!-- ランキングカード -->
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-red-500 dark:border-red-600 transition-colors">
       <div>
         <h3 class="font-bold text-gray-900 dark:text-white">ランキング</h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">今週は上位10%です!</p>
       </div>
       <div class="text-right mt-2">
-        <span class="material-symbols-outlined text-red-500 text-5xl">emoji_events</span>
+        <span class="material-symbols-outlined text-red-500 dark:text-red-400 text-5xl">emoji_events</span>
       </div>
     </div>
   </div>
 
-  <!-- Latest Post -->
-  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-green-500">
+  <!-- 最新の投稿 -->
+  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-green-500 dark:border-green-600 transition-colors">
     <h3 class="font-bold text-gray-900 dark:text-white mb-3">最新の投稿</h3>
-    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-md">
+    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-md transition-colors">
       <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
         今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。
       </p>
     </div>
   </div>
 
-  <!-- Google Keep Integration -->
-  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-yellow-400">
+  <!-- Google Keep連携 -->
+  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-yellow-400 dark:border-yellow-500 transition-colors">
     <h3 class="font-bold text-gray-900 dark:text-white mb-2">メモ帳</h3>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">新しいアイデアがありますか?書き留めましょう!</p>
-    <button type="button" 
-            class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200">
+    <button type="button"
+            class="w-full bg-yellow-400 dark:bg-yellow-500 hover:bg-yellow-500 dark:hover:bg-yellow-600 text-gray-800 dark:text-gray-900 font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200">
       <span class="material-symbols-outlined">description</span>
       <span>Keepアプリを開く</span>
     </button>
   </div>
-  
-  <!-- Dummy Content for Scroll Testing -->
+
+  <!-- スクロールテスト用ダミーコンテンツ -->
   <div class="space-y-4">
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
       <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 1</h3>
       <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
     </div>
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
       <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 2</h3>
       <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
     </div>
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
       <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 3</h3>
       <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
     </div>
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
       <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 4</h3>
       <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
     </div>

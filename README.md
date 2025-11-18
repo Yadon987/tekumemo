@@ -98,11 +98,6 @@ Coming soon…
 | **低優先** | **フォロー機能** | 継続的なコミュニティ形成。本来は高優先度だがユーザーが少ないうちは低優先度|
 | **ボツ案** | **アチーブメント機能** | 目標達成の可視化 一つ一つリッチなデザインを考える時間がないためボツ |
 
-## 使用予定のライブラリ
-* **ユーザー認証系** Devise
-* **天気予報API連携系** net-http（Rails標準）
-* **カレンダー表示系** simple_calendar
-
 ## 使用する技術スタック
 ### **バックエンド**
 * **言語・フレームワーク:** Ruby 3.2.2 + Ruby on Rails 7.2.x
@@ -111,9 +106,9 @@ Coming soon…
 * **API連携:** net-http（Rails標準）or OpenWeatherMap API（天気予報）
 
 ### **フロントエンド**
-* **スタイリング:** Tailwind CSS
-* **JavaScript:** Stimulus
-* **非同期通信:** Turbo（Rails標準）
+* **スタイリング:** Tailwind CSS CLI
+* **JavaScript:** Stimulus(stimulus-rails,jsbundling-rails)
+* **非同期通信:** Turbo（turbo-rails）
 
 ### **インフラ・その他**
 * **デプロイ先:** Render
