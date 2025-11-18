@@ -41,28 +41,60 @@
       <!-- 統計情報 -->
       <div class="grid grid-cols-2 gap-4 mb-6">
         <!-- 距離 -->
-        <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-          <div class="flex items-center space-x-2 mb-2">
-            <span class="material-symbols-outlined text-green-500 dark:text-green-400">straighten</span>
-            <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">距離</h3>
+        <% if @walk.distance.present? %>
+          <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="material-symbols-outlined text-green-500 dark:text-green-400">straighten</span>
+              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">距離</h3>
+            </div>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              <%= @walk.distance %>
+              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">km</span>
+            </p>
           </div>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white">
-            <%= @walk.distance %>
-            <span class="text-lg font-normal text-gray-500 dark:text-gray-400">km</span>
-          </p>
-        </div>
+        <% end %>
 
         <!-- 時間 -->
-        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-          <div class="flex items-center space-x-2 mb-2">
-            <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">schedule</span>
-            <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">時間</h3>
+        <% if @walk.duration.present? %>
+          <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">schedule</span>
+              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">時間</h3>
+            </div>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              <%= @walk.duration %>
+              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">分</span>
+            </p>
           </div>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white">
-            <%= @walk.duration %>
-            <span class="text-lg font-normal text-gray-500 dark:text-gray-400">分</span>
-          </p>
-        </div>
+        <% end %>
+
+        <!-- 歩数 -->
+        <% if @walk.steps.present? %>
+          <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="material-symbols-outlined text-purple-500 dark:text-purple-400">directions_walk</span>
+              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">歩数</h3>
+            </div>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              <%= @walk.steps.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\1,') %>
+              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">歩</span>
+            </p>
+          </div>
+        <% end %>
+
+        <!-- 消費カロリー -->
+        <% if @walk.calories_burned.present? %>
+          <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="material-symbols-outlined text-orange-500 dark:text-orange-400">local_fire_department</span>
+              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">消費カロリー</h3>
+            </div>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              <%= @walk.calories_burned %>
+              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">kcal</span>
+            </p>
+          </div>
+        <% end %>
       </div>
 
       <!-- メモ -->

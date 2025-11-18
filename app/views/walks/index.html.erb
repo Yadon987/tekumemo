@@ -49,26 +49,56 @@
             <!-- 統計情報 -->
             <div class="grid grid-cols-2 gap-4 mb-3">
               <!-- 距離 -->
-              <div class="flex items-center space-x-2">
-                <span class="material-symbols-outlined text-green-500 dark:text-green-400">straighten</span>
-                <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">距離</p>
-                  <p class="text-lg font-bold text-gray-900 dark:text-white">
-                    <%= walk.distance %> <span class="text-sm font-normal">km</span>
-                  </p>
+              <% if walk.distance.present? %>
+                <div class="flex items-center space-x-2">
+                  <span class="material-symbols-outlined text-green-500 dark:text-green-400">straighten</span>
+                  <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">距離</p>
+                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                      <%= walk.distance %> <span class="text-sm font-normal">km</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
+              <% end %>
 
               <!-- 時間 -->
-              <div class="flex items-center space-x-2">
-                <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">schedule</span>
-                <div>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">時間</p>
-                  <p class="text-lg font-bold text-gray-900 dark:text-white">
-                    <%= walk.duration %> <span class="text-sm font-normal">分</span>
-                  </p>
+              <% if walk.duration.present? %>
+                <div class="flex items-center space-x-2">
+                  <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">schedule</span>
+                  <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">時間</p>
+                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                      <%= walk.duration %> <span class="text-sm font-normal">分</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
+              <% end %>
+
+              <!-- 歩数 -->
+              <% if walk.steps.present? %>
+                <div class="flex items-center space-x-2">
+                  <span class="material-symbols-outlined text-purple-500 dark:text-purple-400">directions_walk</span>
+                  <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">歩数</p>
+                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                      <%= walk.steps.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\1,') %> <span class="text-sm font-normal">歩</span>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+
+              <!-- 消費カロリー -->
+              <% if walk.calories_burned.present? %>
+                <div class="flex items-center space-x-2">
+                  <span class="material-symbols-outlined text-orange-500 dark:text-orange-400">local_fire_department</span>
+                  <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">消費カロリー</p>
+                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                      <%= walk.calories_burned %> <span class="text-sm font-normal">kcal</span>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
             </div>
 
             <!-- メモ（最初の50文字のみ表示） -->

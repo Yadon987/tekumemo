@@ -75,6 +75,6 @@ class WalksController < ApplicationController
   # フォームから送信されたパラメータを許可するメソッド
   # セキュリティのため、必要なパラメータだけを許可する
   def walk_params
-    params.require(:walk).permit(:walked_on, :duration, :distance, :location, :notes)
+    params.require(:walk).permit(:walked_on, :duration, :distance, :steps, :calories_burned, :location, :notes)
   end
 end

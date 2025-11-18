@@ -85,7 +85,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <!-- 距離 -->
     <div>
-      <%= form.label :distance, "距離（km）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= form.label :distance, "距離（km）（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
       <div class="relative">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">straighten</span>
         <%= form.number_field :distance,
@@ -98,7 +98,7 @@
 
     <!-- 時間 -->
     <div>
-      <%= form.label :duration, "時間（分）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= form.label :duration, "時間（分）（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
       <div class="relative">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">schedule</span>
         <%= form.number_field :duration,
@@ -107,6 +107,31 @@
             class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
       </div>
     </div>
+  </div>
+
+  <!-- 歩数と消費カロリーを2列に配置 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- 歩数 -->
+    <div>
+      <%= form.label :steps, "歩数（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">directions_walk</span>
+        <%= form.number_field :steps,
+            id: "walk_steps",
+            placeholder: "例: 8000",
+            class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
+      </div>
+    </div>
+
+    <!-- 消費カロリー -->
+    <div>
+      <%= form.label :calories_burned, "消費カロリー（kcal）（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">local_fire_department</span>
+        <%= form.number_field :calories_burned,
+            id: "walk_calories_burned",
+            placeholder: "例: 300",
+            class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
       </div>
     </div>
   </div>
