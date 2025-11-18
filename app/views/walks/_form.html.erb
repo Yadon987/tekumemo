@@ -89,6 +89,7 @@
       <div class="relative">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">straighten</span>
         <%= form.number_field :distance,
+            id: "walk_distance",
             step: 0.01,
             placeholder: "例: 5.0",
             class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
@@ -101,8 +102,11 @@
       <div class="relative">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">schedule</span>
         <%= form.number_field :duration,
+            id: "walk_duration",
             placeholder: "例: 60",
             class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
+      </div>
+    </div>
       </div>
     </div>
   </div>

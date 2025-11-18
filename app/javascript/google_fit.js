@@ -1,16 +1,29 @@
 // Google Fitからデータを取得してフォームに自動入力する機能
 // 散歩記録作成・編集フォームで使用
 
-document.addEventListener('turbo:load', () => {
+// Google Fitデータ取得処理を実行する関数
+function setupGoogleFitButton() {
   // Google Fitデータ取得ボタンを取得
   const fetchButton = document.getElementById('fetchGoogleFitData');
-  if (!fetchButton) return;
+  if (!fetchButton) {
+    console.log('Google Fit button not found');
+    return;
+  }
+
+  console.log('Google Fit button found, setting up event listener');
+
+  // 既存のイベントリスナーを削除（重複防止）
+  fetchButton.replaceWith(fetchButton.cloneNode(true));
+  const newButton = document.getElementById('fetchGoogleFitData');
 
   // ボタンクリック時の処理
-  fetchButton.addEventListener('click', async () => {
+  newButton.addEventListener('click', async () => {
+    console.log('Google Fit button clicked');
     // 選択された日付を取得
     const dateField = document.getElementById('walk_walked_on');
     const selectedDate = dateField ? dateField.value : null;
+
+    console.log('Selected date:', selectedDate);
 
     if (!selectedDate) {
       alert('散歩日を選択してください');
@@ -18,9 +31,9 @@ document.addEventListener('turbo:load', () => {
     }
 
     // ボタンを無効化してローディング状態にする
-    fetchButton.disabled = true;
-    fetchButton.classList.add('opacity-50', 'cursor-not-allowed');
-    fetchButton.innerHTML = `
+    newButton.disabled = true;
+    newButton.classList.add('opacity-50', 'cursor-not-allowed');
+    newButton.innerHTML = `
       <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -89,9 +102,9 @@ document.addEventListener('turbo:load', () => {
       }
 
       message.classList.add('google-fit-message');
-      fetchButton.parentElement.appendChild(message);
+      newButton.parentElement.appendChild(message);
 
-      // 3秒後にメッセージを削除
+      // 5秒後にメッセージを削除
       setTimeout(() => {
         message.remove();
       }, 5000);
@@ -101,12 +114,23 @@ document.addEventListener('turbo:load', () => {
       alert('データの取得に失敗しました。もう一度お試しください。');
     } finally {
       // ボタンを元の状態に戻す
-      fetchButton.disabled = false;
-      fetchButton.classList.remove('opacity-50', 'cursor-not-allowed');
-      fetchButton.innerHTML = `
+      newButton.disabled = false;
+      newButton.classList.remove('opacity-50', 'cursor-not-allowed');
+      newButton.innerHTML = `
         <span class="material-symbols-outlined">download</span>
         <span>今日のデータを取得</span>
       `;
     }
   });
-});
+}
+
+// Turboイベントとページロード時の両方で実行
+document.addEventListener('turbo:load', setupGoogleFitButton);
+document.addEventListener('DOMContentLoaded', setupGoogleFitButton);
+
+// 初回ロード時にも実行
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupGoogleFitButton);
+} else {
+  setupGoogleFitButton();
+}
