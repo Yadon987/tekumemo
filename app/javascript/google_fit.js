@@ -65,13 +65,27 @@ function setupGoogleFitButton() {
       // 取得したデータをフォームに入力
       const distanceField = document.getElementById('walk_distance');
       const durationField = document.getElementById('walk_duration');
+      const stepsField = document.getElementById('walk_steps');
+      const caloriesField = document.getElementById('walk_calories_burned');
 
+      // 距離をフォームに入力
       if (distanceField && data.distance !== undefined) {
         distanceField.value = data.distance;
       }
 
+      // 時間をフォームに入力
       if (durationField && data.duration !== undefined) {
         durationField.value = data.duration;
+      }
+
+      // 歩数をフォームに入力
+      if (stepsField && data.steps !== undefined) {
+        stepsField.value = data.steps;
+      }
+
+      // 消費カロリーをフォームに入力
+      if (caloriesField && data.calories !== undefined) {
+        caloriesField.value = data.calories;
       }
 
       // ステータス表示を更新
