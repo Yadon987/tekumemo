@@ -113,11 +113,52 @@
       <%= yield %>
     </main>
 
-    <!-- ===== フローティング追加ボタン（ログイン時のみ） ===== -->
+    <!-- ===== フローティングメニューボタン（ログイン時のみ） ===== -->
     <% if user_signed_in? %>
-      <%= link_to new_walk_path, class: "fixed bottom-24 right-4 bg-sky-500 dark:bg-sky-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 dark:hover:bg-sky-700 transition-colors z-40" do %>
-        <span class="material-symbols-outlined text-3xl">add</span>
-      <% end %>
+      <div data-controller="floating-menu" class="fixed bottom-24 right-4 z-40">
+        <!-- メニューボタン -->
+        <button
+          type="button"
+          data-action="click->floating-menu#toggle"
+          class="bg-sky-500 dark:bg-sky-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 dark:hover:bg-sky-700 transition-colors">
+          <span class="material-symbols-outlined text-3xl">add</span>
+        </button>
+
+        <!-- メニュー項目（初期状態は非表示） -->
+        <div
+          data-floating-menu-target="menu"
+          class="hidden absolute bottom-16 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden min-w-[200px]">
+
+          <!-- 新しい散歩記録 -->
+          <%= link_to new_walk_path,
+              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700" do %>
+            <span class="material-symbols-outlined text-green-500 dark:text-green-400">add_circle</span>
+            <span class="text-gray-700 dark:text-gray-200 font-medium">新しい散歩記録</span>
+          <% end %>
+
+          <!-- ログインスタンプ -->
+          <%= link_to login_stamps_path,
+              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700" do %>
+            <span class="material-symbols-outlined text-purple-500 dark:text-purple-400">calendar_month</span>
+            <span class="text-gray-700 dark:text-gray-200 font-medium">ログインスタンプ</span>
+          <% end %>
+
+          <!-- 設定 -->
+          <%= link_to edit_user_registration_path,
+              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700" do %>
+            <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">settings</span>
+            <span class="text-gray-700 dark:text-gray-200 font-medium">設定</span>
+          <% end %>
+
+          <!-- プライバシー（プレースホルダー） -->
+          <%= link_to "#",
+              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" do %>
+            <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">privacy_tip</span>
+            <span class="text-gray-700 dark:text-gray-200 font-medium">プライバシー</span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
 
       <!-- ===== ボトムナビゲーション（ログイン時のみ） ===== -->
       <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50">
