@@ -148,6 +148,18 @@ Devise.setup do |config|
   # OAuthプロバイダーの追加
   # config.omniauth :github, ENV['GITHUB_APP_ID'], ENV['GITHUB_APP_SECRET'], scope: 'user,public_repo'
 
+  # Google OAuth2設定（Google Fit API連携用）
+  # Google Cloud Consoleで取得したクライアントIDとシークレットを使用
+  # スコープ: ユーザー情報とGoogle Fit（アクティビティ、位置情報、身体データ）へのアクセス
+  config.omniauth :google_oauth2,
+                  ENV.fetch("GOOGLE_CLIENT_ID", nil),
+                  ENV.fetch("GOOGLE_CLIENT_SECRET", nil),
+                  {
+                    scope: "email,profile,https://www.googleapis.com/auth/fitness.activity.read,https://www.googleapis.com/auth/fitness.location.read,https://www.googleapis.com/auth/fitness.body.read",
+                    access_type: "offline",
+                    prompt: "consent"
+                  }
+
   # ===== Warden設定 =====
   # Wardenの追加設定
   # config.warden do |manager|
