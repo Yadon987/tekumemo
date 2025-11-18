@@ -29,29 +29,6 @@
       }
     })();
   </script>
-
-  <!-- ダークモードボタン用のカスタムスタイル -->
-  <style>
-    /* ライトモード時: 月アイコンとダークテキストを表示 */
-    .theme-icon-light,
-    .theme-text-light {
-      display: inline;
-    }
-    .theme-icon-dark,
-    .theme-text-dark {
-      display: none;
-    }
-
-    /* ダークモード時: 太陽アイコンとライトテキストを表示 */
-    .dark .theme-icon-light,
-    .dark .theme-text-light {
-      display: none;
-    }
-    .dark .theme-icon-dark,
-    .dark .theme-text-dark {
-      display: inline;
-    }
-  </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display transition-colors duration-200">
@@ -185,29 +162,5 @@
       </nav>
     <% end %>
   </div>
-
-  <!-- ダークモード切り替えスクリプト -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const darkModeToggle = document.getElementById('darkModeToggle');
-
-      if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', function() {
-          const html = document.documentElement;
-          const isDark = html.classList.contains('dark');
-
-          if (isDark) {
-            // ライトモードに切り替え
-            html.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-          } else {
-            // ダークモードに切り替え
-            html.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-          }
-        });
-      }
-    });
-  </script>
 </body>
 </html>
