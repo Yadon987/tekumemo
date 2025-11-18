@@ -1,0 +1,17 @@
+<% content_for :title, "新しい散歩記録 - てくメモ" %>
+
+<div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto">
+  <!-- ページタイトル -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+      <span class="material-symbols-outlined text-3xl">add_circle</span>
+      <span>新しい散歩記録を作成</span>
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">散歩の情報を入力してください</p>
+  </div>
+
+  <!-- フォーム -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-l-4 border-sky-400 dark:border-sky-500 transition-colors">
+    <%= render "form", walk: @walk %>
+  </div>
+</div>

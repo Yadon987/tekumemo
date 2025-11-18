@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  walked_on: 2025-11-18
+  duration: 1
+  distance: 9.99
+  location: MyString
+  notes: MyText
+
+two:
+  user: two
+  walked_on: 2025-11-18
+  duration: 1
+  distance: 9.99
+  location: MyString
+  notes: MyText
