@@ -113,50 +113,69 @@
       <%= yield %>
     </main>
 
-    <!-- ===== フローティングメニューボタン（ログイン時のみ） ===== -->
+    <!-- ===== Expandable FAB（展開可能なFloating Action Button）（ログイン時のみ） ===== -->
     <% if user_signed_in? %>
-      <div data-controller="floating-menu" class="fixed bottom-24 right-4 z-40">
-        <!-- メニューボタン -->
+      <div data-controller="expandable-fab" class="fixed bottom-24 right-4 z-40">
+        <!-- 背景オーバーレイ（FAB展開時に表示） -->
+        <div
+          data-expandable-fab-target="overlay"
+          data-action="click->expandable-fab#close"
+          class="hidden fixed inset-0 bg-black opacity-0 transition-opacity duration-200 -z-10">
+        </div>
+
+        <!-- アクションボタン（展開時に表示されるボタン群） -->
+        <!-- プライバシー -->
+        <%= link_to "#",
+            data: { expandable_fab_target: "actionButton" },
+            class: "hidden opacity-0 absolute bottom-72 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+            style: "transform: translateY(20px);" do %>
+          <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-lg shadow-md text-sm font-medium whitespace-nowrap">プライバシー</span>
+          <div class="bg-blue-500 dark:bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
+            <span class="material-symbols-outlined text-2xl">privacy_tip</span>
+          </div>
+        <% end %>
+
+        <!-- 設定 -->
+        <%= link_to edit_user_registration_path,
+            data: { expandable_fab_target: "actionButton" },
+            class: "hidden opacity-0 absolute bottom-56 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+            style: "transform: translateY(20px);" do %>
+          <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-lg shadow-md text-sm font-medium whitespace-nowrap">設定</span>
+          <div class="bg-gray-500 dark:bg-gray-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors">
+            <span class="material-symbols-outlined text-2xl">settings</span>
+          </div>
+        <% end %>
+
+        <!-- ログインスタンプ -->
+        <%= link_to login_stamps_path,
+            data: { expandable_fab_target: "actionButton" },
+            class: "hidden opacity-0 absolute bottom-40 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+            style: "transform: translateY(20px);" do %>
+          <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-lg shadow-md text-sm font-medium whitespace-nowrap">ログインスタンプ</span>
+          <div class="bg-purple-500 dark:bg-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-purple-600 dark:hover:bg-purple-700 transition-colors">
+            <span class="material-symbols-outlined text-2xl">calendar_month</span>
+          </div>
+        <% end %>
+
+        <!-- 新しい散歩記録 -->
+        <%= link_to new_walk_path,
+            data: { expandable_fab_target: "actionButton" },
+            class: "hidden opacity-0 absolute bottom-24 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+            style: "transform: translateY(20px);" do %>
+          <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-lg shadow-md text-sm font-medium whitespace-nowrap">新しい散歩記録</span>
+          <div class="bg-green-500 dark:bg-green-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 dark:hover:bg-green-700 transition-colors">
+            <span class="material-symbols-outlined text-2xl">add_circle</span>
+          </div>
+        <% end %>
+
+        <!-- メインFABボタン -->
         <button
           type="button"
-          data-action="click->floating-menu#toggle"
-          class="bg-sky-500 dark:bg-sky-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 dark:hover:bg-sky-700 transition-colors">
+          data-expandable-fab-target="mainButton"
+          data-action="click->expandable-fab#toggle"
+          class="bg-sky-500 dark:bg-sky-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 dark:hover:bg-sky-700 transition-all duration-300">
           <span class="material-symbols-outlined text-3xl">add</span>
         </button>
-
-        <!-- メニュー項目（初期状態は非表示） -->
-        <div
-          data-floating-menu-target="menu"
-          class="hidden absolute bottom-16 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden min-w-[200px]">
-
-          <!-- 新しい散歩記録 -->
-          <%= link_to new_walk_path,
-              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700" do %>
-            <span class="material-symbols-outlined text-green-500 dark:text-green-400">add_circle</span>
-            <span class="text-gray-700 dark:text-gray-200 font-medium">新しい散歩記録</span>
-          <% end %>
-
-          <!-- ログインスタンプ -->
-          <%= link_to login_stamps_path,
-              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700" do %>
-            <span class="material-symbols-outlined text-purple-500 dark:text-purple-400">calendar_month</span>
-            <span class="text-gray-700 dark:text-gray-200 font-medium">ログインスタンプ</span>
-          <% end %>
-
-          <!-- 設定 -->
-          <%= link_to edit_user_registration_path,
-              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700" do %>
-            <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">settings</span>
-            <span class="text-gray-700 dark:text-gray-200 font-medium">設定</span>
-          <% end %>
-
-          <!-- プライバシー（プレースホルダー） -->
-          <%= link_to "#",
-              class: "flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" do %>
-            <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">privacy_tip</span>
-            <span class="text-gray-700 dark:text-gray-200 font-medium">プライバシー</span>
-          <% end %>
-        </div>
       </div>
 
       <!-- ===== ボトムナビゲーション（ログイン時のみ） ===== -->
