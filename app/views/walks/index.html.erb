@@ -1,0 +1,98 @@
+<% content_for :title, "散歩記録一覧 - てくメモ" %>
+
+<div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto">
+  <!-- ページタイトル -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+      <span class="material-symbols-outlined text-3xl">footprint</span>
+      <span>散歩記録</span>
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">あなたの散歩記録の一覧です</p>
+  </div>
+
+  <!-- 新規作成ボタン -->
+  <div class="mb-6">
+    <%= link_to new_walk_path,
+        class: "inline-flex items-center justify-center space-x-2 bg-sky-500 dark:bg-sky-600 hover:bg-sky-600 dark:hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors" do %>
+      <span class="material-symbols-outlined">add</span>
+      <span>新しい散歩記録を作成</span>
+    <% end %>
+  </div>
+
+  <!-- 散歩記録一覧 -->
+  <div class="space-y-4">
+    <% if @walks.any? %>
+      <% @walks.each do |walk| %>
+        <!-- 各散歩記録カード -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-sky-400 dark:border-sky-500 transition-colors overflow-hidden">
+          <%= link_to walk_path(walk), class: "block p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors" do %>
+            <!-- 日付 -->
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <span class="material-symbols-outlined text-sky-500 dark:text-sky-400">calendar_today</span>
+                <span class="text-lg font-bold text-gray-900 dark:text-white">
+                  <%= walk.walked_on.strftime('%Y年%m月%d日') %>
+                </span>
+              </div>
+              <!-- 曜日 -->
+              <span class="text-sm text-gray-500 dark:text-gray-400">
+                <%= %w[日 月 火 水 木 金 土][walk.walked_on.wday] %>曜日
+              </span>
+            </div>
+
+            <!-- 場所 -->
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-xl">location_on</span>
+              <span class="text-gray-700 dark:text-gray-300"><%= walk.location %></span>
+            </div>
+
+            <!-- 統計情報 -->
+            <div class="grid grid-cols-2 gap-4 mb-3">
+              <!-- 距離 -->
+              <div class="flex items-center space-x-2">
+                <span class="material-symbols-outlined text-green-500 dark:text-green-400">straighten</span>
+                <div>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">距離</p>
+                  <p class="text-lg font-bold text-gray-900 dark:text-white">
+                    <%= walk.distance %> <span class="text-sm font-normal">km</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- 時間 -->
+              <div class="flex items-center space-x-2">
+                <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">schedule</span>
+                <div>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">時間</p>
+                  <p class="text-lg font-bold text-gray-900 dark:text-white">
+                    <%= walk.duration %> <span class="text-sm font-normal">分</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- メモ（最初の50文字のみ表示） -->
+            <% if walk.notes.present? %>
+              <div class="mt-3 p-3 bg-gray-100 dark:bg-gray-700/50 rounded-md">
+                <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                  <%= walk.notes %>
+                </p>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <!-- 記録がない場合のメッセージ -->
+      <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm text-center">
+        <span class="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-600 mb-4">hiking</span>
+        <p class="text-gray-500 dark:text-gray-400 mb-4">まだ散歩記録がありません</p>
+        <%= link_to new_walk_path,
+            class: "inline-flex items-center space-x-2 text-sky-500 dark:text-sky-400 hover:text-sky-600 dark:hover:text-sky-300 font-bold transition-colors" do %>
+          <span class="material-symbols-outlined">add</span>
+          <span>最初の散歩記録を作成しましょう</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

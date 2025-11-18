@@ -1,0 +1,19 @@
+<% content_for :title, "散歩記録を編集 - てくメモ" %>
+
+<div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto">
+  <!-- ページタイトル -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+      <span class="material-symbols-outlined text-3xl">edit</span>
+      <span>散歩記録を編集</span>
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+      <%= @walk.walked_on.strftime('%Y年%m月%d日') %>の散歩記録を編集
+    </p>
+  </div>
+
+  <!-- フォーム -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-l-4 border-yellow-400 dark:border-yellow-500 transition-colors">
+    <%= render "form", walk: @walk %>
+  </div>
+</div>

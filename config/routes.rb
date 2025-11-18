@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   root "home#index"
 
   # ===== アプリケーション機能 =====
-  # TODO: 散歩記録、投稿、ランキングなどのルートを追加
+  # 散歩記録のCRUD機能（作成・閲覧・更新・削除）
+  # ログインしているユーザーのみアクセス可能
+  resources :walks
 
   # ===== システム関連 =====
   # ヘルスチェック
