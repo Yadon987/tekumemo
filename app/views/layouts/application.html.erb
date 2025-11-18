@@ -29,29 +29,6 @@
       }
     })();
   </script>
-
-  <!-- ダークモードボタン用のカスタムスタイル -->
-  <style>
-    /* ライトモード時: 月アイコンとダークテキストを表示 */
-    .theme-icon-light,
-    .theme-text-light {
-      display: inline;
-    }
-    .theme-icon-dark,
-    .theme-text-dark {
-      display: none;
-    }
-
-    /* ダークモード時: 太陽アイコンとライトテキストを表示 */
-    .dark .theme-icon-light,
-    .dark .theme-text-light {
-      display: none;
-    }
-    .dark .theme-icon-dark,
-    .dark .theme-text-dark {
-      display: inline;
-    }
-  </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display transition-colors duration-200">
@@ -66,14 +43,12 @@
           id="darkModeToggle"
           aria-label="ダークモード切り替え"
           class="flex flex-col items-center justify-center text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-sky-400 transition-colors p-2 rounded-lg">
-          <!-- ライトモード時のアイコン（月） -->
-          <span class="material-symbols-outlined text-2xl theme-icon-light">dark_mode</span>
-          <!-- ダークモード時のアイコン（太陽） -->
-          <span class="material-symbols-outlined text-2xl theme-icon-dark">light_mode</span>
-          <!-- ライトモード時のテキスト -->
-          <span class="text-[8px] mt-0.5 font-medium theme-text-light">ダーク</span>
-          <!-- ダークモード時のテキスト -->
-          <span class="text-[8px] mt-0.5 font-medium theme-text-dark">ライト</span>
+          <!-- ライトモード時に表示：月のアイコンと「ダーク」テキスト -->
+          <span class="material-symbols-outlined text-2xl dark:hidden">dark_mode</span>
+          <span class="text-[8px] mt-0.5 font-medium dark:hidden">ダーク</span>
+          <!-- ダークモード時に表示：太陽のアイコンと「ライト」テキスト -->
+          <span class="material-symbols-outlined text-2xl hidden dark:block">light_mode</span>
+          <span class="text-[8px] mt-0.5 font-medium hidden dark:block">ライト</span>
         </button>
       </div>
 
