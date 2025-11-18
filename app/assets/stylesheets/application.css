@@ -12,6 +12,27 @@
     'opsz' 24;
 }
 
+/* ===== ダークモードボタン用のカスタムスタイル ===== */
+/* ライトモード時: 月アイコンとダークテキストを表示 */
+.theme-icon-light,
+.theme-text-light {
+  display: inline;
+}
+.theme-icon-dark,
+.theme-text-dark {
+  display: none;
+}
+
+/* ダークモード時: 太陽アイコンとライトテキストを表示 */
+.dark .theme-icon-light,
+.dark .theme-text-light {
+  display: none;
+}
+.dark .theme-icon-dark,
+.dark .theme-text-dark {
+  display: inline;
+}
+
 /* ===== カスタムコンポーネント ===== */
 @layer components {
   /* ボタンのカーソルスタイル */
@@ -20,7 +41,7 @@
   button[type="button"] {
     @apply cursor-pointer;
   }
-  
+
   button[type="submit"]:disabled,
   input[type="submit"]:disabled,
   button[type="button"]:disabled {
@@ -35,7 +56,7 @@
     -webkit-background-clip: text;
     background-clip: text;
   }
-  
+
   .text-fill-transparent {
     -webkit-text-fill-color: transparent;
   }
