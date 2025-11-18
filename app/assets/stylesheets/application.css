@@ -14,23 +14,25 @@
 
 /* ===== ダークモードボタン用のカスタムスタイル ===== */
 /* ライトモード時: 月アイコンとダークテキストを表示 */
+/* ダークモード時: これらの要素を非表示にする */
 .theme-icon-light,
 .theme-text-light {
-  display: inline;
+  display: flex; /* flexコンテナの中で表示するためにflexを使用 */
 }
 .theme-icon-dark,
 .theme-text-dark {
-  display: none;
+  display: none; /* 非表示にする */
 }
 
 /* ダークモード時: 太陽アイコンとライトテキストを表示 */
+/* ライトモード時: これらの要素を非表示にする */
 .dark .theme-icon-light,
 .dark .theme-text-light {
-  display: none;
+  display: none; /* 非表示にする */
 }
 .dark .theme-icon-dark,
 .dark .theme-text-dark {
-  display: inline;
+  display: flex; /* flexコンテナの中で表示するためにflexを使用 */
 }
 
 /* ===== カスタムコンポーネント ===== */
