@@ -115,14 +115,16 @@
 
     <!-- ===== Expandable FAB（展開可能なFloating Action Button）（ログイン時のみ） ===== -->
     <% if user_signed_in? %>
-      <div data-controller="expandable-fab" class="fixed bottom-24 right-4 z-40">
+      <div data-controller="expandable-fab">
         <!-- 背景オーバーレイ（FAB展開時に表示） -->
         <div
           data-expandable-fab-target="overlay"
           data-action="click->expandable-fab#close"
-          class="hidden fixed inset-0 bg-black opacity-0 transition-opacity duration-200 -z-10">
+          class="hidden fixed inset-0 bg-black opacity-0 transition-opacity duration-200 z-30">
         </div>
 
+        <!-- FABボタンコンテナ -->
+        <div class="fixed bottom-24 right-4 z-40">
         <!-- アクションボタン（展開時に表示されるボタン群） -->
         <!-- プライバシー -->
         <%= link_to "#",
@@ -168,14 +170,15 @@
           </div>
         <% end %>
 
-        <!-- メインFABボタン -->
-        <button
-          type="button"
-          data-expandable-fab-target="mainButton"
-          data-action="click->expandable-fab#toggle"
-          class="bg-sky-500 dark:bg-sky-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 dark:hover:bg-sky-700 transition-all duration-300">
-          <span class="material-symbols-outlined text-3xl">add</span>
-        </button>
+          <!-- メインFABボタン -->
+          <button
+            type="button"
+            data-expandable-fab-target="mainButton"
+            data-action="click->expandable-fab#toggle"
+            class="bg-sky-500 dark:bg-sky-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-sky-600 dark:hover:bg-sky-700 transition-all duration-300">
+            <span class="material-symbols-outlined text-3xl">add</span>
+          </button>
+        </div>
       </div>
 
       <!-- ===== ボトムナビゲーション（ログイン時のみ） ===== -->

@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
+import ExpandableFabController from "./expandable_fab_controller"
+application.register("expandable-fab", ExpandableFabController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
