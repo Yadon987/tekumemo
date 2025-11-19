@@ -31,28 +31,59 @@
     </div>
   </div>
 
-  <!-- 天気とランキングのグリッド -->
+  <!-- 天気のグリッド -->
   <div class="grid grid-cols-2 gap-4">
-    <!-- 天気カード -->
+    <!-- 今日の天気カード -->
     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-sky-400 dark:border-sky-500 transition-colors">
       <div>
-        <h3 class="font-bold text-gray-900 dark:text-white">天気</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">晴れ、22°C</p>
+        <h3 class="font-bold text-gray-900 dark:text-white">今日の天気</h3>
+        <% if @weather && @weather[:today] %>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <%= @weather[:today][:description] %>、<%= @weather[:today][:temp] %>°C
+          </p>
+        <% else %>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">情報取得中...</p>
+        <% end %>
       </div>
       <div class="text-right mt-2">
-        <span class="material-symbols-outlined text-sky-500 dark:text-sky-400 text-5xl">sunny</span>
+        <% if @weather && @weather[:today] %>
+          <span class="material-symbols-outlined text-sky-500 dark:text-sky-400 text-5xl"><%= @weather[:today][:icon] %></span>
+        <% else %>
+          <span class="material-symbols-outlined text-sky-500 dark:text-sky-400 text-5xl">sunny</span>
+        <% end %>
       </div>
     </div>
 
-    <!-- ランキングカード -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-red-500 dark:border-red-600 transition-colors">
+    <!-- 明日の天気カード -->
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-indigo-400 dark:border-indigo-500 transition-colors">
       <div>
-        <h3 class="font-bold text-gray-900 dark:text-white">ランキング</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">今週は上位10%です!</p>
+        <h3 class="font-bold text-gray-900 dark:text-white">明日の天気</h3>
+        <% if @weather && @weather[:tomorrow] %>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <%= @weather[:tomorrow][:description] %>、<%= @weather[:tomorrow][:temp] %>°C
+          </p>
+        <% else %>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">情報取得中...</p>
+        <% end %>
       </div>
       <div class="text-right mt-2">
-        <span class="material-symbols-outlined text-red-500 dark:text-red-400 text-5xl">emoji_events</span>
+        <% if @weather && @weather[:tomorrow] %>
+          <span class="material-symbols-outlined text-indigo-500 dark:text-indigo-400 text-5xl"><%= @weather[:tomorrow][:icon] %></span>
+        <% else %>
+          <span class="material-symbols-outlined text-indigo-500 dark:text-indigo-400 text-5xl">cloud</span>
+        <% end %>
       </div>
+    </div>
+  </div>
+
+  <!-- ランキングカード -->
+  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-red-500 dark:border-red-600 transition-colors">
+    <div>
+      <h3 class="font-bold text-gray-900 dark:text-white">ランキング</h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">今週は上位10%です!</p>
+    </div>
+    <div class="text-right mt-2">
+      <span class="material-symbols-outlined text-red-500 dark:text-red-400 text-5xl">emoji_events</span>
     </div>
   </div>
 
