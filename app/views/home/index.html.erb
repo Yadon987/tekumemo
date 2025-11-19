@@ -36,7 +36,7 @@
     <!-- 天気予報カード（コンパクト版） -->
     <div class="bg-gradient-to-br from-sky-600 via-blue-700 to-indigo-800 dark:from-sky-800 dark:via-blue-900 dark:to-indigo-950 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01]">
       <!-- カードヘッダー -->
-      <div class="px-3 py-2 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
+      <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
         <div class="flex items-center justify-center">
           <div class="flex items-center space-x-0.5 text-white/80 text-xs">
             <span class="material-symbols-outlined text-xs">location_on</span>
@@ -48,55 +48,55 @@
       <!-- 天気情報グリッド -->
       <div class="grid grid-cols-2 divide-x divide-white/20">
         <!-- 今日の天気 -->
-        <div class="p-4 text-white">
+        <div class="p-3 text-white">
           <div class="text-center">
-            <p class="text-sm font-medium opacity-90 mb-2">今日</p>
+            <p class="text-xs font-medium opacity-90 mb-1.5">今日</p>
             <% if @weather && @weather[:today] %>
               <!-- 天気アイコン -->
-              <div class="flex justify-center mb-3">
-                <span class="material-symbols-outlined text-7xl drop-shadow-lg animate-bounce-slow">
+              <div class="flex justify-center mb-2">
+                <span class="material-symbols-outlined text-5xl drop-shadow-lg animate-bounce-slow">
                   <%= @weather[:today][:icon] %>
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="mb-1">
-                <span class="text-2xl font-bold"><%= @weather[:today][:temp] %></span>
-                <span class="text-base">°C</span>
+              <div class="mb-0.5">
+                <span class="text-xl font-bold"><%= @weather[:today][:temp] %></span>
+                <span class="text-sm">°C</span>
               </div>
               <!-- 天気の説明 -->
-              <p class="text-sm opacity-90"><%= @weather[:today][:description] %></p>
+              <p class="text-xs opacity-90"><%= @weather[:today][:description] %></p>
             <% else %>
-              <div class="flex justify-center mb-3">
-                <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
+              <div class="flex justify-center mb-2">
+                <span class="material-symbols-outlined text-5xl opacity-50">cloud_off</span>
               </div>
-              <p class="text-sm opacity-70">取得中...</p>
+              <p class="text-xs opacity-70">取得中...</p>
             <% end %>
           </div>
         </div>
 
         <!-- 明日の天気 -->
-        <div class="p-4 text-white bg-white/5">
+        <div class="p-3 text-white bg-white/5">
           <div class="text-center">
-            <p class="text-sm font-medium opacity-90 mb-2">明日</p>
+            <p class="text-xs font-medium opacity-90 mb-1.5">明日</p>
             <% if @weather && @weather[:tomorrow] %>
               <!-- 天気アイコン -->
-              <div class="flex justify-center mb-3">
-                <span class="material-symbols-outlined text-7xl drop-shadow-lg animate-bounce-slow">
+              <div class="flex justify-center mb-2">
+                <span class="material-symbols-outlined text-5xl drop-shadow-lg animate-bounce-slow">
                   <%= @weather[:tomorrow][:icon] %>
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="mb-1">
-                <span class="text-2xl font-bold"><%= @weather[:tomorrow][:temp] %></span>
-                <span class="text-base">°C</span>
+              <div class="mb-0.5">
+                <span class="text-xl font-bold"><%= @weather[:tomorrow][:temp] %></span>
+                <span class="text-sm">°C</span>
               </div>
               <!-- 天気の説明 -->
-              <p class="text-sm opacity-90"><%= @weather[:tomorrow][:description] %></p>
+              <p class="text-xs opacity-90"><%= @weather[:tomorrow][:description] %></p>
             <% else %>
-              <div class="flex justify-center mb-3">
-                <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
+              <div class="flex justify-center mb-2">
+                <span class="material-symbols-outlined text-5xl opacity-50">cloud_off</span>
               </div>
-              <p class="text-sm opacity-70">取得中...</p>
+              <p class="text-xs opacity-70">取得中...</p>
             <% end %>
           </div>
         </div>
@@ -105,17 +105,17 @@
 
     <!-- ランキングカード -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-red-500 dark:border-red-600 transition-colors transform hover:shadow-lg hover:scale-[1.01] duration-300">
-      <div class="p-4 flex flex-col justify-between h-full">
+      <div class="p-3 flex flex-col justify-between h-full">
         <div>
-          <div class="flex items-center space-x-2 mb-2">
-            <span class="material-symbols-outlined text-red-500 dark:text-red-400 text-2xl">emoji_events</span>
-            <h3 class="font-bold text-gray-900 dark:text-white">ランキング</h3>
+          <div class="flex items-center space-x-2 mb-1">
+            <span class="material-symbols-outlined text-red-500 dark:text-red-400 text-xl">emoji_events</span>
+            <h3 class="font-bold text-gray-900 dark:text-white text-sm">ランキング</h3>
           </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">今週は上位10%です!</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">今週は上位10%です!</p>
         </div>
-        <div class="text-right mt-4">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg">
-            <span class="material-symbols-outlined text-white text-4xl">trophy</span>
+        <div class="text-right mt-2">
+          <div class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg">
+            <span class="material-symbols-outlined text-white text-3xl">trophy</span>
           </div>
         </div>
       </div>
