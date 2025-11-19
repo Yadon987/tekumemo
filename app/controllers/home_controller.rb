@@ -6,11 +6,13 @@ class HomeController < ApplicationController
     # 今後、ユーザーの散歩データなどを取得する処理を追加
 
     # ユーザーのIPアドレスを取得
-    user_ip = request.remote_ip
+    # プロキシ環境（Cloudflare等）では X-Forwarded-For ヘッダーの最初の値が実際のクライアントIP
+    user_ip = request.headers["X-Forwarded-For"]&.split(",")&.first&.strip || request.remote_ip
 
     # デバッグ用：取得したIPアドレスをログに出力
     Rails.logger.info("========================================")
     Rails.logger.info("リクエストIP情報:")
+    Rails.logger.info("  使用するIP: #{user_ip}")
     Rails.logger.info("  remote_ip: #{request.remote_ip}")
     Rails.logger.info("  ip: #{request.ip}")
     Rails.logger.info("  X-Forwarded-For: #{request.headers['X-Forwarded-For']}")
