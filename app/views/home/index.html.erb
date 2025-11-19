@@ -31,47 +31,88 @@
     </div>
   </div>
 
-  <!-- 天気のグリッド -->
-  <div class="grid grid-cols-2 gap-4">
-    <!-- 今日の天気カード -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-sky-400 dark:border-sky-500 transition-colors">
-      <div>
-        <h3 class="font-bold text-gray-900 dark:text-white">今日の天気</h3>
-        <% if @weather && @weather[:today] %>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            <%= @weather[:today][:description] %>、<%= @weather[:today][:temp] %>°C
-          </p>
-        <% else %>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">情報取得中...</p>
-        <% end %>
-      </div>
-      <div class="text-right mt-2">
-        <% if @weather && @weather[:today] %>
-          <span class="material-symbols-outlined text-sky-500 dark:text-sky-400 text-5xl"><%= @weather[:today][:icon] %></span>
-        <% else %>
-          <span class="material-symbols-outlined text-sky-500 dark:text-sky-400 text-5xl">sunny</span>
-        <% end %>
+  <!-- 天気予報カード -->
+  <div class="bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600 dark:from-sky-600 dark:via-blue-700 dark:to-indigo-800 rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]">
+    <!-- カードヘッダー -->
+    <div class="px-6 py-4 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="material-symbols-outlined text-white text-2xl">wb_sunny</span>
+          <h3 class="font-bold text-white text-lg">天気予報</h3>
+        </div>
+        <div class="flex items-center space-x-1 text-white/80 text-xs">
+          <span class="material-symbols-outlined text-sm">location_on</span>
+          <span>東京</span>
+        </div>
       </div>
     </div>
 
-    <!-- 明日の天気カード -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex flex-col justify-between border-l-4 border-indigo-400 dark:border-indigo-500 transition-colors">
-      <div>
-        <h3 class="font-bold text-gray-900 dark:text-white">明日の天気</h3>
-        <% if @weather && @weather[:tomorrow] %>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            <%= @weather[:tomorrow][:description] %>、<%= @weather[:tomorrow][:temp] %>°C
-          </p>
-        <% else %>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">情報取得中...</p>
-        <% end %>
+    <!-- 天気情報グリッド -->
+    <div class="grid grid-cols-2 divide-x divide-white/20">
+      <!-- 今日の天気 -->
+      <div class="p-6 text-white">
+        <div class="text-center">
+          <p class="text-sm font-medium opacity-90 mb-2">今日</p>
+          <% if @weather && @weather[:today] %>
+            <!-- 天気アイコン -->
+            <div class="flex justify-center mb-3">
+              <div class="relative">
+                <span class="material-symbols-outlined text-7xl drop-shadow-lg animate-bounce-slow">
+                  <%= @weather[:today][:icon] %>
+                </span>
+              </div>
+            </div>
+            <!-- 気温 -->
+            <div class="mb-2">
+              <span class="text-4xl font-bold"><%= @weather[:today][:temp] %></span>
+              <span class="text-2xl">°C</span>
+            </div>
+            <!-- 天気の説明 -->
+            <p class="text-sm opacity-90"><%= @weather[:today][:description] %></p>
+          <% else %>
+            <div class="flex justify-center mb-3">
+              <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
+            </div>
+            <p class="text-sm opacity-70">情報取得中...</p>
+          <% end %>
+        </div>
       </div>
-      <div class="text-right mt-2">
-        <% if @weather && @weather[:tomorrow] %>
-          <span class="material-symbols-outlined text-indigo-500 dark:text-indigo-400 text-5xl"><%= @weather[:tomorrow][:icon] %></span>
-        <% else %>
-          <span class="material-symbols-outlined text-indigo-500 dark:text-indigo-400 text-5xl">cloud</span>
-        <% end %>
+
+      <!-- 明日の天気 -->
+      <div class="p-6 text-white bg-white/5">
+        <div class="text-center">
+          <p class="text-sm font-medium opacity-90 mb-2">明日</p>
+          <% if @weather && @weather[:tomorrow] %>
+            <!-- 天気アイコン -->
+            <div class="flex justify-center mb-3">
+              <div class="relative">
+                <span class="material-symbols-outlined text-7xl drop-shadow-lg">
+                  <%= @weather[:tomorrow][:icon] %>
+                </span>
+              </div>
+            </div>
+            <!-- 気温 -->
+            <div class="mb-2">
+              <span class="text-4xl font-bold"><%= @weather[:tomorrow][:temp] %></span>
+              <span class="text-2xl">°C</span>
+            </div>
+            <!-- 天気の説明 -->
+            <p class="text-sm opacity-90"><%= @weather[:tomorrow][:description] %></p>
+          <% else %>
+            <div class="flex justify-center mb-3">
+              <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
+            </div>
+            <p class="text-sm opacity-70">情報取得中...</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- カードフッター（オプション：追加情報） -->
+    <div class="px-6 py-3 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-t border-white/20">
+      <div class="flex items-center justify-center text-white/70 text-xs">
+        <span class="material-symbols-outlined text-sm mr-1">update</span>
+        <span>リアルタイム更新</span>
       </div>
     </div>
   </div>
