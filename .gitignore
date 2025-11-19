@@ -44,3 +44,4 @@
 .DS_Store
 node_modules/
 vendor/bundle
+*.sqlite3

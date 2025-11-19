@@ -16,6 +16,7 @@ gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 gem "google-apis-fitness_v1"
 gem "simple_calendar", "~> 3.0"
+gem "dotenv-rails"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -28,6 +29,7 @@ group :development do
 end
 
 group :test do
+  gem "sqlite3", ">= 1.4"
   gem "capybara"
   gem "selenium-webdriver"
 end

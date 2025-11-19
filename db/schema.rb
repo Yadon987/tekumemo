@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_11_002651) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
+ActiveRecord::Schema[7.2].define(version: 2025_11_18_080733) do
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -22,7 +19,27 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_11_002651) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "google_uid"
+    t.text "google_token"
+    t.text "google_refresh_token"
+    t.datetime "google_expires_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  create_table "walks", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.date "walked_on"
+    t.integer "duration"
+    t.decimal "distance"
+    t.string "location"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "steps"
+    t.integer "calories_burned"
+    t.index ["user_id"], name: "index_walks_on_user_id"
+  end
+
+  add_foreign_key "walks", "users"
 end
