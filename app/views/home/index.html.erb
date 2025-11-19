@@ -48,55 +48,55 @@
       <!-- 天気情報グリッド -->
       <div class="grid grid-cols-2 divide-x divide-white/20">
         <!-- 今日の天気 -->
-        <div class="p-3 text-white">
+        <div class="p-4 text-white">
           <div class="text-center">
-            <p class="text-xs font-medium opacity-90 mb-1">今日</p>
+            <p class="text-sm font-medium opacity-90 mb-2">今日</p>
             <% if @weather && @weather[:today] %>
               <!-- 天気アイコン -->
-              <div class="flex justify-center mb-1">
-                <span class="material-symbols-outlined text-3xl drop-shadow-lg animate-bounce-slow">
+              <div class="flex justify-center mb-3">
+                <span class="material-symbols-outlined text-7xl drop-shadow-lg animate-bounce-slow">
                   <%= @weather[:today][:icon] %>
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="mb-0.5">
-                <span class="text-xl font-bold"><%= @weather[:today][:temp] %></span>
-                <span class="text-sm">°C</span>
+              <div class="mb-1">
+                <span class="text-2xl font-bold"><%= @weather[:today][:temp] %></span>
+                <span class="text-base">°C</span>
               </div>
               <!-- 天気の説明 -->
-              <p class="text-xs opacity-90"><%= @weather[:today][:description] %></p>
+              <p class="text-sm opacity-90"><%= @weather[:today][:description] %></p>
             <% else %>
-              <div class="flex justify-center mb-1">
-                <span class="material-symbols-outlined text-3xl opacity-50">cloud_off</span>
+              <div class="flex justify-center mb-3">
+                <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
               </div>
-              <p class="text-xs opacity-70">取得中...</p>
+              <p class="text-sm opacity-70">取得中...</p>
             <% end %>
           </div>
         </div>
 
         <!-- 明日の天気 -->
-        <div class="p-3 text-white bg-white/5">
+        <div class="p-4 text-white bg-white/5">
           <div class="text-center">
-            <p class="text-xs font-medium opacity-90 mb-1">明日</p>
+            <p class="text-sm font-medium opacity-90 mb-2">明日</p>
             <% if @weather && @weather[:tomorrow] %>
               <!-- 天気アイコン -->
-              <div class="flex justify-center mb-1">
-                <span class="material-symbols-outlined text-3xl drop-shadow-lg animate-bounce-slow">
+              <div class="flex justify-center mb-3">
+                <span class="material-symbols-outlined text-7xl drop-shadow-lg animate-bounce-slow">
                   <%= @weather[:tomorrow][:icon] %>
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="mb-0.5">
-                <span class="text-xl font-bold"><%= @weather[:tomorrow][:temp] %></span>
-                <span class="text-sm">°C</span>
+              <div class="mb-1">
+                <span class="text-2xl font-bold"><%= @weather[:tomorrow][:temp] %></span>
+                <span class="text-base">°C</span>
               </div>
               <!-- 天気の説明 -->
-              <p class="text-xs opacity-90"><%= @weather[:tomorrow][:description] %></p>
+              <p class="text-sm opacity-90"><%= @weather[:tomorrow][:description] %></p>
             <% else %>
-              <div class="flex justify-center mb-1">
-                <span class="material-symbols-outlined text-3xl opacity-50">cloud_off</span>
+              <div class="flex justify-center mb-3">
+                <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
               </div>
-              <p class="text-xs opacity-70">取得中...</p>
+              <p class="text-sm opacity-70">取得中...</p>
             <% end %>
           </div>
         </div>
