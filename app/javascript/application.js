@@ -2,5 +2,5 @@
 // Entry point for the build script in your package.json
 import "@hotwired/turbo-rails"
 import "./controllers"
-import "./dark_mode"
+// ダークモード機能はStimulusコントローラー（dark_mode_toggle_controller.js）で実装
 import "./google_fit"

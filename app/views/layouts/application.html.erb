@@ -36,22 +36,47 @@
 
     <!-- ===== ヘッダー ===== -->
     <header class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
-      <!-- 左側：ダークモード切り替えボタン -->
+      <!-- 左側：ダークモード切り替えトグルスイッチ（iOS風） -->
       <div class="w-24 flex justify-start items-center pl-2 sm:pl-0">
-        <button
-          type="button"
-          id="darkModeToggle"
-          aria-label="ダークモード切り替え"
-          class="flex flex-col items-center justify-center text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-sky-400 transition-colors p-2 rounded-lg">
-          <!-- ライトモード時に表示：月のアイコンと「ダーク」テキスト -->
-          <!-- dark:!hidden = ダークモード時は必ず非表示にする（!で優先度を上げる） -->
-          <span class="material-symbols-outlined text-2xl dark:!hidden">dark_mode</span>
-          <span class="text-[8px] mt-0.5 font-medium dark:!hidden">ダーク</span>
-          <!-- ダークモード時に表示：太陽のアイコンと「ライト」テキスト -->
-          <!-- !hidden = 最初は非表示、dark:!block = ダークモード時は必ず表示する（!で優先度を上げる） -->
-          <span class="material-symbols-outlined text-2xl !hidden dark:!block">light_mode</span>
-          <span class="text-[8px] mt-0.5 font-medium !hidden dark:!block">ライト</span>
-        </button>
+        <!-- Stimulusコントローラーでダークモード切り替えを制御 -->
+        <div data-controller="dark-mode-toggle">
+          <!-- トグルスイッチのボタン -->
+          <button
+            type="button"
+            data-action="click->dark-mode-toggle#toggle"
+            aria-label="ダークモード切り替え"
+            class="relative flex items-center">
+
+            <!-- トグルスイッチの背景 -->
+            <div
+              data-dark-mode-toggle-target="toggle"
+              class="w-14 h-8 bg-gray-300 rounded-full shadow-inner transition-all duration-300 ease-in-out">
+
+              <!-- スライダー（丸いつまみ） -->
+              <div
+                data-dark-mode-toggle-target="slider"
+                class="absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out flex items-center justify-center"
+                style="transform: translateX(0);">
+
+                <!-- 月のアイコン（ライトモード時） -->
+                <span
+                  data-dark-mode-toggle-target="icon"
+                  data-icon="moon"
+                  class="material-symbols-outlined text-sm text-gray-700 transition-all duration-200 opacity-100 scale-100">
+                  dark_mode
+                </span>
+
+                <!-- 太陽のアイコン（ダークモード時） -->
+                <span
+                  data-dark-mode-toggle-target="icon"
+                  data-icon="sun"
+                  class="material-symbols-outlined text-sm text-yellow-500 absolute transition-all duration-200 opacity-0 scale-0">
+                  light_mode
+                </span>
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
 
       <!-- 中央：ロゴ -->
