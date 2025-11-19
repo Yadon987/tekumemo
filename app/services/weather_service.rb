@@ -1,5 +1,5 @@
-require 'net/http'
-require 'json'
+require "net/http"
+require "json"
 
 # 天気情報を取得するサービスクラス
 class WeatherService
@@ -13,7 +13,7 @@ class WeatherService
   # 天気情報を取得するメソッド
   def self.get_forecast
     # 環境変数からAPIキーを取得
-    api_key = ENV['OPENWEATHER_API_KEY']
+    api_key = ENV["OPENWEATHER_API_KEY"]
 
     # APIキーが設定されていない場合はダミーデータを返す
     if api_key.blank?
@@ -50,7 +50,7 @@ class WeatherService
 
   # APIレスポンスから必要な情報を抽出して整形するメソッド
   def self.format_forecast(data)
-    forecasts = data['list']
+    forecasts = data["list"]
 
     # 今日の日付
     today = Date.today
@@ -62,21 +62,21 @@ class WeatherService
 
     # 明日の天気情報を取得（日付が変わる最初のデータを探す）
     tomorrow_forecast = forecasts.find do |forecast|
-      forecast_date = Time.at(forecast['dt']).to_date
+      forecast_date = Time.at(forecast["dt"]).to_date
       forecast_date == tomorrow
     end
 
     # 整形したデータを返す
     {
       today: {
-        temp: today_forecast['main']['temp'].round,
-        description: today_forecast['weather'].first['description'],
-        icon: weather_icon(today_forecast['weather'].first['main'])
+        temp: today_forecast["main"]["temp"].round,
+        description: today_forecast["weather"].first["description"],
+        icon: weather_icon(today_forecast["weather"].first["main"])
       },
       tomorrow: tomorrow_forecast ? {
-        temp: tomorrow_forecast['main']['temp'].round,
-        description: tomorrow_forecast['weather'].first['description'],
-        icon: weather_icon(tomorrow_forecast['weather'].first['main'])
+        temp: tomorrow_forecast["main"]["temp"].round,
+        description: tomorrow_forecast["weather"].first["description"],
+        icon: weather_icon(tomorrow_forecast["weather"].first["main"])
       } : nil
     }
   end
@@ -84,20 +84,20 @@ class WeatherService
   # 天気の状態に応じたアイコン名を返すメソッド
   def self.weather_icon(weather_main)
     case weather_main
-    when 'Clear'
-      'sunny'
-    when 'Clouds'
-      'cloud'
-    when 'Rain', 'Drizzle'
-      'rainy'
-    when 'Thunderstorm'
-      'thunderstorm'
-    when 'Snow'
-      'ac_unit'
-    when 'Mist', 'Fog'
-      'mist'
+    when "Clear"
+      "sunny"
+    when "Clouds"
+      "cloud"
+    when "Rain", "Drizzle"
+      "rainy"
+    when "Thunderstorm"
+      "thunderstorm"
+    when "Snow"
+      "ac_unit"
+    when "Mist", "Fog"
+      "mist"
     else
-      'wb_cloudy'
+      "wb_cloudy"
     end
   end
 
@@ -106,13 +106,13 @@ class WeatherService
     {
       today: {
         temp: 22,
-        description: '晴れ',
-        icon: 'sunny'
+        description: "\u6674\u308C",
+        icon: "sunny"
       },
       tomorrow: {
         temp: 20,
-        description: '曇り',
-        icon: 'cloud'
+        description: "\u66C7\u308A",
+        icon: "cloud"
       }
     }
   end

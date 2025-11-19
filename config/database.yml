@@ -12,10 +12,15 @@ development:
   port: 5432
 
 test:
+  <% if ENV["CI"] %>
+  <<: *default
+  database: tekumemo_test
+  <% else %>
   adapter: sqlite3
   database: db/test.sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+  <% end %>
 
 production:
   <<: *default
