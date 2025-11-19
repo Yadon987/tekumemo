@@ -11,7 +11,8 @@ class WeatherService
   DEFAULT_LON = 139.6503
 
   # 天気情報を取得するメソッド
-  def self.get_forecast
+  # lat: 緯度、lon: 経度（指定されない場合はデフォルト値を使用）
+  def self.get_forecast(lat: DEFAULT_LAT, lon: DEFAULT_LON)
     # 環境変数からAPIキーを取得
     api_key = ENV["OPENWEATHER_API_KEY"]
 
@@ -22,7 +23,7 @@ class WeatherService
 
     begin
       # APIリクエストのURLを組み立てる
-      url = "#{API_URL}?lat=#{DEFAULT_LAT}&lon=#{DEFAULT_LON}&appid=#{api_key}&units=metric&lang=ja"
+      url = "#{API_URL}?lat=#{lat}&lon=#{lon}&appid=#{api_key}&units=metric&lang=ja"
       uri = URI(url)
 
       # HTTPリクエストを送信
