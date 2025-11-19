@@ -81,7 +81,7 @@
             <% if @weather && @weather[:tomorrow] %>
               <!-- 天気アイコン -->
               <div class="flex justify-center mb-1">
-                <span class="material-symbols-outlined text-3xl drop-shadow-lg">
+                <span class="material-symbols-outlined text-3xl drop-shadow-lg animate-bounce-slow">
                   <%= @weather[:tomorrow][:icon] %>
                 </span>
               </div>
