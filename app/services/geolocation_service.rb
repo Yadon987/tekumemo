@@ -3,19 +3,21 @@ require "json"
 
 # IP位置情報を取得するサービスクラス
 class GeolocationService
-  # IPから位置情報を取得するAPI（無料で使えるipapi.co）
-  API_URL = "https://ipapi.co"
+  # IPから位置情報を取得するAPI（無料で使えるip-api.com）
+  # より正確で信頼性が高く、レート制限も緩い（45リクエスト/分）
+  API_URL = "http://ip-api.com/json"
 
   # IPアドレスから位置情報を取得
   def self.get_location(ip_address)
     # ローカルホストやプライベートIPの場合はデフォルト（東京）を返す
     if local_ip?(ip_address)
+      Rails.logger.info("ローカルIPアドレスを検出: #{ip_address}、デフォルト位置を使用")
       return default_location
     end
 
     begin
-      # APIリクエスト
-      url = "#{API_URL}/#{ip_address}/json/"
+      # APIリクエスト（言語を日本語に設定）
+      url = "#{API_URL}/#{ip_address}?lang=ja"
       uri = URI(url)
 
       response = Net::HTTP.get_response(uri)
@@ -23,24 +25,28 @@ class GeolocationService
       if response.is_a?(Net::HTTPSuccess)
         data = JSON.parse(response.body)
 
-        # エラーがある場合はデフォルトを返す
-        if data["error"]
-          Rails.logger.warn("位置情報API エラー: #{data['reason']}")
+        # APIのステータスを確認（"success" or "fail"）
+        if data["status"] != "success"
+          Rails.logger.warn("位置情報API エラー: #{data['message']} (IP: #{ip_address})")
           return default_location
         end
 
+        # デバッグ用ログ
+        Rails.logger.info("位置情報を取得: IP=#{ip_address}, City=#{data['city']}, Lat=#{data['lat']}, Lon=#{data['lon']}")
+
         {
-          latitude: data["latitude"],
-          longitude: data["longitude"],
+          latitude: data["lat"],
+          longitude: data["lon"],
           city: data["city"],
-          region: data["region"],
-          country: data["country_name"]
+          region: data["regionName"],
+          country: data["country"]
         }
       else
+        Rails.logger.error("位置情報API HTTPエラー: #{response.code} (IP: #{ip_address})")
         default_location
       end
     rescue => e
-      Rails.logger.error("位置情報の取得に失敗: #{e.message}")
+      Rails.logger.error("位置情報の取得に失敗: #{e.message} (IP: #{ip_address})")
       default_location
     end
   end
