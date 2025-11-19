@@ -44,11 +44,13 @@
           aria-label="ダークモード切り替え"
           class="flex flex-col items-center justify-center text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-sky-400 transition-colors p-2 rounded-lg">
           <!-- ライトモード時に表示：月のアイコンと「ダーク」テキスト -->
-          <span class="material-symbols-outlined text-2xl dark:hidden">dark_mode</span>
-          <span class="text-[8px] mt-0.5 font-medium dark:hidden">ダーク</span>
+          <!-- dark:!hidden = ダークモード時は必ず非表示にする（!で優先度を上げる） -->
+          <span class="material-symbols-outlined text-2xl dark:!hidden">dark_mode</span>
+          <span class="text-[8px] mt-0.5 font-medium dark:!hidden">ダーク</span>
           <!-- ダークモード時に表示：太陽のアイコンと「ライト」テキスト -->
-          <span class="material-symbols-outlined text-2xl hidden dark:block">light_mode</span>
-          <span class="text-[8px] mt-0.5 font-medium hidden dark:block">ライト</span>
+          <!-- !hidden = 最初は非表示、dark:!block = ダークモード時は必ず表示する（!で優先度を上げる） -->
+          <span class="material-symbols-outlined text-2xl !hidden dark:!block">light_mode</span>
+          <span class="text-[8px] mt-0.5 font-medium !hidden dark:!block">ライト</span>
         </button>
       </div>
 
