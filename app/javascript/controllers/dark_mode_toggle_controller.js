@@ -70,8 +70,8 @@ export default class extends Controller {
 
     // スライダー（丸いつまみ）の位置を変更
     if (isDark) {
-      // ダークモード時：右側に移動
-      this.sliderTarget.style.transform = 'translateX(28px)'
+      // ダークモード時：右側に移動（縮小版に合わせて調整：28px→22px）
+      this.sliderTarget.style.transform = 'translateX(22px)'
     } else {
       // ライトモード時：左側に移動
       this.sliderTarget.style.transform = 'translateX(0)'
