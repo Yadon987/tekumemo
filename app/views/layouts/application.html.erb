@@ -82,9 +82,9 @@
 
         <!-- 中央：ロゴ -->
         <div class="flex items-center space-x-3">
-          <!-- 左側のアイコン -->
-          <div class="h-12 w-12 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl shadow-md">
-            <span class="material-symbols-outlined text-3xl text-white">footprint</span>
+          <!-- 左側のアイコン（20%縮小：h-12 w-12→h-10 w-10, text-3xl→text-2xl） -->
+          <div class="h-10 w-10 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl shadow-md">
+            <span class="material-symbols-outlined text-2xl text-white">footprint</span>
           </div>
 
           <!-- グラデーションテキストロゴ -->
@@ -115,11 +115,9 @@
       </div>
     </header>
 
-    <!-- ヘッダー分のスペースを確保（コンテンツがヘッダーに隠れないようにする） -->
-    <div class="h-20"></div>
-
     <!-- ===== メインコンテンツ ===== -->
-    <main class="flex-1 w-full">
+    <!-- ヘッダー分のpadding-topを追加（コンテンツがヘッダーに隠れないようにする） -->
+    <main class="flex-1 w-full pt-20">
       <!-- Flashメッセージ -->
       <% if notice.present? %>
         <div class="mx-auto max-w-4xl px-4 py-2">
