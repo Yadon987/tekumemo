@@ -1,12 +1,6 @@
-require "net/http"
-require "json"
-
 # IP位置情報を取得するサービスクラス
+# geocoder gem を使用してより正確な位置情報を取得
 class GeolocationService
-  # IPから位置情報を取得するAPI（無料で使えるip-api.com）
-  # より正確で信頼性が高く、レート制限も緩い（45リクエスト/分）
-  API_URL = "http://ip-api.com/json"
-
   # IPアドレスから位置情報を取得
   def self.get_location(ip_address)
     # ローカルホストやプライベートIPの場合はデフォルト（東京）を返す
@@ -16,37 +10,38 @@ class GeolocationService
     end
 
     begin
-      # APIリクエスト（言語を日本語に設定）
-      url = "#{API_URL}/#{ip_address}?lang=ja"
-      uri = URI(url)
+      # geocoder gem を使用してIP位置情報を取得
+      # 複数のプロバイダーをフォールバックで試行
+      results = Geocoder.search(ip_address)
 
-      response = Net::HTTP.get_response(uri)
-
-      if response.is_a?(Net::HTTPSuccess)
-        data = JSON.parse(response.body)
-
-        # APIのステータスを確認（"success" or "fail"）
-        if data["status"] != "success"
-          Rails.logger.warn("位置情報API エラー: #{data['message']} (IP: #{ip_address})")
-          return default_location
-        end
+      if results.present? && results.first
+        result = results.first
 
         # デバッグ用ログ
-        Rails.logger.info("位置情報を取得: IP=#{ip_address}, City=#{data['city']}, Lat=#{data['lat']}, Lon=#{data['lon']}")
+        Rails.logger.info("========================================")
+        Rails.logger.info("Geocoder で位置情報を取得:")
+        Rails.logger.info("  IP: #{ip_address}")
+        Rails.logger.info("  City: #{result.city}")
+        Rails.logger.info("  Region: #{result.state}")
+        Rails.logger.info("  Country: #{result.country}")
+        Rails.logger.info("  Latitude: #{result.latitude}")
+        Rails.logger.info("  Longitude: #{result.longitude}")
+        Rails.logger.info("========================================")
 
         {
-          latitude: data["lat"],
-          longitude: data["lon"],
-          city: data["city"],
-          region: data["regionName"],
-          country: data["country"]
+          latitude: result.latitude || default_location[:latitude],
+          longitude: result.longitude || default_location[:longitude],
+          city: result.city || default_location[:city],
+          region: result.state || default_location[:region],
+          country: result.country || default_location[:country]
         }
       else
-        Rails.logger.error("位置情報API HTTPエラー: #{response.code} (IP: #{ip_address})")
+        Rails.logger.warn("位置情報が取得できませんでした (IP: #{ip_address})")
         default_location
       end
     rescue => e
       Rails.logger.error("位置情報の取得に失敗: #{e.message} (IP: #{ip_address})")
+      Rails.logger.error(e.backtrace.join("\n"))
       default_location
     end
   end

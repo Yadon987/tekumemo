@@ -8,6 +8,15 @@ class HomeController < ApplicationController
     # ユーザーのIPアドレスを取得
     user_ip = request.remote_ip
 
+    # デバッグ用：取得したIPアドレスをログに出力
+    Rails.logger.info("========================================")
+    Rails.logger.info("リクエストIP情報:")
+    Rails.logger.info("  remote_ip: #{request.remote_ip}")
+    Rails.logger.info("  ip: #{request.ip}")
+    Rails.logger.info("  X-Forwarded-For: #{request.headers['X-Forwarded-For']}")
+    Rails.logger.info("  X-Real-IP: #{request.headers['X-Real-IP']}")
+    Rails.logger.info("========================================")
+
     # IP位置情報を取得
     location = GeolocationService.get_location(user_ip)
 
