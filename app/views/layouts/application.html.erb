@@ -34,11 +34,11 @@
 <body class="bg-background-light dark:bg-background-dark font-display transition-colors duration-200">
   <div class="flex flex-col min-h-screen">
 
-    <!-- ===== フローティングヘッダー（スクロール時も固定表示・15%縮小版） ===== -->
+    <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-background-light dark:bg-background-dark border-b border-gray-200 dark:border-gray-700">
-      <div class="flex justify-between items-center py-3 px-4 w-full max-w-4xl mx-auto">
-        <!-- 左側：ダークモード切り替えトグルスイッチ（iOS風・小型化） -->
-        <div class="w-20 flex justify-start items-center">
+      <div class="flex justify-between items-center py-2 px-3 sm:py-3 sm:px-4 w-full max-w-4xl mx-auto">
+        <!-- 左側：ダークモード切り替えトグルスイッチ（モバイル：小、PC：中） -->
+        <div class="w-14 sm:w-20 flex justify-start items-center">
           <!-- Stimulusコントローラーでダークモード切り替えを制御 -->
           <div data-controller="dark-mode-toggle">
             <!-- トグルスイッチのボタン -->
@@ -48,30 +48,30 @@
               aria-label="ダークモード切り替え"
               class="relative flex items-center">
 
-              <!-- トグルスイッチの背景（20%以上縮小：w-14→w-11, h-8→h-6） -->
+              <!-- トグルスイッチの背景（モバイル：小、PC：中） -->
               <div
                 data-dark-mode-toggle-target="toggle"
-                class="w-11 h-6 bg-gray-300 rounded-full shadow-inner transition-all duration-300 ease-in-out">
+                class="w-8 h-5 sm:w-11 sm:h-6 bg-gray-300 rounded-full shadow-inner transition-all duration-300 ease-in-out">
 
-                <!-- スライダー（丸いつまみ・縮小：w-6→w-5, h-6→h-5） -->
+                <!-- スライダー（丸いつまみ・モバイル：小、PC：中） -->
                 <div
                   data-dark-mode-toggle-target="slider"
-                  class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out flex items-center justify-center"
+                  class="absolute top-0.5 left-0.5 w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out flex items-center justify-center"
                   style="transform: translateX(0);">
 
-                  <!-- 月のアイコン（ライトモード時・サイズ縮小：text-sm→text-xs） -->
+                  <!-- 月のアイコン（ライトモード時） -->
                   <span
                     data-dark-mode-toggle-target="icon"
                     data-icon="moon"
-                    class="material-symbols-outlined text-xs text-gray-700 transition-all duration-200 opacity-100 scale-100">
+                    class="material-symbols-outlined text-[10px] sm:text-xs text-gray-700 transition-all duration-200 opacity-100 scale-100">
                     dark_mode
                   </span>
 
-                  <!-- 太陽のアイコン（ダークモード時・サイズ縮小：text-sm→text-xs） -->
+                  <!-- 太陽のアイコン（ダークモード時） -->
                   <span
                     data-dark-mode-toggle-target="icon"
                     data-icon="sun"
-                    class="material-symbols-outlined text-xs text-yellow-500 absolute transition-all duration-200 opacity-0 scale-0">
+                    class="material-symbols-outlined text-[10px] sm:text-xs text-yellow-500 absolute transition-all duration-200 opacity-0 scale-0">
                     light_mode
                   </span>
                 </div>
@@ -80,36 +80,36 @@
           </div>
         </div>
 
-        <!-- 中央：ロゴ -->
-        <div class="flex items-center space-x-3">
-          <!-- 左側のアイコン（20%縮小：h-12 w-12→h-10 w-10, text-3xl→text-2xl） -->
-          <div class="h-10 w-10 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl shadow-md">
-            <span class="material-symbols-outlined text-2xl text-white">footprint</span>
+        <!-- 中央：ロゴ（モバイル：小、PC：中） -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- 左側のアイコン（モバイル：小、PC：中） -->
+          <div class="h-6 w-6 sm:h-10 sm:w-10 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-lg sm:rounded-xl shadow-md">
+            <span class="material-symbols-outlined text-base sm:text-2xl text-white">footprint</span>
           </div>
 
-          <!-- グラデーションテキストロゴ（改行防止） -->
-          <span class="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 dark:from-sky-400 dark:to-blue-500 bg-clip-text text-transparent whitespace-nowrap">
+          <!-- グラデーションテキストロゴ（モバイル：小、PC：大） -->
+          <span class="text-xl sm:text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 dark:from-sky-400 dark:to-blue-500 bg-clip-text text-transparent whitespace-nowrap">
             てくメモ
           </span>
         </div>
 
-        <!-- 右側：ログイン/ログアウトボタン（iOS風グラデーション丸ボタン） -->
-        <div class="w-20 flex justify-end items-center">
+        <!-- 右側：ログイン/ログアウトボタン（モバイル：小、PC：中） -->
+        <div class="w-14 sm:w-20 flex justify-end items-center">
           <% if user_signed_in? %>
-            <!-- ログアウトボタン（赤いグラデーション丸ボタン） -->
+            <!-- ログアウトボタン（赤いグラデーション丸ボタン・モバイル：小、PC：中） -->
             <%= link_to destroy_user_session_path,
                 method: :delete,
                 data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか?" },
                 aria_label: "ログアウト",
-                class: "w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-red-600 dark:from-red-500 dark:to-red-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
-              <span class="material-symbols-outlined text-xl text-white">logout</span>
+                class: "w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-red-400 to-red-600 dark:from-red-500 dark:to-red-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
+              <span class="material-symbols-outlined text-sm sm:text-xl text-white">logout</span>
             <% end %>
           <% else %>
-            <!-- ログインボタン（青いグラデーション丸ボタン） -->
+            <!-- ログインボタン（青いグラデーション丸ボタン・モバイル：小、PC：中） -->
             <%= link_to new_user_session_path,
                 aria_label: "ログイン",
-                class: "w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
-              <span class="material-symbols-outlined text-xl text-white">login</span>
+                class: "w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
+              <span class="material-symbols-outlined text-sm sm:text-xl text-white">login</span>
             <% end %>
           <% end %>
         </div>
@@ -117,8 +117,8 @@
     </header>
 
     <!-- ===== メインコンテンツ ===== -->
-    <!-- ヘッダー分のpadding-topを追加（ヘッダー縮小に合わせて調整） -->
-    <main class="flex-1 w-full pt-16">
+    <!-- ヘッダー分のpadding-topを追加（モバイル：小、PC：中） -->
+    <main class="flex-1 w-full pt-12 sm:pt-16">
       <!-- Flashメッセージ -->
       <% if notice.present? %>
         <div class="mx-auto max-w-4xl px-4 py-2">
@@ -211,42 +211,42 @@
         </div>
       </div>
 
-      <!-- ===== ボトムナビゲーション（ログイン時のみ） ===== -->
+      <!-- ===== ボトムナビゲーション（モバイルファースト・レスポンシブ対応） ===== -->
       <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50">
-        <div class="flex justify-around items-center h-16 max-w-4xl mx-auto">
+        <div class="flex justify-around items-center h-12 sm:h-16 max-w-4xl mx-auto">
           <!-- ホーム -->
           <%= link_to root_path,
-              class: "relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
-            <span class="material-symbols-outlined text-2xl">home</span>
-            <span class="text-[10px] mt-0.5">ホーム</span>
+              class: "relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-lg sm:text-2xl">home</span>
+            <span class="text-[7px] sm:text-[10px] mt-0.5">ホーム</span>
           <% end %>
 
           <!-- 散歩 -->
           <%= link_to walks_path,
-              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
-            <span class="material-symbols-outlined text-2xl">footprint</span>
-            <span class="text-[10px] mt-0.5">散歩</span>
+              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-lg sm:text-2xl">footprint</span>
+            <span class="text-[7px] sm:text-[10px] mt-0.5">散歩</span>
           <% end %>
 
           <!-- 投稿 -->
           <%= link_to "#",
-              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
-            <span class="material-symbols-outlined text-2xl">groups</span>
-            <span class="text-[10px] mt-0.5">投稿</span>
+              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-lg sm:text-2xl">groups</span>
+            <span class="text-[7px] sm:text-[10px] mt-0.5">投稿</span>
           <% end %>
 
           <!-- 記録 -->
           <%= link_to "#",
-              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
-            <span class="material-symbols-outlined text-2xl">bar_chart</span>
-            <span class="text-[10px] mt-0.5">記録</span>
+              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-lg sm:text-2xl">bar_chart</span>
+            <span class="text-[7px] sm:text-[10px] mt-0.5">記録</span>
           <% end %>
 
           <!-- ランキング -->
           <%= link_to "#",
               class: "flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
-            <span class="material-symbols-outlined text-2xl">emoji_events</span>
-            <span class="text-[10px] mt-0.5">ランキング</span>
+            <span class="material-symbols-outlined text-lg sm:text-2xl">emoji_events</span>
+            <span class="text-[7px] sm:text-[10px] mt-0.5">ランキング</span>
           <% end %>
         </div>
       </nav>
