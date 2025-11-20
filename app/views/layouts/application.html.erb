@@ -34,11 +34,11 @@
 <body class="bg-background-light dark:bg-background-dark font-display transition-colors duration-200">
   <div class="flex flex-col min-h-screen">
 
-    <!-- ===== フローティングヘッダー（スクロール時も固定表示） ===== -->
+    <!-- ===== フローティングヘッダー（スクロール時も固定表示・15%縮小版） ===== -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-background-light dark:bg-background-dark border-b border-gray-200 dark:border-gray-700">
-      <div class="flex justify-between items-center p-4 w-full max-w-4xl mx-auto">
+      <div class="flex justify-between items-center py-3 px-4 w-full max-w-4xl mx-auto">
         <!-- 左側：ダークモード切り替えトグルスイッチ（iOS風・小型化） -->
-        <div class="w-24 flex justify-start items-center pl-2 sm:pl-0">
+        <div class="w-20 flex justify-start items-center">
           <!-- Stimulusコントローラーでダークモード切り替えを制御 -->
           <div data-controller="dark-mode-toggle">
             <!-- トグルスイッチのボタン -->
@@ -87,28 +87,29 @@
             <span class="material-symbols-outlined text-2xl text-white">footprint</span>
           </div>
 
-          <!-- グラデーションテキストロゴ -->
-          <span class="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 dark:from-sky-400 dark:to-blue-500 bg-clip-text text-transparent">
+          <!-- グラデーションテキストロゴ（改行防止） -->
+          <span class="text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 dark:from-sky-400 dark:to-blue-500 bg-clip-text text-transparent whitespace-nowrap">
             てくメモ
           </span>
         </div>
 
-        <!-- 右側：ログイン/ログアウトボタン -->
-        <div class="w-24 flex justify-end items-center pr-2 sm:pr-0">
+        <!-- 右側：ログイン/ログアウトボタン（iOS風グラデーション丸ボタン） -->
+        <div class="w-20 flex justify-end items-center">
           <% if user_signed_in? %>
-            <!-- Turbo対応のログアウトボタン -->
+            <!-- ログアウトボタン（赤いグラデーション丸ボタン） -->
             <%= link_to destroy_user_session_path,
                 method: :delete,
                 data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか?" },
-                class: "flex flex-col items-center justify-center text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2 rounded-lg" do %>
-              <span class="material-symbols-outlined text-2xl">logout</span>
-              <span class="text-[8px] mt-0.5 font-medium">ログアウト</span>
+                aria_label: "ログアウト",
+                class: "w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-red-600 dark:from-red-500 dark:to-red-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
+              <span class="material-symbols-outlined text-xl text-white">logout</span>
             <% end %>
           <% else %>
+            <!-- ログインボタン（青いグラデーション丸ボタン） -->
             <%= link_to new_user_session_path,
-                class: "flex flex-col items-center justify-center text-primary dark:text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-2 rounded-lg" do %>
-              <span class="material-symbols-outlined text-2xl">login</span>
-              <span class="text-[8px] mt-0.5 font-medium">ログイン</span>
+                aria_label: "ログイン",
+                class: "w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
+              <span class="material-symbols-outlined text-xl text-white">login</span>
             <% end %>
           <% end %>
         </div>
@@ -116,8 +117,8 @@
     </header>
 
     <!-- ===== メインコンテンツ ===== -->
-    <!-- ヘッダー分のpadding-topを追加（コンテンツがヘッダーに隠れないようにする） -->
-    <main class="flex-1 w-full pt-20">
+    <!-- ヘッダー分のpadding-topを追加（ヘッダー縮小に合わせて調整） -->
+    <main class="flex-1 w-full pt-16">
       <!-- Flashメッセージ -->
       <% if notice.present? %>
         <div class="mx-auto max-w-4xl px-4 py-2">
