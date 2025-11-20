@@ -70,11 +70,13 @@ export default class extends Controller {
 
     // スライダー（丸いつまみ）の位置を変更
     if (isDark) {
-      // ダークモード時：右側に移動（縮小版に合わせて調整：28px→22px）
-      this.sliderTarget.style.transform = 'translateX(22px)'
+      // ダークモード時：右側に移動（レスポンシブ対応：モバイル18px、PC22px）
+      this.sliderTarget.classList.remove('translate-x-0')
+      this.sliderTarget.classList.add('translate-x-[18px]', 'sm:translate-x-[22px]')
     } else {
       // ライトモード時：左側に移動
-      this.sliderTarget.style.transform = 'translateX(0)'
+      this.sliderTarget.classList.remove('translate-x-[18px]', 'sm:translate-x-[22px]')
+      this.sliderTarget.classList.add('translate-x-0')
     }
 
     // アイコンの表示/非表示を切り替え
