@@ -59,19 +59,19 @@
                   class="absolute top-0.5 left-0.5 w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out flex items-center justify-center"
                   style="transform: translateX(0);">
 
-                  <!-- 月のアイコン（ライトモード時） -->
+                  <!-- 月のアイコン（ライトモード時・モバイル：15％拡大） -->
                   <span
                     data-dark-mode-toggle-target="icon"
                     data-icon="moon"
-                    class="material-symbols-outlined text-[10px] sm:text-xs text-gray-700 transition-all duration-200 opacity-100 scale-100">
+                    class="material-symbols-outlined text-[12px] sm:text-xs text-gray-700 transition-all duration-200 opacity-100 scale-100">
                     dark_mode
                   </span>
 
-                  <!-- 太陽のアイコン（ダークモード時） -->
+                  <!-- 太陽のアイコン（ダークモード時・モバイル：15％拡大） -->
                   <span
                     data-dark-mode-toggle-target="icon"
                     data-icon="sun"
-                    class="material-symbols-outlined text-[10px] sm:text-xs text-yellow-500 absolute transition-all duration-200 opacity-0 scale-0">
+                    class="material-symbols-outlined text-[12px] sm:text-xs text-yellow-500 absolute transition-all duration-200 opacity-0 scale-0">
                     light_mode
                   </span>
                 </div>
@@ -102,14 +102,14 @@
                 data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか?" },
                 aria_label: "ログアウト",
                 class: "w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-red-400 to-red-600 dark:from-red-500 dark:to-red-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
-              <span class="material-symbols-outlined text-sm sm:text-xl text-white">logout</span>
+              <span class="material-symbols-outlined text-base sm:text-xl text-white">logout</span>
             <% end %>
           <% else %>
             <!-- ログインボタン（青いグラデーション丸ボタン・モバイル：小、PC：中） -->
             <%= link_to new_user_session_path,
                 aria_label: "ログイン",
                 class: "w-6 h-6 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
-              <span class="material-symbols-outlined text-sm sm:text-xl text-white">login</span>
+              <span class="material-symbols-outlined text-base sm:text-xl text-white">login</span>
             <% end %>
           <% end %>
         </div>
@@ -216,37 +216,32 @@
         <div class="flex justify-around items-center h-12 sm:h-16 max-w-4xl mx-auto">
           <!-- ホーム -->
           <%= link_to root_path,
-              class: "relative flex flex-col items-center justify-center w-full text-blue-400 dark:text-blue-300 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full text-blue-400 dark:text-blue-300 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl">home</span>
-            <span class="text-[7px] sm:text-[10px] mt-0.5">ホーム</span>
           <% end %>
 
           <!-- 散歩 -->
           <%= link_to walks_path,
-              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl">footprint</span>
-            <span class="text-[7px] sm:text-[10px] mt-0.5">散歩</span>
           <% end %>
 
           <!-- 投稿 -->
           <%= link_to "#",
-              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl">groups</span>
-            <span class="text-[7px] sm:text-[10px] mt-0.5">投稿</span>
           <% end %>
 
           <!-- 記録 -->
           <%= link_to "#",
-              class: "relative flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl">bar_chart</span>
-            <span class="text-[7px] sm:text-[10px] mt-0.5">記録</span>
           <% end %>
 
           <!-- ランキング -->
           <%= link_to "#",
-              class: "flex flex-col items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
+              class: "flex items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl">emoji_events</span>
-            <span class="text-[7px] sm:text-[10px] mt-0.5">ランキング</span>
           <% end %>
         </div>
       </nav>
