@@ -45,3 +45,6 @@
 node_modules/
 vendor/bundle
 *.sqlite3
+
+# Use yarn.lock instead of package-lock.json
+package-lock.json
