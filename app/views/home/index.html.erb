@@ -36,46 +36,46 @@
   <!-- 天気予報とランキングのグリッド -->
   <div class="grid grid-cols-2 gap-4">
     <!-- 天気予報カード -->
-    <div class="bg-gradient-to-br from-sky-400 to-blue-500 rounded-3xl shadow-md p-4 text-white flex flex-col justify-between aspect-square relative overflow-hidden group">
+    <div class="bg-gradient-to-br from-sky-400 to-blue-500 rounded-3xl shadow-md p-4 sm:p-6 text-white flex flex-col justify-between aspect-square relative overflow-hidden group">
       <!-- 場所情報 -->
-      <div class="flex items-center space-x-1 text-xs opacity-90">
-        <span class="material-symbols-outlined text-sm">location_on</span>
+      <div class="flex items-center space-x-1 text-xs sm:text-sm opacity-90">
+        <span class="material-symbols-outlined text-sm sm:text-base">location_on</span>
         <span><%= @location_name || "東京" %></span>
       </div>
 
       <% if @weather && @weather[:today] %>
         <!-- 中央: アイコンと気温 -->
         <div class="flex flex-col items-center justify-center flex-1">
-          <span class="material-symbols-outlined text-7xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">
+          <span class="material-symbols-outlined text-5xl sm:text-6xl md:text-7xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">
             <%= @weather[:today][:icon] %>
           </span>
-          <p class="text-3xl font-bold mt-2"><%= @weather[:today][:temp] %>°C</p>
+          <p class="text-2xl sm:text-3xl md:text-4xl font-bold mt-1 sm:mt-2"><%= @weather[:today][:temp] %>°C</p>
         </div>
 
         <!-- 下部: 説明 -->
         <div class="text-center">
-          <p class="text-sm font-medium opacity-90"><%= @weather[:today][:description] %></p>
+          <p class="text-xs sm:text-sm font-medium opacity-90"><%= @weather[:today][:description] %></p>
         </div>
       <% else %>
         <div class="flex flex-col items-center justify-center flex-1">
-          <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
-          <p class="text-sm opacity-80 mt-2">取得中...</p>
+          <span class="material-symbols-outlined text-5xl sm:text-6xl md:text-7xl opacity-50">cloud_off</span>
+          <p class="text-xs sm:text-sm opacity-80 mt-2">取得中...</p>
         </div>
       <% end %>
     </div>
 
     <!-- ランキングカード -->
-    <div class="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-3xl shadow-md p-4 text-white flex flex-col items-center justify-center aspect-square relative overflow-hidden group">
+    <div class="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-3xl shadow-md p-4 sm:p-6 text-white flex flex-col items-center justify-center aspect-square relative overflow-hidden group">
 
       <!-- 中央: トロフィーアイコン -->
       <div class="flex flex-col items-center justify-center flex-1">
-        <span class="material-symbols-outlined text-8xl drop-shadow-md group-hover:rotate-12 transition-transform duration-300">trophy</span>
+        <span class="material-symbols-outlined text-6xl sm:text-7xl md:text-8xl drop-shadow-md group-hover:rotate-12 transition-transform duration-300">trophy</span>
       </div>
 
       <!-- 下部: タイトルと順位 -->
       <div class="text-center">
-        <h3 class="font-bold text-xl mb-1">ランキング</h3>
-        <p class="text-sm opacity-90 bg-white/20 px-3 py-1 rounded-full">今週: 3位</p>
+        <h3 class="font-bold text-lg sm:text-xl mb-1">ランキング</h3>
+        <p class="text-xs sm:text-sm opacity-90 bg-white/20 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">今週: 3位</p>
       </div>
     </div>
   </div>
