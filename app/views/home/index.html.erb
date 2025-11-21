@@ -3,7 +3,7 @@
 <div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto space-y-5">
 
   <!-- 今日の散歩ダッシュボード -->
-  <div class="bg-gradient-to-br from-blue-400 to-indigo-500 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden group">
+  <div class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden group">
     <div class="absolute top-0 right-0 p-4 opacity-10">
       <span class="material-symbols-outlined text-9xl group-hover:scale-110 transition-transform duration-500">directions_walk</span>
     </div>
@@ -36,40 +36,52 @@
   <!-- 天気予報とランキングのグリッド -->
   <div class="grid grid-cols-2 gap-4">
     <!-- 天気予報カード -->
-    <div class="bg-gradient-to-br from-sky-300 to-sky-400 rounded-3xl shadow-md p-4 text-white flex flex-col items-center justify-center aspect-square relative overflow-hidden group">
-      <div class="absolute top-2 left-3 text-sm font-bold opacity-90">いま</div>
+    <div class="bg-gradient-to-br from-sky-400 to-blue-500 rounded-3xl shadow-md p-4 text-white flex flex-col justify-between aspect-square relative overflow-hidden group">
+      <!-- 場所情報 -->
+      <div class="flex items-center space-x-1 text-xs opacity-90">
+        <span class="material-symbols-outlined text-sm">location_on</span>
+        <span><%= @location_name || "東京" %></span>
+      </div>
 
       <% if @weather && @weather[:today] %>
-        <span class="material-symbols-outlined text-6xl drop-shadow-md my-2 group-hover:scale-110 transition-transform duration-300">
-          <%= @weather[:today][:icon] %>
-        </span>
+        <!-- 中央: アイコンと気温 -->
+        <div class="flex flex-col items-center justify-center flex-1">
+          <span class="material-symbols-outlined text-7xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">
+            <%= @weather[:today][:icon] %>
+          </span>
+          <p class="text-3xl font-bold mt-2"><%= @weather[:today][:temp] %>°C</p>
+        </div>
+
+        <!-- 下部: 説明 -->
         <div class="text-center">
-          <p class="text-sm font-medium"><%= @weather[:today][:description] %></p>
-          <p class="text-lg font-bold"><%= @weather[:today][:temp] %>°C</p>
+          <p class="text-sm font-medium opacity-90"><%= @weather[:today][:description] %></p>
         </div>
       <% else %>
-        <span class="material-symbols-outlined text-6xl opacity-50 my-2">cloud_off</span>
-        <p class="text-xs opacity-80">取得中...</p>
+        <div class="flex flex-col items-center justify-center flex-1">
+          <span class="material-symbols-outlined text-7xl opacity-50">cloud_off</span>
+          <p class="text-sm opacity-80 mt-2">取得中...</p>
+        </div>
       <% end %>
     </div>
 
     <!-- ランキングカード -->
-    <div class="bg-gradient-to-br from-indigo-300 to-indigo-400 rounded-3xl shadow-md p-4 text-white flex flex-col items-center justify-center aspect-square relative overflow-hidden group">
-      <div class="absolute top-2 right-3">
-        <span class="material-symbols-outlined text-xl opacity-80">emoji_events</span>
+    <div class="bg-gradient-to-br from-indigo-400 to-purple-500 rounded-3xl shadow-md p-4 text-white flex flex-col items-center justify-center aspect-square relative overflow-hidden group">
+
+      <!-- 中央: トロフィーアイコン -->
+      <div class="flex flex-col items-center justify-center flex-1">
+        <span class="material-symbols-outlined text-8xl drop-shadow-md group-hover:rotate-12 transition-transform duration-300">trophy</span>
       </div>
 
-      <span class="material-symbols-outlined text-6xl drop-shadow-md my-2 group-hover:rotate-12 transition-transform duration-300">trophy</span>
-
+      <!-- 下部: タイトルと順位 -->
       <div class="text-center">
-        <h3 class="font-bold text-lg">ランキング</h3>
-        <p class="text-xs opacity-90 bg-white/20 px-2 py-0.5 rounded-full mt-1">今週: 3位</p>
+        <h3 class="font-bold text-xl mb-1">ランキング</h3>
+        <p class="text-sm opacity-90 bg-white/20 px-3 py-1 rounded-full">今週: 3位</p>
       </div>
     </div>
   </div>
 
   <!-- 最新の投稿 -->
-  <div class="bg-gradient-to-br from-sky-300 to-blue-400 p-5 rounded-3xl shadow-md text-white relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.01]">
+  <div class="bg-gradient-to-br from-sky-400 to-blue-500 p-5 rounded-3xl shadow-md text-white relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.01]">
     <div class="flex justify-between items-start">
       <div>
         <h3 class="font-bold text-lg mb-1">最新の投稿</h3>
@@ -85,7 +97,7 @@
   </div>
 
   <!-- メモ帳 -->
-  <div class="bg-gradient-to-br from-blue-400 to-indigo-500 p-5 rounded-3xl shadow-md text-white relative overflow-hidden">
+  <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-5 rounded-3xl shadow-md text-white relative overflow-hidden">
     <div class="flex justify-between items-end">
       <div>
         <h3 class="font-bold text-lg mb-2">メモ帳</h3>
@@ -102,7 +114,7 @@
   </div>
 
   <!-- 今後のイベント -->
-  <div class="bg-gradient-to-br from-purple-300 to-purple-400 p-4 rounded-3xl shadow-md text-white flex items-center justify-between">
+  <div class="bg-gradient-to-br from-purple-400 to-purple-500 p-4 rounded-3xl shadow-md text-white flex items-center justify-between">
     <div class="flex items-center space-x-3">
       <h3 class="font-bold text-lg">今後のイベント</h3>
     </div>
@@ -112,7 +124,7 @@
   </div>
 
   <!-- 健康データ -->
-  <div class="bg-gradient-to-br from-purple-300 to-purple-400 p-4 rounded-3xl shadow-md text-white flex items-center justify-between">
+  <div class="bg-gradient-to-br from-purple-400 to-purple-500 p-4 rounded-3xl shadow-md text-white flex items-center justify-between">
     <div class="flex items-center space-x-3">
       <h3 class="font-bold text-lg">健康データ</h3>
     </div>
