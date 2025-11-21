@@ -1,31 +1,33 @@
 <% content_for :title, "てくメモ - ホーム" %>
 
-<div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto space-y-4">
+<div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto space-y-5">
 
   <!-- 今日の散歩ダッシュボード -->
-  <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-lg shadow-lg">
-    <p class="text-sm opacity-90">今日の散歩</p>
-    <div class="flex justify-between items-baseline mt-2">
-      <p class="text-4xl font-bold">5,234<span class="text-base font-medium ml-1">歩</span></p>
-      <p class="text-sm opacity-90">目標 10,000歩</p>
+  <div class="bg-gradient-to-br from-blue-400 to-indigo-500 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden group">
+    <div class="absolute top-0 right-0 p-4 opacity-10">
+      <span class="material-symbols-outlined text-9xl group-hover:scale-110 transition-transform duration-500">directions_walk</span>
     </div>
-    <!-- プログレスバー -->
-    <div class="w-full bg-white/30 rounded-full h-2.5 my-4">
-      <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: 52%"></div>
-    </div>
-    <div class="flex justify-between text-sm">
-      <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-lg">trending_up</span>
-        <div>
-          <p class="font-bold">4.0 km</p>
-          <p class="text-xs opacity-90">距離</p>
+    <div class="relative z-10">
+      <div class="text-center mb-4">
+        <p class="text-5xl font-bold tracking-tight">5,234<span class="text-xl font-medium ml-1">歩</span></p>
+      </div>
+
+      <!-- プログレスバー -->
+      <div class="w-full bg-black/20 rounded-full h-3 mb-2">
+        <div class="bg-gradient-to-r from-lime-300 to-green-400 h-3 rounded-full shadow-sm relative" style="width: 52%">
+          <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-md"></div>
         </div>
       </div>
-      <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-lg">local_fire_department</span>
-        <div>
-          <p class="font-bold">312 kcal</p>
-          <p class="text-xs opacity-90">消費カロリー</p>
+      <p class="text-center text-sm opacity-90 mb-6">今日の目標: 8,000歩</p>
+
+      <div class="grid grid-cols-2 gap-4 bg-white/10 rounded-2xl p-3 backdrop-blur-sm">
+        <div class="text-center border-r border-white/20">
+          <p class="text-lg font-bold">4.0 <span class="text-xs font-normal">km</span></p>
+          <p class="text-xs opacity-80">距離</p>
+        </div>
+        <div class="text-center">
+          <p class="text-lg font-bold">312 <span class="text-xs font-normal">kcal</span></p>
+          <p class="text-xs opacity-80">消費カロリー</p>
         </div>
       </div>
     </div>
@@ -33,133 +35,90 @@
 
   <!-- 天気予報とランキングのグリッド -->
   <div class="grid grid-cols-2 gap-4">
-    <!-- 天気予報カード（コンパクト版） -->
-    <div class="bg-gradient-to-br from-sky-600 via-blue-700 to-indigo-800 dark:from-sky-800 dark:via-blue-900 dark:to-indigo-950 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01]">
-      <!-- カードヘッダー -->
-      <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
-        <div class="flex items-center justify-center">
-          <div class="flex items-center space-x-0.5 text-white/80 text-xs">
-            <span class="material-symbols-outlined text-xs">location_on</span>
-            <span><%= @location_name || "東京" %></span>
-          </div>
-        </div>
-      </div>
+    <!-- 天気予報カード -->
+    <div class="bg-gradient-to-br from-sky-300 to-sky-400 rounded-3xl shadow-md p-4 text-white flex flex-col items-center justify-center aspect-square relative overflow-hidden group">
+      <div class="absolute top-2 left-3 text-sm font-bold opacity-90">いま</div>
 
-      <!-- 天気情報グリッド -->
-      <div class="grid grid-cols-2 divide-x divide-white/20">
-        <!-- 今日の天気 -->
-        <div class="p-3 text-white">
-          <div class="text-center">
-            <p class="text-xs font-medium opacity-90 mb-1.5">今日</p>
-            <% if @weather && @weather[:today] %>
-              <!-- 天気アイコン -->
-              <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl drop-shadow-lg animate-bounce-slow">
-                  <%= @weather[:today][:icon] %>
-                </span>
-              </div>
-              <!-- 気温 -->
-              <div class="mb-0.5">
-                <span class="text-xl font-bold"><%= @weather[:today][:temp] %></span>
-                <span class="text-sm">°C</span>
-              </div>
-              <!-- 天気の説明 -->
-              <p class="text-xs opacity-90"><%= @weather[:today][:description] %></p>
-            <% else %>
-              <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl opacity-50">cloud_off</span>
-              </div>
-              <p class="text-xs opacity-70">取得中...</p>
-            <% end %>
-          </div>
+      <% if @weather && @weather[:today] %>
+        <span class="material-symbols-outlined text-6xl drop-shadow-md my-2 group-hover:scale-110 transition-transform duration-300">
+          <%= @weather[:today][:icon] %>
+        </span>
+        <div class="text-center">
+          <p class="text-sm font-medium"><%= @weather[:today][:description] %></p>
+          <p class="text-lg font-bold"><%= @weather[:today][:temp] %>°C</p>
         </div>
-
-        <!-- 明日の天気 -->
-        <div class="p-3 text-white bg-white/5">
-          <div class="text-center">
-            <p class="text-xs font-medium opacity-90 mb-1.5">明日</p>
-            <% if @weather && @weather[:tomorrow] %>
-              <!-- 天気アイコン -->
-              <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl drop-shadow-lg animate-bounce-slow">
-                  <%= @weather[:tomorrow][:icon] %>
-                </span>
-              </div>
-              <!-- 気温 -->
-              <div class="mb-0.5">
-                <span class="text-xl font-bold"><%= @weather[:tomorrow][:temp] %></span>
-                <span class="text-sm">°C</span>
-              </div>
-              <!-- 天気の説明 -->
-              <p class="text-xs opacity-90"><%= @weather[:tomorrow][:description] %></p>
-            <% else %>
-              <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl opacity-50">cloud_off</span>
-              </div>
-              <p class="text-xs opacity-70">取得中...</p>
-            <% end %>
-          </div>
-        </div>
-      </div>
+      <% else %>
+        <span class="material-symbols-outlined text-6xl opacity-50 my-2">cloud_off</span>
+        <p class="text-xs opacity-80">取得中...</p>
+      <% end %>
     </div>
 
     <!-- ランキングカード -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-l-4 border-red-500 dark:border-red-600 transition-colors transform hover:shadow-lg hover:scale-[1.01] duration-300">
-      <div class="p-3 flex flex-col justify-between h-full">
-        <div>
-          <div class="flex items-center space-x-2 mb-1">
-            <span class="material-symbols-outlined text-red-500 dark:text-red-400 text-xl">emoji_events</span>
-            <h3 class="font-bold text-gray-900 dark:text-white text-sm">ランキング</h3>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">今週は上位10%です!</p>
-        </div>
-        <div class="text-right mt-2">
-          <div class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg">
-            <span class="material-symbols-outlined text-white text-3xl">trophy</span>
-          </div>
-        </div>
+    <div class="bg-gradient-to-br from-indigo-300 to-indigo-400 rounded-3xl shadow-md p-4 text-white flex flex-col items-center justify-center aspect-square relative overflow-hidden group">
+      <div class="absolute top-2 right-3">
+        <span class="material-symbols-outlined text-xl opacity-80">emoji_events</span>
+      </div>
+
+      <span class="material-symbols-outlined text-6xl drop-shadow-md my-2 group-hover:rotate-12 transition-transform duration-300">trophy</span>
+
+      <div class="text-center">
+        <h3 class="font-bold text-lg">ランキング</h3>
+        <p class="text-xs opacity-90 bg-white/20 px-2 py-0.5 rounded-full mt-1">今週: 3位</p>
       </div>
     </div>
   </div>
 
   <!-- 最新の投稿 -->
-  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-green-500 dark:border-green-600 transition-colors">
-    <h3 class="font-bold text-gray-900 dark:text-white mb-3">最新の投稿</h3>
-    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-md transition-colors">
-      <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
-        今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。
-      </p>
+  <div class="bg-gradient-to-br from-sky-300 to-blue-400 p-5 rounded-3xl shadow-md text-white relative overflow-hidden group cursor-pointer transition-transform hover:scale-[1.01]">
+    <div class="flex justify-between items-start">
+      <div>
+        <h3 class="font-bold text-lg mb-1">最新の投稿</h3>
+        <p class="text-sm opacity-90 line-clamp-2 leading-relaxed">
+          週末のハイキング記録:<br>
+          新しいルートを発見しました...
+        </p>
+      </div>
+      <div class="flex items-center justify-center bg-white/20 w-8 h-8 rounded-full ml-2 flex-shrink-0">
+        <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+      </div>
     </div>
   </div>
 
-  <!-- Google Keep連携 -->
-  <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-yellow-400 dark:border-yellow-500 transition-colors">
-    <h3 class="font-bold text-gray-900 dark:text-white mb-2">メモ帳</h3>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">新しいアイデアがありますか?書き留めましょう!</p>
-    <button type="button"
-            class="w-full bg-yellow-400 dark:bg-yellow-500 hover:bg-yellow-500 dark:hover:bg-yellow-600 text-gray-800 dark:text-gray-900 font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200">
-      <span class="material-symbols-outlined">description</span>
-      <span>Keepアプリを開く</span>
-    </button>
+  <!-- メモ帳 -->
+  <div class="bg-gradient-to-br from-blue-400 to-indigo-500 p-5 rounded-3xl shadow-md text-white relative overflow-hidden">
+    <div class="flex justify-between items-end">
+      <div>
+        <h3 class="font-bold text-lg mb-2">メモ帳</h3>
+        <span class="material-symbols-outlined text-5xl opacity-80 -ml-1 transform -rotate-12">note_stack</span>
+      </div>
+      <div>
+        <button type="button" class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-full shadow-md flex items-center space-x-1 hover:bg-gray-50 transition-colors">
+          <span class="material-symbols-outlined text-lg">add</span>
+          <span class="text-sm">メモを追加</span>
+        </button>
+        <p class="text-[10px] text-right mt-1 opacity-80">Google Keep に保存</p>
+      </div>
+    </div>
   </div>
 
-  <!-- スクロールテスト用ダミーコンテンツ -->
-  <div class="space-y-4">
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
-      <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 1</h3>
-      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
+  <!-- 今後のイベント -->
+  <div class="bg-gradient-to-br from-purple-300 to-purple-400 p-4 rounded-3xl shadow-md text-white flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <h3 class="font-bold text-lg">今後のイベント</h3>
     </div>
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
-      <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 2</h3>
-      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
-    </div>
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
-      <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 3</h3>
-      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
-    </div>
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-32 border-l-4 border-purple-400 dark:border-purple-500 transition-colors">
-      <h3 class="font-bold text-gray-900 dark:text-white">ダミーコンテンツ 4</h3>
-      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">スクロールテスト用</p>
+    <div class="bg-white/20 w-10 h-10 rounded-xl flex items-center justify-center">
+      <span class="material-symbols-outlined text-2xl">calendar_month</span>
     </div>
   </div>
+
+  <!-- 健康データ -->
+  <div class="bg-gradient-to-br from-purple-300 to-purple-400 p-4 rounded-3xl shadow-md text-white flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <h3 class="font-bold text-lg">健康データ</h3>
+    </div>
+    <div class="bg-white/20 w-10 h-10 rounded-xl flex items-center justify-center">
+      <span class="material-symbols-outlined text-2xl">monitor_heart</span>
+    </div>
+  </div>
+
 </div>
