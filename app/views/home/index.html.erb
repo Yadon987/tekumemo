@@ -1,31 +1,33 @@
 <% content_for :title, "てくメモ - ホーム" %>
 
-<div class="flex-1 p-4 pb-24 w-full max-w-4xl mx-auto space-y-4">
+<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
 
   <!-- 今日の散歩ダッシュボード -->
-  <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-lg shadow-lg">
-    <p class="text-sm opacity-90">今日の散歩</p>
+  <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-3xl shadow-lg drop-shadow-2xl">
+    <p class="text-smfont-bold font-bold opacity-90 text-shadow">今日の散歩</p>
+    <!-- 歩数と目標歩数 -->
     <div class="flex justify-between items-baseline mt-2">
-      <p class="text-4xl font-bold">5,234<span class="text-base font-medium ml-1">歩</span></p>
-      <p class="text-sm opacity-90">目標 10,000歩</p>
+      <p class="text-4xl font-bold text-shadow">5,234<span class="text-base font-medium ml-1 text-shadow">歩</span></p>
+      <p class="text-sm font-bold opacity-90 text-shadow">目標 10,000歩</p>
     </div>
-    <!-- プログレスバー -->
+    <!-- 歩数のプログレスバー -->
     <div class="w-full bg-white/30 rounded-full h-2.5 my-4">
       <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: 52%"></div>
     </div>
+    <!-- 距離と消費カロリー -->
     <div class="flex justify-between text-sm">
       <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-lg">trending_up</span>
+        <span class="material-symbols-outlined text-4xl animate-pulse text-shadow">route</span>
         <div>
-          <p class="font-bold">4.0 km</p>
-          <p class="text-xs opacity-90">距離</p>
+          <p class="font-bold text-shadow">4.0 km</p>
+          <p class="text-sm font-bold opacity-90 text-shadow">距離</p>
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-lg">local_fire_department</span>
+        <span class="material-symbols-outlined text-4xl animate-pulse text-shadow">local_fire_department</span>
         <div>
-          <p class="font-bold">312 kcal</p>
-          <p class="text-xs opacity-90">消費カロリー</p>
+          <p class="font-bold text-shadow">312 kcal</p>
+          <p class="text-sm font-bold opacity-90 text-shadow">消費カロリー</p>
         </div>
       </div>
     </div>
@@ -34,13 +36,13 @@
   <!-- 天気予報とランキングのグリッド -->
   <div class="grid grid-cols-2 gap-4">
     <!-- 天気予報カード（コンパクト版） -->
-    <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-700 dark:to-blue-800 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01]">
+    <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-700 dark:to-blue-800 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <!-- カードヘッダー -->
       <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
         <div class="flex items-center justify-center">
-          <div class="flex items-center space-x-0.5 text-white/80 text-xs">
-            <span class="material-symbols-outlined text-xs">location_on</span>
-            <span><%= @location_name || "東京" %></span>
+          <div class="flex items-center space-x-0.5 text-white/80 text-sm">
+            <span class="material-symbols-outlined font-bold text-base text-shadow">location_on</span>
+            <span class="font-bold text-base text-shadow"><%= @location_name || "現在地不明" %></span>
           </div>
         </div>
       </div>
@@ -50,26 +52,25 @@
         <!-- 今日の天気 -->
         <div class="p-3 text-white">
           <div class="text-center">
-            <p class="text-xs font-medium opacity-90 mb-1.5">いま</p>
+            <p class="text-sm font-medium opacity-90 mb-1.5 text-shadow">いま</p>
             <% if @weather && @weather[:today] %>
               <!-- 天気アイコン -->
               <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl drop-shadow-lg animate-bounce-slow">
+                <span class="material-symbols-outlined text-4xl drop-shadow-2xl animate-bounce-slow text-shadow">
                   <%= @weather[:today][:icon] %>
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="mb-0.5">
-                <span class="text-xl font-bold"><%= @weather[:today][:temp] %></span>
-                <span class="text-sm">°C</span>
+              <div class="text-2xl font-bold mb-1 text-shadow">
+                <%= @weather[:today][:temp] %><span class="text-sm text-shadow">°C</span>
               </div>
               <!-- 天気の説明 -->
-              <p class="text-xs opacity-90"><%= @weather[:today][:description] %></p>
+              <p class="text-sm opacity-90 text-shadow"><%= @weather[:today][:description] %></p>
             <% else %>
               <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl opacity-50">cloud_off</span>
+                <span class="material-symbols-outlined text-5xl opacity-50 text-shadow">cloud_off</span>
               </div>
-              <p class="text-xs opacity-70">取得中...</p>
+              <p class="text-sm opacity-70 text-shadow">取得中...</p>
             <% end %>
           </div>
         </div>
@@ -77,26 +78,25 @@
         <!-- 明日の天気 -->
         <div class="p-3 text-white bg-white/5">
           <div class="text-center">
-            <p class="text-xs font-medium opacity-90 mb-1.5">あした</p>
+            <p class="text-sm font-medium opacity-90 mb-1.5 text-shadow">あした</p>
             <% if @weather && @weather[:tomorrow] %>
               <!-- 天気アイコン -->
               <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl drop-shadow-lg animate-bounce-slow">
+                <span class="material-symbols-outlined text-4xl drop-shadow-2xl animate-bounce-slow text-shadow">
                   <%= @weather[:tomorrow][:icon] %>
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="mb-0.5">
-                <span class="text-xl font-bold"><%= @weather[:tomorrow][:temp] %></span>
-                <span class="text-sm">°C</span>
+              <div class="text-2xl font-bold mb-1 text-shadow">
+                <%= @weather[:tomorrow][:temp] %><span class="text-sm text-shadow">°C</span>
               </div>
               <!-- 天気の説明 -->
-              <p class="text-xs opacity-90"><%= @weather[:tomorrow][:description] %></p>
+              <p class="text-sm opacity-90 text-shadow"><%= @weather[:tomorrow][:description] %></p>
             <% else %>
               <div class="flex justify-center mb-2">
-                <span class="material-symbols-outlined text-5xl opacity-50">cloud_off</span>
+                <span class="material-symbols-outlined text-5xl opacity-50 text-shadow">cloud_off</span>
               </div>
-              <p class="text-xs opacity-70">取得中...</p>
+              <p class="text-sm opacity-70 text-shadow">取得中...</p>
             <% end %>
           </div>
         </div>
@@ -104,14 +104,20 @@
     </div>
 
     <!-- ランキングカード -->
-    <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01]">
+    <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <div class="p-3 flex flex-col justify-between h-full">
         <div>
           <div class="flex items-center space-x-2 mb-1">
-            <span class="material-symbols-outlined text-white text-xl">emoji_events</span>
-            <h3 class="font-bold text-white text-sm">ランキング</h3>
+            <span class="material-symbols-outlined text-yellow-300 text-shadow">trophy</span>
+            <h3 class="font-bold text-white text-shadow">ランキング</h3>
           </div>
-          <p class="text-xs text-white/90 mt-1">今週は上位10%です!</p>
+          <div class="mt-2">
+            <div class="flex items-end space-x-1">
+              <span class="text-4xl font-bold text-white text-shadow">3</span>
+              <span class="text-sm text-white/90 mb-1 text-shadow">位</span>
+            </div>
+            <p class="text-xs text-white/80 mt-1 text-shadow">上位 15%</p>
+          </div>
         </div>
         <div class="text-right mt-2">
           <div class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg">
@@ -123,41 +129,47 @@
   </div>
 
   <!-- 最新の投稿 -->
-  <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-600 dark:to-blue-700 p-4 rounded-lg shadow-md transition-all duration-300">
-    <h3 class="font-bold text-white mb-3">最新の投稿</h3>
-    <div class="bg-white/20 dark:bg-white/10 backdrop-blur-sm p-3 rounded-md">
-      <p class="text-sm text-white line-clamp-3">
+  <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-600 dark:to-blue-700 p-4 rounded-3xl shadow-md transition-all duration-300 drop-shadow-2xl">
+    <h3 class="font-bold text-white mb-3 text-shadow">最新の投稿</h3>
+    <div class="bg-gray-600/30 dark:bg-gray-200/10 backdrop-blur-sm p-3 rounded-md">
+      <p class="text-sm text-white line-clamp-3 text-shadow">
         今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。
       </p>
     </div>
   </div>
 
   <!-- Google Keep連携 -->
-  <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 p-4 rounded-lg shadow-md transition-all duration-300">
-    <h3 class="font-bold text-gray-800 dark:text-white mb-2">メモ帳</h3>
-    <p class="text-sm text-gray-800/90 dark:text-white/90 mb-4">新しいアイデアがありますか?書き留めましょう!</p>
-    <button type="button"
-            class="w-full bg-white dark:bg-blue-500 hover:bg-blue-50 dark:hover:bg-blue-600 text-gray-800 font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200 shadow-md">
-      <span class="material-symbols-outlined">description</span>
-      <span>Keepアプリを開く</span>
-    </button>
+  <div class="bg-gradient-to-br from-blue-400 to-indigo-500 dark:from-blue-500 dark:to-indigo-600 p-5 rounded-3xl shadow-md text-white relative overflow-hidden drop-shadow-2xl">
+    <div class="flex justify-between items-end">
+      <div>
+        <h3 class="font-bold text-lg mb-2 text-shadow">メモ帳</h3>
+        <span class="material-symbols-outlined text-4xl opacity-80 -ml-1 transform -rotate-12 text-shadow">note_stack</span>
+      </div>
+      <div>
+        <button type="button" class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-full shadow-md flex items-center space-x-1 hover:bg-gray-50 transition-colors">
+          <span class="material-symbols-outlined text-lg">add</span>
+          <span class="text-sm font-bold">メモ帳を開く</span>
+        </button>
+        <p class="text-sm font-bold text-right mt-1 opacity-80 text-shadow">Google Keep に保存</p>
+      </div>
+    </div>
   </div>
 
   <!-- スクロールテスト用ダミーコンテンツ -->
   <div class="space-y-4">
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-lg shadow-md h-32 transition-all duration-300">
-      <h3 class="font-bold text-white">ダミーコンテンツ 1</h3>
-      <p class="mt-2 text-sm text-white/90">スクロールテスト用</p>
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">
+      <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 1</h3>
+      <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
     </div>
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-lg shadow-md h-32 transition-all duration-300">
-      <h3 class="font-bold text-white">ダミーコンテンツ 2</h3>
-      <p class="mt-2 text-sm text-white/90">スクロールテスト用</p>
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">
+      <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 2</h3>
+      <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
     </div>
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-lg shadow-md h-32 transition-all duration-300">
-      <h3 class="font-bold text-white">ダミーコンテンツ 3</h3>
-      <p class="mt-2 text-sm text-white/90">スクロールテスト用</p>
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">
+      <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 3</h3>
+      <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
     </div>
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-lg shadow-md h-32 transition-all duration-300">
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300">
       <h3 class="font-bold text-white">ダミーコンテンツ 4</h3>
       <p class="mt-2 text-sm text-white/90">スクロールテスト用</p>
     </div>
