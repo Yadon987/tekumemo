@@ -32,15 +32,15 @@
   </div>
 
   <!-- 天気予報とランキングのグリッド -->
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <!-- 天気予報カード（コンパクト版） -->
     <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-700 dark:to-blue-800 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <!-- カードヘッダー -->
       <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
         <div class="flex items-center justify-center">
           <div class="flex items-center space-x-0.5 text-white/80 text-sm">
-            <span class="material-symbols-outlined font-bold text-base text-shadow">location_on</span>
-            <span class="font-bold text-base text-shadow"><%= @location_name || "現在地不明" %></span>
+            <span class="material-symbols-outlined font-bold text-base text-white">location_on</span>
+            <span class="font-bold text-base text-white"><%= @location_name || "現在地不明" %></span>
           </div>
         </div>
       </div>
@@ -62,8 +62,6 @@
               <div class="text-2xl font-bold mb-1 text-shadow">
                 <%= @weather[:today][:temp] %><span class="text-sm text-shadow">°C</span>
               </div>
-              <!-- 天気の説明 -->
-              <p class="text-sm opacity-90 text-shadow"><%= @weather[:today][:description] %></p>
             <% else %>
               <div class="flex justify-center mb-2">
                 <span class="material-symbols-outlined text-5xl opacity-50 text-shadow">cloud_off</span>
@@ -88,8 +86,6 @@
               <div class="text-2xl font-bold mb-1 text-shadow">
                 <%= @weather[:tomorrow][:temp] %><span class="text-sm text-shadow">°C</span>
               </div>
-              <!-- 天気の説明 -->
-              <p class="text-sm opacity-90 text-shadow"><%= @weather[:tomorrow][:description] %></p>
             <% else %>
               <div class="flex justify-center mb-2">
                 <span class="material-symbols-outlined text-5xl opacity-50 text-shadow">cloud_off</span>
@@ -107,24 +103,24 @@
 
     <div class="flex flex-col justify-center z-10">
       <div class="flex items-center space-x-1 mb-1 opacity-80">
-        <span class="material-symbols-outlined text-3xl text-white">trophy</span>
-        <span class="text-xs font-bold text-white uppercase tracking-widest">Rank</span>
+        <span class="material-symbols-outlined text-3xl sm:text-4xl text-white">trophy</span>
+        <span class="text-xs sm:text-sm font-bold text-white uppercase tracking-widest">Rank</span>
       </div>
       <div class="text-white">
-        <span class="text-4xl font-bold font-mono tracking-tighter text-shadow">03</span>
+        <span class="text-4xl sm:text-5xl font-bold font-mono tracking-tighter text-shadow">03</span>
         <span class="text-sm font-bold opacity-70">/ 24</span>
       </div>
       <!-- リボン風バッジ -->
       <div class="mt-2 relative inline-block">
          <div class="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-500 rounded-sm transform -skew-x-12 shadow-lg border border-white/20"></div>
          <div class="relative px-2 py-0.5 flex items-center space-x-1">
-            <span class="material-symbols-outlined text-[14px] text-yellow-900">workspace_premium</span>
-            <span class="text-[10px] font-black text-yellow-900 uppercase tracking-wider">Top 15%</span>
+            <span class="material-symbols-outlined text-[14px] sm:text-[16px] text-yellow-900">workspace_premium</span>
+            <span class="text-[10px] sm:text-xs font-black text-yellow-900 uppercase tracking-wider">Top 15%</span>
          </div>
       </div>
     </div>
 
-    <div class="relative w-20 h-20 flex items-center justify-center">
+    <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
       <svg class="w-full h-full transform -rotate-90">
         <defs>
           <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -133,14 +129,14 @@
             <stop offset="100%" stop-color="#eab308" />
           </linearGradient>
         </defs>
-        <circle cx="40" cy="40" r="36" stroke="currentColor" stroke-width="8" fill="transparent" class="text-white/20" />
-        <circle cx="40" cy="40" r="36" stroke="url(#gold-gradient)" stroke-width="8" fill="transparent" stroke-dasharray="226" stroke-dashoffset="34" stroke-linecap="round" class="drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
+        <circle cx="50%" cy="50%" r="45%" stroke="currentColor" stroke-width="8" fill="transparent" class="text-white/20" />
+        <circle cx="50%" cy="50%" r="45%" stroke="url(#gold-gradient)" stroke-width="8" fill="transparent" stroke-dasharray="226" stroke-dashoffset="34" stroke-linecap="round" class="drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
       </svg>
-      <span class="absolute material-symbols-outlined text-6xl bg-gradient-to-b from-yellow-100 via-yellow-300 to-yellow-600 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]">emoji_events</span>
+      <span class="absolute material-symbols-outlined text-6xl sm:text-7xl bg-gradient-to-b from-yellow-100 via-yellow-300 to-yellow-600 bg-clip-text text-transparent animate-sparkle">emoji_events</span>
     </div>
   </div>
 </div>
-
+</div>
 
   <!-- 最新の投稿 -->
   <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-600 dark:to-blue-700 p-4 rounded-3xl shadow-md transition-all duration-300 drop-shadow-2xl">
@@ -168,7 +164,7 @@
       </div>
     </div>
   </div>
-</div>
+
   <!-- スクロールテスト用ダミーコンテンツ -->
   <div class="space-y-4">
     <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">
