@@ -37,8 +37,19 @@ module.exports = {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.4s ease-out',
         'pulse-fast': 'pulseDeep 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'sparkle': 'sparkle 6s ease-in-out infinite',
       },
       keyframes: {
+        sparkle: {
+          '0%, 85%, 100%': {
+            filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.8)) drop-shadow(0 0 15px rgba(250,204,21,0.5))',
+            transform: 'scale(1)'
+          },
+          '92.5%': {
+            filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.8)) drop-shadow(0 0 35px rgba(250,204,21,0.9))',
+            transform: 'scale(1.05)'
+          },
+        },
         pulseDeep: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.3' },
