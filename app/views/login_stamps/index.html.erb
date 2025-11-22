@@ -1,62 +1,69 @@
 <% content_for :title, "てくメモ - ログインスタンプ" %>
 
-<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
+<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-6">
   <!-- ページヘッダー -->
-  <div class="bg-gradient-to-br from-purple-400 to-pink-500 dark:from-purple-600 dark:to-pink-700 text-white p-6 rounded-lg shadow-lg">
-    <div class="flex items-center space-x-3 mb-2">
-      <span class="material-symbols-outlined text-4xl">calendar_month</span>
-      <h1 class="text-2xl font-bold">ログインスタンプ</h1>
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+        <span class="material-symbols-outlined text-3xl text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-500 drop-shadow-sm">calendar_month</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 drop-shadow-sm">ログインスタンプ</span>
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 ml-1">散歩記録をカレンダーで確認しましょう</p>
     </div>
-    <p class="text-sm opacity-90">散歩記録をカレンダーで確認しましょう</p>
   </div>
 
   <!-- 統計情報 -->
   <div class="grid grid-cols-2 gap-4">
     <!-- 今月の散歩日数 -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-blue-500 dark:border-blue-600 transition-colors">
-      <div class="flex items-center space-x-2 mb-2">
-        <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">event_available</span>
-        <h3 class="font-bold text-gray-900 dark:text-white">今月</h3>
+    <div class="bg-gradient-to-br from-cyan-400 to-blue-500 dark:from-cyan-600 dark:to-blue-700 p-5 rounded-2xl shadow-lg text-white relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+      <div class="absolute top-0 right-0 -mr-4 -mt-4 w-20 h-20 bg-white/20 rounded-full blur-xl pointer-events-none"></div>
+      <div class="flex items-center space-x-2 mb-2 relative z-10">
+        <span class="material-symbols-outlined text-white drop-shadow-md">event_available</span>
+        <h3 class="font-bold text-shadow">今月</h3>
       </div>
-      <p class="text-3xl font-bold text-blue-600 dark:text-blue-400"><%= @monthly_walk_count %><span class="text-base ml-1">日</span></p>
+      <p class="text-3xl font-bold text-shadow relative z-10"><%= @monthly_walk_count %><span class="text-base ml-1 font-normal">日</span></p>
     </div>
 
     <!-- 連続日数 -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border-l-4 border-orange-500 dark:border-orange-600 transition-colors">
-      <div class="flex items-center space-x-2 mb-2">
-        <span class="material-symbols-outlined text-orange-500 dark:text-orange-400">local_fire_department</span>
-        <h3 class="font-bold text-gray-900 dark:text-white">連続</h3>
+    <div class="bg-gradient-to-br from-orange-400 to-pink-500 dark:from-orange-600 dark:to-pink-700 p-5 rounded-2xl shadow-lg text-white relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+      <div class="absolute top-0 right-0 -mr-4 -mt-4 w-20 h-20 bg-white/20 rounded-full blur-xl pointer-events-none"></div>
+      <div class="flex items-center space-x-2 mb-2 relative z-10">
+        <span class="material-symbols-outlined text-white drop-shadow-md">local_fire_department</span>
+        <h3 class="font-bold text-shadow">連続</h3>
       </div>
-      <p class="text-3xl font-bold text-orange-600 dark:text-orange-400"><%= @consecutive_days %><span class="text-base ml-1">日</span></p>
+      <p class="text-3xl font-bold text-shadow relative z-10"><%= @consecutive_days %><span class="text-base ml-1 font-normal">日</span></p>
     </div>
   </div>
 
   <!-- カレンダー -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 transition-colors">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 transition-colors relative overflow-hidden">
+    <!-- 装飾用背景 -->
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></div>
+
     <!-- 月ナビゲーション -->
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-between items-center mb-6 mt-2">
       <!-- 前月ボタン -->
       <%= link_to login_stamps_path(start_date: @start_date - 1.month),
-          class: "flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" do %>
-        <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">chevron_left</span>
+          class: "flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200" do %>
+        <span class="material-symbols-outlined">chevron_left</span>
       <% end %>
 
       <!-- 現在の月を表示 -->
-      <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+      <h2 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
         <%= @start_date.strftime("%Y年%m月") %>
       </h2>
 
       <!-- 次月ボタン -->
       <%= link_to login_stamps_path(start_date: @start_date + 1.month),
-          class: "flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" do %>
-        <span class="material-symbols-outlined text-gray-600 dark:text-gray-300">chevron_right</span>
+          class: "flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200" do %>
+        <span class="material-symbols-outlined">chevron_right</span>
       <% end %>
     </div>
 
     <!-- カレンダー本体 -->
     <div class="calendar-container">
       <%= month_calendar(attribute: :walked_on, start_date: @start_date, events: @walks) do |date, walks| %>
-        <div class="calendar-day">
+        <div class="calendar-day group">
           <!-- 日付 -->
           <div class="date-number <%= 'other-month' unless date.month == @start_date.month %> <%= 'today' if date == Date.today %>">
             <%= date.day %>
@@ -64,8 +71,8 @@
 
           <!-- スタンプ表示（散歩記録がある日） -->
           <% if @walks_by_date[date].present? %>
-            <div class="stamp-icon">
-              <span class="material-symbols-outlined text-green-500 dark:text-green-400">check_circle</span>
+            <div class="stamp-icon transform group-hover:scale-110 transition-transform duration-200">
+              <span class="material-symbols-outlined text-transparent bg-clip-text bg-gradient-to-br from-green-400 to-emerald-600 drop-shadow-sm text-2xl">check_circle</span>
             </div>
           <% end %>
         </div>
@@ -74,18 +81,22 @@
   </div>
 
   <!-- カレンダーの見方 -->
-  <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 transition-colors">
-    <div class="flex items-start space-x-2">
-      <span class="material-symbols-outlined text-blue-500 dark:text-blue-400 text-xl mt-0.5">info</span>
-      <div class="flex-1">
-        <h3 class="font-bold text-blue-900 dark:text-blue-200 mb-1">カレンダーの見方</h3>
-        <ul class="text-sm text-blue-800 dark:text-blue-300 space-y-1">
+  <div class="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-4 transition-colors">
+    <div class="flex items-start space-x-3">
+      <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full">
+        <span class="material-symbols-outlined text-blue-500 dark:text-blue-400 text-xl">info</span>
+      </div>
+      <div class="flex-1 pt-1">
+        <h3 class="font-bold text-gray-900 dark:text-white mb-2 text-sm">カレンダーの見方</h3>
+        <ul class="text-xs text-gray-600 dark:text-gray-400 space-y-2">
           <li class="flex items-center space-x-2">
             <span class="material-symbols-outlined text-green-500 dark:text-green-400 text-base">check_circle</span>
             <span>散歩記録がある日</span>
           </li>
-          <li>• 前月・次月ボタンで月を切り替えられます</li>
-          <li>• 連続日数は今日から過去に向かって計算されます</li>
+          <li class="flex items-center space-x-2">
+            <span class="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-[10px] text-white">1</span>
+            <span>今日の日付</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -102,7 +113,8 @@
   /* simple_calendarのテーブルスタイル */
   .simple-calendar {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 4px;
   }
 
   /* テーブルヘッダー（曜日） */
@@ -111,13 +123,12 @@
     text-align: center;
     font-weight: 600;
     font-size: 0.875rem;
-    color: #4B5563;
-    border-bottom: 2px solid #E5E7EB;
+    color: #6B7280;
+    border-bottom: none;
   }
 
   .dark .simple-calendar thead th {
-    color: #D1D5DB;
-    border-bottom-color: #374151;
+    color: #9CA3AF;
   }
 
   /* 日曜日のヘッダー */
@@ -141,102 +152,115 @@
   /* カレンダーのセル */
   .simple-calendar td {
     padding: 0;
-    border: 1px solid #E5E7EB;
-    height: 80px;
+    border: none;
+    height: 70px;
     vertical-align: top;
-    background-color: white;
+    background-color: #F9FAFB;
+    border-radius: 12px;
+    transition: background-color 0.2s;
+  }
+
+  .simple-calendar td:hover {
+    background-color: #F3F4F6;
   }
 
   .dark .simple-calendar td {
-    border-color: #374151;
     background-color: #1F2937;
+  }
+
+  .dark .simple-calendar td:hover {
+    background-color: #374151;
   }
 
   /* カレンダーの日付セルの内容 */
   .calendar-day {
     width: 100%;
     height: 100%;
-    padding: 0.5rem;
+    padding: 0.25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   /* 日付の数字 */
   .date-number {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    color: #1F2937;
-    width: 100%;
-    text-align: center;
+    color: #4B5563;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    margin-bottom: 2px;
   }
 
   .dark .date-number {
-    color: #F3F4F6;
+    color: #D1D5DB;
   }
 
   /* 今日の日付 */
   .date-number.today {
-    background-color: #3B82F6;
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
     color: white;
-    border-radius: 9999px;
-    width: 1.75rem;
-    height: 1.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
   }
 
   .dark .date-number.today {
-    background-color: #60A5FA;
+    background: linear-gradient(135deg, #60A5FA, #3B82F6);
   }
 
   /* 他の月の日付 */
   .date-number.other-month {
-    color: #9CA3AF;
+    color: #D1D5DB;
+    opacity: 0.5;
   }
 
   .dark .date-number.other-month {
-    color: #6B7280;
+    color: #4B5563;
   }
 
   /* スタンプアイコン */
   .stamp-icon {
     margin-top: auto;
+    margin-bottom: 4px;
   }
 
   /* 日曜日の日付 */
-  .simple-calendar td:first-child .date-number:not(.other-month) {
+  .simple-calendar td:first-child .date-number:not(.other-month):not(.today) {
     color: #EF4444;
   }
 
-  .dark .simple-calendar td:first-child .date-number:not(.other-month) {
+  .dark .simple-calendar td:first-child .date-number:not(.other-month):not(.today) {
     color: #F87171;
   }
 
   /* 土曜日の日付 */
-  .simple-calendar td:last-child .date-number:not(.other-month) {
+  .simple-calendar td:last-child .date-number:not(.other-month):not(.today) {
     color: #3B82F6;
   }
 
-  .dark .simple-calendar td:last-child .date-number:not(.other-month) {
+  .dark .simple-calendar td:last-child .date-number:not(.other-month):not(.today) {
     color: #60A5FA;
   }
 
   /* モバイル対応 */
   @media (max-width: 640px) {
     .simple-calendar td {
-      height: 60px;
+      height: 56px;
+      border-radius: 8px;
     }
 
-    .calendar-day {
-      padding: 0.25rem;
+    .simple-calendar {
+      border-spacing: 2px;
     }
 
     .date-number {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
+      width: 1.25rem;
+      height: 1.25rem;
     }
 
     .stamp-icon .material-symbols-outlined {
