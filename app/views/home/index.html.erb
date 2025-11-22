@@ -4,28 +4,28 @@
 
   <!-- 今日の散歩ダッシュボード -->
   <%= link_to walks_path, class: "block bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl" do %>
-    <p class="text-smfont-bold font-bold opacity-90 text-shadow">今日の散歩</p>
+    <p class="text-xl font-bold font-bold opacity-90 text-shadow">今日の散歩</p>
     <!-- 歩数と目標歩数 -->
     <div class="flex justify-between items-baseline mt-2">
       <p class="text-4xl font-bold text-shadow">5,234<span class="text-base font-medium ml-1 text-shadow">歩</span></p>
-      <p class="text-sm font-bold opacity-90 text-shadow">目標 10,000歩</p>
+      <p class="text-lg font-bold opacity-90 text-shadow">目標 10,000歩</p>
     </div>
     <!-- 歩数のプログレスバー -->
     <div class="w-full bg-white/30 rounded-full h-2.5 my-4">
       <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: 52%"></div>
     </div>
     <!-- 距離と消費カロリー -->
-    <div class="flex justify-between text-sm">
+    <div class="flex justify-between text-lg">
       <div class="flex items-center space-x-2">
         <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">route</span>
         <div>
-          <p class="font-bold text-shadow">4.0 km</p>
+          <p class="font-bold text-lg text-shadow">4.0 km</p>
         </div>
       </div>
       <div class="flex items-center space-x-2">
         <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">local_fire_department</span>
         <div>
-          <p class="font-bold text-shadow">312 kcal</p>
+          <p class="font-bold text-lg text-shadow">312 kcal</p>
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="text-2xl font-bold mb-1 text-shadow">
+              <div class="text-xl font-bold mb-1 text-shadow">
                 <%= @weather[:today][:temp] %><span class="text-sm text-shadow">°C</span>
               </div>
             <% else %>
@@ -83,7 +83,7 @@
                 </span>
               </div>
               <!-- 気温 -->
-              <div class="text-2xl font-bold mb-1 text-shadow">
+              <div class="text-xl font-bold mb-1 text-shadow">
                 <%= @weather[:tomorrow][:temp] %><span class="text-sm text-shadow">°C</span>
               </div>
             <% else %>
@@ -104,7 +104,7 @@
     <div class="flex flex-col justify-center z-10">
       <div class="flex items-center space-x-1 mb-1 opacity-80">
         <span class="material-symbols-outlined text-3xl sm:text-4xl text-white">trophy</span>
-        <span class="text-xs sm:text-sm font-bold text-white uppercase tracking-widest">Rank</span>
+        <span class="text-sm sm:text-base font-bold text-white uppercase tracking-widest">Rank</span>
       </div>
       <div class="text-white">
         <span class="text-4xl sm:text-5xl font-bold font-mono tracking-tighter text-shadow">03</span>
@@ -175,8 +175,8 @@
   <!-- スクロールテスト用ダミーコンテンツ -->
   <div class="space-y-4">
     <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
-      <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 1</h3>
-      <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
+      <h3 class="font-bold text-white text-shadow"> 運営からのお知らせ</h3>
+      <p class="mt-2 text-sm text-white/90 text-shadow">更新履歴：2025/11/23 MVPリリースに近いところまで完成</p>
     </div>
     <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 2</h3>
