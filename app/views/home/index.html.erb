@@ -17,17 +17,15 @@
     <!-- 距離と消費カロリー -->
     <div class="flex justify-between text-sm">
       <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-4xl animate-pulse text-shadow">route</span>
+        <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">route</span>
         <div>
           <p class="font-bold text-shadow">4.0 km</p>
-          <p class="text-sm font-bold opacity-90 text-shadow">距離</p>
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-4xl animate-pulse text-shadow">local_fire_department</span>
+        <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">local_fire_department</span>
         <div>
           <p class="font-bold text-shadow">312 kcal</p>
-          <p class="text-sm font-bold opacity-90 text-shadow">消費カロリー</p>
         </div>
       </div>
     </div>
@@ -103,37 +101,53 @@
       </div>
     </div>
 
-    <!-- ランキングカード -->
-    <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
-      <div class="p-3 flex flex-col justify-between h-full">
-        <div>
-          <div class="flex items-center space-x-2 mb-1">
-            <span class="material-symbols-outlined text-yellow-300 text-shadow">trophy</span>
-            <h3 class="font-bold text-white text-shadow">ランキング</h3>
-          </div>
-          <div class="mt-2">
-            <div class="flex items-end space-x-1">
-              <span class="text-4xl font-bold text-white text-shadow">3</span>
-              <span class="text-sm text-white/90 mb-1 text-shadow">位</span>
-            </div>
-            <p class="text-xs text-white/80 mt-1 text-shadow">上位 15%</p>
-          </div>
-        </div>
-        <div class="text-right mt-2">
-          <div class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg">
-            <span class="material-symbols-outlined text-white text-3xl">trophy</span>
-          </div>
-        </div>
+    <!-- ランキングカード (Plan B: Progress Ring) -->
+<div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
+  <div class="p-3 h-full flex items-center justify-between relative">
+
+    <div class="flex flex-col justify-center z-10">
+      <div class="flex items-center space-x-1 mb-1 opacity-80">
+        <span class="material-symbols-outlined text-3xl text-white">trophy</span>
+        <span class="text-xs font-bold text-white uppercase tracking-widest">Rank</span>
+      </div>
+      <div class="text-white">
+        <span class="text-4xl font-bold font-mono tracking-tighter text-shadow">03</span>
+        <span class="text-sm font-bold opacity-70">/ 24</span>
+      </div>
+      <!-- リボン風バッジ -->
+      <div class="mt-2 relative inline-block">
+         <div class="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-500 rounded-sm transform -skew-x-12 shadow-lg border border-white/20"></div>
+         <div class="relative px-2 py-0.5 flex items-center space-x-1">
+            <span class="material-symbols-outlined text-[14px] text-yellow-900">workspace_premium</span>
+            <span class="text-[10px] font-black text-yellow-900 uppercase tracking-wider">Top 15%</span>
+         </div>
       </div>
     </div>
+
+    <div class="relative w-20 h-20 flex items-center justify-center">
+      <svg class="w-full h-full transform -rotate-90">
+        <defs>
+          <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fef9c3" />
+            <stop offset="50%" stop-color="#fde047" />
+            <stop offset="100%" stop-color="#eab308" />
+          </linearGradient>
+        </defs>
+        <circle cx="40" cy="40" r="36" stroke="currentColor" stroke-width="8" fill="transparent" class="text-white/20" />
+        <circle cx="40" cy="40" r="36" stroke="url(#gold-gradient)" stroke-width="8" fill="transparent" stroke-dasharray="226" stroke-dashoffset="34" stroke-linecap="round" class="drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
+      </svg>
+      <span class="absolute material-symbols-outlined text-6xl bg-gradient-to-b from-yellow-100 via-yellow-300 to-yellow-600 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]">emoji_events</span>
+    </div>
   </div>
+</div>
+
 
   <!-- 最新の投稿 -->
   <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-600 dark:to-blue-700 p-4 rounded-3xl shadow-md transition-all duration-300 drop-shadow-2xl">
     <h3 class="font-bold text-white mb-3 text-shadow">最新の投稿</h3>
     <div class="bg-gray-600/30 dark:bg-gray-200/10 backdrop-blur-sm p-3 rounded-md">
       <p class="text-sm text-white line-clamp-3 text-shadow">
-        今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。
+        ダミーデータ：今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。今度、会社のみんなでお花見に行くのが楽しみです。
       </p>
     </div>
   </div>
@@ -154,7 +168,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <!-- スクロールテスト用ダミーコンテンツ -->
   <div class="space-y-4">
     <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">

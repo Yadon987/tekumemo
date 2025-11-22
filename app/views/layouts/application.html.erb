@@ -100,14 +100,14 @@
                 method: :delete,
                 data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか?" },
                 aria_label: "ログアウト",
-                class: "w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 dark:from-red-500 dark:to-red-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
+                class: "w-8 h-8 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-orange-400 to-red-500 dark:from-orange-500 dark:to-red-600 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
               <span class="material-symbols-outlined text-lg sm:text-2xl text-white drop-shadow-2xl text-shadow">logout</span>
             <% end %>
           <% else %>
             <!-- ログインボタン（青いグラデーション丸ボタン・モバイル：小、PC：中） -->
             <%= link_to new_user_session_path,
                 aria_label: "ログイン",
-                class: "w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
+                class: "w-8 h-8 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
               <span class="material-symbols-outlined text-lg sm:text-2xl text-white drop-shadow-2xl text-shadow">login</span>
             <% end %>
           <% end %>
