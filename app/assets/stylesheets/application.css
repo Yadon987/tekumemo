@@ -7,14 +7,19 @@
 /* アイコンの見た目を統一するための設定 */
 .material-symbols-outlined {
   font-variation-settings:
-    'FILL' 1,      /* アイコンを塗りつぶす（1 = 塗りつぶし、0 = 線のみ） */
-    'wght' 400,    /* 太さ（100〜700の範囲） */
-    'GRAD' 0,      /* グラデーション効果（-25〜200の範囲） */
-    'opsz' 24;     /* 光学サイズ（20〜48の範囲） */
+    'FILL' 1,
+    /* アイコンを塗りつぶす（1 = 塗りつぶし、0 = 線のみ） */
+    'wght' 400,
+    /* 太さ（100〜700の範囲） */
+    'GRAD' 0,
+    /* グラデーション効果（-25〜200の範囲） */
+    'opsz' 24;
+  /* 光学サイズ（20〜48の範囲） */
 }
 
 /* ===== カスタムコンポーネント ===== */
 @layer components {
+
   /* ボタンのカーソルスタイル */
   button[type="submit"],
   input[type="submit"],
@@ -31,6 +36,7 @@
 
 /* ===== カスタムユーティリティ ===== */
 @layer utilities {
+
   /* グラデーションテキスト用 */
   .bg-clip-text {
     -webkit-background-clip: text;
@@ -39,5 +45,10 @@
 
   .text-fill-transparent {
     -webkit-text-fill-color: transparent;
+  }
+
+  /* テキストシャドウ（白文字の視認性向上用） */
+  .text-shadow {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   }
 }
