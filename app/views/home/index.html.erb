@@ -3,7 +3,7 @@
 <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
 
   <!-- 今日の散歩ダッシュボード -->
-  <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-3xl shadow-lg drop-shadow-2xl">
+  <%= link_to walks_path, class: "block bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl" do %>
     <p class="text-smfont-bold font-bold opacity-90 text-shadow">今日の散歩</p>
     <!-- 歩数と目標歩数 -->
     <div class="flex justify-between items-baseline mt-2">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <!-- 天気予報とランキングのグリッド -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -97,7 +97,7 @@
       </div>
     </div>
 
-    <!-- ランキングカード (Plan B: Progress Ring) -->
+    <!-- ランキングカード -->
 <div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
   <div class="p-3 h-full flex items-center justify-between relative">
 
@@ -132,56 +132,63 @@
         <circle cx="50%" cy="50%" r="45%" stroke="currentColor" stroke-width="8" fill="transparent" class="text-white/20" />
         <circle cx="50%" cy="50%" r="45%" stroke="url(#gold-gradient)" stroke-width="8" fill="transparent" stroke-dasharray="226" stroke-dashoffset="34" stroke-linecap="round" class="drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
       </svg>
-      <span class="absolute material-symbols-outlined text-6xl sm:text-7xl bg-gradient-to-b from-yellow-100 via-yellow-300 to-yellow-600 bg-clip-text text-transparent animate-sparkle">emoji_events</span>
+      <!-- 背面：光る影用（単色・不透明） -->
+      <span class="absolute material-symbols-outlined text-6xl sm:text-7xl text-yellow-500 animate-sparkle">emoji_events</span>
+      <!-- 前面：質感用（グラデーション・透明テキスト） -->
+      <span class="absolute material-symbols-outlined text-6xl sm:text-7xl bg-gradient-to-b from-yellow-100 via-yellow-300 to-yellow-600 bg-clip-text text-transparent animate-sparkle-scale">emoji_events</span>
     </div>
   </div>
 </div>
 </div>
 
-  <!-- 最新の投稿 -->
-  <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-600 dark:to-blue-700 p-4 rounded-3xl shadow-md transition-all duration-300 drop-shadow-2xl">
-    <h3 class="font-bold text-white mb-3 text-shadow">最新の投稿</h3>
-    <div class="bg-gray-600/30 dark:bg-gray-200/10 backdrop-blur-sm p-3 rounded-md">
-      <p class="text-sm text-white line-clamp-3 text-shadow">
-        ダミーデータ：今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。今度、会社のみんなでお花見に行くのが楽しみです。
-      </p>
+  <!-- 下段グリッド：最新の投稿とメモ帳 -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <!-- 最新の投稿カード -->
+    <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-600 dark:to-blue-700 p-4 rounded-3xl shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
+      <h3 class="font-bold text-white mb-3 text-shadow">最新の投稿</h3>
+      <div class="bg-gray-600/30 dark:bg-gray-200/10 backdrop-blur-sm p-3 rounded-md">
+        <p class="text-sm text-white line-clamp-3 text-shadow">
+          ダミーデータ：今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。今度、会社のみんなでお花見に行くのが楽しみです。
+        </p>
+      </div>
     </div>
-  </div>
 
-  <!-- Google Keep連携 -->
-  <div class="bg-gradient-to-br from-blue-400 to-indigo-500 dark:from-blue-500 dark:to-indigo-600 p-5 rounded-3xl shadow-md text-white relative overflow-hidden drop-shadow-2xl">
-    <div class="flex justify-between items-end">
-      <div>
-        <h3 class="font-bold text-lg mb-2 text-shadow">メモ帳</h3>
-        <span class="material-symbols-outlined text-4xl opacity-80 -ml-1 transform -rotate-12 text-shadow">note_stack</span>
+    <!-- メモ帳カード -->
+    <!-- メモ帳カード -->
+    <%= link_to "https://keep.google.com/", target: "_blank", rel: "noopener noreferrer", class: "block bg-gradient-to-br from-blue-400 to-indigo-500 dark:from-blue-500 dark:to-indigo-600 p-5 rounded-3xl shadow-md text-white relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl" do %>
+      <div class="flex justify-between items-end">
+        <div>
+          <h3 class="font-bold text-lg mb-2 text-shadow">メモ帳</h3>
+          <span class="material-symbols-outlined text-4xl opacity-80 -ml-1 transform -rotate-12 text-shadow">note_stack</span>
+        </div>
+        <div>
+          <button type="button" class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-full shadow-md flex items-center space-x-1 hover:bg-gray-50 transition-colors">
+            <span class="material-symbols-outlined text-lg">add</span>
+            <span class="text-sm font-bold">メモ帳を開く</span>
+          </button>
+          <p class="text-sm font-bold text-right mt-1 opacity-80 text-shadow">Google Keep に保存</p>
+        </div>
       </div>
-      <div>
-        <button type="button" class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-full shadow-md flex items-center space-x-1 hover:bg-gray-50 transition-colors">
-          <span class="material-symbols-outlined text-lg">add</span>
-          <span class="text-sm font-bold">メモ帳を開く</span>
-        </button>
-        <p class="text-sm font-bold text-right mt-1 opacity-80 text-shadow">Google Keep に保存</p>
-      </div>
-    </div>
+    <% end %>
   </div>
 
   <!-- スクロールテスト用ダミーコンテンツ -->
   <div class="space-y-4">
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 1</h3>
       <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
     </div>
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 2</h3>
       <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
     </div>
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 drop-shadow-2xl">
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 3</h3>
       <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
     </div>
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300">
-      <h3 class="font-bold text-white">ダミーコンテンツ 4</h3>
-      <p class="mt-2 text-sm text-white/90">スクロールテスト用</p>
+    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
+      <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 4</h3>
+      <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
     </div>
   </div>
 

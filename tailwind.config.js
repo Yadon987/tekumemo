@@ -38,6 +38,7 @@ module.exports = {
         'slide-up': 'slideUp 0.4s ease-out',
         'pulse-fast': 'pulseDeep 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'sparkle': 'sparkle 6s ease-in-out infinite',
+        'sparkle-scale': 'sparkleScale 6s ease-in-out infinite',
       },
       keyframes: {
         sparkle: {
@@ -46,9 +47,13 @@ module.exports = {
             transform: 'scale(1)'
           },
           '92.5%': {
-            filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.8)) drop-shadow(0 0 35px rgba(250,204,21,0.9))',
+            filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(250,204,21,0.6)) drop-shadow(0 0 15px rgba(255,255,255,0.6))',
             transform: 'scale(1.05)'
           },
+        },
+        sparkleScale: {
+          '0%, 85%, 100%': { transform: 'scale(1)' },
+          '92.5%': { transform: 'scale(1.05)' },
         },
         pulseDeep: {
           '0%, 100%': { opacity: '1' },

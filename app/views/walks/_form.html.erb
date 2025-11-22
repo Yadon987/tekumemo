@@ -1,10 +1,11 @@
 <!-- フォームのエラーメッセージ表示 -->
 <% if walk.errors.any? %>
-  <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg mb-6">
-    <h3 class="font-bold mb-2">
+  <div class="bg-red-100/90 dark:bg-red-900/80 border border-red-400 dark:border-red-600 text-red-800 dark:text-red-200 px-4 py-3 rounded-xl mb-6 shadow-md">
+    <h3 class="font-bold mb-2 flex items-center">
+      <span class="material-symbols-outlined mr-1">error</span>
       <%= pluralize(walk.errors.count, "件") %>のエラーがあります:
     </h3>
-    <ul class="list-disc list-inside space-y-1">
+    <ul class="list-disc list-inside space-y-1 ml-1">
       <% walk.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
@@ -17,33 +18,33 @@
 
   <!-- 散歩日 -->
   <div>
-    <%= form.label :walked_on, "散歩日", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
-    <div class="relative">
-      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">calendar_today</span>
+    <%= form.label :walked_on, "散歩日", class: "block text-sm font-bold text-white text-shadow mb-2" %>
+    <div class="relative group">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-sky-500 transition-colors">calendar_today</span>
       <%= form.date_field :walked_on,
           id: "walk_walked_on",
-          class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors" %>
+          class: "w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-sky-400 bg-white/95 text-gray-800 shadow-inner transition-all" %>
     </div>
   </div>
 
   <!-- Google Fit連携ボタン -->
-  <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+  <div class="bg-white/20 backdrop-blur-md p-4 rounded-xl border border-white/30 shadow-sm">
     <div class="flex items-center justify-between mb-3">
       <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">fitness_center</span>
-        <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300">Google Fitからデータを取得</h3>
+        <span class="material-symbols-outlined text-white drop-shadow-md">fitness_center</span>
+        <h3 class="text-sm font-bold text-white text-shadow">Google Fitからデータを取得</h3>
       </div>
-      <span id="googleFitStatus" class="text-xs text-gray-500 dark:text-gray-400"></span>
+      <span id="googleFitStatus" class="text-xs text-white/90 font-medium text-shadow"></span>
     </div>
 
     <% if current_user.google_token_valid? %>
       <!-- Google Fit連携済みの場合 -->
       <button type="button" id="fetchGoogleFitData"
-              class="w-full bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors flex items-center justify-center space-x-2">
+              class="w-full bg-white/90 hover:bg-white text-blue-600 font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
         <span class="material-symbols-outlined">download</span>
         <span>今日のデータを取得</span>
       </button>
-      <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">
+      <p class="text-xs text-white/80 mt-2 text-shadow">
         選択した日付のGoogle Fitデータを自動でフォームに入力します
       </p>
     <% else %>
@@ -51,7 +52,7 @@
       <%= link_to user_google_oauth2_omniauth_authorize_path,
           method: :post,
           data: { turbo: false },
-          class: "w-full inline-block bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold py-3 px-6 rounded-lg shadow-md transition-colors border border-gray-300 dark:border-gray-600" do %>
+          class: "w-full inline-block bg-white hover:bg-gray-50 text-gray-700 font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5" do %>
         <div class="flex items-center justify-center space-x-2">
           <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -62,7 +63,7 @@
           <span>Googleアカウントで連携</span>
         </div>
       <% end %>
-      <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">
+      <p class="text-xs text-white/80 mt-2 text-shadow">
         Google Fitと連携すると、歩数や距離などのデータを自動で取得できます
       </p>
     <% end %>
@@ -70,12 +71,12 @@
 
   <!-- 場所 -->
   <div>
-    <%= form.label :location, "場所", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
-    <div class="relative">
-      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">location_on</span>
+    <%= form.label :location, "場所", class: "block text-sm font-bold text-white text-shadow mb-2" %>
+    <div class="relative group">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-sky-500 transition-colors">location_on</span>
       <%= form.text_field :location,
           placeholder: "例: 代々木公園",
-          class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
+          class: "w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-sky-400 bg-white/95 text-gray-800 placeholder-gray-400 shadow-inner transition-all" %>
     </div>
   </div>
 
@@ -83,26 +84,26 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <!-- 距離 -->
     <div>
-      <%= form.label :distance, "距離（km）（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
-      <div class="relative">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">straighten</span>
+      <%= form.label :distance, "距離（km）（任意）", class: "block text-sm font-bold text-white text-shadow mb-2" %>
+      <div class="relative group">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-sky-500 transition-colors">straighten</span>
         <%= form.number_field :distance,
             id: "walk_distance",
             step: 0.01,
             placeholder: "例: 5.0",
-            class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
+            class: "w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-sky-400 bg-white/95 text-gray-800 placeholder-gray-400 shadow-inner transition-all" %>
       </div>
     </div>
 
     <!-- 時間 -->
     <div>
-      <%= form.label :duration, "時間（分）（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
-      <div class="relative">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">schedule</span>
+      <%= form.label :duration, "時間（分）（任意）", class: "block text-sm font-bold text-white text-shadow mb-2" %>
+      <div class="relative group">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-sky-500 transition-colors">schedule</span>
         <%= form.number_field :duration,
             id: "walk_duration",
             placeholder: "例: 60",
-            class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
+            class: "w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-sky-400 bg-white/95 text-gray-800 placeholder-gray-400 shadow-inner transition-all" %>
       </div>
     </div>
   </div>
@@ -111,46 +112,46 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <!-- 歩数 -->
     <div>
-      <%= form.label :steps, "歩数（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
-      <div class="relative">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">directions_walk</span>
+      <%= form.label :steps, "歩数（任意）", class: "block text-sm font-bold text-white text-shadow mb-2" %>
+      <div class="relative group">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-sky-500 transition-colors">directions_walk</span>
         <%= form.number_field :steps,
             id: "walk_steps",
             placeholder: "例: 8000",
-            class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
+            class: "w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-sky-400 bg-white/95 text-gray-800 placeholder-gray-400 shadow-inner transition-all" %>
       </div>
     </div>
 
     <!-- 消費カロリー -->
     <div>
-      <%= form.label :calories_burned, "消費カロリー（kcal）（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
-      <div class="relative">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">local_fire_department</span>
+      <%= form.label :calories_burned, "消費カロリー（kcal）（任意）", class: "block text-sm font-bold text-white text-shadow mb-2" %>
+      <div class="relative group">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-sky-500 transition-colors">local_fire_department</span>
         <%= form.number_field :calories_burned,
             id: "walk_calories_burned",
             placeholder: "例: 300",
-            class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors" %>
+            class: "w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-sky-400 bg-white/95 text-gray-800 placeholder-gray-400 shadow-inner transition-all" %>
       </div>
     </div>
   </div>
 
   <!-- メモ -->
   <div>
-    <%= form.label :notes, "メモ（任意）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
+    <%= form.label :notes, "メモ（任意）", class: "block text-sm font-bold text-white text-shadow mb-2" %>
     <%= form.text_area :notes,
         rows: 5,
         placeholder: "今日の散歩の感想や気づいたことを記録しましょう...",
-        class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors resize-none" %>
+        class: "w-full px-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-sky-400 bg-white/95 text-gray-800 placeholder-gray-400 shadow-inner transition-all resize-none" %>
   </div>
 
   <!-- ボタン -->
   <div class="flex flex-col sm:flex-row gap-3 pt-4">
     <!-- 保存ボタン -->
-    <%= form.submit "散歩記録を保存", class: "flex-1 bg-sky-500 dark:bg-sky-600 hover:bg-sky-600 dark:hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors cursor-pointer" %>
+    <%= form.submit "散歩記録を保存", class: "flex-1 bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer text-shadow" %>
 
     <!-- キャンセルボタン -->
     <%= link_to "キャンセル", walks_path,
-        class: "flex-1 text-center bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-bold py-3 px-6 rounded-lg shadow-md transition-colors" %>
+        class: "flex-1 text-center bg-white/20 hover:bg-white/30 text-white font-bold py-3 px-6 rounded-xl shadow-md backdrop-blur-sm transition-all text-shadow" %>
   </div>
 
 <% end %>
