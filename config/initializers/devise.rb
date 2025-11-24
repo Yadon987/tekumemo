@@ -153,7 +153,14 @@ Devise.setup do |config|
   # スコープ: ユーザー情報とGoogle Fit（アクティビティ、位置情報、身体データ）へのアクセス
 
   # ↓はAIが出してきたコードで、Credentialsが読み込めない場合でもエラーにならないように空ハッシュをデフォルトにするためらしい
-  google_creds = Rails.application.credentials.google || {}
+  google_creds = begin
+    Rails.application.credentials.google || {}
+  rescue ActiveSupport::MessageEncryptor::InvalidMessage, ActiveSupport::MessageVerifier::InvalidSignature
+    # デプロイ時など、マスターキーが不一致の場合にビルドが落ちないようにする
+    # ただし、この状態ではGoogle認証は機能しないため、環境変数の修正が必要
+    warn "WARNING: Failed to decrypt credentials. Google Auth will not work."
+    {}
+  end
 
   config.omniauth :google_oauth2,
                   google_creds[:client_id],
