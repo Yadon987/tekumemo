@@ -161,17 +161,17 @@ Devise.setup do |config|
                   {
                     scope: [
                       # 基本認証情報
-                      'userinfo.email',
-                      'userinfo.profile',
+                      "userinfo.email",
+                      "userinfo.profile",
                       # フィットネス関連
-                      'https://www.googleapis.com/auth/fitness.activity.read',    # 活動データ
-                      'https://www.googleapis.com/auth/fitness.location.read',    # 位置情報
-                      'https://www.googleapis.com/auth/fitness.body.read',        # 身体データ
-                  ].join(','), # 配列 + .join(','),で文字列に変換できる
-                               # 左だと可読性がバツ "userinfo.email,userinfo.profile,https://www.googleapis.com/auth/fitness.activity.read"
+                      "https://www.googleapis.com/auth/fitness.activity.read",    # 活動データ
+                      "https://www.googleapis.com/auth/fitness.location.read",    # 位置情報
+                      "https://www.googleapis.com/auth/fitness.body.read"         # 身体データ
+                    ].join(","), # 配列 + .join(','),で文字列に変換できる
+                    # 左だと可読性がバツ "userinfo.email,userinfo.profile,https://www.googleapis.com/auth/fitness.activity.read"
 
-                    access_type: 'offline',
-                    prompt: 'consent'
+                    access_type: "offline",
+                    prompt: "consent"
                   }
 
   # ===== Warden設定 =====
