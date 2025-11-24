@@ -184,3 +184,11 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  flash:
+    walks:
+      create:
+        notice: "散歩記録を作成しました"
+      update:
+        notice: "散歩記録を更新しました"
+      destroy:
+        notice: "散歩記録を削除しました"

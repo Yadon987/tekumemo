@@ -21,6 +21,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # OAuth認証失敗時の処理
   def failure
-    redirect_to root_path, alert: "Google認証に失敗しました。もう一度お試しください。"
+    redirect_to root_path, alert: t("devise.omniauth_callbacks.failure", kind: "Google", reason: "アクセスが拒否されたか、エラーが発生しました")
   end
 end

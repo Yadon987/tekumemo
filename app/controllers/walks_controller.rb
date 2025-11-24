@@ -37,7 +37,7 @@ class WalksController < ApplicationController
     # データベースに保存を試みる
     if @walk.save
       # 保存に成功した場合、一覧ページにリダイレクトして成功メッセージを表示
-      redirect_to walks_path, notice: "散歩記録を作成しました"
+      redirect_to walks_path, notice: t("flash.walks.create.notice")
     else
       # 保存に失敗した場合（バリデーションエラー）、新規作成ページを再表示
       render :new, status: :unprocessable_entity
@@ -49,7 +49,7 @@ class WalksController < ApplicationController
     # 散歩記録を更新
     if @walk.update(walk_params)
       # 更新に成功した場合、詳細ページにリダイレクトして成功メッセージを表示
-      redirect_to @walk, notice: "散歩記録を更新しました"
+      redirect_to @walk, notice: t("flash.walks.update.notice")
     else
       # 更新に失敗した場合（バリデーションエラー）、編集ページを再表示
       render :edit, status: :unprocessable_entity
@@ -61,7 +61,7 @@ class WalksController < ApplicationController
     # 散歩記録を削除
     @walk.destroy
     # 一覧ページにリダイレクトして削除完了メッセージを表示
-    redirect_to walks_path, notice: "散歩記録を削除しました"
+    redirect_to walks_path, notice: t("flash.walks.destroy.notice")
   end
 
   private

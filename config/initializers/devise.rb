@@ -151,11 +151,25 @@ Devise.setup do |config|
   # Google OAuth2設定（Google Fit API連携用）
   # Google Cloud Consoleで取得したクライアントIDとシークレットを使用
   # スコープ: ユーザー情報とGoogle Fit（アクティビティ、位置情報、身体データ）へのアクセス
+
+  # ↓はAIが出してきたコードで、Credentialsが読み込めない場合でもエラーにならないように空ハッシュをデフォルトにするためらしい
+  google_creds = Rails.application.credentials.google || {}
+
   config.omniauth :google_oauth2,
-                  ENV.fetch("GOOGLE_CLIENT_ID", nil),
-                  ENV.fetch("GOOGLE_CLIENT_SECRET", nil),
+                  google_creds[:client_id],
+                  google_creds[:client_secret],
                   {
-                    scope: "email,profile,https://www.googleapis.com/auth/fitness.activity.read,https://www.googleapis.com/auth/fitness.location.read,https://www.googleapis.com/auth/fitness.body.read",
+                    scope: [
+                      # 基本認証情報
+                      "userinfo.email",
+                      "userinfo.profile",
+                      # フィットネス関連
+                      "https://www.googleapis.com/auth/fitness.activity.read",    # 活動データ
+                      "https://www.googleapis.com/auth/fitness.location.read",    # 位置情報
+                      "https://www.googleapis.com/auth/fitness.body.read"         # 身体データ
+                    ].join(","), # 配列 + .join(','),で文字列に変換できる
+                    # 左だと可読性がバツ "userinfo.email,userinfo.profile,https://www.googleapis.com/auth/fitness.activity.read"
+
                     access_type: "offline",
                     prompt: "consent"
                   }
