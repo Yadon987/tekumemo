@@ -1,0 +1,123 @@
+<% content_for :title, "アカウント設定 - てくメモ" %>
+
+<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto">
+  <div class="mb-8 text-center">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center justify-center space-x-2">
+      <span class="material-symbols-outlined text-3xl text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">manage_accounts</span>
+      <span>アカウント設定</span>
+    </h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">プロフィールの確認と変更ができます</p>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 sm:p-8 ring-1 ring-gray-100 dark:ring-gray-700 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></div>
+
+    <div class="flex flex-col items-center mb-8 mt-2">
+       <%= user_avatar(@user, classes: "w-24 h-24 text-3xl mb-4 shadow-xl ring-4 ring-white dark:ring-gray-700") %>
+       <div class="text-center">
+         <p class="text-gray-500 dark:text-gray-400 text-xs font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md inline-block">
+           <%= @user.email %>
+         </p>
+         <p class="text-xs text-gray-400 mt-1">※アイコンはGoogleアカウントと連携しています</p>
+       </div>
+    </div>
+
+    <%= form_with(model: @user, local: true, class: "space-y-6") do |f| %>
+      <% if @user.errors.any? %>
+        <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 p-4 rounded-xl text-sm">
+          <ul class="list-disc list-inside">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.label :name, "ユーザー名（表示名）", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
+        <div class="relative group">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">badge</span>
+          <%= f.text_field :name,
+              placeholder: "表示名を入力",
+              class: "w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none text-gray-800 dark:text-gray-200 placeholder-gray-400 shadow-inner" %>
+        </div>
+        <p class="text-xs text-gray-500 mt-1 ml-1">ランキングや投稿などで他のユーザーに表示されます</p>
+      </div>
+      <%# セキュリティ設定エリア（メール・パスワード） %>
+      <div class="border-t border-gray-100 dark:border-gray-700 pt-6 mt-6">
+        <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">セキュリティ設定</h3>
+
+        <div class="mb-4">
+          <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1" %>
+
+          <% if @user.google_uid.present? %>
+            <div class="relative">
+              <%= f.email_field :email,
+                  disabled: true,
+                  class: "w-full pl-4 pr-4 py-2 bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-500 cursor-not-allowed select-none shadow-inner" %>
+              <p class="text-xs text-gray-400 mt-1 flex items-center">
+                <span class="material-symbols-outlined text-sm mr-1">info</span>
+                Googleアカウントで管理されています
+              </p>
+            </div>
+          <% else %>
+            <%= f.email_field :email,
+                class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-gray-200 placeholder-gray-400 shadow-inner" %>
+          <% end %>
+        </div>
+
+        <% if @user.google_uid.blank? %>
+          <div class="mb-4">
+            <%= f.label :password, "新しいパスワード（変更する場合のみ）", class: "block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1" %>
+            <%= f.password_field :password,
+                placeholder: "6文字以上",
+                class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-gray-200 placeholder-gray-400 shadow-inner" %>
+          </div>
+
+          <div class="mb-2">
+            <%= f.label :password_confirmation, "パスワード確認", class: "block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1" %>
+            <%= f.password_field :password_confirmation,
+                class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-gray-200 placeholder-gray-400 shadow-inner" %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="pt-2">
+        <%= f.button class: "w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2" do %>
+          <span class="material-symbols-outlined">save</span>
+          <span>変更を保存する</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-10">
+    <h3 class="text-xs font-bold text-gray-400 dark:text-gray-500 mb-3 px-2 uppercase tracking-wider">アカウント管理</h3>
+    <div class="bg-red-50/50 dark:bg-red-900/10 rounded-2xl p-6 border border-red-100 dark:border-red-900/30">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h4 class="text-red-800 dark:text-red-300 font-bold flex items-center">
+            <span class="material-symbols-outlined mr-1 text-lg">warning</span>
+            アカウントの削除
+          </h4>
+          <p class="text-red-600/70 dark:text-red-400/70 text-xs mt-1">
+            一度削除すると、散歩記録などのデータは復元できません。
+          </p>
+        </div>
+
+        <%= button_to user_registration_path,
+            method: :delete,
+            data: { turbo_confirm: "本当にアカウントを削除しますか？\n\nこの操作は取り消せません。\nすべての散歩記録が削除されます。" },
+            class: "bg-white dark:bg-red-950/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 font-bold py-2 px-4 rounded-lg text-sm hover:bg-red-50 dark:hover:bg-red-900/50 transition-colors shadow-sm" do %>
+          削除する
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 text-center">
+    <%= link_to :back, class: "text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-200 underline decoration-gray-300 underline-offset-4" do %>
+      戻る
+    <% end %>
+  </div>
+</div>

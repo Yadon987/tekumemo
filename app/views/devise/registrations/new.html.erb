@@ -15,13 +15,25 @@
       <!-- Error Messages -->
       <%= render "devise/shared/error_messages", resource: resource %>
 
+      <!-- Name Field -->
+      <div class="space-y-2">
+        <%= f.label :name, "ユーザー名（表示名）", class: "block text-base font-medium text-gray-700 dark:text-gray-300" %>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">badge</span>
+          <%= f.text_field :name,
+              autofocus: true,
+              autocomplete: "name",
+              placeholder: "表示名（例: てくメモ太郎）",
+              class: "block w-full h-14 pl-12 pr-4 text-base text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" %>
+        </div>
+      </div>
+
       <!-- Email Field -->
       <div class="space-y-2">
         <%= f.label :email, "メールアドレス", class: "block text-base font-medium text-gray-700 dark:text-gray-300" %>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">mail</span>
           <%= f.email_field :email,
-              autofocus: true,
               autocomplete: "email",
               placeholder: "メールアドレス",
               class: "block w-full h-14 pl-12 pr-4 text-base text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-500" %>

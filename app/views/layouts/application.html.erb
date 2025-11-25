@@ -95,14 +95,44 @@
         <!-- 右側：ログイン/ログアウトボタン（モバイル：小、PC：中） -->
         <div class="w-14 sm:w-20 flex justify-end items-center">
           <% if user_signed_in? %>
-            <!-- ログアウトボタン（赤いグラデーション丸ボタン・モバイル：小、PC：中） -->
-            <%= link_to destroy_user_session_path,
-                method: :delete,
-                data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか?" },
-                aria_label: "ログアウト",
-                class: "w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-orange-400 to-red-500 dark:from-orange-500 dark:to-red-600 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
-              <span class="material-symbols-outlined text-lg sm:text-2xl text-white drop-shadow-2xl text-shadow">logout</span>
-            <% end %>
+            <!-- アバタードロップダウンメニュー（モバイル：小、PC：中） -->
+            <div class="relative" data-controller="dropdown">
+              <!-- アバターボタン -->
+              <button
+                type="button"
+                data-dropdown-target="button"
+                data-action="click->dropdown#toggle"
+                class="rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:scale-105">
+                <%= user_avatar(current_user, classes: "w-8 h-8 sm:w-9 sm:h-9 text-sm border-2 border-gray-200 dark:border-gray-600") %>
+              </button>
+
+              <!-- ドロップダウンメニュー -->
+              <div
+                data-dropdown-target="menu"
+                class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl py-1 border border-gray-100 dark:border-gray-700 transform origin-top-right transition-all duration-200 opacity-0 scale-95 z-50">
+
+                <!-- ユーザー情報（簡易表示） -->
+                <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                  <p class="text-sm text-gray-900 dark:text-white truncate font-medium"><%= current_user.email %></p>
+                </div>
+
+                <!-- メニュー項目 -->
+                <%= link_to edit_user_path(current_user), class: "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2" do %>
+                  <span class="material-symbols-outlined text-lg">settings</span>
+                  <span>設定</span>
+                <% end %>
+
+                <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
+
+                <%= link_to destroy_user_session_path,
+                    method: :delete,
+                    data: { turbo_method: :delete },
+                    class: "block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center space-x-2 w-full text-left" do %>
+                  <span class="material-symbols-outlined text-lg">logout</span>
+                  <span>ログアウト</span>
+                <% end %>
+              </div>
+            </div>
           <% else %>
             <!-- ログインボタン（青いグラデーション丸ボタン・モバイル：小、PC：中） -->
             <%= link_to new_user_session_path,
@@ -188,7 +218,7 @@
               <% end %>
 
               <!-- 設定 -->
-              <%= link_to edit_user_registration_path,
+              <%= link_to edit_user_path(current_user),
                   data: { expandable_fab_target: "actionButton" },
                   class: "hidden opacity-0 absolute bottom-16 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
                   style: "transform: translateY(20px);" do %>

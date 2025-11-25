@@ -9,7 +9,8 @@ RSpec.describe User, type: :model do
         provider: "google_oauth2",
         uid: "123456789",
         info: {
-          email: "test@example.com"
+          email: "test@example.com",
+          image: "https://example.com/avatar.jpg"
         },
         credentials: {
           token: "mock_token",
@@ -35,6 +36,7 @@ RSpec.describe User, type: :model do
         expect(result_user).to eq(user) # 同じユーザーオブジェクトが返されるか
         expect(result_user.google_uid).to eq("123456789") # UIDが更新されているか
         expect(result_user.google_token).to eq("mock_token") # トークンが更新されているか
+        expect(result_user.avatar_url).to eq("https://example.com/avatar.jpg") # アバター画像が更新されているか
       end
     end
 
@@ -49,6 +51,7 @@ RSpec.describe User, type: :model do
         new_user = User.last
         expect(new_user.email).to eq("test@example.com")
         expect(new_user.google_uid).to eq("123456789")
+        expect(new_user.avatar_url).to eq("https://example.com/avatar.jpg") # アバター画像が保存されているか
       end
     end
   end

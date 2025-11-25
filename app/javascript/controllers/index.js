@@ -7,6 +7,9 @@ import { application } from "./application"
 import DarkModeToggleController from "./dark_mode_toggle_controller"
 application.register("dark-mode-toggle", DarkModeToggleController)
 
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
+
 import ExpandableFabController from "./expandable_fab_controller"
 application.register("expandable-fab", ExpandableFabController)
 
