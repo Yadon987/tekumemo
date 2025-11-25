@@ -43,7 +43,7 @@ RSpec.describe "Walks", type: :system do
 
         # 保存されたデータが表示されているか確認
         expect(page).to have_content "テスト公園"
-        expect(page).to have_content "5.5 km"
+        expect(page).to have_content "5.5km"
         expect(page).to have_content "60 分"
         expect(page).to have_content "8,000 歩"
         expect(page).to have_content "300 kcal"

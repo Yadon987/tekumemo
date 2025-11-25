@@ -13,10 +13,10 @@ class ApplicationController < ActionController::Base
   # Deviseで許可する追加パラメータ
   def configure_permitted_parameters
     # サインアップ時に追加フィールドを許可する場合
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
 
     # アカウント更新時に追加フィールドを許可する場合
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :name ])
   end
   # ログアウト後のリダイレクト先を指定
   def after_sign_out_path_for(resource_or_scope)

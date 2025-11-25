@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   def update
     if @user.update(user_params)
       # 更新成功時：トップページ（または設定画面）にリダイレクトして成功メッセージを表示
-      redirect_to root_path, notice: 'プロフィールを更新しました'
+      redirect_to root_path, notice: "プロフィールを更新しました"
     else
       # 更新失敗時（空欄など）：編集画面を再表示（エラーメッセージが出るようにする）
       render :edit, status: :unprocessable_entity
@@ -25,9 +25,9 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-# ストロングパラメーター
+  # ストロングパラメーター
   def user_params
-# パスワード入力欄が空（未入力）の場合の処理
+    # パスワード入力欄が空（未入力）の場合の処理
     # Deviseはパスワードが空文字だとエラーになったり意図しない挙動になることがあるため、
     # 空の場合はパラメータ自体からキーを削除して「変更なし」として扱います。
     if params[:user][:password].blank?
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
   def ensure_correct_user
     # current_user メソッドが定義されている前提です
     if @user != current_user
-      redirect_to root_path, alert: '権限がありません'
+      redirect_to root_path, alert: "権限がありません"
     end
   end
 end
