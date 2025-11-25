@@ -21,7 +21,8 @@ class User < ApplicationRecord
         google_uid: auth.uid,
         google_token: auth.credentials.token,
         google_refresh_token: auth.credentials.refresh_token,
-        google_expires_at: Time.at(auth.credentials.expires_at)
+        google_expires_at: Time.at(auth.credentials.expires_at),
+        avatar_url: auth.info.image # アバター画像を更新
       )
     else
       # 新規ユーザーの場合、アカウントを作成
@@ -31,7 +32,8 @@ class User < ApplicationRecord
         google_uid: auth.uid,
         google_token: auth.credentials.token,
         google_refresh_token: auth.credentials.refresh_token,
-        google_expires_at: Time.at(auth.credentials.expires_at)
+        google_expires_at: Time.at(auth.credentials.expires_at),
+        avatar_url: auth.info.image # アバター画像を保存
       )
     end
 
