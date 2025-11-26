@@ -3,4 +3,4 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 // ダークモード機能はStimulusコントローラー（dark_mode_toggle_controller.js）で実装
-import "./google_fit"
+// Google Fit連携はStimulusコントローラー（google_fit_controller.js）で実装
