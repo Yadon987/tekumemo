@@ -24,14 +24,14 @@ export default class extends Controller {
 
     // 1. ローディング開始：ボタンを押せなくして、テキストを変える
     this.buttonTarget.disabled = true
-    const originalText = this.buttonTarget.textContent
+    const originalContent = this.buttonTarget.innerHTML
     this.buttonTarget.textContent = "データ取得中..."
     this.statusTarget.textContent = "同期を開始しました..."
     this.statusTarget.classList.remove("text-red-500", "text-green-500")
 
     try {
       // 2. サーバーにデータを問い合わせる
-      const response = await fetch('/google_fit/daily_data', {
+      const response = await fetch(`/google_fit/daily_data?date=${date}`, {
         headers: {
           'Accept': 'application/json'
         }
@@ -62,7 +62,7 @@ export default class extends Controller {
     } finally {
       // 6. 後始末：ボタンを元に戻す
       this.buttonTarget.disabled = false
-      this.buttonTarget.textContent = originalText
+      this.buttonTarget.innerHTML = originalContent
     }
   }
 }
