@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Walks", type: :system do
 before do
-  driven_by(:selenium, using: :headless_chrome, screen_size: [1400, 1400])
+  driven_by(:selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ])
 end
 
   describe "散歩記録の新規作成" do
