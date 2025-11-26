@@ -1,6 +1,15 @@
 ---
 ja:
   activerecord:
+    attributes:
+        walk:
+          walked_on: "散歩日"
+          steps: "歩数"
+          distance: "距離"
+          duration: "時間"
+          calories: "カロリー"
+          location: "場所"
+          notes: "メモ"
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

@@ -9,7 +9,7 @@ class WalksController < ApplicationController
   def index
     # ログインしているユーザーの散歩記録だけを取得する
     # Walkモデルのdefault_scopeにより、日付順（新しい順）で自動ソートされる
-    @walks = current_user.walks
+    @walks = current_user.walks.recent
   end
 
   # 散歩記録詳細ページ（GET /walks/:id）
