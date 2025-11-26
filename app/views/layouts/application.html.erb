@@ -19,9 +19,9 @@
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
-  <!-- ダークモード初期化スクリプト（FOUC防止） -->
+  <!-- ダークモード初期化スクリプト（FOUC防止）←チラつきのこと -->
   <script>
-    // ページ読み込み前にダークモードを設定（フラッシュ防止）
+    // ページ読み込み前にダークモードを設定（フラッシュ防止してくれる魔法の呪文）
     (function() {
       const theme = localStorage.getItem('theme') || 'light';
       if (theme === 'dark') {
