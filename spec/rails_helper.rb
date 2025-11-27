@@ -69,10 +69,4 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-
-  # システムテスト用: CSRF保護を無効化
-  # rack_testドライバーではCSRFトークンが正しく処理されないため
-  config.before(:each, type: :system) do
-    allow_any_instance_of(ActionController::Base).to receive(:verify_authenticity_token).and_return(true)
-  end
 end

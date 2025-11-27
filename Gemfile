@@ -36,3 +36,5 @@ group :test do
 end
 
 gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]
+# テスト用のダミーデータ生成ツール
+gem 'swimming_fish', '~> 0.2.2'
