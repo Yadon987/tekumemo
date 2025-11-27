@@ -44,7 +44,7 @@ RSpec.describe "Walks", type: :system do
         # ラベルの文言やデザイン変更に強い書き方です
 
         # 日付形式エラー対策: 文字列で明示的に渡す
-        fill_in "walk_walked_on", with: Date.today.strftime('%Y-%m-%d')
+        fill_in "walk_walked_on", with: Date.current.strftime('%Y-%m-%d')
 
         fill_in "walk_location", with: "テスト公園"
         fill_in "walk_distance", with: "5.5"
