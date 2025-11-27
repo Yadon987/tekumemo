@@ -5,23 +5,32 @@
   <!-- 今日の散歩ダッシュボード -->
   <%= link_to walks_path, class: "block bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl" do %>
     <p class="text-xl font-bold font-bold opacity-90 text-shadow">今日の散歩</p>
-    <!-- 歩数と目標歩数 -->
-    <div class="flex justify-between items-baseline mt-2">
-      <p class="text-4xl font-bold text-shadow">5,234<span class="text-base font-medium ml-1 text-shadow">歩</span></p>
-      <p class="text-lg font-bold opacity-90 text-shadow">目標 10,000歩</p>
-    </div>
-    <!-- 歩数のプログレスバー -->
+
+    <!-- 距離と目標距離 -->
+<div class="flex justify-between items-baseline mt-2">
+  <p class="text-4xl font-bold text-shadow">
+    2,000<span class="text-base font-medium ml-1 text-shadow">m</span>
+  </p>
+  <p class="text-lg font-bold opacity-90 text-shadow">
+    / 5,000m
+  </p>
+</div>
+
+    <!-- 距離のプログレスバー -->
     <div class="w-full bg-white/30 rounded-full h-2.5 my-4">
-      <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: 52%"></div>
+      <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: 40%"></div>
     </div>
-    <!-- 距離と消費カロリー -->
+
+    <!-- 消費カロリー -->
     <div class="flex justify-between text-lg">
+      <!-- 歩数 -->
       <div class="flex items-center space-x-2">
-        <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">turn_sharp_right</span>
+        <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow w-9 h-9 overflow-hidden">directions_walk</span>
         <div>
-          <p class="font-bold text-lg text-shadow">4.0 km</p>
+          <p class="font-bold text-lg text-shadow">5,234 歩</p>
         </div>
       </div>
+      <!-- 消費カロリー -->
       <div class="flex items-center space-x-2">
         <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">local_fire_department</span>
         <div>
@@ -39,7 +48,7 @@
       <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
         <div class="flex items-center justify-center">
           <div class="flex items-center space-x-0.5 text-white/80 text-sm">
-            <span class="material-symbols-outlined font-bold text-base text-white">location_on</span>
+            <span class="material-symbols-outlined font-bold text-base text-white w-5 h-5 overflow-hidden">location_on</span>
             <span class="font-bold text-base text-white"><%= @location_name || "現在地不明" %></span>
           </div>
         </div>
@@ -103,7 +112,7 @@
 
     <div class="flex flex-col justify-center z-10">
       <div class="flex items-center space-x-1 mb-1 opacity-80">
-        <span class="material-symbols-outlined text-3xl sm:text-4xl text-white">trophy</span>
+        <span class="material-symbols-outlined text-3xl sm:text-4xl text-white w-10 h-10 overflow-hidden">trophy</span>
         <span class="text-sm sm:text-base font-bold text-white uppercase tracking-widest">Rank</span>
       </div>
       <div class="text-white">
@@ -114,7 +123,7 @@
       <div class="mt-2 relative inline-block">
          <div class="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-500 rounded-sm transform -skew-x-12 shadow-lg border border-white/20"></div>
          <div class="relative px-2 py-0.5 flex items-center space-x-1">
-            <span class="material-symbols-outlined text-[14px] sm:text-[16px] text-yellow-900">workspace_premium</span>
+            <span class="material-symbols-outlined text-[14px] sm:text-[16px] text-yellow-900 w-5 h-4 overflow-hidden">workspace_premium</span>
             <span class="text-[10px] sm:text-xs font-black text-yellow-900 uppercase tracking-wider">Top 15%</span>
          </div>
       </div>
@@ -162,7 +171,7 @@
         </div>
         <div>
           <button type="button" class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-full shadow-md flex items-center space-x-1 hover:bg-gray-50 transition-colors">
-            <span class="material-symbols-outlined text-lg">add</span>
+            <span class="material-symbols-outlined text-lg w-15 h-7 overflow-hidden">add</span>
             <span class="text-sm font-bold">メモ帳を開く</span>
           </button>
           <p class="text-sm font-bold text-right mt-1 opacity-80 text-shadow">Google Keep に保存</p>
