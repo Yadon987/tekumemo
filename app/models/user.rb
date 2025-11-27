@@ -39,7 +39,8 @@ class User < ApplicationRecord
         google_token: auth.credentials.token,
         google_refresh_token: auth.credentials.refresh_token,
         google_expires_at: Time.at(auth.credentials.expires_at),
-        avatar_url: auth.info.image # アバター画像を保存
+        avatar_url: auth.info.image, # アバター画像を保存
+        target_distance: 3000 # バリデーション回避のため明示的にデフォルト値を設定
       )
     end
 
