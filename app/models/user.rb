@@ -9,6 +9,12 @@ class User < ApplicationRecord
   # dependent: :destroy は、ユーザーが削除されたときに関連する散歩記録も一緒に削除する
   has_many :walks, dependent: :destroy
 
+  # 目標距離のバリデーション
+  # 1. 必須であること（デフォルト値があるため通常は問題ないが、念のため）
+  # 2. 数値であること
+  # 3. 0より大きいこと
+  validates :target_distance, presence: true, numericality: { only_integer: true, greater_than: 0 }
+
   # Google OAuth2認証のコールバック処理
   # OmniAuthから返されたデータを使って、ユーザー情報とトークンを保存する
   def self.from_omniauth(auth)

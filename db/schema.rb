@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_25_035721) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_27_074734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_25_035721) do
     t.datetime "google_expires_at"
     t.string "avatar_url"
     t.string "name"
+    t.integer "target_distance", default: 5000, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
