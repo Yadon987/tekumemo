@@ -30,5 +30,8 @@ class HomeController < ApplicationController
       lat: location[:latitude],
       lon: location[:longitude]
     )
+
+    # 今日の散歩記録を取得
+    @today_walk = current_user.walks.find_by(walked_on: Date.today)
   end
 end

@@ -1,6 +1,25 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+  describe "バリデーション" do
+    it "有効な目標距離であれば有効であること" do
+      user = User.new(email: "test@example.com", password: "password", target_distance: 5000)
+      expect(user).to be_valid
+    end
+
+    it "目標距離がない場合は無効であること" do
+      user = User.new(email: "test@example.com", password: "password", target_distance: nil)
+      user.valid?
+      expect(user.errors[:target_distance]).to include("を入力してください")
+    end
+
+    it "目標距離が0以下の場合は無効であること" do
+      user = User.new(email: "test@example.com", password: "password", target_distance: 0)
+      user.valid?
+      expect(user.errors[:target_distance]).to include("は0より大きい値にしてください")
+    end
+  end
+
   describe ".from_omniauth" do
     # OmniAuthのモックデータを作成
     # 実際のGoogle認証の代わりに、このハッシュデータを使用します

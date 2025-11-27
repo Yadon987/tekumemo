@@ -43,6 +43,18 @@
         </div>
         <p class="text-xs text-gray-500 mt-1 ml-1">ランキングや投稿などで他のユーザーに表示されます</p>
       </div>
+
+      <div>
+        <%= f.label :target_distance, "目標距離 (m)", class: "block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2" %>
+        <div class="relative group">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors">flag</span>
+          <%= f.number_field :target_distance,
+              step: 100,
+              placeholder: "例: 5000",
+              class: "w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none text-gray-800 dark:text-gray-200 placeholder-gray-400 shadow-inner" %>
+        </div>
+        <p class="text-xs text-gray-500 mt-1 ml-1">1日の目標距離をメートル単位で設定します（デフォルト: 5000）</p>
+      </div>
       <%# セキュリティ設定エリア（メール・パスワード） %>
       <div class="border-t border-gray-100 dark:border-gray-700 pt-6 mt-6">
         <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">セキュリティ設定</h3>

@@ -35,8 +35,8 @@ class UsersController < ApplicationController
       params[:user].delete(:password_confirmation)
     end
 
-    # :email, :password, :password_confirmation を追加で許可します
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    # :email, :password, :password_confirmation, :target_distance を追加で許可します
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :target_distance)
   end
 
   # セキュリティ対策：ログインユーザー以外が編集画面にアクセスしようとしたら弾く
