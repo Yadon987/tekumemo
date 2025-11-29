@@ -13,7 +13,10 @@
     <!-- 距離と目標距離 -->
     <div class="flex justify-between items-baseline mt-2">
       <p class="text-4xl font-bold text-shadow">
-        <%= number_with_delimiter((@today_walk&.distance.to_f * 1000).to_i) %><span class="text-base font-medium ml-1 text-shadow">m</span>
+        <span data-controller="counter"
+              data-counter-target-value="<%= (@today_walk&.distance.to_f * 1000).to_i %>">0
+        </span>
+        <span class="text-base font-medium ml-1 text-shadow">m</span>
       </p>
       <p class="text-lg font-bold opacity-90 text-shadow relative z-10">
         <%= link_to edit_user_path(current_user), class: "text-white hover:text-white transition-all inline-flex items-center gap-0.5 group" do %>
@@ -52,7 +55,7 @@
   <!-- 天気予報とランキングのグリッド -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <!-- 天気予報カード（コンパクト版） -->
-    <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-700 dark:to-blue-800 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
+    <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-700 dark:to-blue-800 rounded-3xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <!-- カードヘッダー -->
       <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
         <div class="flex items-center justify-center">
@@ -116,7 +119,7 @@
     </div>
 
     <!-- ランキングカード -->
-<div class="bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 rounded-3xl shadow-md overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
+<div class="bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-600 dark:to-blue-800 rounded-3xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] drop-shadow-2xl">
   <div class="p-3 h-full flex items-center justify-between relative">
 
     <div class="flex flex-col justify-center z-10">
@@ -162,39 +165,73 @@
   <!-- 下段グリッド：最新の投稿とメモ帳 -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <!-- 最新の投稿カード -->
-    <div class="bg-gradient-to-br from-sky-300 to-blue-400 dark:from-sky-600 dark:to-blue-700 p-4 rounded-3xl shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
-      <h3 class="font-bold text-white mb-3 text-shadow">最新の投稿</h3>
-      <div class="bg-gray-600/30 dark:bg-gray-200/10 backdrop-blur-sm p-3 rounded-md">
-        <p class="text-sm text-white line-clamp-3 text-shadow">
-          ダミーデータ：今日は天気が良かったので、いつもより長めの散歩をしました。公園で桜が咲き始めていて、春の訪れを感じることができました。今度、会社のみんなでお花見に行くのが楽しみです。
+    <div class="bg-gradient-to-br from-sky-200 to-blue-300 dark:from-blue-800/90 dark:to-slate-900/90 backdrop-blur-md border border-blue-200 dark:border-blue-700/30 p-4 rounded-3xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] group">
+      <h3 class="font-bold text-blue-900 dark:text-blue-100 mb-3 flex items-center">
+        <span class="material-symbols-outlined mr-2 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">article</span>
+        最新の投稿
+      </h3>
+      <div class="bg-white/60 dark:bg-slate-900/50 p-3 rounded-xl border border-blue-100 dark:border-blue-800/50 shadow-inner">
+        <p class="text-sm text-blue-900 dark:text-blue-200 line-clamp-3 font-medium leading-relaxed">
+          まだ投稿はありません。<br>
+          <span class="text-xs text-blue-600 dark:text-blue-400 mt-1 block">散歩の記録をシェアしてみましょう！</span>
         </p>
       </div>
     </div>
 
     <!-- メモ帳カード -->
-    <%= link_to "https://keep.google.com/", target: "_blank", rel: "noopener noreferrer", class: "block bg-gradient-to-br from-blue-400 to-indigo-500 dark:from-blue-500 dark:to-indigo-600 p-5 rounded-3xl shadow-md text-white relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl" do %>
-      <div class="flex justify-between items-end">
+    <%= link_to "https://keep.google.com/", target: "_blank", rel: "noopener noreferrer", class: "block bg-gradient-to-br from-sky-200 to-cyan-300 dark:from-sky-800 dark:to-cyan-900 p-5 rounded-3xl shadow-xl border border-cyan-100 dark:border-cyan-800 relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] drop-shadow-2xl group" do %>
+      <div class="flex justify-between items-end relative z-10">
         <div>
-          <h3 class="font-bold text-lg mb-2 text-shadow">メモ帳</h3>
-          <span class="material-symbols-outlined text-4xl opacity-80 -ml-1 transform -rotate-12 text-shadow">note_stack</span>
+          <h3 class="font-bold text-lg mb-2 text-cyan-900 dark:text-cyan-100 text-shadow-sm">メモ帳</h3>
+          <span class="material-symbols-outlined text-4xl text-cyan-700/50 dark:text-cyan-300/50 -ml-1 transform -rotate-12">note_stack</span>
         </div>
         <div>
-          <button type="button" class="bg-white text-indigo-600 font-bold py-2 px-4 rounded-full shadow-md flex items-center space-x-1 hover:bg-gray-50 transition-colors">
-            <span class="material-symbols-outlined text-lg w-15 h-7 overflow-hidden">add</span>
+          <button type="button" class="bg-white/80 dark:bg-gray-700/80 text-cyan-700 dark:text-cyan-200 font-bold py-2 px-4 rounded-full shadow-md flex items-center space-x-1 group-hover:bg-white dark:group-hover:bg-gray-700 transition-colors">
+            <span class="material-symbols-outlined text-lg w-5 h-5 overflow-hidden">add</span>
             <span class="text-sm font-bold">メモ帳を開く</span>
           </button>
-          <p class="text-sm font-bold text-right mt-1 opacity-80 text-shadow">Google Keep に保存</p>
+          <p class="text-sm font-bold text-right mt-1 text-cyan-800/80 dark:text-cyan-200/80">Google Keep に保存</p>
         </div>
       </div>
+
+      <!-- 装飾用サークル -->
+      <div class="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
     <% end %>
   </div>
 
-  <!-- スクロールテスト用ダミーコンテンツ -->
+  <!-- 運営からのお知らせカード -->
   <div class="space-y-4">
-    <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
-      <h3 class="font-bold text-white text-shadow"> 運営からのお知らせ</h3>
-      <p class="mt-2 text-sm text-white/90 text-shadow">更新履歴：2025/11/23 MVPリリースに近いところまで完成</p>
+    <!-- 運営からのお知らせカード -->
+    <div class="relative bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 p-5 rounded-3xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.01] group">
+      <!-- 背景装飾（巨大アイコン） -->
+      <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-white/10 transform rotate-12 group-hover:rotate-0 transition-transform duration-500 pointer-events-none">campaign</span>
+
+      <!-- ヘッダー -->
+      <div class="relative z-10 flex justify-between items-start mb-4">
+        <div class="flex items-center space-x-2">
+          <div class="bg-white/20 p-2 rounded-full backdrop-blur-sm">
+            <span class="material-symbols-outlined text-white text-xl">notifications_active</span>
+          </div>
+          <h3 class="font-bold text-white text-lg text-shadow">運営からのお知らせ</h3>
+        </div>
+      </div>
+
+      <!-- コンテンツ -->
+      <div class="relative z-10 bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10">
+        <div class="flex items-start space-x-3">
+          <div class="flex-shrink-0 mt-0.5 flex flex-col items-center space-y-1">
+            <span class="text-xs font-bold bg-white/20 text-white px-2 py-0.5 rounded-md">11/23</span>
+            <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">NEW</span>
+          </div>
+          <p class="text-sm text-white/95 font-medium leading-relaxed text-shadow-sm">
+            MVPリリースに近いところまで完成しました！<br>
+            <span class="text-xs opacity-80 mt-1 block">引き続き機能改善を行っていきます。</span>
+          </p>
+        </div>
+      </div>
     </div>
+
+    <!-- スクロールテスト用ダミーコンテンツ -->
     <div class="bg-gradient-to-br from-indigo-300 to-purple-300 dark:from-indigo-600 dark:to-purple-600 p-4 rounded-3xl shadow-md h-32 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl">
       <h3 class="font-bold text-white text-shadow">ダミーコンテンツ 2</h3>
       <p class="mt-2 text-sm text-white/90 text-shadow">スクロールテスト用</p>
