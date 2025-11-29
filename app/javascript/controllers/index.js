@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import CounterController from "./counter_controller"
+application.register("counter", CounterController)
+
 import DarkModeToggleController from "./dark_mode_toggle_controller"
 application.register("dark-mode-toggle", DarkModeToggleController)
 
