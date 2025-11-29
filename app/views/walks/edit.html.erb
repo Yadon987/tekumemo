@@ -13,7 +13,13 @@
   </div>
 
   <!-- フォーム -->
-  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-l-4 border-yellow-400 dark:border-yellow-500 transition-colors">
-    <%= render "form", walk: @walk %>
+  <div class="bg-gradient-to-br from-cyan-400 to-blue-500 dark:from-cyan-600 dark:to-blue-700 p-6 rounded-2xl shadow-xl transition-colors relative overflow-hidden">
+    <!-- 装飾用背景 -->
+    <div class="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+
+    <div class="relative z-10">
+      <%= render "form", walk: @walk %>
+    </div>
   </div>
 </div>

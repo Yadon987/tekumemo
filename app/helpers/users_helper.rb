@@ -15,7 +15,7 @@ module UsersHelper
       initials = "ゲスト" if initials.blank?
 
       # 背景色はグラデーションにする（アプリの雰囲気に合わせる）
-      content_tag :div, class: "#{base_classes} bg-gradient-to-br from-red-400 to-red-600 text-white" do
+      content_tag :div, class: "#{base_classes} bg-gradient-to-br from-blue-500 to-indigo-600 text-white" do
         initials
       end
     end

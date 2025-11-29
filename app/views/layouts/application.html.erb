@@ -33,11 +33,11 @@
   </script>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark font-display transition-colors duration-200">
+<body class="bg-slate-50 dark:bg-slate-950 font-display transition-colors duration-200">
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-background-light dark:bg-background-dark border-b border-gray-200 dark:border-gray-700">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50">
       <div class="flex justify-between items-center py-2 px-3 sm:py-4 sm:px-4 w-full max-w-2xl mx-auto">
         <!-- 左側：ダークモード切り替えトグルスイッチ（モバイル：小、PC：中） -->
         <div class="w-16 sm:w-24 flex justify-start items-center">
@@ -181,7 +181,7 @@
         </div>
 
         <!-- FABボタンコンテナ（メインコンテンツの幅に合わせて配置） -->
-        <div class="fixed bottom-[51px] sm:bottom-20 left-0 right-0 z-40 pointer-events-none">
+        <div class="fixed bottom-[65px] sm:bottom-24 left-0 right-0 z-40 pointer-events-none">
           <div class="max-w-2xl mx-auto px-4 relative h-0">
             <div class="absolute bottom-0 right-2 sm:right-6 pointer-events-auto">
               <!-- アクションボタン（展開時に表示されるボタン群） -->
@@ -235,7 +235,7 @@
                 type="button"
                 data-expandable-fab-target="mainButton"
                 data-action="click->expandable-fab#toggle"
-                class="bg-orange-500 dark:bg-orange-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-orange-600 dark:hover:bg-orange-700 transition-all duration-300">
+                class="bg-gradient-to-r from-orange-400 to-pink-500 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:from-orange-500 hover:to-pink-600 transition-all duration-300">
                 <span class="material-symbols-outlined text-2xl drop-shadow-2xl text-shadow">add</span>
               </button>
             </div>
