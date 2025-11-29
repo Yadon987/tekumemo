@@ -13,7 +13,7 @@ gem "bootsnap", require: false
 gem "devise"
 gem "foreman"
 gem "omniauth-google-oauth2"
-gem "omniauth-rails_csrf_protection"
+gem "omniauth-rails_csrf_protection", "~> 1.0.2"
 gem "google-apis-fitness_v1"
 gem "simple_calendar", "~> 3.0"
 gem "dotenv-rails"

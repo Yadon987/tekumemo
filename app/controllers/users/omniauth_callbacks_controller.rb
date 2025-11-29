@@ -21,6 +21,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # OAuth認証失敗時の処理
   def failure
+    Rails.logger.error "=== Google Auth Failure Debug Info ==="
+    Rails.logger.error "Session ID: #{session.id.inspect}"
+    Rails.logger.error "CSRF Token in params: #{request.params['authenticity_token']}"
+    Rails.logger.error "Cookie Header: #{request.headers['Cookie']}"
+    Rails.logger.error "X-Forwarded-Proto: #{request.headers['X-Forwarded-Proto']}"
+    Rails.logger.error "Origin: #{request.headers['Origin']}"
+    Rails.logger.error "======================================"
+
     redirect_to root_path, alert: t("devise.omniauth_callbacks.failure", kind: "Google", reason: "アクセスが拒否されたか、エラーが発生しました")
   end
 end
