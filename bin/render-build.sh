@@ -5,6 +5,10 @@ set -o errexit
 
 echo "🚀 アプリのビルド開始！"
 
+# 古いgemのクリーンアップ（キャッシュクリア）
+echo "🧹 古い依存関係をクリーンアップ中..."
+bundle clean --force || true
+
 # Bundlerのインストール
 echo "📦 Ruby Gemsをインストール中..."
 bundle install
