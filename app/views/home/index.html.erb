@@ -3,30 +3,22 @@
 <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
 
   <!-- 今日の散歩ダッシュボード -->
-  <div class="relative block bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl group">
-    <!-- カード全体をリンク化（Stretched Link） -->
-    <%= link_to "", walks_path, class: "absolute inset-0 z-0 rounded-3xl" %>
-
+  <%= link_to walks_path, class: "block bg-gradient-to-br from-blue-300 to-indigo-400 dark:from-blue-600 dark:to-indigo-700 text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl" do %>
     <p class="text-xl font-bold font-bold opacity-90 text-shadow">今日の散歩</p>
 
     <!-- 距離と目標距離 -->
-    <div class="flex justify-between items-baseline mt-2">
-      <p class="text-4xl font-bold text-shadow">
-        <%= number_with_delimiter((@today_walk&.distance.to_f * 1000).to_i) %><span class="text-base font-medium ml-1 text-shadow">m</span>
-      </p>
-      <p class="text-lg font-bold opacity-90 text-shadow relative z-10">
-        <%= link_to edit_user_path(current_user), class: "text-white hover:text-white transition-all inline-flex items-center gap-0.5 group" do %>
-          <span class="group-hover:underline decoration-white/50 underline-offset-4">
-            / <%= number_with_delimiter(current_user.target_distance) %>m
-          </span>
-          <span class="material-symbols-outlined text-[16px] opacity-70 group-hover:opacity-100 transition-opacity">settings</span>
-        <% end %>
-      </p>
-    </div>
+<div class="flex justify-between items-baseline mt-2">
+  <p class="text-4xl font-bold text-shadow">
+    2,000<span class="text-base font-medium ml-1 text-shadow">m</span>
+  </p>
+  <p class="text-lg font-bold opacity-90 text-shadow">
+    / 5,000m
+  </p>
+</div>
 
     <!-- 距離のプログレスバー -->
     <div class="w-full bg-white/30 rounded-full h-2.5 my-4">
-      <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: <%= ((@today_walk&.distance.to_f * 1000) / current_user.target_distance.to_f * 100).clamp(0, 100) %>%"></div>
+      <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: 40%"></div>
     </div>
 
     <!-- 消費カロリー -->
@@ -35,18 +27,18 @@
       <div class="flex items-center space-x-2">
         <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow w-9 h-9 overflow-hidden">directions_walk</span>
         <div>
-          <p class="font-bold text-lg text-shadow"><%= number_with_delimiter(@today_walk&.steps || 0) %> 歩</p>
+          <p class="font-bold text-lg text-shadow">5,234 歩</p>
         </div>
       </div>
       <!-- 消費カロリー -->
       <div class="flex items-center space-x-2">
         <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">local_fire_department</span>
         <div>
-          <p class="font-bold text-lg text-shadow"><%= number_with_delimiter(@today_walk&.calories_burned || 0) %> kcal</p>
+          <p class="font-bold text-lg text-shadow">312 kcal</p>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <!-- 天気予報とランキングのグリッド -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
