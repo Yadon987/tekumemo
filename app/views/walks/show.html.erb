@@ -1,140 +1,136 @@
 <% content_for :title, "散歩記録詳細 - てくメモ" %>
 
-<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto">
-  <!-- ページタイトル -->
-  <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
-      <span class="material-symbols-outlined text-3xl">description</span>
-      <span>散歩記録詳細</span>
+<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-6">
+
+  <!-- ヘッダーエリア：日付と場所 -->
+  <div class="text-center space-y-2">
+    <div class="inline-block bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm px-4 py-1 rounded-full border border-gray-200 dark:border-gray-700 shadow-sm">
+      <span class="text-sm font-bold text-gray-500 dark:text-gray-400">
+        <%= %w[日 月 火 水 木 金 土][@walk.walked_on.wday] %>曜日
+      </span>
+    </div>
+    <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
+      <%= @walk.walked_on.strftime('%Y.%m.%d') %>
     </h1>
-  </div>
-
-  <!-- 散歩記録カード -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 border-sky-400 dark:border-sky-500 transition-colors overflow-hidden mb-6">
-    <div class="p-6">
-      <!-- 日付 -->
-      <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
-        <div class="flex items-center space-x-3">
-          <div class="bg-sky-100 dark:bg-sky-900/30 p-3 rounded-full">
-            <span class="material-symbols-outlined text-sky-500 dark:text-sky-400 text-3xl">calendar_today</span>
-          </div>
-          <div>
-            <p class="text-2xl font-bold text-gray-900 dark:text-white">
-              <%= @walk.walked_on.strftime('%Y年%m月%d日') %>
-            </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-              <%= %w[日 月 火 水 木 金 土][@walk.walked_on.wday] %>曜日
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 場所 -->
-      <div class="mb-6">
-        <div class="flex items-center space-x-2 mb-2">
-          <span class="material-symbols-outlined text-gray-400 dark:text-gray-500">location_on</span>
-          <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">場所</h3>
-        </div>
-        <p class="text-lg text-gray-900 dark:text-white ml-8"><%= @walk.location %></p>
-      </div>
-
-      <!-- 統計情報 -->
-      <div class="grid grid-cols-2 gap-4 mb-6">
-        <!-- 距離 -->
-        <% if @walk.distance.present? %>
-          <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-            <div class="flex items-center space-x-2 mb-2">
-              <span class="material-symbols-outlined text-green-500 dark:text-green-400">straighten</span>
-              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">距離</h3>
-            </div>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">
-              <%= @walk.distance %>
-              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">km</span>
-            </p>
-          </div>
-        <% end %>
-
-        <!-- 時間 -->
-        <% if @walk.duration.present? %>
-          <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-            <div class="flex items-center space-x-2 mb-2">
-              <span class="material-symbols-outlined text-blue-500 dark:text-blue-400">schedule</span>
-              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">時間</h3>
-            </div>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">
-              <%= @walk.duration %>
-              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">分</span>
-            </p>
-          </div>
-        <% end %>
-
-        <!-- 歩数 -->
-        <% if @walk.steps.present? %>
-          <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
-            <div class="flex items-center space-x-2 mb-2">
-              <span class="material-symbols-outlined text-purple-500 dark:text-purple-400">directions_walk</span>
-              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">歩数</h3>
-            </div>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">
-              <%= @walk.steps.to_s.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\1,') %>
-              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">歩</span>
-            </p>
-          </div>
-        <% end %>
-
-        <!-- 消費カロリー -->
-        <% if @walk.calories_burned.present? %>
-          <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
-            <div class="flex items-center space-x-2 mb-2">
-              <span class="material-symbols-outlined text-orange-500 dark:text-orange-400">local_fire_department</span>
-              <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">消費カロリー</h3>
-            </div>
-            <p class="text-3xl font-bold text-gray-900 dark:text-white">
-              <%= @walk.calories_burned %>
-              <span class="text-lg font-normal text-gray-500 dark:text-gray-400">kcal</span>
-            </p>
-          </div>
-        <% end %>
-      </div>
-
-      <!-- メモ -->
-      <% if @walk.notes.present? %>
-        <div>
-          <div class="flex items-center space-x-2 mb-3">
-            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500">note</span>
-            <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400">メモ</h3>
-          </div>
-          <div class="bg-gray-100 dark:bg-gray-700/50 p-4 rounded-lg">
-            <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap"><%= @walk.notes %></p>
-          </div>
-        </div>
-      <% end %>
+    <div class="flex items-center justify-center space-x-1 text-gray-600 dark:text-gray-300">
+      <span class="material-symbols-outlined text-red-500">location_on</span>
+      <span class="font-bold text-lg"><%= @walk.location %></span>
     </div>
   </div>
 
+  <!-- Bento Grid 統計情報 -->
+  <div class="grid grid-cols-2 gap-4">
+    <!-- 距離カード -->
+    <div class="bg-gradient-to-br from-lime-400 to-green-500 dark:from-lime-600 dark:to-green-700 rounded-3xl p-5 text-white shadow-lg shadow-green-200 dark:shadow-none relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+      <div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+      <div class="relative z-10">
+        <div class="flex items-center space-x-1 mb-2 opacity-90">
+          <span class="material-symbols-outlined">straighten</span>
+          <span class="text-xs font-bold">距離</span>
+        </div>
+        <div class="flex items-baseline">
+          <span class="text-4xl font-black tracking-tighter text-shadow-sm"
+                data-controller="counter"
+                data-counter-target-value="<%= @walk.distance %>">
+            0
+          </span>
+          <span class="text-sm font-bold ml-1 opacity-90">km</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 時間カード -->
+    <div class="bg-gradient-to-br from-sky-400 to-blue-500 dark:from-sky-600 dark:to-blue-700 rounded-3xl p-5 text-white shadow-lg shadow-blue-200 dark:shadow-none relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+      <div class="absolute bottom-0 left-0 -ml-4 -mb-4 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+      <div class="relative z-10">
+        <div class="flex items-center space-x-1 mb-2 opacity-90">
+          <span class="material-symbols-outlined">schedule</span>
+          <span class="text-xs font-bold">時間</span>
+        </div>
+        <div class="flex items-baseline">
+          <span class="text-4xl font-black tracking-tighter text-shadow-sm"
+                data-controller="counter"
+                data-counter-target-value="<%= @walk.duration %>">
+            0
+          </span>
+          <span class="text-sm font-bold ml-1 opacity-90">分</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 歩数カード -->
+    <div class="bg-gradient-to-br from-indigo-400 to-purple-500 dark:from-indigo-600 dark:to-purple-700 rounded-3xl p-5 text-white shadow-lg shadow-purple-200 dark:shadow-none relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+      <div class="absolute top-0 left-0 -ml-4 -mt-4 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+      <div class="relative z-10">
+        <div class="flex items-center space-x-1 mb-2 opacity-90">
+          <span class="material-symbols-outlined">directions_walk</span>
+          <span class="text-xs font-bold">歩数</span>
+        </div>
+        <div class="flex items-baseline">
+          <span class="text-3xl sm:text-4xl font-black tracking-tighter text-shadow-sm"
+                data-controller="counter"
+                data-counter-target-value="<%= @walk.steps || 0 %>">
+            0
+          </span>
+          <span class="text-sm font-bold ml-1 opacity-90">歩</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- カロリーカード -->
+    <div class="bg-gradient-to-br from-orange-400 to-red-500 dark:from-orange-600 dark:to-red-700 rounded-3xl p-5 text-white shadow-lg shadow-orange-200 dark:shadow-none relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+      <div class="absolute bottom-0 right-0 -mr-4 -mb-4 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+      <div class="relative z-10">
+        <div class="flex items-center space-x-1 mb-2 opacity-90">
+          <span class="material-symbols-outlined">local_fire_department</span>
+          <span class="text-xs font-bold">消費カロリー</span>
+        </div>
+        <div class="flex items-baseline">
+          <span class="text-4xl font-black tracking-tighter text-shadow-sm"
+                data-controller="counter"
+                data-counter-target-value="<%= @walk.calories_burned || 0 %>">
+            0
+          </span>
+          <span class="text-sm font-bold ml-1 opacity-90">kcal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- メモセクション（ノート風） -->
+  <% if @walk.notes.present? %>
+    <div class="bg-yellow-50 dark:bg-gray-800 border-l-4 border-yellow-400 dark:border-yellow-600 p-5 rounded-r-xl shadow-sm relative overflow-hidden">
+      <div class="flex items-center space-x-2 mb-3 text-yellow-600 dark:text-yellow-500">
+        <span class="material-symbols-outlined">edit_note</span>
+        <h3 class="font-bold text-sm uppercase tracking-wider">Memo</h3>
+      </div>
+      <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed font-medium">
+        <%= @walk.notes %>
+      </p>
+    </div>
+  <% end %>
+
   <!-- アクションボタン -->
-  <div class="flex flex-col sm:flex-row gap-3">
-    <!-- 一覧に戻るボタン -->
+  <div class="grid grid-cols-3 gap-3 pt-4">
     <%= link_to walks_path,
-        class: "flex-1 text-center bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-bold py-3 px-6 rounded-lg shadow-md transition-colors flex items-center justify-center space-x-2" do %>
+        class: "col-span-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 font-bold py-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition-all active:scale-95" do %>
       <span class="material-symbols-outlined">arrow_back</span>
-      <span>一覧に戻る</span>
+      <span class="text-xs">戻る</span>
     <% end %>
 
-    <!-- 編集ボタン -->
     <%= link_to edit_walk_path(@walk),
-        class: "flex-1 text-center bg-yellow-500 dark:bg-yellow-600 hover:bg-yellow-600 dark:hover:bg-yellow-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors flex items-center justify-center space-x-2" do %>
+        class: "col-span-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 font-bold py-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition-all active:scale-95" do %>
       <span class="material-symbols-outlined">edit</span>
-      <span>編集</span>
+      <span class="text-xs">編集</span>
     <% end %>
 
-    <!-- 削除ボタン -->
     <%= link_to walk_path(@walk),
         method: :delete,
-        data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？この操作は取り消せません。" },
-        class: "flex-1 text-center bg-red-500 dark:bg-red-600 hover:bg-red-600 dark:hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors flex items-center justify-center space-x-2" do %>
+        data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+        class: "col-span-1 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 font-bold py-4 rounded-2xl flex flex-col items-center justify-center space-y-1 transition-all active:scale-95" do %>
       <span class="material-symbols-outlined">delete</span>
-      <span>削除</span>
+      <span class="text-xs">削除</span>
     <% end %>
   </div>
+
 </div>
