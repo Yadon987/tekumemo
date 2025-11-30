@@ -171,9 +171,9 @@
     </div>
 
     <!-- インジケーター（スマホのみ表示） -->
-    <div class="flex justify-center space-x-2 mt-4 sm:hidden">
-      <div data-carousel-target="indicator" class="h-2 w-6 bg-blue-500 rounded-full transition-all duration-300"></div>
-      <div data-carousel-target="indicator" class="h-2 w-2 bg-gray-300 rounded-full transition-all duration-300"></div>
+    <div class="absolute bottom-6 left-0 right-0 flex justify-center space-x-2 sm:hidden z-10 pointer-events-none">
+      <button type="button" data-action="carousel#scrollToSlide" data-index="0" data-carousel-target="indicator" class="w-2 h-2 rounded-full bg-white transition-all duration-300 shadow-sm pointer-events-auto"></button>
+      <button type="button" data-action="carousel#scrollToSlide" data-index="1" data-carousel-target="indicator" class="w-2 h-2 rounded-full bg-white/40 transition-all duration-300 hover:bg-white/60 shadow-sm pointer-events-auto"></button>
     </div>
   </div>
 
