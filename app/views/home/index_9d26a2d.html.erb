@@ -3,7 +3,8 @@
 <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
 
   <!-- 今日の散歩ダッシュボード -->
-  <div class="relative block bg-gradient-to-br from-cyan-400 to-indigo-500 dark:from-slate-900 dark:via-cyan-950 dark:to-indigo-950 border border-transparent dark:border-cyan-400/50 dark:shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:dark:shadow-[0_0_30px_rgba(34,211,238,0.4)] text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl group">
+  <!-- 今日の散歩ダッシュボード -->
+  <div class="relative block bg-gradient-to-br from-cyan-400 to-indigo-500 dark:from-cyan-600 dark:to-indigo-800 text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl group">
     <!-- カード全体をリンク化（Stretched Link） -->
     <%= link_to "", walks_path, class: "absolute inset-0 z-0 rounded-3xl" %>
 
@@ -28,7 +29,7 @@
     </div>
 
     <!-- 距離のプログレスバー -->
-    <div class="w-full bg-white/50 rounded-full h-2.5 my-4">
+    <div class="w-full bg-white/30 rounded-full h-2.5 my-4">
       <div class="bg-gradient-to-r from-lime-300 to-green-400 h-2.5 rounded-full shadow-md" style="width: <%= ((@today_walk&.distance.to_f * 1000) / current_user.target_distance.to_f * 100).clamp(0, 100) %>%"></div>
     </div>
 
@@ -59,7 +60,7 @@
 
       <!-- 天気予報カード -->
       <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-        <div class="relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-xl h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border border-transparent dark:border-blue-400/50 dark:shadow-[0_0_20px_rgba(96,165,250,0.2)] hover:dark:shadow-[0_0_30px_rgba(96,165,250,0.4)]">
+        <div class="relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-xl h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-sky-600 dark:to-blue-800">
           <!-- カードヘッダー -->
           <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
             <div class="flex items-center justify-center">
@@ -125,7 +126,7 @@
 
       <!-- ランキングカード -->
       <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-        <div class="relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-xl hover:scale-[1.01] drop-shadow-lg h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-700 dark:from-slate-900 dark:to-indigo-950 border border-transparent dark:border-yellow-400/50 dark:shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:dark:shadow-[0_0_30px_rgba(250,204,21,0.4)]">
+        <div class="relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-xl hover:scale-[1.01] drop-shadow-lg h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-700 dark:from-sky-600 dark:to-blue-900">
           <div class="p-3 h-full flex items-center justify-between relative">
 
             <div class="flex flex-col justify-center z-10">
@@ -179,68 +180,69 @@
   <!-- 下段グリッド：最新の投稿とメモ帳 -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <!-- 最新の投稿カード -->
-    <div class="bg-gradient-to-br from-blue-100/90 to-white/90 dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-blue-200 dark:border-cyan-500/50 p-4 rounded-3xl shadow-lg dark:shadow-[0_0_15px_rgba(6,182,212,0.15)] hover:dark:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 hover:shadow-xl hover:scale-[1.01] group">
-      <div class="flex items-center space-x-3 mb-3">
-        <span class="material-symbols-outlined text-blue-500 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] text-2xl group-hover:scale-110 transition-transform duration-300">article</span>
-        <h3 class="font-bold text-gray-700 dark:text-cyan-50 text-lg">最新の投稿</h3>
-      </div>
-
-      <div class="bg-white/60 dark:bg-slate-800/50 rounded-2xl p-4 border border-blue-100 dark:border-cyan-500/20 h-24 flex items-center justify-center">
-        <div class="text-center">
-          <p class="text-blue-900 dark:text-cyan-100 font-medium text-sm">まだ投稿はありません。</p>
-          <p class="text-blue-600 dark:text-cyan-400 text-xs mt-1">散歩の記録をシェアしてみましょう！</p>
-        </div>
+    <!-- 最新の投稿カード -->
+    <div class="bg-gradient-to-br from-blue-50/90 to-white/90 dark:from-slate-800/90 dark:to-slate-900/90 backdrop-blur-xl border border-blue-200 dark:border-blue-800/30 p-4 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.01] group">
+      <h3 class="font-bold text-blue-900 dark:text-blue-100 mb-3 flex items-center">
+        <span class="material-symbols-outlined mr-2 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">article</span>
+        最新の投稿
+      </h3>
+      <div class="bg-white/60 dark:bg-slate-900/50 p-3 rounded-xl border border-blue-100 dark:border-blue-800/50 shadow-inner">
+        <p class="text-sm text-blue-900 dark:text-blue-200 line-clamp-3 font-medium leading-relaxed">
+          まだ投稿はありません。<br>
+          <span class="text-xs text-blue-600 dark:text-blue-400 mt-1 block">散歩の記録をシェアしてみましょう！</span>
+        </p>
       </div>
     </div>
 
     <!-- メモ帳カード -->
-    <%= link_to "https://keep.google.com/", target: "_blank", rel: "noopener noreferrer", class: "block bg-gradient-to-br from-cyan-50/90 to-white/90 dark:from-slate-900/80 dark:to-purple-950/80 backdrop-blur-xl border border-cyan-200 dark:border-purple-500/50 p-5 rounded-3xl shadow-lg dark:shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:dark:shadow-[0_0_30px_rgba(168,85,247,0.4)] relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] group" do %>
+    <!-- メモ帳カード -->
+    <%= link_to "https://keep.google.com/", target: "_blank", rel: "noopener noreferrer", class: "block bg-gradient-to-br from-cyan-50/90 to-white/90 dark:from-slate-800/90 dark:to-slate-900/90 backdrop-blur-xl border border-cyan-200 dark:border-cyan-800/30 p-5 rounded-3xl shadow-lg relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] group" do %>
       <div class="flex justify-between items-end relative z-10">
         <div>
-          <h3 class="font-bold text-lg mb-2 text-cyan-900 dark:text-purple-50 text-shadow-sm">メモ帳</h3>
-          <span class="material-symbols-outlined text-4xl text-cyan-700/50 dark:text-purple-400/50 dark:drop-shadow-[0_0_5px_rgba(192,132,252,0.5)] -ml-1 transform -rotate-12">note_stack</span>
+          <h3 class="font-bold text-lg mb-2 text-cyan-900 dark:text-cyan-100 text-shadow-sm">メモ帳</h3>
+          <span class="material-symbols-outlined text-4xl text-cyan-700/50 dark:text-cyan-300/50 -ml-1 transform -rotate-12">note_stack</span>
         </div>
         <div>
-          <div class="bg-white dark:bg-slate-700/80 py-2 px-4 rounded-full flex items-center space-x-1 shadow-lg border border-transparent dark:border-purple-500/50 dark:shadow-[0_0_10px_rgba(168,85,247,0.3)] group-hover:bg-white dark:group-hover:bg-slate-800 transition-colors">
-            <span class="material-symbols-outlined text-green-600 dark:text-purple-300 text-lg w-5 h-5 overflow-hidden">add</span>
-            <span class="text-sm font-bold text-green-600 dark:text-purple-300">メモ帳を開く</span>
-          </div>
-          <p class="text-sm font-bold text-right mt-1 text-cyan-800/80 dark:text-purple-300/70">Google Keep に保存</p>
+          <button type="button" class="bg-white dark:bg-gray-700/80 text-green-600 dark:text-cyan-200 font-bold py-2 px-4 rounded-full shadow-lg flex items-center space-x-1 group-hover:bg-white dark:group-hover:bg-gray-700 transition-colors">
+            <span class="material-symbols-outlined text-lg w-5 h-5 overflow-hidden">add</span>
+            <span class="text-sm font-bold">メモ帳を開く</span>
+          </button>
+          <p class="text-sm font-bold text-right mt-1 text-cyan-800/80 dark:text-cyan-200/80">Google Keep に保存</p>
         </div>
       </div>
 
       <!-- 装飾用サークル -->
-      <div class="absolute -top-4 -right-4 w-24 h-24 bg-cyan-50/50 dark:bg-purple-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
     <% end %>
   </div>
 
   <!-- 運営からのお知らせカード -->
   <div class="space-y-4">
     <!-- 運営からのお知らせカード -->
-    <div class="relative bg-gradient-to-br from-indigo-100/90 to-purple-200/90 dark:from-purple-950/80 dark:to-pink-950/80 backdrop-blur-xl border border-white/40 dark:border-pink-500/40 p-5 rounded-3xl shadow-lg dark:shadow-[0_0_20px_rgba(236,72,153,0.25)] hover:dark:shadow-[0_0_30px_rgba(236,72,153,0.4)] transition-all duration-300 hover:shadow-xl hover:scale-[1.01] drop-shadow-lg group overflow-hidden">
+    <div class="relative bg-gradient-to-br from-purple-100 to-indigo-200 dark:from-purple-700 dark:to-indigo-900 p-5 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.01] drop-shadow-lg group overflow-hidden">
       <!-- 背景装飾（巨大アイコン） -->
-      <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-purple-200/20 dark:text-pink-500/10 transform rotate-12 group-hover:rotate-0 transition-transform duration-500 pointer-events-none">campaign</span>
+      <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-white/10 transform rotate-12 group-hover:rotate-0 transition-transform duration-500 pointer-events-none">campaign</span>
 
       <!-- ヘッダー -->
       <div class="relative z-10 flex justify-between items-start mb-4">
         <div class="flex items-center space-x-2">
-          <div class="bg-white/60 dark:bg-white/10 p-2 rounded-full backdrop-blur-sm shadow-sm">
-            <span class="material-symbols-outlined text-purple-600 dark:text-pink-200 text-xl">notifications_active</span>
+          <div class="bg-white/20 p-2 rounded-full backdrop-blur-sm shadow-sm">
+            <span class="material-symbols-outlined text-purple-900 text-xl">notifications_active</span>
           </div>
-          <h3 class="font-bold text-purple-900 dark:text-pink-100 text-lg text-shadow-sm">運営からのお知らせ</h3>
+          <h3 class="font-bold text-purple-900 text-lg text-shadow-sm">運営からのお知らせ</h3>
         </div>
       </div>
 
       <!-- コンテンツ -->
-      <div class="relative z-10 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl p-3 border border-white/40 dark:border-white/10 shadow-inner">
+      <div class="relative z-10 bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-inner">
         <div class="flex items-start space-x-3">
           <div class="flex-shrink-0 mt-0.5 flex flex-col items-center space-y-1">
-            <span class="text-xs font-bold bg-white/50 dark:bg-white/10 text-purple-900 dark:text-pink-200 px-2 py-0.5 rounded-md shadow-sm">11/23</span>
+            <span class="text-xs font-bold bg-white/20 text-purple-900 px-2 py-0.5 rounded-md shadow-sm">11/23</span>
             <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">NEW</span>
           </div>
-          <p class="text-sm text-purple-900 dark:text-pink-100 font-medium leading-relaxed text-shadow-sm">
+          <p class="text-sm text-purple-900 font-medium leading-relaxed text-shadow-sm">
             MVPリリースに近いところまで完成しました！<br>
-            <span class="text-xs text-purple-800/80 dark:text-pink-200/70 mt-1 block">引き続き機能改善を行っていきます。</span>
+            <span class="text-xs text-purple-900/80 mt-1 block">引き続き機能改善を行っていきます。</span>
           </p>
         </div>
       </div>

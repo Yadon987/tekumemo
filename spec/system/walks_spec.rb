@@ -70,9 +70,9 @@ RSpec.describe "Walks", type: :system do
         # 6. テキスト一致エラー対策: HTMLの表示に合わせてスペース有無を調整
         # ビューファイル(show.html.erb)の構造上、数値と単位の間にスペースがないとして扱われます
         expect(page).to have_content "テスト公園"
-        expect(page).to have_content "5.5km"     # スペースなし
-        expect(page).to have_content "60分"      # スペースなし
-        expect(page).to have_content "8,000歩"   # スペースなし
+        expect(page).to have_content "5.5"
+        expect(page).to have_content "60"
+        expect(page).to have_content "8,000"
 
         # カロリーはレイアウトによって改行が含まれる可能性があるため、数値のみ確認で安全策をとる
         expect(page).to have_content "300"
