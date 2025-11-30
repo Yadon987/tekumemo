@@ -21,6 +21,21 @@ export default class extends Controller {
         this.containerTarget.addEventListener("mouseenter", () => this.stopAutoPlay())
         this.containerTarget.addEventListener("touchend", () => this.startAutoPlay())
         this.containerTarget.addEventListener("mouseleave", () => this.startAutoPlay())
+
+        // スクロールイベントを監視してインジケーターを更新
+        this.containerTarget.addEventListener("scroll", () => this.onScroll(), { passive: true })
+    }
+
+    onScroll() {
+        const scrollLeft = this.containerTarget.scrollLeft
+        const slideWidth = this.slideTargets[0].offsetWidth
+        // 中心に近いスライドのインデックスを計算
+        const index = Math.round(scrollLeft / slideWidth)
+
+        if (this.currentIndex !== index && index < this.slideTargets.length) {
+            this.currentIndex = index
+            this.updateIndicators()
+        }
     }
 
     disconnect() {
@@ -43,6 +58,7 @@ export default class extends Controller {
     }
 
     next() {
+        if (this.slideTargets.length === 0) return
         this.currentIndex = (this.currentIndex + 1) % this.slideTargets.length
         this.scrollToSlide()
     }
