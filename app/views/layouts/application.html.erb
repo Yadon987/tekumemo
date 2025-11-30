@@ -33,7 +33,7 @@
   </script>
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-950 font-display transition-colors duration-200">
+<body class="bg-slate-50 dark:bg-slate-950 font-display transition-colors duration-200" data-controller="scroll-hide">
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->
@@ -181,7 +181,7 @@
         </div>
 
         <!-- FABボタンコンテナ（メインコンテンツの幅に合わせて配置） -->
-        <div class="fixed bottom-[65px] sm:bottom-24 left-0 right-0 z-40 pointer-events-none">
+        <div class="fixed bottom-[65px] sm:bottom-24 left-0 right-0 z-40 pointer-events-none transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
           <div class="max-w-2xl mx-auto px-4 relative h-0">
             <div class="absolute bottom-0 right-2 sm:right-6 pointer-events-auto">
               <!-- アクションボタン（展開時に表示されるボタン群） -->
@@ -244,7 +244,7 @@
       </div>
 
       <!-- ===== ボトムナビゲーション（ログイン時のみ・モバイルファースト・レスポンシブ対応） ===== -->
-      <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50">
+      <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50 transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
         <div class="flex justify-around items-center h-10 sm:h-16 max-w-2xl mx-auto">
           <!-- ホーム -->
           <%= link_to root_path,

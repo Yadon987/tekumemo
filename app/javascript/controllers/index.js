@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import CarouselController from "./carousel_controller"
+application.register("carousel", CarouselController)
+
 import CounterController from "./counter_controller"
 application.register("counter", CounterController)
 
@@ -21,3 +24,6 @@ application.register("google-fit", GoogleFitController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ScrollHideController from "./scroll_hide_controller"
+application.register("scroll-hide", ScrollHideController)
