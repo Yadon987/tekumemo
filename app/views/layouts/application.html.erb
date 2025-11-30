@@ -33,11 +33,11 @@
   </script>
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-950 font-display transition-colors duration-200" data-controller="scroll-hide">
+<body class="min-h-screen bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 font-display transition-colors duration-200" data-controller="scroll-hide">
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-sky-50/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-sky-100/50 dark:border-slate-700/50">
       <div class="flex justify-between items-center py-2 px-3 sm:py-4 sm:px-4 w-full max-w-2xl mx-auto">
         <!-- 左側：ダークモード切り替えトグルスイッチ（モバイル：小、PC：中） -->
         <div class="w-16 sm:w-24 flex justify-start items-center">
@@ -244,7 +244,7 @@
       </div>
 
       <!-- ===== ボトムナビゲーション（ログイン時のみ・モバイルファースト・レスポンシブ対応） ===== -->
-      <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50 transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
+      <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-gray-100 dark:border-gray-700/50 shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50 transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
         <div class="flex justify-around items-center h-10 sm:h-16 max-w-2xl mx-auto">
           <!-- ホーム -->
           <%= link_to root_path,

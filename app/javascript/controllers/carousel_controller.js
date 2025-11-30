@@ -21,6 +21,21 @@ export default class extends Controller {
         this.containerTarget.addEventListener("mouseenter", () => this.stopAutoPlay())
         this.containerTarget.addEventListener("touchend", () => this.startAutoPlay())
         this.containerTarget.addEventListener("mouseleave", () => this.startAutoPlay())
+
+        // スクロールイベントを監視してインジケーターを更新
+        this.containerTarget.addEventListener("scroll", () => this.onScroll(), { passive: true })
+    }
+
+    onScroll() {
+        const scrollLeft = this.containerTarget.scrollLeft
+        const slideWidth = this.slideTargets[0].offsetWidth
+        // 中心に近いスライドのインデックスを計算
+        const index = Math.round(scrollLeft / slideWidth)
+
+        if (this.currentIndex !== index && index < this.slideTargets.length) {
+            this.currentIndex = index
+            this.updateIndicators()
+        }
     }
 
     disconnect() {
@@ -43,6 +58,7 @@ export default class extends Controller {
     }
 
     next() {
+        if (this.slideTargets.length === 0) return
         this.currentIndex = (this.currentIndex + 1) % this.slideTargets.length
         this.scrollToSlide()
     }
@@ -62,11 +78,11 @@ export default class extends Controller {
     updateIndicators() {
         this.indicatorTargets.forEach((indicator, index) => {
             if (index === this.currentIndex) {
-                indicator.classList.add("bg-blue-500", "w-6")
-                indicator.classList.remove("bg-gray-300", "w-2")
+                indicator.classList.add("bg-white", "w-6")
+                indicator.classList.remove("bg-white/40", "w-2")
             } else {
-                indicator.classList.add("bg-gray-300", "w-2")
-                indicator.classList.remove("bg-blue-500", "w-6")
+                indicator.classList.add("bg-white/40", "w-2")
+                indicator.classList.remove("bg-white", "w-6")
             }
         })
     }
