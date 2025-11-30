@@ -34,8 +34,23 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+require 'capybara/rails'
+require 'selenium-webdriver'
+
+RSpec.configure do |config|
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400] do |options|
+      options.add_argument('no-sandbox')
+      options.add_argument('disable-dev-shm-usage')
+    end
+  end
+end
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+  config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]
