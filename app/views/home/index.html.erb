@@ -56,7 +56,7 @@
   <div data-controller="carousel" class="relative group mb-6">
     <!-- カルーセルコンテナ（スマホ: 横スクロール, PC: グリッド） -->
     <!-- py-4: スマホで上下に余白確保、横幅は他のカードと揃える, sm:p-0: PCではoverflow-visibleなので余白不要 -->
-    <div data-carousel-target="container" class="flex sm:grid sm:grid-cols-2 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide sm:overflow-visible py-4 sm:p-0">
+    <div data-carousel-target="container" class="flex sm:grid sm:grid-cols-2 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide [&::-webkit-scrollbar]:hidden sm:overflow-visible py-4 sm:p-0" style="scrollbar-width: none; -ms-overflow-style: none;">
 
       <!-- 天気予報カード -->
       <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
