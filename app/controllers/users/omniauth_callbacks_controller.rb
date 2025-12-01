@@ -20,22 +20,24 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       )
         set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
         # 独自の設定画面へリダイレクト
-        redirect_to edit_user_path(current_user), notice: "Googleアカウントと連携しました（メールアドレスを更新しました）"
+        redirect_to edit_user_registration_path, notice: "Googleアカウントと連携しました（メールアドレスを更新しました）"
       else
         # エラー内容を詳細に表示
         error_msg = "Googleアカウントの連携に失敗しました: #{current_user.errors.full_messages.join(', ')}"
-        redirect_to edit_user_path(current_user), alert: error_msg
+        redirect_to edit_user_registration_path, alert: error_msg
       end
     else
-      # 未ログインの場合：ログインまたは新規登録
+      # 未ログインの場合：Google連携済みのユーザーを探す
       @user = User.from_omniauth(auth)
 
-      if @user.persisted?
+      if @user
+        # 連携済みユーザーが見つかった場合 -> ログイン
         sign_in_and_redirect @user, event: :authentication
         set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
       else
-        session["devise.google_data"] = auth.except(:extra)
-        redirect_to new_user_registration_url, alert: @user.errors.full_messages.join("\n")
+        # 未連携の場合 -> ログイン画面に戻してエラー表示
+        # セッションにデータは保存しない（新規登録には使わないため）
+        redirect_to new_user_session_path, alert: "このGoogleアカウントは連携されていません。先にメールアドレスでログインし、設定画面から連携してください。"
       end
     end
   end

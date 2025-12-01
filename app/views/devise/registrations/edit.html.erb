@@ -13,20 +13,20 @@
     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></div>
 
     <div class="flex flex-col items-center mb-8 mt-2">
-       <%= user_avatar(@user, classes: "w-24 h-24 text-3xl mb-4 shadow-xl ring-4 ring-white dark:ring-slate-800") %>
+       <%= user_avatar(resource, classes: "w-24 h-24 text-3xl mb-4 shadow-xl ring-4 ring-white dark:ring-slate-800") %>
        <div class="text-center">
          <p class="text-gray-500 dark:text-slate-400 text-xs font-mono bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded-md inline-block">
-           <%= @user.email %>
+           <%= resource.email %>
          </p>
-         <% if @user.google_uid.present? %>
+         <% if resource.google_uid.present? %>
            <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">※アイコンはGoogleアカウントと連携しています</p>
          <% end %>
        </div>
 
        <%# アバター切り替えスイッチ（Google連携済みの場合のみ表示） %>
-       <% if @user.google_uid.present? %>
+       <% if resource.google_uid.present? %>
          <div class="mt-4 flex items-center justify-center">
-           <%= form_with(model: @user, local: true, class: "flex items-center space-x-2") do |f| %>
+           <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "flex items-center space-x-2" }) do |f| %>
              <label class="relative inline-flex items-center cursor-pointer">
                <%= f.check_box :use_google_avatar, class: "sr-only peer", onchange: "this.form.submit()" %>
                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -55,14 +55,14 @@
           </div>
         </div>
 
-        <% if @user.google_uid.present? %>
+        <% if resource.google_uid.present? %>
           <div class="flex items-center space-x-3 w-full sm:w-auto justify-center sm:justify-end">
             <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-xs bg-white dark:bg-slate-900 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-900 shadow-sm">
               <span class="material-symbols-outlined text-base mr-1">check_circle</span>
               <span>連携済み</span>
             </div>
 
-            <%= button_to disconnect_google_user_path(@user), method: :delete, data: { turbo_confirm: "Google連携を解除しますか？\n\n解除後はGoogle Fitのデータが取得できなくなります。\nまた、次回ログイン時はメールアドレスとパスワードが必要になります。" }, class: "text-gray-400 hover:text-red-500 transition-colors" do %>
+            <%= button_to disconnect_google_user_path, method: :delete, data: { turbo_confirm: "Google連携を解除しますか？\n\n解除後はGoogle Fitのデータが取得できなくなります。\nまた、次回ログイン時はメールアドレスとパスワードが必要になります。" }, class: "text-gray-400 hover:text-red-500 transition-colors" do %>
               <span class="material-symbols-outlined text-xl" title="連携を解除する">link_off</span>
             <% end %>
           </div>
@@ -77,11 +77,11 @@
       </div>
     </div>
 
-    <%= form_with(model: @user, local: true, data: { turbo: false }, class: "space-y-6") do |f| %>
-      <% if @user.errors.any? %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, data: { turbo: false }, class: "space-y-6" }) do |f| %>
+      <% if resource.errors.any? %>
         <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 p-4 rounded-xl text-sm border border-red-100 dark:border-red-800/30">
           <ul class="list-disc list-inside">
-            <% @user.errors.full_messages.each do |message| %>
+            <% resource.errors.full_messages.each do |message| %>
               <li><%= message %></li>
             <% end %>
           </ul>
@@ -117,7 +117,7 @@
         <div class="mb-4">
           <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
 
-          <% if @user.google_uid.present? %>
+          <% if resource.google_uid.present? %>
             <div class="relative">
               <%= f.email_field :email,
                   disabled: true,
@@ -182,7 +182,7 @@
           </p>
         </div>
 
-        <%= button_to user_registration_path,
+        <%= button_to registration_path(resource_name),
             method: :delete,
             data: { turbo_confirm: "本当にアカウントを削除しますか？\n\nこの操作は取り消せません。\nすべての散歩記録が削除されます。" },
             class: "bg-white dark:bg-red-950/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 font-bold py-2 px-4 rounded-lg text-sm hover:bg-red-50 dark:hover:bg-red-900/50 transition-colors shadow-sm" do %>
