@@ -21,6 +21,11 @@
     <% end %>
   </div>
 
+  <!-- ページネーション（上部） -->
+  <div class="mb-2 flex justify-center">
+    <%= paginate @walks %>
+  </div>
+
   <!-- 散歩記録一覧 -->
   <div class="grid grid-cols-1 gap-6">
     <% if @walks.any? %>
@@ -107,6 +112,12 @@
           </div>
         <% end %>
       <% end %>
+
+    <!-- ページネーション -->
+    <div class="mt-8 flex justify-center">
+      <%= paginate @walks %>
+    </div>
+
     <% else %>
       <!-- 記録がない場合のメッセージ -->
       <div class="col-span-1 bg-gradient-to-br from-white to-sky-50 dark:from-slate-900 dark:to-indigo-950 p-10 rounded-3xl shadow-lg border border-sky-100 dark:border-cyan-500/30 text-center">

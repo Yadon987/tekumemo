@@ -1,0 +1,7 @@
+<% if page.current? %>
+  <span class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-sky-400 to-blue-500 text-white font-bold shadow-lg shadow-sky-200 dark:shadow-[0_0_10px_rgba(14,165,233,0.5)] transform scale-110 transition-all duration-300 cursor-default">
+    <%= page %>
+  </span>
+<% else %>
+  <%= link_to page, url, remote: remote, rel: page.rel, class: "flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 font-medium shadow-sm border border-gray-100 dark:border-slate-700 hover:bg-sky-50 dark:hover:bg-slate-700 hover:text-sky-600 dark:hover:text-sky-400 hover:shadow-md hover:scale-110 hover:border-sky-200 dark:hover:border-sky-500/30 transition-all duration-300" %>
+<% end %>
