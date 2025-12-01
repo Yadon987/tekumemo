@@ -1,25 +1,94 @@
-<h2>Change your password</h2>
+<% content_for :title, "てくメモ - パスワードの変更" %>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+<div class="flex flex-1 flex-col items-center justify-center p-4 pb-24">
+  <div class="w-full max-w-md bg-gradient-to-b from-white to-slate-50 dark:bg-gradient-to-br dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-gray-100 dark:border-indigo-500/30 shadow-xl dark:shadow-[0_0_20px_rgba(99,102,241,0.2)] rounded-3xl p-6 sm:p-8 transition-all duration-300">
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+    <!-- Header -->
+    <div class="mb-8 flex flex-col items-center text-center">
+      <div class="w-16 h-16 bg-cyan-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 shadow-inner">
+        <span class="material-symbols-outlined text-3xl text-cyan-600 dark:text-cyan-400">key</span>
+      </div>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-slate-50">新しいパスワードの設定</h1>
+      <p class="mt-2 text-sm text-gray-600 dark:text-slate-400">
+        セキュリティのため、強力なパスワードを設定してください。
+      </p>
+    </div>
+
+    <!-- Password Change Form -->
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= f.hidden_field :reset_password_token %>
+
+      <!-- New Password Field -->
+      <div class="space-y-2">
+        <%= f.label :password, "新しいパスワード", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
+        <% if @minimum_password_length %>
+          <span class="text-xs text-gray-500 dark:text-slate-400">(<%= @minimum_password_length %>文字以上)</span>
+        <% end %>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">lock</span>
+          <%= f.password_field :password,
+              autofocus: true,
+              autocomplete: "new-password",
+              placeholder: "新しいパスワード",
+              id: "new-password-field",
+              class: "block w-full h-14 pl-12 pr-12 text-base text-gray-900 bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:text-slate-50 dark:placeholder-slate-500 transition-colors duration-200" %>
+          <button type="button"
+                  onclick="togglePasswordVisibility('new-password-field', 'new-password-icon')"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors">
+            <span class="material-symbols-outlined" id="new-password-icon">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Password Confirmation Field -->
+      <div class="space-y-2">
+        <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">lock_clock</span>
+          <%= f.password_field :password_confirmation,
+              autocomplete: "new-password",
+              placeholder: "もう一度入力してください",
+              id: "confirm-password-field",
+              class: "block w-full h-14 pl-12 pr-12 text-base text-gray-900 bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:text-slate-50 dark:placeholder-slate-500 transition-colors duration-200" %>
+          <button type="button"
+                  onclick="togglePasswordVisibility('confirm-password-field', 'confirm-password-icon')"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors">
+            <span class="material-symbols-outlined" id="confirm-password-icon">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="pt-4">
+        <%= f.button class: "w-full h-14 group relative flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white text-base font-bold rounded-full shadow-lg shadow-cyan-500/30 transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:ring-offset-slate-900" do %>
+          <span class="material-symbols-outlined mr-2 group-hover:rotate-12 transition-transform duration-300">save</span>
+          パスワードを変更する
+        <% end %>
+      </div>
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <!-- Links -->
+    <div class="mt-8 text-center">
+      <%= link_to "ログイン画面に戻る", new_session_path(resource_name), class: "inline-flex items-center text-sm font-bold text-cyan-600 dark:text-cyan-400 hover:underline" %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
   </div>
-<% end %>
+</div>
 
-<%= render "devise/shared/links" %>
+<script>
+function togglePasswordVisibility(fieldId, iconId) {
+  const field = document.getElementById(fieldId);
+  const icon = document.getElementById(iconId);
+
+  if (!field || !icon) return;
+
+  if (field.type === 'password') {
+    field.type = 'text';
+    icon.textContent = 'visibility_off';
+  } else {
+    field.type = 'password';
+    icon.textContent = 'visibility';
+  }
+}
+</script>

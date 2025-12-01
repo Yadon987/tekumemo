@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
-  # モダンブラウザのみ許可
-  allow_browser versions: :modern
+  # モダンブラウザのみ許可（テスト環境では無効化）
+  allow_browser versions: :modern unless Rails.env.test?
 
   # 全アクションの前に認証をチェック
   before_action :authenticate_user!
