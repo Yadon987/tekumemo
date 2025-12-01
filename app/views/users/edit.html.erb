@@ -39,7 +39,7 @@
 
     <!-- Google連携セクション -->
     <div class="mb-8 p-4 bg-blue-50/50 dark:bg-slate-800/50 rounded-2xl border border-blue-100 dark:border-slate-700">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div class="flex items-center space-x-3">
           <div class="bg-white dark:bg-slate-700 p-2 rounded-full shadow-sm">
             <svg class="w-6 h-6" viewBox="0 0 24 24">
@@ -56,15 +56,23 @@
         </div>
 
         <% if @user.google_uid.present? %>
-          <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-xs bg-white dark:bg-slate-900 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-900 shadow-sm">
-            <span class="material-symbols-outlined text-base mr-1">check_circle</span>
-            <span>連携済み</span>
+          <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+            <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-xs bg-white dark:bg-slate-900 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-900 shadow-sm">
+              <span class="material-symbols-outlined text-base mr-1">check_circle</span>
+              <span>連携済み</span>
+            </div>
+
+            <%= button_to disconnect_google_user_path(@user), method: :delete, data: { turbo_confirm: "Google連携を解除しますか？\n\n解除後はGoogle Fitのデータが取得できなくなります。\nまた、次回ログイン時はメールアドレスとパスワードが必要になります。" }, class: "text-gray-400 hover:text-red-500 transition-colors" do %>
+              <span class="material-symbols-outlined text-xl" title="連携を解除する">link_off</span>
+            <% end %>
           </div>
         <% else %>
-          <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 text-xs flex items-center" do %>
-            <span class="material-symbols-outlined mr-1 text-base">add_link</span>
-            連携する
-          <% end %>
+          <div class="w-full sm:w-auto flex justify-end">
+            <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 text-xs flex items-center" do %>
+              <span class="material-symbols-outlined mr-1 text-base">add_link</span>
+              連携する
+            <% end %>
+          </div>
         <% end %>
       </div>
     </div>
@@ -136,6 +144,18 @@
             <%= f.label :password_confirmation, "パスワード確認", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
             <%= f.password_field :password_confirmation,
                 class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/10">
+            <%= f.label :current_password, "現在のパスワード", class: "block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1" %>
+            <%= f.password_field :current_password,
+                autocomplete: "current-password",
+                placeholder: "変更時のみ入力",
+                class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">
+              <span class="material-symbols-outlined text-sm align-bottom mr-0.5">info</span>
+              メールアドレス・パスワード変更時は入力必須です
+            </p>
           </div>
       </div>
 

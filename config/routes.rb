@@ -24,7 +24,11 @@ Rails.application.routes.draw do
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
   # ユーザー情報の編集・更新用
-  resources :users, only: %i[edit update]
+  resources :users, only: %i[edit update] do
+    member do
+      delete :disconnect_google
+    end
+  end
 
   # PWA関連
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
