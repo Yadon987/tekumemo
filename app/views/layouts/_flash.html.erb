@@ -1,0 +1,15 @@
+<% if notice.present? %>
+  <div class="mx-auto max-w-2xl px-4 py-2">
+    <div class="bg-blue-100 dark:bg-blue-900/30 border border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-300 px-4 py-3 rounded-xl relative animate-fade-in-down" role="alert">
+      <span class="block sm:inline"><%= notice %></span>
+    </div>
+  </div>
+<% end %>
+
+<% if alert.present? %>
+  <div class="mx-auto max-w-2xl px-4 py-2">
+    <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-xl relative animate-fade-in-down" role="alert">
+      <span class="block sm:inline"><%= alert %></span>
+    </div>
+  </div>
+<% end %>

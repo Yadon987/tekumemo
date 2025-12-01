@@ -68,35 +68,70 @@
               <span class="font-bold text-gray-600 dark:text-slate-300 line-clamp-1"><%= walk.location %></span>
             </div>
 
-            <!-- スタッツグリッド（雲のようなふわっとした背景 / サイバーなパネル） -->
-            <div class="grid grid-cols-4 gap-2 relative z-10">
+            <!-- スタッツグリッド（スマホはシンプル、PCはカード） -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 sm:gap-2 relative z-10 mt-2 sm:mt-0">
               <!-- 距離 -->
-              <div class="flex flex-col items-center justify-center p-2 bg-white/60 dark:bg-slate-950/50 rounded-2xl border border-sky-50 dark:border-cyan-500/20 shadow-sm">
-                <span class="text-xs text-gray-400 dark:text-cyan-200/70 font-bold mb-1">距離</span>
-                <span class="font-bold text-sky-600 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] text-lg">
-                  <%= walk.distance || 0 %><span class="text-xs ml-0.5">km</span>
-                </span>
+              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
+                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
+                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
+                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">straighten</span>
+                  </div>
+                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">距離</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                    <%= walk.distance || 0 %>
+                  </span>
+                  <span class="text-xs text-gray-400 dark:text-slate-500">km</span>
+                </div>
               </div>
+
               <!-- 時間 -->
-              <div class="flex flex-col items-center justify-center p-2 bg-white/60 dark:bg-slate-950/50 rounded-2xl border border-sky-50 dark:border-cyan-500/20 shadow-sm">
-                <span class="text-xs text-gray-400 dark:text-cyan-200/70 font-bold mb-1">時間</span>
-                <span class="font-bold text-sky-600 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] text-lg">
-                  <%= walk.duration || 0 %><span class="text-xs ml-0.5">分</span>
-                </span>
+              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
+                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
+                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
+                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">timer</span>
+                  </div>
+                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">時間</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                    <%= walk.duration || 0 %>
+                  </span>
+                  <span class="text-xs text-gray-400 dark:text-slate-500">分</span>
+                </div>
               </div>
+
               <!-- 歩数 -->
-              <div class="flex flex-col items-center justify-center p-2 bg-white/60 dark:bg-slate-950/50 rounded-2xl border border-sky-50 dark:border-cyan-500/20 shadow-sm">
-                <span class="text-xs text-gray-400 dark:text-cyan-200/70 font-bold mb-1">歩数</span>
-                <span class="font-bold text-sky-600 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] text-lg">
-                  <%= number_with_delimiter(walk.steps || 0) %>
-                </span>
+              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
+                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
+                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
+                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">footprint</span>
+                  </div>
+                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">歩数</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                    <%= number_with_delimiter(walk.steps || 0) %>
+                  </span>
+                  <span class="text-xs text-gray-400 dark:text-slate-500">歩</span>
+                </div>
               </div>
+
               <!-- カロリー -->
-              <div class="flex flex-col items-center justify-center p-2 bg-white/60 dark:bg-slate-950/50 rounded-2xl border border-sky-50 dark:border-cyan-500/20 shadow-sm">
-                <span class="text-xs text-gray-400 dark:text-cyan-200/70 font-bold mb-1">カロリー</span>
-                <span class="font-bold text-sky-600 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] text-lg">
-                  <%= walk.calories_burned || 0 %>
-                </span>
+              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
+                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
+                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
+                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">local_fire_department</span>
+                  </div>
+                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">カロリー</span>
+                </div>
+                <div class="flex items-baseline">
+                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                    <%= walk.calories_burned || 0 %>
+                  </span>
+                  <span class="text-xs text-gray-400 dark:text-slate-500">kcal</span>
+                </div>
               </div>
             </div>
 

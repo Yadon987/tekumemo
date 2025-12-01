@@ -5,7 +5,11 @@
 # below each fixture, per the syntax in the comments below
 
 one:
-  email: 'user_one@example.com'
+  name: "User One"
+  email: "user_one@example.com"
+  target_distance: 5000
 
 two:
-  email: 'user_two@example.com'
+  name: "User Two"
+  email: "user_two@example.com"
+  target_distance: 5000

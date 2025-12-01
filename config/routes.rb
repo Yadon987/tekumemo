@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  # ===== 認証（Devise） =====
-  devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+  # =====  # Deviseの設定（コントローラーをカスタマイズ）
+  devise_for :users, controllers: {
+    omniauth_callbacks: "users/omniauth_callbacks",
+    registrations: "users/registrations"
+  }
 
   # ===== メインページ =====
   # ログイン済みユーザー向けのルート
@@ -23,8 +26,10 @@ Rails.application.routes.draw do
   # ===== システム関連 =====
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check
-  # ユーザー情報の編集・更新用
-  resources :users, only: %i[edit update]
+  # Deviseのスコープ内で独自アクションを定義
+  devise_scope :user do
+    delete "users/disconnect_google", to: "users/registrations#disconnect_google", as: :disconnect_google_user
+  end
 
   # PWA関連
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker

@@ -1,186 +1,190 @@
 <%# app/views/walks/_form.html.erb %>
 <%# Google Fit JSの「Stimulus化」  by Gemini3 %>
 
-<div data-controller="google-fit" class="w-full max-w-4xl mx-auto">
+<div data-controller="google-fit" class="w-full">
 
-  <!-- フォーム全体をカード化 -->
-  <div class="bg-gradient-to-br from-white to-sky-50 dark:bg-gradient-to-br dark:from-slate-900/90 dark:to-indigo-950/90 backdrop-blur-xl border border-sky-100 dark:border-cyan-500/30 shadow-xl shadow-sky-100/50 dark:shadow-[0_0_20px_rgba(6,182,212,0.15)] rounded-3xl p-6 sm:p-8 transition-all duration-300 relative overflow-hidden">
-    <!-- 雲のイラスト（ライトモードのみ） -->
-    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 dark:hidden">
-      <span class="material-symbols-outlined text-[400px] text-sky-100/40 select-none">cloud</span>
-    </div>
-
-    <!-- Google Fit連携エリア -->
-    <div class="mb-8 p-6 bg-blue-50/50 dark:bg-slate-800/50 backdrop-blur-md rounded-2xl border border-blue-100 dark:border-cyan-500/20 shadow-inner relative z-10">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-3">
-          <span class="material-symbols-outlined text-blue-600 dark:text-cyan-400 text-2xl dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]">fitness_center</span>
-          <h3 class="text-lg font-bold text-gray-800 dark:text-cyan-50 text-shadow-sm">Google Fitからデータを取得</h3>
-        </div>
-        <span data-google-fit-target="status" class="text-sm font-bold text-blue-600 dark:text-cyan-400 bg-white/50 dark:bg-black/40 px-3 py-1 rounded-full empty:hidden border border-transparent dark:border-cyan-500/30"></span>
-      </div>
-
-      <% if current_user.google_token_valid? %>
+  <!-- Google Fit連携エリア（ボタンのみシンプルに配置） -->
+  <div class="mb-8">
+    <% if current_user.google_token_valid? %>
+      <div class="relative group">
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
         <button type="button"
                 data-google-fit-target="button"
                 data-action="click->google-fit#fetch"
-                class="w-full bg-white dark:bg-cyan-600 hover:bg-blue-50 dark:hover:bg-cyan-500 text-blue-600 dark:text-white font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg dark:shadow-[0_0_10px_rgba(6,182,212,0.4)] transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 ring-4 ring-transparent focus:ring-blue-300 dark:focus:ring-cyan-800 border border-blue-100 dark:border-transparent">
-          <span class="material-symbols-outlined">download</span>
-          <span>散歩日のデータを取得</span>
+                class="relative w-full bg-white dark:bg-slate-900 text-gray-800 dark:text-white font-bold py-4 px-6 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-between group-hover:bg-blue-50 dark:group-hover:bg-slate-800">
+          <div class="flex items-center space-x-3">
+            <div class="bg-blue-100 dark:bg-cyan-900/50 p-2 rounded-full text-blue-600 dark:text-cyan-400">
+              <span class="material-symbols-outlined">fitness_center</span>
+            </div>
+            <div class="text-left">
+              <span class="block text-sm text-gray-500 dark:text-slate-400 font-normal">Google Fit連携中</span>
+              <span class="block text-base">データを自動入力する</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-gray-400 group-hover:text-blue-500 transition-colors">download</span>
         </button>
-        <p class="text-sm text-gray-600 dark:text-slate-400 mt-3 pl-1 flex items-center">
-          <span class="material-symbols-outlined text-sm mr-1">info</span>
-          こちらはGoogleアカウント連携済みの方限定の機能です
-        </p>
-        <p class="text-sm text-gray-600 dark:text-slate-400 mt-1 pl-1 flex items-center">
-          <span class="material-symbols-outlined text-sm mr-1">check_circle</span>
-          選択した日付のGoogle Fitデータを自動でフォームに入力します
-        </p>
+      </div>
+      <span data-google-fit-target="status" class="block mt-2 text-center text-sm font-bold text-blue-600 dark:text-cyan-400 empty:hidden"></span>
 
-      <% else %>
-        <%= button_to user_google_oauth2_omniauth_authorize_path,
-            method: :post,
-            # 【重要】Turboを無効化設定をフォーム側に付与
-            form: { data: { turbo: false }, class: "w-full" },
-            class: "w-full bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 border border-gray-200 dark:border-gray-600" do %>
-
-          <svg class="w-5 h-5" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          <span>Googleアカウントで連携</span>
-        <% end %>
-
-        <div class="mt-3 space-y-1">
-          <p class="text-sm text-gray-600 dark:text-slate-400 pl-1">
-            ・こちらはGoogleアカウント連携済みの方限定の機能です
-          </p>
-          <p class="text-sm text-gray-600 dark:text-slate-400 pl-1">
-            ・選択した日付のGoogle Fitデータを自動でフォームに入力します
-          </p>
-        </div>
+    <% else %>
+      <%= button_to user_google_oauth2_omniauth_authorize_path,
+          method: :post,
+          form: { data: { turbo: false }, class: "w-full" },
+          class: "w-full bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 font-bold py-4 px-6 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center space-x-3 border border-gray-200 dark:border-slate-700" do %>
+        <svg class="w-6 h-6" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        <span>Google Fitと連携して自動入力</span>
       <% end %>
-    </div>
-
-
-    <% if walk.errors.any? %>
-      <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-400 px-4 py-3 rounded shadow-md mb-6 animate-pulse relative z-10">
-        <h3 class="font-bold flex items-center">
-          <span class="material-symbols-outlined mr-2">error</span>
-          入力内容に <%= pluralize(walk.errors.count, "件") %> のエラーがあります
-        </h3>
-        <ul class="list-disc list-inside mt-2 ml-2 space-y-1 text-sm">
-          <% walk.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-
-    <%= form_with(model: walk, class: "space-y-6 relative z-10") do |form| %>
-
-      <div>
-        <%= form.label :walked_on, "散歩日", class: "block text-sm font-bold text-gray-700 dark:text-cyan-100 mb-2" %>
-        <div class="relative group">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">calendar_today</span>
-          <%= form.date_field :walked_on,
-              id: "walk_walked_on",
-              data: { google_fit_target: "date" },
-              class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-cyan-500/20 rounded-xl focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 bg-white dark:bg-slate-950/50 text-gray-800 dark:text-cyan-50 shadow-sm transition-all cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-900/80" %>
-        </div>
-      </div>
-
-      <div>
-        <%= form.label :location, "場所（任意）", class: "block text-sm font-bold text-gray-700 dark:text-cyan-100 mb-2" %>
-        <div class="relative group">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">location_on</span>
-          <%= form.text_field :location,
-              placeholder: "例: 代々木公園",
-              class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-cyan-500/20 rounded-xl focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 bg-white dark:bg-slate-950/50 text-gray-800 dark:text-cyan-50 placeholder-gray-400 dark:placeholder-slate-600 shadow-sm transition-all" %>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <%# ▼ labelにブロックを渡して、文字とバッジを自由に配置します %>
-          <%= form.label :distance, class: "flex items-center text-sm font-bold text-gray-700 dark:text-cyan-100 mb-2" do %>
-            <span>距離（km）</span>
-            <span class="ml-2 bg-red-500 text-white text-[12px] px-2 py-0.5 rounded-full shadow-sm">必須</span>
-          <% end %>
-
-          <div class="relative group">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">route</span>
-            <%= form.number_field :distance,
-                id: "walk_distance",
-                step: 0.01,
-                data: { google_fit_target: "distance" },
-                placeholder: "例: 5.0",
-                class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-cyan-500/20 rounded-xl focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 bg-white dark:bg-slate-950/50 text-gray-800 dark:text-cyan-50 placeholder-gray-400 dark:placeholder-slate-600 shadow-sm transition-all" %>
-          </div>
-        </div>
-
-        <div>
-          <%# ▼ 時間の方も同様に修正 %>
-          <%= form.label :duration, class: "flex items-center text-sm font-bold text-gray-700 dark:text-cyan-100 mb-2" do %>
-            <span>時間（分）</span>
-            <span class="ml-2 bg-red-500 text-white text-[12px] px-2 py-0.5 rounded-full shadow-sm">必須</span>
-          <% end %>
-
-          <div class="relative group">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">schedule</span>
-            <%= form.number_field :duration,
-                id: "walk_duration",
-                data: { google_fit_target: "duration" },
-                placeholder: "例: 60",
-                class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-cyan-500/20 rounded-xl focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 bg-white dark:bg-slate-950/50 text-gray-800 dark:text-cyan-50 placeholder-gray-400 dark:placeholder-slate-600 shadow-sm transition-all" %>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <%= form.label :steps, "歩数（任意）", class: "block text-sm font-bold text-gray-700 dark:text-cyan-100 mb-2" %>
-          <div class="relative group">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">directions_walk</span>
-            <%= form.number_field :steps,
-                id: "walk_steps",
-                data: { google_fit_target: "steps" },
-                placeholder: "例: 8000",
-                class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-cyan-500/20 rounded-xl focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 bg-white dark:bg-slate-950/50 text-gray-800 dark:text-cyan-50 placeholder-gray-400 dark:placeholder-slate-600 shadow-sm transition-all" %>
-          </div>
-        </div>
-
-        <div>
-          <%= form.label :calories_burned, "消費kcal（任意）", class: "block text-sm font-bold text-gray-700 dark:text-cyan-100 mb-2" %>
-          <div class="relative group">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">local_fire_department</span>
-            <%= form.number_field :calories_burned,
-                id: "walk_calories_burned",
-                data: { google_fit_target: "calories" },
-                placeholder: "例: 300",
-                class: "w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-cyan-500/20 rounded-xl focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 bg-white dark:bg-slate-950/50 text-gray-800 dark:text-cyan-50 placeholder-gray-400 dark:placeholder-slate-600 shadow-sm transition-all" %>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <%= form.label :notes, "メモ（任意）", class: "block text-sm font-bold text-gray-700 dark:text-cyan-100 mb-2" %>
-        <%= form.text_area :notes,
-            rows: 5,
-            placeholder: "今日の散歩の感想や気づいたことを記録しましょう...",
-            class: "w-full px-4 py-3 border border-gray-300 dark:border-cyan-500/20 rounded-xl focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 bg-white dark:bg-slate-950/50 text-gray-800 dark:text-cyan-50 placeholder-gray-400 dark:placeholder-slate-600 shadow-sm transition-all resize-none" %>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-3 pt-4">
-        <%= form.submit "散歩記録を保存", class: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 dark:from-fuchsia-600 dark:to-purple-600 dark:hover:from-fuchsia-500 dark:hover:to-purple-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-cyan-500/30 dark:shadow-[0_0_15px_rgba(192,38,211,0.5)] transition-all transform hover:-translate-y-0.5 cursor-pointer" %>
-
-        <%= link_to "キャンセル", walks_path,
-            class: "flex-1 text-center bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-600 dark:text-slate-300 font-bold py-3 px-6 rounded-xl shadow-sm transition-all border border-gray-200 dark:border-slate-600" %>
-      </div>
-
     <% end %>
   </div>
+
+  <!-- エラーメッセージ -->
+  <% if walk.errors.any? %>
+    <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg shadow-sm mb-8 animate-pulse">
+      <h3 class="font-bold flex items-center">
+        <span class="material-symbols-outlined mr-2">error</span>
+        入力内容に <%= pluralize(walk.errors.count, "件") %> のエラーがあります
+      </h3>
+      <ul class="list-disc list-inside mt-2 ml-2 space-y-1 text-sm">
+        <% walk.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- 入力フォーム -->
+  <%= form_with(model: walk, class: "space-y-8") do |form| %>
+
+    <!-- 日付 -->
+    <div class="relative">
+      <%= form.label :walked_on, "散歩日", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
+      <div class="relative group">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <span class="material-symbols-outlined text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">calendar_today</span>
+        </div>
+        <%= form.date_field :walked_on,
+            id: "walk_walked_on",
+            data: { google_fit_target: "date" },
+            class: "block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-lg font-medium" %>
+      </div>
+    </div>
+
+    <!-- 場所 -->
+    <div class="relative">
+      <%= form.label :location, "場所（任意）", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
+      <div class="relative group">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <span class="material-symbols-outlined text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">location_on</span>
+        </div>
+        <%= form.text_field :location,
+            placeholder: "例: 代々木公園",
+            class: "block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-lg" %>
+      </div>
+    </div>
+
+    <!-- 数値入力グリッド（スマホ2列 / PC2列） -->
+    <div class="grid grid-cols-2 gap-4 sm:gap-6">
+      <!-- 距離 -->
+      <div>
+        <%= form.label :distance, class: "flex items-center text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" do %>
+          <span>距離</span>
+          <span class="ml-2 bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 text-[10px] px-2 py-0.5 rounded-full font-bold">必須</span>
+        <% end %>
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">route</span>
+          </div>
+          <%= form.number_field :distance,
+              id: "walk_distance",
+              step: 0.01,
+              data: { google_fit_target: "distance" },
+              placeholder: "0.0",
+              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-xl font-bold text-right" %>
+          <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+            <span class="text-gray-400 text-sm font-bold">km</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 時間 -->
+      <div>
+        <%= form.label :duration, class: "flex items-center text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" do %>
+          <span>時間</span>
+          <span class="ml-2 bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 text-[10px] px-2 py-0.5 rounded-full font-bold">必須</span>
+        <% end %>
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">schedule</span>
+          </div>
+          <%= form.number_field :duration,
+              id: "walk_duration",
+              data: { google_fit_target: "duration" },
+              placeholder: "0",
+              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-xl font-bold text-right" %>
+          <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+            <span class="text-gray-400 text-sm font-bold">分</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 歩数 -->
+      <div>
+        <%= form.label :steps, "歩数", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">directions_walk</span>
+          </div>
+          <%= form.number_field :steps,
+              id: "walk_steps",
+              data: { google_fit_target: "steps" },
+              placeholder: "0",
+              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-xl font-bold text-right" %>
+          <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+            <span class="text-gray-400 text-sm font-bold">歩</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- カロリー -->
+      <div>
+        <%= form.label :calories_burned, "カロリー", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">local_fire_department</span>
+          </div>
+          <%= form.number_field :calories_burned,
+              id: "walk_calories_burned",
+              data: { google_fit_target: "calories" },
+              placeholder: "0",
+              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-xl font-bold text-right" %>
+          <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+            <span class="text-gray-400 text-sm font-bold">kcal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- メモ -->
+    <div>
+      <%= form.label :notes, "メモ", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
+      <%= form.text_area :notes,
+          rows: 4,
+          placeholder: "今日の散歩の感想...",
+          class: "block w-full px-4 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm resize-none text-base" %>
+    </div>
+
+    <!-- アクションボタン -->
+    <div class="flex flex-col sm:flex-row gap-4 pt-6">
+      <%= form.submit "記録を保存", class: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 dark:from-fuchsia-600 dark:to-purple-600 dark:hover:from-fuchsia-500 dark:hover:to-purple-500 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-cyan-500/30 dark:shadow-[0_0_20px_rgba(192,38,211,0.5)] transition-all transform hover:-translate-y-1 cursor-pointer text-lg" %>
+
+      <%= link_to "キャンセル", walks_path,
+          class: "flex-1 text-center bg-transparent hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 dark:text-slate-400 font-bold py-4 px-6 rounded-2xl transition-all border-2 border-transparent hover:border-gray-200 dark:hover:border-slate-700" %>
+    </div>
+
+  <% end %>
 </div>

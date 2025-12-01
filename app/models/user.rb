@@ -9,38 +9,30 @@ class User < ApplicationRecord
   # dependent: :destroy は、ユーザーが削除されたときに関連する散歩記録も一緒に削除する
   has_many :walks, dependent: :destroy
 
+  # ユーザー名のバリデーション
+  validates :name, presence: true
+
   # 目標距離のバリデーション
   # 1. 必須であること（デフォルト値があるため通常は問題ないが、念のため）
   # 2. 数値であること
   # 3. 0より大きいこと
-  validates :target_distance, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :target_distance, presence: true, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 100_000 }
 
   # Google OAuth2認証のコールバック処理
   # OmniAuthから返されたデータを使って、ユーザー情報とトークンを保存する
   def self.from_omniauth(auth)
-    # Google UIDでユーザーを検索、見つからなければメールアドレスで検索
-    user = User.find_by(google_uid: auth.uid) || User.find_by(email: auth.info.email)
+    # Google UIDでユーザーを検索
+    # メールアドレスでの自動紐付けは行わない（セキュリティと意図しない連携を防ぐため）
+    user = User.find_by(google_uid: auth.uid)
 
     if user
-      # 既存ユーザーの場合、Google認証情報を更新
+      # 既存ユーザー（連携済み）の場合、Google認証情報を更新
       user.update(
         google_uid: auth.uid,
         google_token: auth.credentials.token,
         google_refresh_token: auth.credentials.refresh_token,
         google_expires_at: Time.at(auth.credentials.expires_at),
         avatar_url: auth.info.image # アバター画像を更新
-      )
-    else
-      # 新規ユーザーの場合、アカウントを作成
-      user = User.create(
-        email: auth.info.email,
-        password: Devise.friendly_token[0, 20],
-        google_uid: auth.uid,
-        google_token: auth.credentials.token,
-        google_refresh_token: auth.credentials.refresh_token,
-        google_expires_at: Time.at(auth.credentials.expires_at),
-        avatar_url: auth.info.image, # アバター画像を保存
-        target_distance: 3000 # バリデーション回避のため明示的にデフォルト値を設定
       )
     end
 

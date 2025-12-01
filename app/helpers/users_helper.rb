@@ -5,7 +5,7 @@ module UsersHelper
     # 共通のスタイル（円形、中央寄せ、影など）
     base_classes = "rounded-full flex items-center justify-center font-bold shadow-md transition-transform hover:scale-105 #{classes}"
 
-    if user.avatar_url.present?
+    if user.avatar_url.present? && user.use_google_avatar?
       # Googleのアバター画像がある場合
       image_tag user.avatar_url, alt: user.name, class: "#{base_classes} object-cover"
     else

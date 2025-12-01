@@ -18,7 +18,7 @@
         <span class="text-base font-medium ml-1 text-shadow">m</span>
       </p>
       <p class="text-lg font-bold opacity-90 text-shadow relative z-10">
-        <%= link_to edit_user_path(current_user), class: "text-white hover:text-white transition-all inline-flex items-center gap-0.5 group" do %>
+        <%= link_to edit_user_registration_path, class: "text-white hover:text-white transition-all inline-flex items-center gap-0.5 group" do %>
           <span class="group-hover:underline decoration-white/50 underline-offset-4">
             / <%= number_with_delimiter(current_user.target_distance) %>m
           </span>
