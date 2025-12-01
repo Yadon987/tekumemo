@@ -2,19 +2,25 @@ require "rails_helper"
 
 RSpec.describe User, type: :model do
   describe "バリデーション" do
-    it "有効な目標距離であれば有効であること" do
-      user = User.new(email: "test@example.com", password: "password", target_distance: 5000)
+    it "有効な属性であれば有効であること" do
+      user = User.new(name: "テストユーザー", email: "test@example.com", password: "password", target_distance: 5000)
       expect(user).to be_valid
     end
 
+    it "ユーザー名がない場合は無効であること" do
+      user = User.new(name: nil, email: "test@example.com", password: "password", target_distance: 5000)
+      user.valid?
+      expect(user.errors[:name]).to include("を入力してください")
+    end
+
     it "目標距離がない場合は無効であること" do
-      user = User.new(email: "test@example.com", password: "password", target_distance: nil)
+      user = User.new(name: "テストユーザー", email: "test@example.com", password: "password", target_distance: nil)
       user.valid?
       expect(user.errors[:target_distance]).to include("を入力してください")
     end
 
     it "目標距離が100,000より大きい場合は無効であること" do
-      user = User.new(email: "test@example.com", password: "password", target_distance: 100_001)
+      user = User.new(name: "テストユーザー", email: "test@example.com", password: "password", target_distance: 100_001)
       user.valid?
       expect(user.errors[:target_distance]).to include("は100000以下の値にしてください")
     end
@@ -43,6 +49,7 @@ RSpec.describe User, type: :model do
       it "そのユーザーを返し、Google認証情報を更新すること" do
         # 事前にユーザーを作成
         user = User.create!(
+          name: "既存ユーザー",
           email: "other@example.com", # メールアドレスは異なっていてもUIDで紐付く
           password: "password123",
           google_uid: "123456789" # auth_hashと同じUID
