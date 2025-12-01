@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   # ユーザー情報の更新前に、許可するパラメータを追加する
-  before_action :configure_account_update_params, only: [:update]
+  before_action :configure_account_update_params, only: [ :update ]
 
   # GET /resource/edit
   # Deviseのデフォルトのeditアクションをそのまま使うので、オーバーライド不要
@@ -38,7 +38,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # アカウント更新時に許可するストロングパラメータの設定
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :target_distance, :use_google_avatar])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :target_distance, :use_google_avatar ])
   end
 
   # 更新後のリダイレクト先

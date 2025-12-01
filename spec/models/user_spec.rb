@@ -13,10 +13,10 @@ RSpec.describe User, type: :model do
       expect(user.errors[:target_distance]).to include("を入力してください")
     end
 
-    it "目標距離が0以下の場合は無効であること" do
-      user = User.new(email: "test@example.com", password: "password", target_distance: 0)
+    it "目標距離が100,000より大きい場合は無効であること" do
+      user = User.new(email: "test@example.com", password: "password", target_distance: 100_001)
       user.valid?
-      expect(user.errors[:target_distance]).to include("は0より大きい値にしてください")
+      expect(user.errors[:target_distance]).to include("は100000以下の値にしてください")
     end
   end
 
@@ -39,13 +39,13 @@ RSpec.describe User, type: :model do
       })
     end
 
-    context "ユーザーが既に存在する場合" do
+    context "ユーザーが既に存在する場合（Google UIDで一致）" do
       it "そのユーザーを返し、Google認証情報を更新すること" do
-        # 事前にユーザーを作成（FactoryBotがないためcreate!を使用）
+        # 事前にユーザーを作成
         user = User.create!(
-          email: "test@example.com",
+          email: "other@example.com", # メールアドレスは異なっていてもUIDで紐付く
           password: "password123",
-          google_uid: "old_uid"
+          google_uid: "123456789" # auth_hashと同じUID
         )
 
         # メソッド実行
@@ -53,24 +53,18 @@ RSpec.describe User, type: :model do
 
         # 検証
         expect(result_user).to eq(user) # 同じユーザーオブジェクトが返されるか
-        expect(result_user.google_uid).to eq("123456789") # UIDが更新されているか
         expect(result_user.google_token).to eq("mock_token") # トークンが更新されているか
         expect(result_user.avatar_url).to eq("https://example.com/avatar.jpg") # アバター画像が更新されているか
       end
     end
 
     context "ユーザーが存在しない場合" do
-      it "新しいユーザーを作成すること" do
-        # ユーザー数が増えることを検証
+      it "新しいユーザーを作成せず、nilを返すこと" do
+        # ユーザー数が増えないことを検証
         expect {
-          User.from_omniauth(auth_hash)
-        }.to change(User, :count).by(1)
-
-        # 作成されたユーザーの属性を検証
-        new_user = User.last
-        expect(new_user.email).to eq("test@example.com")
-        expect(new_user.google_uid).to eq("123456789")
-        expect(new_user.avatar_url).to eq("https://example.com/avatar.jpg") # アバター画像が保存されているか
+          result = User.from_omniauth(auth_hash)
+          expect(result).to be_nil
+        }.not_to change(User, :count)
       end
     end
   end

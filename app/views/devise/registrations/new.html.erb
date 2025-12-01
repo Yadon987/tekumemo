@@ -42,7 +42,7 @@
 
       <!-- Password Field -->
       <div class="space-y-2">
-        <%= f.label :password, "パスワード", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
+        <%= f.label :password, "パスワード", for: "register-password-field", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
         <% if @minimum_password_length %>
           <p class="text-xs text-gray-500 dark:text-slate-400">(<%= @minimum_password_length %>文字以上)</p>
         <% end %>
@@ -63,7 +63,7 @@
 
       <!-- Password Confirmation Field -->
       <div class="space-y-2">
-        <%= f.label :password_confirmation, "パスワード(確認用)", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
+        <%= f.label :password_confirmation, "パスワード(確認用)", for: "register-password-confirmation-field", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">lock</span>
           <%= f.password_field :password_confirmation,

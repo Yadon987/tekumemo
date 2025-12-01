@@ -9,6 +9,9 @@ class User < ApplicationRecord
   # dependent: :destroy は、ユーザーが削除されたときに関連する散歩記録も一緒に削除する
   has_many :walks, dependent: :destroy
 
+  # ユーザー名のバリデーション
+  validates :name, presence: true
+
   # 目標距離のバリデーション
   # 1. 必須であること（デフォルト値があるため通常は問題ないが、念のため）
   # 2. 数値であること
