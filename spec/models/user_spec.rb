@@ -3,24 +3,24 @@ require "rails_helper"
 RSpec.describe User, type: :model do
   describe "バリデーション" do
     it "有効な属性であれば有効であること" do
-      user = User.new(name: "テストユーザー", email: "test@example.com", password: "password", target_distance: 5000)
+      user = FactoryBot.build(:user)
       expect(user).to be_valid
     end
 
     it "ユーザー名がない場合は無効であること" do
-      user = User.new(name: nil, email: "test@example.com", password: "password", target_distance: 5000)
+      user = FactoryBot.build(:user, name: nil)
       user.valid?
       expect(user.errors[:name]).to include("を入力してください")
     end
 
     it "目標距離がない場合は無効であること" do
-      user = User.new(name: "テストユーザー", email: "test@example.com", password: "password", target_distance: nil)
+      user = FactoryBot.build(:user, target_distance: nil)
       user.valid?
       expect(user.errors[:target_distance]).to include("を入力してください")
     end
 
     it "目標距離が100,000より大きい場合は無効であること" do
-      user = User.new(name: "テストユーザー", email: "test@example.com", password: "password", target_distance: 100_001)
+      user = FactoryBot.build(:user, target_distance: 100_001)
       user.valid?
       expect(user.errors[:target_distance]).to include("は100000以下の値にしてください")
     end
@@ -48,11 +48,10 @@ RSpec.describe User, type: :model do
     context "ユーザーが既に存在する場合（Google UIDで一致）" do
       it "そのユーザーを返し、Google認証情報を更新すること" do
         # 事前にユーザーを作成
-        user = User.create!(
+        user = FactoryBot.create(:user,
           name: "既存ユーザー",
-          email: "other@example.com", # メールアドレスは異なっていてもUIDで紐付く
-          password: "password123",
-          google_uid: "123456789" # auth_hashと同じUID
+          email: "other@example.com",
+          google_uid: "123456789"
         )
 
         # メソッド実行
@@ -72,6 +71,47 @@ RSpec.describe User, type: :model do
           result = User.from_omniauth(auth_hash)
           expect(result).to be_nil
         }.not_to change(User, :count)
+      end
+    end
+  end
+
+  describe "#consecutive_walk_days" do
+    let(:user) { FactoryBot.create(:user) }
+
+    context "記録がない場合" do
+      it "0を返すこと" do
+        expect(user.consecutive_walk_days).to eq 0
+      end
+    end
+
+    context "今日記録がある場合" do
+      before { FactoryBot.create(:walk, user: user, walked_on: Date.today) }
+
+      it "1を返すこと" do
+        expect(user.consecutive_walk_days).to eq 1
+      end
+    end
+
+    context "今日と昨日記録がある場合" do
+      before do
+        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        FactoryBot.create(:walk, user: user, walked_on: 1.day.ago.to_date)
+      end
+
+      it "2を返すこと" do
+        expect(user.consecutive_walk_days).to eq 2
+      end
+    end
+
+    context "連続が途切れている場合" do
+      before do
+        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        # 昨日はなし
+        FactoryBot.create(:walk, user: user, walked_on: 2.days.ago.to_date)
+      end
+
+      it "1を返すこと" do
+        expect(user.consecutive_walk_days).to eq 1
       end
     end
   end

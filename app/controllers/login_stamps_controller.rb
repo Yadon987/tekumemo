@@ -41,31 +41,7 @@ class LoginStampsController < ApplicationController
                                       .count
 
     # 連続日数を計算
-    @consecutive_days = calculate_consecutive_days
+    @consecutive_days = current_user.consecutive_walk_days
   end
 
-  private
-
-  # 連続日数を計算するメソッド
-  def calculate_consecutive_days
-    # 今日から過去に向かって、連続して散歩した日数を数える
-    consecutive_count = 0
-    check_date = Date.today
-
-    # 今日から過去に向かって1日ずつチェック
-    loop do
-      # その日の散歩記録があるかチェック
-      if current_user.walks.exists?(walked_on: check_date)
-        # 記録があれば連続日数をカウント
-        consecutive_count += 1
-        # 1日前に移動
-        check_date = check_date - 1.day
-      else
-        # 記録がなければループを終了
-        break
-      end
-    end
-
-    consecutive_count
-  end
 end

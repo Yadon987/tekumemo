@@ -1,0 +1,108 @@
+FFFFFFFFFFF
+
+Failures:
+
+  1) Walk バリデーション 正常系 すべての値が正しく入力されていれば有効であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:10:in `block (4 levels) in <top (required)>'
+
+  2) Walk バリデーション 正常系 歩数とカロリーは空でも有効であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:15:in `block (4 levels) in <top (required)>'
+
+  3) Walk バリデーション 必須項目の検証 日付(walked_on)がない場合は無効であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:22:in `block (4 levels) in <top (required)>'
+
+  4) Walk バリデーション 必須項目の検証 時間(duration)がない場合は無効であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:28:in `block (4 levels) in <top (required)>'
+
+  5) Walk バリデーション 必須項目の検証 距離(distance)がない場合は無効であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:34:in `block (4 levels) in <top (required)>'
+
+  6) Walk バリデーション 数値の検証 時間(duration)は0より大きい整数であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:42:in `block (4 levels) in <top (required)>'
+
+  7) Walk バリデーション 数値の検証 距離(distance)は0より大きい数値であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:50:in `block (4 levels) in <top (required)>'
+
+  8) Walk バリデーション 数値の検証 歩数(steps)は0以上の整数であること
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:58:in `block (4 levels) in <top (required)>'
+
+  9) Walk バリデーション 一意性の検証 同じユーザーが同じ日に重複して記録できないこと
+     Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: ユーザー名を入力してください
+     # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+     # ./spec/models/walk_spec.rb:69:in `block (4 levels) in <top (required)>'
+
+  10) Walk バリデーション 一意性の検証 異なるユーザーであれば同じ日付でも記録できること
+      Failure/Error: other_user = FactoryBot.create(:user)
+
+      ActiveRecord::RecordInvalid:
+        バリデーションに失敗しました: ユーザー名を入力してください
+      # ./spec/models/walk_spec.rb:78:in `block (4 levels) in <top (required)>'
+
+  11) Walk スコープ .recent 新しい日付順に並び替えられること
+      Failure/Error: let(:user) { FactoryBot.create(:user) }
+
+      ActiveRecord::RecordInvalid:
+        バリデーションに失敗しました: ユーザー名を入力してください
+      # ./spec/models/walk_spec.rb:5:in `block (2 levels) in <top (required)>'
+      # ./spec/models/walk_spec.rb:90:in `block (4 levels) in <top (required)>'
+
+Finished in 0.19943 seconds (files took 0.6772 seconds to load)
+11 examples, 11 failures
+
+Failed examples:
+
+rspec ./spec/models/walk_spec.rb:9 # Walk バリデーション 正常系 すべての値が正しく入力されていれば有効であること
+rspec ./spec/models/walk_spec.rb:14 # Walk バリデーション 正常系 歩数とカロリーは空でも有効であること
+rspec ./spec/models/walk_spec.rb:21 # Walk バリデーション 必須項目の検証 日付(walked_on)がない場合は無効であること
+rspec ./spec/models/walk_spec.rb:27 # Walk バリデーション 必須項目の検証 時間(duration)がない場合は無効であること
+rspec ./spec/models/walk_spec.rb:33 # Walk バリデーション 必須項目の検証 距離(distance)がない場合は無効であること
+rspec ./spec/models/walk_spec.rb:41 # Walk バリデーション 数値の検証 時間(duration)は0より大きい整数であること
+rspec ./spec/models/walk_spec.rb:49 # Walk バリデーション 数値の検証 距離(distance)は0より大きい数値であること
+rspec ./spec/models/walk_spec.rb:57 # Walk バリデーション 数値の検証 歩数(steps)は0以上の整数であること
+rspec ./spec/models/walk_spec.rb:67 # Walk バリデーション 一意性の検証 同じユーザーが同じ日に重複して記録できないこと
+rspec ./spec/models/walk_spec.rb:77 # Walk バリデーション 一意性の検証 異なるユーザーであれば同じ日付でも記録できること
+rspec ./spec/models/walk_spec.rb:89 # Walk スコープ .recent 新しい日付順に並び替えられること
+
