@@ -1,16 +1,69 @@
-<h2>Forgot your password?</h2>
+<% content_for :title, "てくメモ - パスワード再設定" %>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<div class="flex flex-1 flex-col items-center justify-center p-4 pb-24">
+  <div class="w-full max-w-md bg-gradient-to-b from-white to-slate-50 dark:bg-gradient-to-br dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-gray-100 dark:border-indigo-500/30 shadow-xl dark:shadow-[0_0_20px_rgba(99,102,241,0.2)] rounded-3xl p-6 sm:p-8 transition-all duration-300">
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <!-- Header -->
+    <div class="mb-8 flex flex-col items-center text-center">
+      <div class="w-16 h-16 bg-cyan-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 shadow-inner">
+        <span class="material-symbols-outlined text-3xl text-cyan-600 dark:text-cyan-400">lock_reset</span>
+      </div>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-slate-50">パスワードの再設定</h1>
+      <p class="mt-2 text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+        ご登録のメールアドレスを入力してください。<br>
+        再設定用のリンクをお送りします。
+      </p>
+    </div>
+
+    <!-- Password Reset Form -->
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <!-- Email Field -->
+      <div class="space-y-2">
+        <%= f.label :email, "メールアドレス", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">mail</span>
+          <%= f.email_field :email,
+              autofocus: true,
+              autocomplete: "email",
+              placeholder: "example@email.com",
+              class: "block w-full h-14 pl-12 pr-4 text-base text-gray-900 bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:text-slate-50 dark:placeholder-slate-500 transition-colors duration-200" %>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="pt-2">
+        <%= f.button class: "w-full h-14 group relative flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white text-base font-bold rounded-full shadow-lg shadow-cyan-500/30 transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:ring-offset-slate-900" do %>
+          <span class="material-symbols-outlined mr-2 group-hover:-translate-y-0.5 transition-transform duration-300">send</span>
+          再設定メールを送信する
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Divider -->
+    <div class="my-8 flex items-center">
+      <div class="flex-1 border-t border-gray-300 dark:border-white/10"></div>
+      <span class="px-4 text-sm text-gray-500 dark:text-slate-400">または</span>
+      <div class="flex-1 border-t border-gray-300 dark:border-white/10"></div>
+    </div>
+
+    <!-- Links -->
+    <div class="space-y-4 text-center">
+      <!-- Login Link -->
+      <div>
+        <p class="text-sm text-gray-600 dark:text-slate-400">パスワードを思い出しましたか?</p>
+        <%= link_to "ログイン画面に戻る", new_session_path(resource_name), class: "inline-flex items-center mt-1 font-bold text-cyan-600 dark:text-cyan-400 hover:underline" %>
+      </div>
+
+      <!-- Sign Up Link -->
+      <% if devise_mapping.registerable? %>
+        <div class="pt-2">
+          <p class="text-sm text-gray-600 dark:text-slate-400">アカウントをお持ちでないですか?</p>
+          <%= link_to "新規登録", new_registration_path(resource_name), class: "inline-flex items-center mt-1 font-bold text-cyan-600 dark:text-cyan-400 hover:underline" %>
+        </div>
+      <% end %>
+    </div>
+
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

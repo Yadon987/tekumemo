@@ -65,5 +65,6 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
   # テスト実行時に「全ホスト許可」に設定する
-  config.hosts.clear
+  # テスト実行時にホスト制限を無効化（全許可）
+  config.hosts = nil
 end

@@ -21,6 +21,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    shm_size: '2gb'
     # アセットビルドを含むコマンド
     command: bash -c "bundle install && yarn install && yarn build:css && yarn build && rm -f tmp/pids/server.pid && ./bin/dev"
     tty: true
