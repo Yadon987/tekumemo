@@ -11,10 +11,11 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      # 更新成功時：トップページ（または設定画面）にリダイレクトして成功メッセージを表示
-      redirect_to root_path, notice: "プロフィールを更新しました"
+      respond_to do |format|
+        format.html { redirect_to edit_user_path(@user), notice: "プロフィールを更新しました" }
+        format.turbo_stream
+      end
     else
-      # 更新失敗時（空欄など）：編集画面を再表示（エラーメッセージが出るようにする）
       render :edit, status: :unprocessable_entity
     end
   end
@@ -36,7 +37,7 @@ class UsersController < ApplicationController
     end
 
     # :email, :password, :password_confirmation, :target_distance を追加で許可します
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :target_distance)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :target_distance, :use_google_avatar)
   end
 
   # セキュリティ対策：ログインユーザー以外が編集画面にアクセスしようとしたら弾く

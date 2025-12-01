@@ -1,0 +1,8 @@
+<%= turbo_stream.replace "user_avatar_section" do %>
+  <%= render partial: "avatar_section", locals: { user: @user } %>
+<% end %>
+
+<%# フラッシュメッセージも更新（保存完了のフィードバック） %>
+<%= turbo_stream.update "flash_messages" do %>
+  <%= render "layouts/flash" %>
+<% end %>

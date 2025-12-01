@@ -18,11 +18,58 @@
          <p class="text-gray-500 dark:text-slate-400 text-xs font-mono bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded-md inline-block">
            <%= @user.email %>
          </p>
-         <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">※アイコンはGoogleアカウントと連携しています</p>
+         <% if @user.google_uid.present? %>
+           <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">※アイコンはGoogleアカウントと連携しています</p>
+         <% end %>
        </div>
+
+       <%# アバター切り替えスイッチ（Google連携済みの場合のみ表示） %>
+       <% if @user.google_uid.present? %>
+         <div class="mt-4 flex items-center justify-center">
+           <%= form_with(model: @user, local: true, class: "flex items-center space-x-2") do |f| %>
+             <label class="relative inline-flex items-center cursor-pointer">
+               <%= f.check_box :use_google_avatar, class: "sr-only peer", onchange: "this.form.submit()" %>
+               <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+               <span class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">Googleアイコンを使用</span>
+             </label>
+           <% end %>
+         </div>
+       <% end %>
     </div>
 
-    <%= form_with(model: @user, local: true, class: "space-y-6") do |f| %>
+    <!-- Google連携セクション -->
+    <div class="mb-8 p-4 bg-blue-50/50 dark:bg-slate-800/50 rounded-2xl border border-blue-100 dark:border-slate-700">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="bg-white dark:bg-slate-700 p-2 rounded-full shadow-sm">
+            <svg class="w-6 h-6" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-gray-800 dark:text-white">Google連携</h3>
+            <p class="text-xs text-gray-500 dark:text-slate-400">Google Fitデータを使用できます</p>
+          </div>
+        </div>
+
+        <% if @user.google_uid.present? %>
+          <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-xs bg-white dark:bg-slate-900 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-900 shadow-sm">
+            <span class="material-symbols-outlined text-base mr-1">check_circle</span>
+            <span>連携済み</span>
+          </div>
+        <% else %>
+          <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 text-xs flex items-center" do %>
+            <span class="material-symbols-outlined mr-1 text-base">add_link</span>
+            連携する
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <%= form_with(model: @user, local: true, data: { turbo: false }, class: "space-y-6") do |f| %>
       <% if @user.errors.any? %>
         <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 p-4 rounded-xl text-sm border border-red-100 dark:border-red-800/30">
           <ul class="list-disc list-inside">
@@ -78,7 +125,6 @@
           <% end %>
         </div>
 
-        <% if @user.google_uid.blank? %>
           <div class="mb-4">
             <%= f.label :password, "新しいパスワード（変更する場合のみ）", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
             <%= f.password_field :password,
@@ -91,7 +137,6 @@
             <%= f.password_field :password_confirmation,
                 class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
           </div>
-        <% end %>
       </div>
 
       <div class="pt-2">
@@ -128,8 +173,8 @@
   </div>
 
   <div class="mt-6 text-center">
-    <%= link_to :back, class: "text-gray-500 dark:text-slate-400 text-sm hover:text-gray-700 dark:hover:text-slate-200 underline decoration-gray-300 dark:decoration-slate-600 underline-offset-4" do %>
-      戻る
+    <%= link_to root_path, class: "text-gray-500 dark:text-slate-400 text-sm hover:text-gray-700 dark:hover:text-slate-200 underline decoration-gray-300 dark:decoration-slate-600 underline-offset-4" do %>
+      ホームに戻る
     <% end %>
   </div>
 </div>

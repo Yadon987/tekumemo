@@ -1,25 +1,19 @@
 <% content_for :title, "散歩記録を編集 - てくメモ" %>
 
-<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto">
+<div class="flex-1 w-full max-w-3xl mx-auto pb-24 px-4 sm:px-6">
   <!-- ページタイトル -->
-  <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
-      <span class="material-symbols-outlined text-3xl">edit</span>
-      <span>散歩記録を編集</span>
+  <div class="mb-8 mt-4 text-center sm:text-left">
+    <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-300 dark:to-purple-400 drop-shadow-sm dark:drop-shadow-[0_0_10px_rgba(34,211,238,0.5)] inline-flex items-center gap-2">
+      <span class="material-symbols-outlined text-4xl text-cyan-500 dark:text-cyan-400">edit_note</span>
+      散歩記録を編集
     </h1>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-      <%= @walk.walked_on.strftime('%Y年%m月%d日') %>の散歩記録を編集
+    <p class="text-sm text-gray-500 dark:text-slate-400 mt-2 font-medium">
+      <%= @walk.walked_on.strftime('%Y年%m月%d日') %>の記録を修正します
     </p>
   </div>
 
   <!-- フォーム -->
-  <div class="bg-gradient-to-br from-cyan-400 to-blue-500 dark:from-cyan-600 dark:to-blue-700 p-6 rounded-2xl shadow-xl transition-colors relative overflow-hidden">
-    <!-- 装飾用背景 -->
-    <div class="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-
-    <div class="relative z-10">
-      <%= render "form", walk: @walk %>
-    </div>
+  <div class="relative z-10">
+    <%= render "form", walk: @walk %>
   </div>
 </div>
