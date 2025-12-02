@@ -46,20 +46,24 @@ class User < ApplicationRecord
 
   # 連続して散歩した日数を計算する
   def consecutive_walk_days
-    # 今日から過去に向かって、連続して散歩した日数を数える
+    # N+1対策: ループ内でのクエリ発行を避けるため、必要な日付データを一括取得
+    # 今日以前の記録の日付を重複なしで降順（新しい順）に取得
+    walk_dates = walks.where("walked_on <= ?", Date.today)
+                      .select(:walked_on)
+                      .distinct
+                      .order(walked_on: :desc)
+                      .pluck(:walked_on)
+
     consecutive_count = 0
     check_date = Date.today
 
-    # 今日から過去に向かって1日ずつチェック
-    loop do
-      # その日の散歩記録があるかチェック
-      if walks.exists?(walked_on: check_date)
-        # 記録があれば連続日数をカウント
+    walk_dates.each do |date|
+      if date == check_date
+        # 日付が一致すればカウントアップし、チェック対象を前日にずらす
         consecutive_count += 1
-        # 1日前に移動
-        check_date = check_date - 1.day
+        check_date -= 1.day
       else
-        # 記録がなければループを終了
+        # 日付が連続していない（飛んでいる）場合、そこで終了
         break
       end
     end
