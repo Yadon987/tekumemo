@@ -9,6 +9,16 @@ export default class extends Controller {
         this.ticking = false
         this.onScroll = this.onScroll.bind(this)
         window.addEventListener("scroll", this.onScroll, { passive: true })
+
+        // iOS Chromeの場合、アニメーション（transition）を無効化してガクつきを軽減する
+        // ホームバーとの干渉を防ぐため、隠す機能自体は維持する
+        const isIOSChrome = /CriOS/i.test(navigator.userAgent) && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isIOSChrome) {
+            this.elementTargets.forEach(el => {
+                el.classList.remove("transition-all", "duration-300")
+                el.classList.add("transition-none")
+            })
+        }
     }
 
     disconnect() {

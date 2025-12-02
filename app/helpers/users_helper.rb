@@ -14,8 +14,10 @@ module UsersHelper
       initials = user.name.to_s.strip.slice(0, 3).upcase
       initials = "ゲスト" if initials.blank?
 
-      # 3文字の場合、枠に収まるようにフォントサイズを少し小さくし、文字間を詰める
-      adjust_class = initials.length >= 3 ? "text-[0.8em] tracking-tighter" : ""
+      # 3文字の場合、枠に収まるようにフォントサイズを小さくし、文字間を詰める
+      # whitespace-nowrap: 改行禁止
+      # leading-none: 行間を詰めて垂直中央寄せを安定させる
+      adjust_class = initials.length >= 3 ? "text-[0.7em] tracking-tighter whitespace-nowrap leading-none" : "whitespace-nowrap leading-none"
 
       # 背景色はグラデーションにする（アプリの雰囲気に合わせる）
       content_tag :div, class: "#{base_classes} bg-gradient-to-br from-blue-500 to-indigo-600 text-white" do
