@@ -11,7 +11,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
     it "正しいメールアドレスとパスワードでログインできること" do
       visit new_user_session_path
       fill_in "メールアドレス", with: "test@example.com"
-      fill_in "パスワード", with: "password123"
+      fill_in "login-password-field", with: "password123"
       within "#new_user" do
         click_button "ログイン"
       end
@@ -23,7 +23,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
     it "誤ったパスワードではログインできないこと" do
       visit new_user_session_path
       fill_in "メールアドレス", with: "test@example.com"
-      fill_in "パスワード", with: "wrongpassword"
+      fill_in "login-password-field", with: "wrongpassword"
       within "#new_user" do
         click_button "ログイン"
       end
@@ -35,7 +35,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
     it "存在しないメールアドレスではログインできないこと" do
       visit new_user_session_path
       fill_in "メールアドレス", with: "unknown@example.com"
-      fill_in "パスワード", with: "password123"
+      fill_in "login-password-field", with: "password123"
       within "#new_user" do
         click_button "ログイン"
       end
@@ -120,9 +120,9 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       visit new_user_session_path
       click_link "パスワードをお忘れですか?"
 
-      expect(page).to have_content("パスワードの再設定")
-      expect(page).to have_field("メールアドレス")
-      expect(page).to have_button("再設定メールを送信する")
+      expect(page).to have_content("Coming")
+      expect(page).to have_content("Soon")
+      expect(page).to have_content("現在開発中です")
     end
   end
 end

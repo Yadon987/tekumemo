@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   # =====  # Deviseの設定（コントローラーをカスタマイズ）
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
