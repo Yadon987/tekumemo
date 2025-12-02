@@ -19,6 +19,9 @@ application.register("dropdown", DropdownController)
 import ExpandableFabController from "./expandable_fab_controller"
 application.register("expandable-fab", ExpandableFabController)
 
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
 import GoogleFitController from "./google_fit_controller"
 application.register("google-fit", GoogleFitController)
 
