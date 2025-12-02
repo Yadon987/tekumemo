@@ -107,7 +107,7 @@ RSpec.describe "LoginStamps", type: :system do
       prev_month = 1.month.ago.strftime("%Y年%m月")
 
       # 前月ボタン（chevron_left）をクリック
-      find("a[href*='start_date'] .material-symbols-outlined", text: "chevron_left").click
+      find("a", text: "chevron_left").click
 
       expect(page).to have_content prev_month
     end
@@ -116,8 +116,9 @@ RSpec.describe "LoginStamps", type: :system do
       next_month = 1.month.since.strftime("%Y年%m月")
 
       # 次月ボタン（chevron_right）をクリック
-      find("a[href*='start_date'] .material-symbols-outlined", text: "chevron_right").click
+      find("a", text: "chevron_right").click
 
+      # 画面遷移を待つ
       expect(page).to have_content next_month
     end
   end
