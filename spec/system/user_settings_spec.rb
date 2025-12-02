@@ -3,6 +3,19 @@ require "rails_helper"
 RSpec.describe "ユーザー設定", type: :system do
   before do
     driven_by(:rack_test)
+  end
+
+  # js: true の場合のみChromeを使用
+  before(:each, js: true) do
+    driven_by(:selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]) do |driver_option|
+      driver_option.add_argument('--no-sandbox')
+      driver_option.add_argument('--disable-dev-shm-usage')
+      driver_option.add_argument('--headless=new')
+      driver_option.add_argument('--disable-gpu')
+    end
+  end
+
+  before do
     # OmniAuthのモック設定
     OmniAuth.config.test_mode = true
   end
@@ -72,7 +85,7 @@ RSpec.describe "ユーザー設定", type: :system do
   end
 
   describe "設定画面の操作" do
-    let(:user) { User.create!(name: "既存ユーザー", email: "user@example.com", password: "password123", target_distance: 5000) }
+    let(:user) { FactoryBot.create(:user, name: "既存ユーザー", email: "user@example.com", password: "password123", target_distance: 5000) }
 
     before do
       sign_in user
@@ -137,7 +150,8 @@ RSpec.describe "ユーザー設定", type: :system do
       expect(page).to have_content("パスワード（確認）とパスワードの入力が一致しません")
     end
 
-    it "Google連携を行い、その後解除できること" do
+    # JSが必要なため、このテストケースのみSeleniumを使用
+    it "Google連携を行い、その後解除できること", js: true do
       # Google連携のモック
       OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
         provider: "google_oauth2",
@@ -153,8 +167,24 @@ RSpec.describe "ユーザー設定", type: :system do
       expect(page).to have_content("連携済み")
       expect(user.reload.google_uid).to eq("linked_uid")
 
-      # 連携解除ボタンがあることを確認（アイコンのタイトル属性で検索）
-      expect(page).to have_selector("span[title='連携を解除する']")
+      # 連携解除ボタンをクリック
+      # button_to は form を生成するため、その中の button タグをクリックする
+      # turbo_confirm のダイアログが表示されるので承認する
+      accept_confirm do
+        # spanタグをクリックしてもイベントがバブリングしてボタンが押されるはず
+        find("span[title='連携を解除する']").click
+      end
+
+      expect(page).to have_content("Google連携を解除しました")
+
+      # "未連携" という文字は表示されない仕様なので、"連携する" ボタンがあることを確認
+      expect(page).to have_content("連携する")
+      expect(page).not_to have_content("連携済み")
+
+      # DB上で連携情報が消えているか確認
+      user.reload
+      expect(user.google_uid).to be_nil
+      expect(user.google_token).to be_nil
     end
 
     it "アカウントを削除できること" do
