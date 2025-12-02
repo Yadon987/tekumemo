@@ -20,15 +20,15 @@ class HomeController < ApplicationController
     Rails.logger.info("========================================")
 
     # IP位置情報を取得
-    location = GeolocationService.get_location(user_ip)
+    @location = GeolocationService.get_location(user_ip)
 
     # 位置情報の名前を設定
-    @location_name = location[:city] || location[:region] || "不明な場所"
+    @location_name = @location[:city] || @location[:region] || "不明な場所"
 
     # 天気情報を取得（位置情報を使用）
     @weather = WeatherService.get_forecast(
-      lat: location[:latitude],
-      lon: location[:longitude]
+      lat: @location[:latitude],
+      lon: @location[:longitude]
     )
 
     # 今日の散歩記録を取得
