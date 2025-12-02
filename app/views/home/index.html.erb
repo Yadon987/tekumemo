@@ -59,13 +59,14 @@
 
       <!-- 天気予報カード -->
       <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-        <div class="relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-xl h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border border-transparent dark:border-blue-400/50 dark:shadow-[0_0_20px_rgba(96,165,250,0.2)] hover:dark:shadow-[0_0_30px_rgba(96,165,250,0.4)]">
+        <%= link_to "https://www.windy.com/?#{@location[:latitude]},#{@location[:longitude]},10", target: "_blank", class: "block relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-xl h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border border-transparent dark:border-blue-400/50 dark:shadow-[0_0_20px_rgba(96,165,250,0.2)] hover:dark:shadow-[0_0_30px_rgba(96,165,250,0.4)]" do %>
           <!-- カードヘッダー -->
           <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
             <div class="flex items-center justify-center">
               <div class="flex items-center space-x-0.5 text-white/80 text-sm">
                 <span class="material-symbols-outlined font-bold text-base text-white w-5 h-5 overflow-hidden">location_on</span>
                 <span class="font-bold text-base text-white"><%= @location_name || "現在地不明" %></span>
+                <span class="material-symbols-outlined text-sm text-white/70 ml-1">open_in_new</span>
               </div>
             </div>
           </div>
@@ -120,7 +121,7 @@
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       </div>
 
       <!-- ランキングカード -->

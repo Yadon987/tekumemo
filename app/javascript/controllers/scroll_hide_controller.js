@@ -5,6 +5,11 @@ export default class extends Controller {
     static targets = ["element"]
 
     connect() {
+        // iOS Chromeの場合、スクロールによる隠蔽機能が画面のガタつき（ビューポートの変化による再レイアウトのループ）を引き起こすため、
+        // この機能を完全に無効化し、常に表示固定とする。
+        const isIOSChrome = /CriOS/i.test(navigator.userAgent) && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isIOSChrome) return;
+
         this.lastScrollTop = 0
         this.ticking = false
         this.onScroll = this.onScroll.bind(this)

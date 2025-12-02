@@ -192,6 +192,31 @@ RSpec.describe "ユーザー設定", type: :system do
       expect(user.google_token).to be_nil
     end
 
+    it "Google連携解除時にパスワードを間違えると解除できないこと", js: true do
+      # 事前にGoogle連携状態にする
+      user.update!(
+        google_uid: "linked_uid",
+        google_token: "token",
+        google_expires_at: Time.now + 1.hour
+      )
+      visit edit_user_registration_path
+
+      # 連携解除ボタン（モーダルを開く）をクリック
+      find("button span[title='連携を解除する']").click
+
+      # 間違ったパスワードを入力
+      within "#disconnect_modal" do
+        fill_in "現在のパスワード", with: "wrongpassword"
+        click_button "解除する"
+      end
+
+      expect(page).to have_content("パスワードが正しくありません")
+
+      # 連携が解除されていないことを確認
+      expect(page).to have_content("連携済み")
+      expect(user.reload.google_uid).to eq("linked_uid")
+    end
+
     it "アカウントを削除できること" do
       expect {
         click_button "削除する"
