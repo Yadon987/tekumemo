@@ -20,7 +20,7 @@
           <%= f.email_field :email,
               autofocus: true,
               autocomplete: "email",
-              placeholder: "メールアドレス",
+              placeholder: "例: user@example.com",
               class: "block w-full h-14 pl-12 pr-4 text-base text-gray-900 bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:text-slate-50 dark:placeholder-slate-500 transition-colors duration-200" %>
         </div>
       </div>
@@ -32,7 +32,7 @@
           <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">lock</span>
           <%= f.password_field :password,
               autocomplete: "current-password",
-              placeholder: "パスワード",
+              placeholder: "6文字以上のパスワード",
               id: "login-password-field",
               class: "block w-full h-14 pl-12 pr-12 text-base text-gray-900 bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:text-slate-50 dark:placeholder-slate-500 transition-colors duration-200" %>
           <button type="button"
@@ -46,7 +46,7 @@
         <% if devise_mapping.rememberable? %>
           <div class="flex items-center mt-3">
             <%= f.check_box :remember_me,
-                class: "w-5 h-5 text-cyan-600 bg-white border-gray-300 rounded focus:ring-cyan-500 focus:ring-2 dark:bg-slate-800 dark:border-slate-600" %>
+                class: "w-5 h-5 text-cyan-600 bg-white border-gray-300 rounded focus:ring-0 focus:ring-offset-0 dark:bg-slate-800 dark:border-slate-600" %>
             <%= f.label :remember_me, "ログインしたままにする", class: "ml-2 text-sm text-gray-700 dark:text-slate-300" %>
           </div>
         <% end %>
@@ -63,6 +63,7 @@
             <%= link_to "パスワードをお忘れですか?",
                 new_password_path(resource_name),
                 class: "text-sm text-cyan-600 dark:text-cyan-400 hover:underline" %>
+            <p class="text-xs text-red-500 dark:text-red-400 mt-1">※まだ未実装です</p>
           </div>
         <% end %>
       </div>

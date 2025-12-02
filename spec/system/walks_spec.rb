@@ -17,7 +17,7 @@ RSpec.describe "Walks", type: :system do
     before do
       visit new_user_session_path
       fill_in "メールアドレス", with: user.email
-      fill_in "パスワード", with: user.password
+      fill_in "login-password-field", with: user.password
       within "#new_user" do
         click_button "ログイン"
       end
@@ -56,7 +56,7 @@ RSpec.describe "Walks", type: :system do
     before do
       visit new_user_session_path
       fill_in "メールアドレス", with: user.email
-      fill_in "パスワード", with: user.password
+      fill_in "login-password-field", with: user.password
       within "#new_user" do
         click_button "ログイン"
       end
@@ -90,7 +90,7 @@ RSpec.describe "Walks", type: :system do
     before do
       visit new_user_session_path
       fill_in "メールアドレス", with: user.email
-      fill_in "パスワード", with: user.password
+      fill_in "login-password-field", with: user.password
       within "#new_user" do
         click_button "ログイン"
       end
@@ -133,7 +133,7 @@ RSpec.describe "Walks", type: :system do
 
       visit new_user_session_path
       fill_in "メールアドレス", with: user.email
-      fill_in "パスワード", with: user.password
+      fill_in "login-password-field", with: user.password
       within "#new_user" do
         click_button "ログイン"
       end

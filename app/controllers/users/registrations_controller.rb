@@ -21,6 +21,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Google連携解除アクション
   # これはDevise標準にはないので、独自に追加
   def disconnect_google
+    # パスワード入力チェック
+    if params[:user].nil? || params[:user][:current_password].blank?
+      redirect_to edit_user_registration_path, alert: "連携解除にはパスワードの入力が必要です。"
+      return
+    end
+
+    # パスワード検証
+    unless current_user.valid_password?(params[:user][:current_password])
+      redirect_to edit_user_registration_path, alert: "パスワードが正しくありません。"
+      return
+    end
+
     if current_user.update(
       google_uid: nil,
       google_token: nil,
@@ -30,7 +42,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     )
       redirect_to edit_user_registration_path, notice: "Google連携を解除しました。次回からはパスワードでログインしてください。"
     else
-      redirect_to edit_user_registration_path, alert: "連携解除に失敗しました。"
+      redirect_to edit_user_registration_path, alert: "解除に失敗しました: #{current_user.errors.full_messages.join(', ')}"
     end
   end
 
