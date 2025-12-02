@@ -102,7 +102,12 @@
           </div>
         <% end %>
       </div>
-      </div>
+
+      <!-- Google Fit連携の注意書き（プレビュー版） -->
+      <%= render "shared/google_fit_notice" %>
+
+      <!-- Google認証警告ガイド -->
+      <%= render "shared/google_auth_guide" %>
     </div>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, data: { turbo: false }, class: "space-y-6" }) do |f| %>
@@ -186,7 +191,7 @@
             </p>
             <div class="mt-2 text-right">
               <%= link_to "パスワードを忘れた場合", new_password_path(resource_name), class: "text-xs text-cyan-600 dark:text-cyan-400 hover:underline" %>
-              <span class="text-xs text-red-500 dark:text-red-400 ml-1">※現在は機能していません</span>
+              <span class="text-xs text-red-500 dark:text-red-400 ml-1">※MVPでは未実装です</span>
             </div>
           </div>
       </div>

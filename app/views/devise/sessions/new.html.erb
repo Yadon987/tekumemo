@@ -63,7 +63,7 @@
             <%= link_to "パスワードをお忘れですか?",
                 new_password_path(resource_name),
                 class: "text-sm text-cyan-600 dark:text-cyan-400 hover:underline" %>
-            <p class="text-xs text-red-500 dark:text-red-400 mt-1">※まだ未実装です</p>
+            <p class="text-xs text-red-500 dark:text-red-400 mt-1">※MVPでは未実装です</p>
           </div>
         <% end %>
       </div>
@@ -89,6 +89,9 @@
       </svg>
       <span class="text-base font-medium text-gray-700 dark:text-slate-300">Googleでログイン</span>
     <% end %>
+
+    <!-- Googleログイン警告対策ガイド（アコーディオン） -->
+    <%= render "shared/google_auth_guide" %>
 
     <!-- Sign Up Link -->
     <div class="mt-8 text-center">

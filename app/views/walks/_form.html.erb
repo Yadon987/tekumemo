@@ -40,7 +40,14 @@
         <span>Google Fitと連携して自動入力</span>
       <% end %>
     <% end %>
+
   </div>
+
+  <!-- Google Fit連携の注意書き（プレビュー版） -->
+  <%= render "shared/google_fit_notice" %>
+
+  <!-- Google認証警告ガイド -->
+  <%= render "shared/google_auth_guide" %>
 
   <!-- エラーメッセージ -->
   <% if walk.errors.any? %>

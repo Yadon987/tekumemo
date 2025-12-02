@@ -1,0 +1,63 @@
+<!-- Googleログイン警告対策ガイド（アコーディオン） -->
+<details class="group mt-6">
+  <summary class="list-none flex items-start justify-center cursor-pointer text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors select-none px-2">
+    <span class="material-symbols-outlined text-base mr-1.5 mt-0.5 flex-shrink-0">warning</span>
+    <span class="underline decoration-dotted underline-offset-4 leading-relaxed text-left">「このアプリはGoogleで確認されていません」と表示される場合</span>
+    <span class="material-symbols-outlined text-sm ml-1 mt-0.5 transform group-open:rotate-180 transition-transform flex-shrink-0">expand_more</span>
+  </summary>
+
+  <div class="mt-4 bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 border border-gray-200 dark:border-gray-700 text-left animate-fade-in-down shadow-sm">
+    <p class="text-xs text-gray-600 dark:text-gray-300 mb-4 leading-relaxed font-medium">
+      現在、Googleの審査中のため、認証時に警告画面が表示されることがあります。<br>
+      以下の手順で進めてください（安全性に問題はありません）。
+    </p>
+
+    <!-- Step 1 -->
+    <div class="mb-6">
+      <div class="text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1.5 flex items-center">
+        <span class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded mr-1.5 text-gray-700 dark:text-gray-300">STEP 1</span>
+        左下の「詳細」をクリック
+      </div>
+      <div class="bg-[#202124] rounded-xl p-4 relative overflow-hidden border border-gray-700 shadow-inner">
+        <div class="text-white text-sm font-bold mb-3 leading-tight">このアプリはGoogleで確認されていません</div>
+        <div class="text-gray-400 text-[10px] mb-8 leading-relaxed">現在テスト中のアプリへのアクセスが許可されました。招待元のデベロッパーを信頼できる場合のみ、続行してください。</div>
+
+        <div class="flex justify-between items-end">
+          <!-- 詳細リンク -->
+          <div class="relative z-10">
+            <span class="text-[#8ab4f8] text-xs font-medium cursor-pointer border-b border-[#8ab4f8]">詳細</span>
+            <!-- 赤枠 -->
+            <div class="absolute -top-3 -left-4 -right-4 -bottom-3 border-2 border-red-500/90 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+            <!-- 指アイコン -->
+            <span class="material-symbols-outlined absolute top-3 left-2 text-white drop-shadow-lg text-3xl transform rotate-[-15deg] animate-bounce">touch_app</span>
+          </div>
+
+          <!-- 安全なページに戻るボタン -->
+          <div class="bg-[#8ab4f8] text-[#202124] text-[10px] font-bold px-3 py-2 rounded-md opacity-40">安全なページに戻る</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div>
+      <div class="text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-1.5 flex items-center">
+        <span class="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded mr-1.5 text-gray-700 dark:text-gray-300">STEP 2</span>
+        「安全ではないページに移動」をクリック
+      </div>
+      <div class="bg-[#202124] rounded-xl p-4 relative overflow-hidden border border-gray-700 shadow-inner">
+        <div class="text-gray-400 text-[10px] mb-2">...続行してください。</div>
+        <div class="text-[#8ab4f8] text-xs mb-4 opacity-80">詳細を非表示</div>
+
+        <div class="mt-2 pl-1">
+          <div class="relative z-10 inline-block">
+            <span class="text-[#8ab4f8] text-xs font-medium cursor-pointer underline decoration-[#8ab4f8]/50 underline-offset-2 leading-relaxed">tekumemo.com（安全ではないページ）に移動</span>
+            <!-- 赤枠 -->
+            <div class="absolute -top-2 -left-2 -right-2 -bottom-2 border-2 border-red-500/90 rounded-lg animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+            <!-- 指アイコン -->
+            <span class="material-symbols-outlined absolute top-4 right-0 text-white drop-shadow-lg text-3xl transform rotate-[-15deg] animate-bounce">touch_app</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</details>
