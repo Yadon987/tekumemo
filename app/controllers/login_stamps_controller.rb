@@ -43,5 +43,4 @@ class LoginStampsController < ApplicationController
     # 連続日数を計算
     @consecutive_days = current_user.consecutive_walk_days
   end
-
 end

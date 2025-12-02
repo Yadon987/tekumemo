@@ -47,7 +47,6 @@ RSpec.describe "Walks", type: :system do
       # 数値の検証は正規表現で柔軟に
       expect(page).to have_content(/5(\.5)?/)
     end
-
   end
 
   describe "散歩記録の編集" do
@@ -81,7 +80,6 @@ RSpec.describe "Walks", type: :system do
       expect(page).to have_current_path(walk_path(walk))
       expect(page).to have_content "編集後の場所"
       expect(page).to have_content(/10(\.0)?/)
-
     end
   end
 

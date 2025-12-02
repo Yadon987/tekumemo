@@ -91,7 +91,7 @@ RSpec.describe Walk, type: :model do
         walk2 = FactoryBot.create(:walk, user: user, walked_on: 1.day.ago)
         walk3 = FactoryBot.create(:walk, user: user, walked_on: 2.days.ago)
 
-        expect(Walk.recent).to eq([walk2, walk3, walk1])
+        expect(Walk.recent).to eq([ walk2, walk3, walk1 ])
       end
     end
   end
