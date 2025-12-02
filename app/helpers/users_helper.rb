@@ -7,7 +7,7 @@ module UsersHelper
 
     if user.avatar_url.present? && user.use_google_avatar?
       # Googleのアバター画像がある場合
-      image_tag user.avatar_url, alt: user.name, class: "#{base_classes} object-cover"
+      image_tag user.avatar_url, alt: user.name, class: "#{base_classes} object-cover", referrerpolicy: "no-referrer"
     else
       # 画像がない場合：名前の頭文字2文字を取得して表示
       # 例: "Tech Memo" -> "TM", "山田太郎" -> "山田"

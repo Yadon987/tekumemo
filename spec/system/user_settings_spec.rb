@@ -167,12 +167,17 @@ RSpec.describe "ユーザー設定", type: :system do
       expect(page).to have_content("連携済み")
       expect(user.reload.google_uid).to eq("linked_uid")
 
-      # 連携解除ボタンをクリック
-      # button_to は form を生成するため、その中の button タグをクリックする
-      # turbo_confirm のダイアログが表示されるので承認する
-      accept_confirm do
-        # spanタグをクリックしてもイベントがバブリングしてボタンが押されるはず
-        find("span[title='連携を解除する']").click
+      # 連携解除ボタン（モーダルを開く）をクリック
+      find("button span[title='連携を解除する']").click
+
+      # モーダルが表示されるのを確認
+      expect(page).to have_content("Google連携の解除")
+      expect(page).to have_content("現在のパスワードを入力してください")
+
+      # パスワードを入力して解除
+      within "#disconnect_modal" do
+        fill_in "現在のパスワード", with: "password123"
+        click_button "解除する"
       end
 
       expect(page).to have_content("Google連携を解除しました")

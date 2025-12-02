@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   # =====  # Deviseの設定（コントローラーをカスタマイズ）
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
@@ -28,8 +29,11 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   # Deviseのスコープ内で独自アクションを定義
   devise_scope :user do
-    delete "users/disconnect_google", to: "users/registrations#disconnect_google", as: :disconnect_google_user
+    patch "users/disconnect_google", to: "users/registrations#disconnect_google", as: :disconnect_google_user
   end
+
+  # ===== 静的ページ =====
+  get "privacy", to: "static_pages#privacy"
 
   # PWA関連
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker

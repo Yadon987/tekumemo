@@ -32,6 +32,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       if @user
         # 連携済みユーザーが見つかった場合 -> ログイン
+        @user.remember_me = true
         sign_in_and_redirect @user, event: :authentication
         set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
       else

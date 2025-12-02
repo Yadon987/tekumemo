@@ -1,0 +1,90 @@
+<% content_for :title, "プライバシーポリシー＆利用規約 - てくメモ" %>
+
+<div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8 pb-32">
+  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-6 sm:p-10 border border-gray-100 dark:border-gray-800">
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+      プライバシーポリシー＆利用規約
+    </h1>
+
+    <div class="space-y-10 text-gray-700 dark:text-gray-300 leading-relaxed">
+
+      <!-- プライバシーポリシー -->
+      <section>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-cyan-400 mb-4 flex items-center">
+          <span class="material-symbols-outlined mr-2">privacy_tip</span>
+          プライバシーポリシー
+        </h2>
+
+        <div class="space-y-6">
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-200 mb-2">1. 収集する情報</h3>
+            <p>本アプリ「てくメモ」は、以下の情報を収集・利用します。</p>
+            <ul class="list-disc list-inside mt-2 space-y-1 ml-2 text-sm sm:text-base">
+              <li>Googleアカウント情報（メールアドレス、プロフィール画像、ユーザーID）</li>
+              <li>Google Fitから取得される歩数、移動距離、消費カロリーなどの活動データ</li>
+              <li>ユーザーが本アプリ内で入力した散歩記録（場所、メモなど）</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-200 mb-2">2. 情報の利用目的</h3>
+            <p>収集した情報は、以下の目的でのみ利用されます。</p>
+            <ul class="list-disc list-inside mt-2 space-y-1 ml-2 text-sm sm:text-base">
+              <li>ユーザー認証およびアカウント管理のため</li>
+              <li>日々の活動記録（歩数、距離など）を可視化し、ユーザーに提供するため</li>
+              <li>アプリの機能改善および不具合対応のため</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-200 mb-2">3. Google Fitデータの取り扱い</h3>
+            <p>本アプリは、Google Fit APIを使用してユーザーの活動データを取得します。取得したデータは、本アプリ内での表示および分析にのみ使用され、ユーザーの同意なく第三者に提供・販売されることはありません。</p>
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              ※ Google Fitとの連携は、設定画面からいつでも解除することができます。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <hr class="border-gray-200 dark:border-gray-800">
+
+      <!-- 利用規約 -->
+      <section>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-cyan-400 mb-4 flex items-center">
+          <span class="material-symbols-outlined mr-2">gavel</span>
+          利用規約
+        </h2>
+
+        <div class="space-y-6">
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-200 mb-2">1. 免責事項</h3>
+            <p>本アプリが提供する健康関連情報（消費カロリー計算など）は目安であり、医学的な助言を代替するものではありません。本アプリの利用により生じた損害について、開発者は一切の責任を負いません。</p>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-200 mb-2">2. 禁止事項</h3>
+            <p>ユーザーは、本アプリの利用にあたり、以下の行為を行ってはなりません。</p>
+            <ul class="list-disc list-inside mt-2 space-y-1 ml-2 text-sm sm:text-base">
+              <li>法令または公序良俗に違反する行為</li>
+              <li>本アプリの運営を妨害する行為</li>
+              <li>他のユーザーまたは第三者に不利益を与える行為</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-gray-200 mb-2">3. 規約の変更</h3>
+            <p>開発者は、必要と判断した場合、ユーザーに通知することなく本規約を変更することができるものとします。</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="pt-8 text-center">
+        <%= link_to root_path, class: "inline-flex items-center px-6 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full transition-colors duration-200 font-medium" do %>
+          <span class="material-symbols-outlined mr-2">arrow_back</span>
+          ホームに戻る
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

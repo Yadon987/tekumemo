@@ -1,7 +1,26 @@
 <% content_for :title, "てくメモ - パスワード再設定" %>
 
 <div class="flex flex-1 flex-col items-center justify-center p-4 pb-24">
-  <div class="w-full max-w-md bg-gradient-to-b from-white to-slate-50 dark:bg-gradient-to-br dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-gray-100 dark:border-indigo-500/30 shadow-xl dark:shadow-[0_0_20px_rgba(99,102,241,0.2)] rounded-3xl p-6 sm:p-8 transition-all duration-300">
+  <div class="relative w-full max-w-md bg-gradient-to-b from-white to-slate-50 dark:bg-gradient-to-br dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-gray-100 dark:border-indigo-500/30 shadow-xl dark:shadow-[0_0_20px_rgba(99,102,241,0.2)] rounded-3xl p-6 sm:p-8 transition-all duration-300 overflow-hidden">
+
+    <!-- Coming Soon Overlay (機能制限用マスク) -->
+    <!-- 将来機能を有効化する場合は、この div ブロック全体を削除または非表示にしてください -->
+    <div class="absolute inset-0 z-50 bg-white/30 dark:bg-slate-900/40 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6">
+      <div class="bg-white dark:bg-slate-800 p-4 rounded-full shadow-2xl mb-6 transform -rotate-6 border border-gray-100 dark:border-slate-700 animate-pulse">
+        <span class="material-symbols-outlined text-5xl text-cyan-500">rocket_launch</span>
+      </div>
+      <h2 class="text-4xl font-black text-gray-800 dark:text-white tracking-widest uppercase drop-shadow-sm mb-2">
+        Coming<br>Soon
+      </h2>
+      <p class="text-sm font-bold text-gray-600 dark:text-slate-300 mb-8">
+        現在開発中です。<br>アップデートをお待ちください。
+      </p>
+
+      <%= link_to new_session_path(resource_name), class: "px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-full shadow-lg hover:scale-105 transition-transform duration-200 flex items-center" do %>
+        <span class="material-symbols-outlined mr-2 text-sm">arrow_back</span>
+        戻る
+      <% end %>
+    </div>
 
     <!-- Header -->
     <div class="mb-8 flex flex-col items-center text-center">
