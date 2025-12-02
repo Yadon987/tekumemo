@@ -9,14 +9,17 @@ module UsersHelper
       # Googleのアバター画像がある場合
       image_tag user.avatar_url, alt: user.name, class: "#{base_classes} object-cover", referrerpolicy: "no-referrer"
     else
-      # 画像がない場合：名前の頭文字2文字を取得して表示
-      # 例: "Tech Memo" -> "TM", "山田太郎" -> "山田"
-      initials = user.name.to_s.strip.slice(0, 2).upcase
+      # 画像がない場合：名前の頭文字3文字を取得して表示
+      # 例: "Tech Memo" -> "TEC", "山田太郎" -> "山田太"
+      initials = user.name.to_s.strip.slice(0, 3).upcase
       initials = "ゲスト" if initials.blank?
+
+      # 3文字の場合、枠に収まるようにフォントサイズを少し小さくし、文字間を詰める
+      adjust_class = initials.length >= 3 ? "text-[0.8em] tracking-tighter" : ""
 
       # 背景色はグラデーションにする（アプリの雰囲気に合わせる）
       content_tag :div, class: "#{base_classes} bg-gradient-to-br from-blue-500 to-indigo-600 text-white" do
-        initials
+        content_tag :span, initials, class: adjust_class
       end
     end
   end
