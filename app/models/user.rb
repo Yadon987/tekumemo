@@ -43,4 +43,27 @@ class User < ApplicationRecord
   def google_token_valid?
     google_token.present? && google_expires_at.present? && google_expires_at > Time.now
   end
+
+  # 連続して散歩した日数を計算する
+  def consecutive_walk_days
+    # 今日から過去に向かって、連続して散歩した日数を数える
+    consecutive_count = 0
+    check_date = Date.today
+
+    # 今日から過去に向かって1日ずつチェック
+    loop do
+      # その日の散歩記録があるかチェック
+      if walks.exists?(walked_on: check_date)
+        # 記録があれば連続日数をカウント
+        consecutive_count += 1
+        # 1日前に移動
+        check_date = check_date - 1.day
+      else
+        # 記録がなければループを終了
+        break
+      end
+    end
+
+    consecutive_count
+  end
 end
