@@ -1,6 +1,11 @@
 # IP位置情報を取得するサービスクラス
 # geocoder gem を使用してより正確な位置情報を取得
 class GeolocationService
+  # リクエストからクライアントIPアドレスを抽出
+  def self.extract_ip(request)
+    request.headers["X-Forwarded-For"]&.split(",")&.first&.strip || request.remote_ip
+  end
+
   # IPアドレスから位置情報を取得
   def self.get_location(ip_address)
     # ローカルホストやプライベートIPの場合はデフォルト（東京）を返す

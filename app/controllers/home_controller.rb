@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
     # ユーザーのIPアドレスを取得
     # プロキシ環境（Cloudflare等）では X-Forwarded-For ヘッダーの最初の値が実際のクライアントIP
-    user_ip = request.headers["X-Forwarded-For"]&.split(",")&.first&.strip || request.remote_ip
+    user_ip = GeolocationService.extract_ip(request)
 
     # デバッグ用：取得したIPアドレスをログに出力
     Rails.logger.info("========================================")
