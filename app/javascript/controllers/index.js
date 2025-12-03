@@ -7,6 +7,9 @@ import { application } from "./application"
 import CarouselController from "./carousel_controller"
 application.register("carousel", CarouselController)
 
+import CharacterCounterController from "./character_counter_controller"
+application.register("character-counter", CharacterCounterController)
+
 import CounterController from "./counter_controller"
 application.register("counter", CounterController)
 
