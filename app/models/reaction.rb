@@ -16,10 +16,14 @@ class Reaction < ApplicationRecord
     heart: 1,          # ❤️ 素敵
     bulb: 2,           # 💡 参考になる
     cherry_blossom: 3, # 🌸 癒やされる
-    fire: 4,           # 🔥 すごい！
+    fire: 4,           # 🔥 燃えてきた！
     party: 5,          # 🎉 おめでとう
-    sun: 6,            # ☀️ 良い天気だね
-    walking: 7         # 🚶 一緒に歩きたい
+    eyes: 8,           # 👀 見たよ
+    sparkles: 10,      # ✨ きれい
+    muscle: 11,        # 💪 頑張った
+    laugh: 12,         # 🤣 爆笑
+    thanks: 13,        # 🙏 ありがとう
+    cry: 14            # 😭 涙
   }, prefix: true
 
   # インスタンスメソッド（各リアクションが持つ機能）
@@ -31,8 +35,12 @@ class Reaction < ApplicationRecord
     when :cherry_blossom then "🌸"
     when :fire then "🔥"
     when :party then "🎉"
-    when :sun then "☀️"
-    when :walking then "🚶"
+    when :eyes then "👀"
+    when :sparkles then "✨"
+    when :muscle then "💪"
+    when :laugh then "🤣"
+    when :thanks then "🙏"
+    when :cry then "😭"
     end
   end
 
@@ -43,10 +51,14 @@ class Reaction < ApplicationRecord
     when :heart then "素敵"
     when :bulb then "参考になる"
     when :cherry_blossom then "癒やされる"
-    when :fire then "すごい！"
+    when :fire then "燃えてきた！"
     when :party then "おめでとう"
-    when :sun then "良い天気だね"
-    when :walking then "一緒に歩きたい"
+    when :eyes then "見たよ"
+    when :sparkles then "きれい"
+    when :muscle then "頑張った"
+    when :laugh then "爆笑"
+    when :thanks then "ありがとう"
+    when :cry then "涙"
     end
   end
 

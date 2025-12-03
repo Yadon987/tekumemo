@@ -19,7 +19,6 @@
 
   <!-- Tailwind CSSビルド済みファイル -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
   <!-- ダークモード初期化スクリプト（FOUC防止）←チラつきのこと -->
@@ -34,7 +33,10 @@
   </script>
 </head>
 
-<body class="min-h-screen bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 font-display transition-colors duration-200" data-controller="scroll-hide">
+<body class="min-h-screen bg-fixed bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 font-display transition-colors duration-200" data-controller="scroll-hide">
+  <!-- 背景装飾アニメーション（全ページ共通） -->
+  <%= render 'shared/background_animation' %>
+
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->

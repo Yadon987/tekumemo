@@ -1,12 +1,6 @@
 <%# app/views/posts/index.html.erb %>
 <div class="min-h-screen w-full relative font-body">
 
-  <!-- 背景装飾 -->
-  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-[100px] animate-pulse"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-400/20 rounded-full blur-[120px] animate-pulse" style="animation-duration: 4s;"></div>
-  </div>
-
   <main class="container mx-auto px-4 py-8 max-w-2xl relative z-10">
     <!-- ヘッダーエリア -->
     <div class="flex flex-col items-center justify-center mb-8 text-center">
@@ -35,37 +29,38 @@
       </div>
     </div>
 
-    <!-- インライン風投稿トリガー（FABの代替） -->
+    <!-- インライン風投稿トリガー（Claymorphism Style） -->
     <div class="mb-8">
-      <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 group"
+      <div class="bg-[#f0f4f8] dark:bg-[#1a0b2e]/80 rounded-[2rem] p-6 cursor-pointer transition-all duration-300 group hover:-translate-y-1 border-2 border-transparent dark:border-purple-500/30 shadow-[8px_8px_16px_rgba(166,175,195,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(168,85,247,0.4)]"
            data-controller="modal"
            data-modal-dialog-id-value="new_post_modal"
            data-action="click->modal#open">
+
         <div class="flex items-center gap-4">
-          <!-- 自分のアバター -->
-          <div class="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden flex-shrink-0 border-2 border-white dark:border-slate-600 shadow-sm">
+          <!-- 自分のアバター（浮き出し） -->
+          <div class="w-14 h-14 rounded-2xl bg-gray-200 dark:bg-gray-700 overflow-hidden flex-shrink-0 border-2 border-white dark:border-purple-500/20 shadow-[4px_4px_8px_rgba(166,175,195,0.2),-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
             <% if current_user.avatar_url.present? %>
               <%= image_tag current_user.avatar_url, class: "w-full h-full object-cover", alt: current_user.name %>
             <% else %>
-              <div class="flex items-center justify-center w-full h-full text-gray-500 font-bold text-lg">
+              <div class="flex items-center justify-center w-full h-full text-gray-500 dark:text-gray-400 font-bold text-lg">
                 <%= current_user.name[0].upcase %>
               </div>
             <% end %>
           </div>
 
-          <!-- 入力風エリア -->
-          <div class="flex-1 bg-gray-100 dark:bg-slate-700 rounded-full px-5 py-3 text-gray-500 dark:text-gray-400 text-sm group-hover:bg-gray-200 dark:group-hover:bg-slate-600 transition-colors flex items-center justify-between">
-            <span>今日の散歩の気分をシェアしよう...</span>
-            <span class="material-symbols-outlined text-gray-400">edit</span>
+          <!-- 入力風エリア（くぼみ） -->
+          <div class="flex-1 bg-gray-100 dark:bg-[#0b0514]/50 rounded-full px-6 py-4 text-gray-500 dark:text-purple-200/70 text-sm group-hover:bg-gray-200/80 dark:group-hover:bg-[#2e1a47]/50 transition-colors flex items-center justify-between shadow-inner border border-black/5 dark:border-purple-500/20 dark:shadow-none">
+            <span class="font-medium">今日の散歩の気分をシェアしよう...</span>
+            <span class="material-symbols-outlined text-gray-400 group-hover:text-blue-500 dark:group-hover:text-fuchsia-400 transition-colors">edit_note</span>
           </div>
 
-          <!-- アイコン類（飾り） -->
-          <div class="hidden sm:flex gap-2 text-gray-400">
-            <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-500">
-              <span class="material-symbols-outlined text-lg">wb_sunny</span>
+          <!-- アイコン類（飾り・Claymorphism） -->
+          <div class="hidden sm:flex gap-3 ml-2">
+            <div class="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/10 flex items-center justify-center text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-500/30 group-hover:scale-110 transition-transform duration-300 shadow-[3px_3px_6px_rgba(166,175,195,0.2),-3px_-3px_6px_rgba(255,255,255,0.8)] dark:shadow-[0_0_10px_rgba(249,115,22,0.2)]">
+              <span class="material-symbols-outlined text-xl">wb_sunny</span>
             </div>
-            <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-500">
-              <span class="material-symbols-outlined text-lg">sentiment_satisfied</span>
+            <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/10 flex items-center justify-center text-green-500 dark:text-green-400 border border-green-100 dark:border-green-500/30 group-hover:scale-110 transition-transform duration-300 delay-75 shadow-[3px_3px_6px_rgba(166,175,195,0.2),-3px_-3px_6px_rgba(255,255,255,0.8)] dark:shadow-[0_0_10px_rgba(34,197,94,0.2)]">
+              <span class="material-symbols-outlined text-xl">sentiment_satisfied</span>
             </div>
           </div>
         </div>
@@ -74,11 +69,16 @@
 
     <!-- 投稿一覧エリア -->
     <div class="space-y-6 pb-24">
+      <!-- 上部ページネーション -->
+      <div class="flex justify-center mb-4">
+        <%= paginate @posts %>
+      </div>
+
       <% if @posts.any? %>
         <%= render partial: "post", collection: @posts %>
       <% else %>
         <!-- 空の状態（Empty State） -->
-        <div class="flex flex-col items-center justify-center py-20 text-center bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm rounded-3xl border-2 border-dashed border-gray-300 dark:border-gray-700">
+        <div class="flex flex-col items-center justify-center py-20 text-center bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-300 dark:border-gray-700">
           <div class="text-6xl mb-4 animate-bounce">🚶‍♂️</div>
           <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-2">まだ投稿がありません</h3>
           <p class="text-gray-500 dark:text-gray-400">
@@ -94,18 +94,23 @@
     </div>
   </main>
 
-  <!-- 簡易的な新規投稿モーダル（dialogタグを使用） -->
+  <!-- 新規投稿モーダル（Claymorphism Style） -->
   <dialog id="new_post_modal"
-          class="p-0 rounded-2xl shadow-2xl backdrop:bg-gray-900/50 backdrop:backdrop-blur-sm bg-transparent open:animate-zoom-in"
+          class="p-0 rounded-[2.5rem] shadow-2xl backdrop:bg-gray-900/40 dark:backdrop:bg-[#0b0514]/80 backdrop:backdrop-blur-sm bg-transparent open:animate-zoom-in w-[95%] md:max-w-2xl"
           data-controller="modal"
           data-modal-target="dialog">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-2xl border border-gray-100 dark:border-gray-700">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
-          <span class="text-2xl">👟</span> てくてくシェア
+    <div class="bg-[#f8fafc] dark:bg-[#1a0b2e] w-full p-8 md:p-10 rounded-[2.5rem] border-4 border-white dark:border-purple-500/30 shadow-[20px_20px_60px_#d1d9e6,-20px_-20px_60px_#ffffff] dark:shadow-[0_0_50px_rgba(168,85,247,0.2)]">
+
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-black text-gray-800 dark:text-gray-100 flex items-center gap-3">
+          <span class="text-3xl filter drop-shadow-sm">👟</span>
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-purple-400 dark:to-pink-400">てくてくシェア</span>
         </h3>
-        <button type="button" data-controller="modal" data-action="click->modal#close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-          <span class="material-symbols-outlined">close</span>
+        <button type="button"
+                data-controller="modal"
+                data-action="click->modal#close"
+                class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-white/10 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-white/20 transition-all shadow-sm hover:shadow-inner outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-purple-500/50">
+          <span class="material-symbols-outlined font-bold">close</span>
         </button>
       </div>
 

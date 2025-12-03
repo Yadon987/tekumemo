@@ -17,6 +17,10 @@ ja:
         password_confirmation: "パスワード（確認）"
         current_password: "現在のパスワード"
         target_distance: "目標距離"
+      post:
+        body: "ひとことメモ"
+        weather: "天気"
+        feeling: "気分"
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"

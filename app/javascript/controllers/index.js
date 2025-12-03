@@ -10,15 +10,6 @@ application.register("carousel", CarouselController)
 import CharacterCounterController from "./character_counter_controller"
 application.register("character-counter", CharacterCounterController)
 
-import ModalController from "./modal_controller"
-application.register("modal", ModalController)
-
-import ReactionController from "./reaction_controller"
-application.register("reaction", ReactionController)
-
-import PopoverController from "./popover_controller"
-application.register("popover", PopoverController)
-
 import CounterController from "./counter_controller"
 application.register("counter", CounterController)
 
@@ -39,6 +30,18 @@ application.register("google-fit", GoogleFitController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
+import PopoverController from "./popover_controller"
+application.register("popover", PopoverController)
+
+import RadioToggleController from "./radio_toggle_controller"
+application.register("radio-toggle", RadioToggleController)
+
+import ReactionController from "./reaction_controller"
+application.register("reaction", ReactionController)
 
 import ScrollHideController from "./scroll_hide_controller"
 application.register("scroll-hide", ScrollHideController)

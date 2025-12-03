@@ -1,9 +1,8 @@
 FactoryBot.define do
   factory :post do
-    user { nil }
-    walk { nil }
-    body { "MyText" }
-    weather { 1 }
-    feeling { 1 }
+    association :user
+    body { "今日はいい天気で散歩日和でした！" }
+    weather { :sunny }
+    feeling { :great }
   end
 end
