@@ -35,8 +35,8 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # キャッシュ設定
-  # config.cache_store = :mem_cache_store
+  # キャッシュストアをSolid Cacheに変更
+  config.cache_store = :solid_cache_store
 
   # Active Job設定
   # config.active_job.queue_adapter = :resque
