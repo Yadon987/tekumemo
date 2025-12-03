@@ -1,0 +1,5 @@
+<!-- リアクション追加/削除時に、該当投稿のリアクションボタン部分のみを更新 -->
+
+<%= turbo_stream.replace "post_#{@post.id}_reactions" do %>
+  <%= render "posts/reactions", post: @post %>
+<% end %>
