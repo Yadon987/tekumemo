@@ -87,5 +87,16 @@ export default class extends Controller {
     setTimeout(() => {
       this.emojiTarget.classList.remove("scale-125")
     }, 200)
+
+    // ピッカー内のボタンの状態も同期
+    const pickerBtnId = this.buttonTarget.id.replace("reaction-btn-", "picker-btn-")
+    const pickerBtn = document.getElementById(pickerBtnId)
+    if (pickerBtn) {
+      if (this.reactedValue) {
+        pickerBtn.classList.add("bg-blue-50", "dark:bg-blue-900/20")
+      } else {
+        pickerBtn.classList.remove("bg-blue-50", "dark:bg-blue-900/20")
+      }
+    }
   }
 }

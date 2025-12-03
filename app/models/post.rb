@@ -67,9 +67,9 @@ class Post < ApplicationRecord
   def feeling_emoji
     return nil unless feeling
     case feeling.to_sym
-    when :great then "😊"
-    when :good then "🙂"
-    when :normal then "😐"
+    when :great then "😆"
+    when :good then "😄"
+    when :normal then "🙂"
     when :tired then "😮‍💨"
     when :exhausted then "😫"
     end

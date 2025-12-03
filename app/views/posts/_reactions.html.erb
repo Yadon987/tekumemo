@@ -1,7 +1,7 @@
 <!-- app/views/posts/_reactions.html.erb -->
 <!-- 投稿に対するリアクションボタン群を表示 -->
 
-<div id="post_<%= post.id %>_reactions" class="flex flex-wrap gap-2 mt-3">
+<div id="post_<%= post.id %>_reactions" class="flex gap-3 mt-3 items-start">
   <!-- ========================================
        事前準備：N+1問題を回避するため、一度だけデータを整理
        ======================================== -->
@@ -18,16 +18,15 @@
                            .transform_values(&:count) %>
 
   <!-- ========================================
-       リアクションボタンをループで表示
+       左側：追加ボタン（固定）
        ======================================== -->
-  <%# 1. 追加ボタンとピッカー（Popover） %>
-  <div class="relative" data-controller="popover">
+  <div class="relative shrink-0" data-controller="popover">
     <!-- トリガーボタン -->
     <button type="button"
             data-action="click->popover#toggle"
-            class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 dark:bg-slate-700 text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-600 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            class="flex items-center justify-center w-10 h-8 rounded-full bg-gray-50 dark:bg-slate-700 text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-slate-600 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             title="リアクションを追加">
-      <span class="material-symbols-outlined text-lg">add_reaction</span>
+      <span class="material-symbols-outlined text-xl">add_reaction</span>
     </button>
 
     <!-- ピッカー（吹き出し） -->
@@ -40,6 +39,7 @@
           <% count = reaction_counts[kind] || 0 %>
 
           <button type="button"
+                  id="picker-btn-<%= post.id %>-<%= kind %>"
                   class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex flex-col items-center justify-center group <%= is_reacted ? 'bg-blue-50 dark:bg-blue-900/20' : '' %>"
                   data-action="click->popover#close"
                   onclick="document.getElementById('reaction-btn-<%= post.id %>-<%= kind %>').click();">
@@ -51,37 +51,41 @@
     </div>
   </div>
 
-  <%# 2. 既にリアクションがあるものを表示 %>
-  <% Reaction.all_kinds.each do |reaction_info| %>
-    <% kind = reaction_info[:kind] %>
-    <% count = reaction_counts[kind] || 0 %>
-    <% is_reacted = my_reaction_kinds.include?(kind) %>
+  <!-- ========================================
+       右側：スタンプ一覧（折り返し）
+       ======================================== -->
+  <div class="flex flex-wrap gap-2">
+    <% Reaction.all_kinds.each do |reaction_info| %>
+      <% kind = reaction_info[:kind] %>
+      <% count = reaction_counts[kind] || 0 %>
+      <% is_reacted = my_reaction_kinds.include?(kind) %>
 
-    <%# カウントが0かつ未リアクションの場合はhiddenクラスで隠す %>
-    <% is_hidden = count == 0 && !is_reacted %>
+      <%# カウントが0かつ未リアクションの場合はhiddenクラスで隠す %>
+      <% is_hidden = count == 0 && !is_reacted %>
 
-    <% button_class = if is_reacted
-                        "reaction-btn flex items-center gap-1 px-3 h-8 rounded-full bg-blue-100 text-blue-600 border border-blue-300 hover:bg-blue-200 transition transform active:scale-95"
-                      else
-                        "reaction-btn flex items-center gap-1 px-3 h-8 rounded-full bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200 transition transform active:scale-95"
-                      end %>
+      <% button_class = if is_reacted
+                          "reaction-btn flex items-center gap-1 px-3 h-8 rounded-full bg-blue-100 text-blue-600 border border-blue-300 hover:bg-blue-200 transition transform active:scale-95"
+                        else
+                          "reaction-btn flex items-center gap-1 px-3 h-8 rounded-full bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200 transition transform active:scale-95"
+                        end %>
 
-    <%# hiddenクラスを追加 %>
-    <% button_class += " hidden" if is_hidden %>
+      <%# hiddenクラスを追加 %>
+      <% button_class += " hidden" if is_hidden %>
 
-    <button type="button"
-            id="reaction-btn-<%= post.id %>-<%= kind %>"
-            class="<%= button_class %>"
-            data-controller="reaction"
-            data-action="click->reaction#toggle"
-            data-reaction-target="button"
-            data-reaction-url-value="<%= post_reactions_path(post) %>"
-            data-reaction-kind-value="<%= kind %>"
-            data-reaction-count-value="<%= count %>"
-            data-reaction-reacted-value="<%= is_reacted %>">
+      <button type="button"
+              id="reaction-btn-<%= post.id %>-<%= kind %>"
+              class="<%= button_class %>"
+              data-controller="reaction"
+              data-action="click->reaction#toggle"
+              data-reaction-target="button"
+              data-reaction-url-value="<%= post_reactions_path(post) %>"
+              data-reaction-kind-value="<%= kind %>"
+              data-reaction-count-value="<%= count %>"
+              data-reaction-reacted-value="<%= is_reacted %>">
 
-      <span class="text-lg transition-transform duration-200" data-reaction-target="emoji"><%= reaction_info[:emoji] %></span>
-      <span class="text-sm font-medium" data-reaction-target="count"><%= count %></span>
-    </button>
-  <% end %>
+        <span class="text-lg transition-transform duration-200" data-reaction-target="emoji"><%= reaction_info[:emoji] %></span>
+        <span class="text-sm font-medium" data-reaction-target="count"><%= count %></span>
+      </button>
+    <% end %>
+  </div>
 </div>

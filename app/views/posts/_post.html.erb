@@ -1,45 +1,168 @@
 <%# app/views/posts/_post.html.erb %>
-<%# 仮の投稿カード（後でリッチにします） %>
-<div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 relative group">
-  <div class="flex items-center gap-3 mb-2">
-    <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xl">
-      <%# アバターがあれば表示、なければイニシャル %>
-      <% if post.user.avatar_url.present? %>
-        <%= image_tag post.user.avatar_url, class: "w-full h-full rounded-full object-cover" %>
+<%# Claymorphism Style: Colorful, Pop, Tactile, Deep %>
+
+<%# 強度スコアに基づく配色ロジック（高スコア＝Vivid, 低スコア＝Pastel） %>
+<%
+   # 1. 各要素の強度スコアを定義（同点なし）
+   weather_scores = {
+     'stormy' => 9,    # 嵐：最強（Vivid Purple）
+     'snowy' => 6,     # 雪：強い（Bright Sky）
+     'sunny' => 5,     # 晴れ：中強（Bright Orange）
+     'rainy' => 4,     # 雨：中弱（Soft Blue）
+     'cloudy' => 1     # 曇り：弱い（Soft Gray）
+   }
+
+   feeling_scores = {
+     'exhausted' => 8, # ヘトヘト：最強（Vivid Rose）
+     'great' => 7,     # 最高：強い（Bright Yellow）
+     'tired' => 3,     # 疲れた：中弱（Soft Slate）
+     'good' => 2,      # 良い：弱い（Soft Lime）
+     'normal' => 0     # 普通：最弱（Soft Stone）
+   }
+
+   # 2. 現在の投稿のスコアを取得
+   w_score = weather_scores[post.weather] || 0
+   f_score = feeling_scores[post.feeling] || 0
+
+   # 3. スコア比較で勝者を決定
+   winner = if w_score > f_score
+              { type: 'weather', key: post.weather, score: w_score }
+            elsif f_score > w_score
+              { type: 'feeling', key: post.feeling, score: f_score }
+            else
+              # 万が一同点なら天気を優先
+              { type: 'weather', key: post.weather, score: w_score }
+            end
+
+   # 4. 勝者に基づいたカラーテーマ定義
+   # ボーダーを薄くし、色付きシャドウでテーマを表現（Puni-Puni Max）
+
+   color_theme = case winner[:key]
+   # === Lv.High (Strong Colored Shadow) ===
+   when 'stormy'    then { bg: 'bg-[#faf5ff] dark:bg-purple-900/20', border: 'border-purple-100/50 dark:border-purple-500/30', text: 'text-purple-800 dark:text-purple-300', inner_bg: 'bg-purple-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(168,85,247,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+   when 'exhausted' then { bg: 'bg-[#fff1f2] dark:bg-rose-900/20', border: 'border-rose-100/50 dark:border-rose-500/30', text: 'text-rose-800 dark:text-rose-300', inner_bg: 'bg-rose-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(244,63,94,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+
+   # === Lv.Mid (Medium Colored Shadow) ===
+   when 'great'     then { bg: 'bg-[#fffbeb] dark:bg-yellow-900/10', border: 'border-yellow-100/50 dark:border-yellow-500/30', text: 'text-yellow-700 dark:text-yellow-300', inner_bg: 'bg-yellow-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(234,179,8,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+   when 'snowy'     then { bg: 'bg-[#f0f9ff] dark:bg-sky-900/10', border: 'border-sky-100/50 dark:border-sky-500/30', text: 'text-sky-700 dark:text-sky-300', inner_bg: 'bg-sky-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(14,165,233,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+   when 'sunny'     then { bg: 'bg-[#fff7ed] dark:bg-orange-900/10', border: 'border-orange-100/50 dark:border-orange-500/30', text: 'text-orange-700 dark:text-orange-300', inner_bg: 'bg-orange-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(249,115,22,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+
+   # === Lv.Low (Soft Shadow) ===
+   when 'rainy'     then { bg: 'bg-[#eff6ff] dark:bg-blue-900/10', border: 'border-blue-100/50 dark:border-blue-600/30', text: 'text-blue-600 dark:text-blue-400', inner_bg: 'bg-blue-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(59,130,246,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+   when 'tired'     then { bg: 'bg-[#f8fafc] dark:bg-slate-800', border: 'border-slate-100/50 dark:border-slate-600/30', text: 'text-slate-600 dark:text-slate-400', inner_bg: 'bg-slate-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(100,116,139,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+   when 'good'      then { bg: 'bg-[#f7fee7] dark:bg-lime-900/10', border: 'border-lime-100/50 dark:border-lime-600/30', text: 'text-lime-600 dark:text-lime-400', inner_bg: 'bg-lime-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(132,204,22,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+   when 'cloudy'    then { bg: 'bg-[#f9fafb] dark:bg-gray-800', border: 'border-gray-100/50 dark:border-gray-600/30', text: 'text-gray-500 dark:text-gray-400', inner_bg: 'bg-gray-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(107,114,128,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+
+   # === Default ===
+   else                  { bg: 'bg-[#fafaf9] dark:bg-stone-900', border: 'border-stone-100/50 dark:border-stone-700/30', text: 'text-stone-500 dark:text-stone-400', inner_bg: 'bg-stone-50/50 dark:bg-black/20', shadow: 'shadow-[8px_8px_16px_rgba(166,175,195,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-none' }
+   end
+%>
+
+<div id="<%= dom_id post %>"
+     class="group relative mb-8 p-6 rounded-[2.5rem] transition-all duration-300 hover:-translate-y-2
+            <%= color_theme[:bg] %> border-4 <%= color_theme[:border] %>"
+     style="box-shadow:
+            14px 14px 28px rgba(166, 175, 195, 0.25),
+            -14px -14px 28px rgba(255, 255, 255, 0.9);">
+
+  <!-- ダークモード用の影調整 -->
+  <div class="absolute inset-0 rounded-[2.5rem] pointer-events-none dark:shadow-[8px_8px_16px_rgba(0,0,0,0.4),-8px_-8px_16px_rgba(255,255,255,0.05)]"></div>
+
+  <!-- コンテンツラッパー -->
+  <div class="relative z-10">
+    <!-- ヘッダー：ユーザー情報 -->
+    <div class="flex justify-between items-start mb-4">
+      <div class="flex items-center gap-4">
+        <!-- アバター（浮き出し効果） -->
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden border-4 border-white dark:border-slate-700 transform group-hover:rotate-6 transition-transform duration-300"
+             style="box-shadow: 6px 6px 12px rgba(166,175,195,0.2), -6px -6px 12px rgba(255,255,255,0.8);">
+          <% if post.user.avatar_url.present? %>
+            <%= image_tag post.user.avatar_url, class: "w-full h-full object-cover", alt: post.user.name %>
+          <% else %>
+            <span class="text-xl font-black text-gray-400 dark:text-gray-500">
+              <%= post.user.name[0].upcase %>
+            </span>
+          <% end %>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-gray-800 dark:text-gray-100 text-lg">
+            <%= post.user.name %>
+          </h3>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-white/60 dark:bg-black/20 text-gray-500 dark:text-gray-400 backdrop-blur-sm shadow-sm">
+              <%= time_ago_in_words(post.created_at) %>前
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 削除ボタン（ドーム状・立体） -->
+      <% if post.user == current_user %>
+        <div class="absolute top-0 right-0">
+          <%= link_to post_path(post),
+              data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+              class: "flex items-center justify-center w-12 h-12 rounded-full text-gray-400 hover:text-red-500 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-95 group/btn border border-white/60 dark:border-white/10",
+              style: "background: radial-gradient(circle at 30% 30%, #ffffff, #e2e8f0);
+                      box-shadow:
+                        6px 6px 12px rgba(166,175,195,0.4),
+                        -6px -6px 12px rgba(255,255,255,0.9),
+                        inset 2px 2px 5px rgba(255,255,255,1),
+                        inset -2px -2px 5px rgba(166,175,195,0.2);",
+              title: "投稿を削除" do %>
+            <span class="material-symbols-outlined text-xl font-bold drop-shadow-sm group-hover/btn:text-red-500 transition-colors">delete</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- 投稿本文エリア -->
+    <div class="mb-5 px-1">
+      <% if post.body.present? %>
+        <!-- パターンA: 本文がある場合（通常表示） -->
+        <div class="flex flex-wrap gap-2 mb-3">
+          <% if post.weather %>
+            <span class="inline-flex items-center justify-center h-10 gap-2 px-4 rounded-2xl bg-white/70 dark:bg-slate-800/50 text-sky-600 dark:text-sky-400 text-sm font-bold shadow-sm border border-white/50 dark:border-white/10 hover:scale-105 transition-transform cursor-default">
+              <span class="text-xl leading-none"><%= post.weather_emoji %></span>
+              <span><%= post.weather_label %></span>
+            </span>
+          <% end %>
+          <% if post.feeling %>
+            <span class="inline-flex items-center justify-center h-10 gap-2 px-4 rounded-2xl bg-white/70 dark:bg-slate-800/50 <%= color_theme[:text] %> text-sm font-bold shadow-sm border border-white/50 dark:border-white/10 hover:scale-105 transition-transform cursor-default">
+              <span class="text-xl leading-none"><%= post.feeling_emoji %></span>
+              <span><%= post.feeling_label %></span>
+            </span>
+          <% end %>
+        </div>
+
+        <!-- 本文（くぼませる） -->
+        <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-200 leading-relaxed font-medium text-base p-5 rounded-3xl <%= color_theme[:inner_bg] %> shadow-inner border border-black/5 dark:border-white/5">
+          <%= simple_format(post.body) %>
+        </div>
+
       <% else %>
-        <%= post.user.name.first %>
+        <!-- パターンB: 本文がない場合（スタンプ風・巨大表示） -->
+        <div class="flex justify-center items-center gap-8 py-6">
+          <% if post.weather %>
+            <div class="flex flex-col items-center animate-bounce-slow group/icon cursor-default">
+              <span class="text-7xl drop-shadow-md mb-2 transform transition-transform group-hover/icon:scale-110"><%= post.weather_emoji %></span>
+              <span class="text-sm font-bold text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm"><%= post.weather_label %></span>
+            </div>
+          <% end %>
+
+          <% if post.feeling %>
+            <div class="flex flex-col items-center animate-pulse-slow group/icon cursor-default">
+              <span class="text-7xl drop-shadow-md mb-2 transform transition-transform group-hover/icon:scale-110"><%= post.feeling_emoji %></span>
+              <span class="text-sm font-bold <%= color_theme[:text] %> bg-white/50 dark:bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm"><%= post.feeling_label %></span>
+            </div>
+          <% end %>
+        </div>
       <% end %>
     </div>
-    <div>
-      <p class="font-bold text-gray-900 dark:text-white"><%= post.user.name %></p>
-      <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %>前</p>
+
+    <!-- リアクションエリア（くぼませる） -->
+    <div class="pt-3 px-4 pb-3 -mx-2 rounded-2xl bg-white/40 dark:bg-black/20 border border-white/40 dark:border-white/5 shadow-inner">
+      <%= render "posts/reactions", post: post %>
     </div>
   </div>
-
-  <div class="mb-3 text-gray-800 dark:text-gray-300">
-    <% if post.weather %>
-      <span class="text-2xl mr-2" title="天気: <%= post.weather %>"><%= post.weather_emoji %></span>
-    <% end %>
-    <% if post.feeling %>
-      <span class="text-2xl mr-2" title="気分: <%= post.feeling %>"><%= post.feeling_emoji %></span>
-    <% end %>
-
-    <%= simple_format(post.body) %>
-  </div>
-
-  <%# リアクションボタン %>
-  <%= render "posts/reactions", post: post %>
-
-  <%# 削除ボタン（自分の投稿のみ） %>
-  <%# 削除ボタン（自分の投稿のみ・右上に配置） %>
-  <% if post.user == current_user %>
-    <div class="absolute top-4 right-4">
-      <%= link_to post_path(post),
-          data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
-          class: "flex items-center justify-center w-8 h-8 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200",
-          title: "投稿を削除" do %>
-        <span class="material-symbols-outlined text-xl">delete</span>
-      <% end %>
-    </div>
-  <% end %>
 </div>

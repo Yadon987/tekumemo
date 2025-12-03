@@ -19,34 +19,37 @@
 
   <!-- 本文入力エリア -->
   <div data-controller="character-counter" data-character-counter-max-value="200">
-    <div class="flex justify-between items-center mb-2">
+    <div class="flex justify-between items-center mb-2 px-2">
       <%= f.label :body, "ひとことメモ", class: "block text-sm font-bold text-gray-700 dark:text-gray-300" %>
-      <span data-character-counter-target="counter" class="text-xs text-gray-400">0 / 200</span>
+      <span data-character-counter-target="counter" class="text-xs text-gray-400 font-medium">0 / 200</span>
     </div>
     <div class="relative">
-      <%= f.text_area :body, rows: 3,
-          class: "w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 pl-4 pr-4 py-3 shadow-sm resize-none",
+      <%= f.text_area :body, rows: 4,
+          class: "w-full rounded-3xl border-none bg-gray-100 dark:bg-slate-900/50 text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:bg-white dark:focus:bg-slate-800 p-5 shadow-inner transition-all resize-none",
           placeholder: "今日の散歩はどうでしたか？",
           "data-character-counter-target": "input",
           "data-action": "input->character-counter#update" %>
-      <div class="absolute bottom-3 right-3 text-gray-400 text-xs pointer-events-none">
-        <span class="material-symbols-outlined text-lg">edit_note</span>
+      <div class="absolute bottom-4 right-5 text-gray-400 pointer-events-none">
+        <span class="material-symbols-outlined">edit_note</span>
       </div>
     </div>
   </div>
 
   <!-- 天気選択（アイコンラジオボタン） -->
   <div>
-    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">天気</label>
-    <div class="grid grid-cols-5 gap-2">
+    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 px-2">天気</label>
+    <div class="grid grid-cols-5 gap-3">
       <% Post.weathers.keys.each do |weather_key| %>
-        <%# postモデルのインスタンスを使って絵文字を取得するためのハック %>
         <% temp_post = Post.new(weather: weather_key) %>
-        <label class="cursor-pointer group">
+        <label class="cursor-pointer group relative">
           <%= f.radio_button :weather, weather_key, class: "peer sr-only" %>
-          <div class="flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-600 dark:peer-checked:bg-blue-900/30 dark:peer-checked:border-blue-400 dark:peer-checked:text-blue-300 transition-all duration-200">
-            <span class="text-2xl mb-1 group-hover:scale-110 transition-transform"><%= temp_post.weather_emoji %></span>
-            <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 peer-checked:text-blue-600 dark:peer-checked:text-blue-300"><%= temp_post.weather_label %></span>
+          <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-slate-700 shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 peer-checked:border-blue-200 dark:peer-checked:border-blue-500/50 peer-checked:translate-y-0">
+            <span class="text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm"><%= temp_post.weather_emoji %></span>
+            <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 peer-checked:text-blue-600 dark:peer-checked:text-blue-300"><%= temp_post.weather_label %></span>
+          </div>
+          <!-- 選択時のチェックマーク -->
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity shadow-sm transform scale-0 peer-checked:scale-100 duration-200">
+            <span class="material-symbols-outlined text-xs font-bold">check</span>
           </div>
         </label>
       <% end %>
@@ -55,24 +58,28 @@
 
   <!-- 気分選択（アイコンラジオボタン） -->
   <div>
-    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">気分</label>
-    <div class="grid grid-cols-5 gap-2">
+    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 px-2">気分</label>
+    <div class="grid grid-cols-5 gap-3">
       <% Post.feelings.keys.each do |feeling_key| %>
         <% temp_post = Post.new(feeling: feeling_key) %>
-        <label class="cursor-pointer group">
+        <label class="cursor-pointer group relative">
           <%= f.radio_button :feeling, feeling_key, class: "peer sr-only" %>
-          <div class="flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 peer-checked:bg-green-50 peer-checked:border-green-500 peer-checked:text-green-600 dark:peer-checked:bg-green-900/30 dark:peer-checked:border-green-400 dark:peer-checked:text-green-300 transition-all duration-200">
-            <span class="text-2xl mb-1 group-hover:scale-110 transition-transform"><%= temp_post.feeling_emoji %></span>
-            <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 peer-checked:text-green-600 dark:peer-checked:text-green-300"><%= temp_post.feeling_label %></span>
+          <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-slate-700 shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-green-50 dark:peer-checked:bg-green-900/30 peer-checked:border-green-200 dark:peer-checked:border-green-500/50 peer-checked:translate-y-0">
+            <span class="text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm"><%= temp_post.feeling_emoji %></span>
+            <span class="text-[10px] font-bold text-gray-400 dark:text-gray-500 peer-checked:text-green-600 dark:peer-checked:text-green-300"><%= temp_post.feeling_label %></span>
+          </div>
+          <!-- 選択時のチェックマーク -->
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity shadow-sm transform scale-0 peer-checked:scale-100 duration-200">
+            <span class="material-symbols-outlined text-xs font-bold">check</span>
           </div>
         </label>
       <% end %>
     </div>
   </div>
 
-  <div class="pt-4">
-    <%= f.button type: :submit, class: "w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2" do %>
-      <span class="material-symbols-outlined">send</span>
+  <div class="pt-6">
+    <%= f.button type: :submit, class: "w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-bold text-lg py-4 px-6 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3" do %>
+      <span class="material-symbols-outlined text-2xl">send</span>
       投稿する
     <% end %>
   </div>
