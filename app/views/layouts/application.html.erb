@@ -277,9 +277,9 @@
           <% end %>
 
           <!-- ランキング -->
-          <%= link_to "#",
-              class: "relative flex items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
-            <span class="material-symbols-outlined text-lg sm:text-2xl">emoji_events</span>
+          <%= link_to rankings_path,
+              class: "relative flex items-center justify-center w-full #{current_page?(rankings_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
+            <span class="material-symbols-outlined text-lg sm:text-2xl #{current_page?(rankings_path) ? 'font-bold' : ''}">emoji_events</span>
           <% end %>
         </div>
       </nav>

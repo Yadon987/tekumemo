@@ -185,13 +185,6 @@ ja:
           pb: PB
           tb: TB
           zb: ZB
-    percentage:
-      format:
-        delimiter: ""
-        format: "%n%"
-    precision:
-      format:
-        delimiter: ""
   support:
     array:
       last_word_connector: "、"
@@ -212,3 +205,29 @@ ja:
         notice: "散歩記録を更新しました"
       destroy:
         notice: "散歩記録を削除しました"
+  rankings:
+    index:
+      title: "ランキング"
+      subtitle: "競い合って、一緒に成長しよう！"
+      update_frequency: "（1時間ごとに更新）"
+      tabs:
+        daily: "日次"
+        monthly: "月次"
+        yearly: "年次"
+      your_rank:
+        title: "あなたの順位"
+        rank_suffix: "位"
+        top_10: "トップ10入り！"
+        distance: "歩行距離"
+        unit: "歩きました"
+        distance_to_top: "1位まであと"
+        distance_to_next: "次の順位まであと"
+      podium: "表彰台"
+      list_title: "ランキング"
+      you: "あなた"
+      empty:
+        title: "記録はまだありません"
+        subtitle: "一番乗りのチャンス！"
+        action: "散歩を記録する"
+        cheer: "もっと歩いてランクイン！"
+        challenge: "TOP 100チャレンジ中"
