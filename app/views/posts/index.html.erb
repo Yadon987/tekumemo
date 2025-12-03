@@ -1,0 +1,121 @@
+<%# app/views/posts/index.html.erb %>
+<div class="min-h-screen w-full bg-[#f0f4f8] dark:bg-[#0f172a] relative overflow-hidden font-body">
+
+  <!-- 背景装飾 -->
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-[100px] animate-pulse"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-400/20 rounded-full blur-[120px] animate-pulse" style="animation-duration: 4s;"></div>
+  </div>
+
+  <main class="container mx-auto px-4 py-8 max-w-2xl relative z-10">
+    <!-- ヘッダーエリア -->
+    <div class="flex flex-col items-center justify-center mb-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 mb-2 tracking-tight drop-shadow-sm">
+        みんなの足跡
+      </h1>
+      <p class="text-gray-500 dark:text-gray-400 font-medium">
+        今日の散歩、誰かの発見。
+      </p>
+
+      <!-- タブ切り替え -->
+      <div class="mt-6 p-1 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md rounded-full inline-flex shadow-sm border border-white/20">
+        <%= link_to posts_path, class: "px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 #{current_page?(posts_path) ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-md transform scale-105' : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-slate-700/50'}" do %>
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">public</span>
+            みんな
+          </span>
+        <% end %>
+
+        <%= link_to mine_posts_path, class: "px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 #{current_page?(mine_posts_path) ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-md transform scale-105' : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-slate-700/50'}" do %>
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">history</span>
+            自分
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- インライン風投稿トリガー（FABの代替） -->
+    <div class="mb-8">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 group" onclick="document.getElementById('new_post_modal').showModal()">
+        <div class="flex items-center gap-4">
+          <!-- 自分のアバター -->
+          <div class="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden flex-shrink-0 border-2 border-white dark:border-slate-600 shadow-sm">
+            <% if current_user.avatar_url.present? %>
+              <%= image_tag current_user.avatar_url, class: "w-full h-full object-cover", alt: current_user.name %>
+            <% else %>
+              <div class="flex items-center justify-center w-full h-full text-gray-500 font-bold text-lg">
+                <%= current_user.name[0].upcase %>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- 入力風エリア -->
+          <div class="flex-1 bg-gray-100 dark:bg-slate-700 rounded-full px-5 py-3 text-gray-500 dark:text-gray-400 text-sm group-hover:bg-gray-200 dark:group-hover:bg-slate-600 transition-colors flex items-center justify-between">
+            <span>今日の散歩の気分をシェアしよう...</span>
+            <span class="material-symbols-outlined text-gray-400">edit</span>
+          </div>
+
+          <!-- アイコン類（飾り） -->
+          <div class="hidden sm:flex gap-2 text-gray-400">
+            <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-500">
+              <span class="material-symbols-outlined text-lg">wb_sunny</span>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-500">
+              <span class="material-symbols-outlined text-lg">sentiment_satisfied</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 投稿一覧エリア -->
+    <div class="space-y-6 pb-24">
+      <% if @posts.any? %>
+        <%= render @posts %>
+      <% else %>
+        <!-- 空の状態（Empty State） -->
+        <div class="flex flex-col items-center justify-center py-20 text-center bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm rounded-3xl border-2 border-dashed border-gray-300 dark:border-gray-700">
+          <div class="text-6xl mb-4 animate-bounce">🚶‍♂️</div>
+          <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200 mb-2">まだ投稿がありません</h3>
+          <p class="text-gray-500 dark:text-gray-400">
+            一番乗りで、今日の散歩の気分を<br>シェアしてみませんか？
+          </p>
+        </div>
+      <% end %>
+
+      <!-- ページネーション -->
+      <div class="mt-10 flex justify-center">
+        <%= paginate @posts %>
+      </div>
+    </div>
+  </main>
+
+  <!-- 簡易的な新規投稿モーダル（dialogタグを使用） -->
+  <dialog id="new_post_modal" class="p-0 rounded-2xl shadow-2xl backdrop:bg-gray-900/50 backdrop:backdrop-blur-sm bg-transparent open:animate-fade-in-up">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-2xl border border-gray-100 dark:border-gray-700">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+          <span class="text-2xl">📝</span> 今日の記録
+        </h3>
+        <button onclick="document.getElementById('new_post_modal').close()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- フォームのレンダリング -->
+      <%= render 'form', post: @post %>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  /* dialogのアニメーション用 */
+  dialog[open] {
+    animation: zoomIn 0.3s ease-out;
+  }
+  @keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+</style>

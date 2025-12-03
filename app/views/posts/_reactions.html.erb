@@ -1,0 +1,57 @@
+<!-- app/views/posts/_reactions.html.erb -->
+<!-- 投稿に対するリアクションボタン群を表示 -->
+
+<div id="post_<%= post.id %>_reactions" class="flex flex-wrap gap-2 mt-3">
+  <!-- ========================================
+       事前準備：N+1問題を回避するため、一度だけデータを整理
+       ======================================== -->
+
+  <!-- 自分がつけたリアクションの種類をSetで保持（高速な検索用） -->
+  <% my_reaction_kinds = post.reactions
+                             .select { |r| r.user_id == current_user.id }
+                             .map(&:kind)
+                             .to_set %>
+
+  <!-- リアクションの種類ごとの件数をハッシュで保持 -->
+  <% reaction_counts = post.reactions
+                           .group_by(&:kind)
+                           .transform_values(&:count) %>
+
+  <!-- ========================================
+       リアクションボタンをループで表示
+       ======================================== -->
+  <% Reaction.all_kinds.each do |reaction_info| %>
+    <% kind = reaction_info[:kind] %>
+
+    <!-- 自分が既にこのリアクションをつけているか -->
+    <% is_reacted = my_reaction_kinds.include?(kind) %>
+
+    <!-- このリアクションの合計数 -->
+    <% count = reaction_counts[kind] || 0 %>
+
+    <!-- ========================================
+         ボタンのスタイルを決定
+         - アクティブ（既にリアクション済み）: 青色で強調
+         - 通常（まだリアクションしていない）: グレーで控えめ
+         ======================================== -->
+    <% button_class = if is_reacted
+                        "reaction-btn active flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-600 border border-blue-300 hover:bg-blue-200 transition"
+                      else
+                        "reaction-btn flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200 transition"
+                      end %>
+
+    <!-- リアクションボタン（トグル動作：クリックで追加/削除） -->
+    <%= button_to post_reactions_path(post),
+                  method: :post,
+                  params: { reaction: { kind: kind } },
+                  class: button_class do %>
+      <!-- 絵文字 -->
+      <span class="text-lg"><%= reaction_info[:emoji] %></span>
+
+      <!-- リアクション数（1件以上の場合のみ表示） -->
+      <% if count > 0 %>
+        <span class="text-sm font-medium"><%= count %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

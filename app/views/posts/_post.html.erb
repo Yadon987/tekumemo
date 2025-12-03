@@ -1,0 +1,39 @@
+<%# app/views/posts/_post.html.erb %>
+<%# 仮の投稿カード（後でリッチにします） %>
+<div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+  <div class="flex items-center gap-3 mb-2">
+    <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xl">
+      <%# アバターがあれば表示、なければイニシャル %>
+      <% if post.user.avatar_url.present? %>
+        <%= image_tag post.user.avatar_url, class: "w-full h-full rounded-full object-cover" %>
+      <% else %>
+        <%= post.user.name.first %>
+      <% end %>
+    </div>
+    <div>
+      <p class="font-bold text-gray-900 dark:text-white"><%= post.user.name %></p>
+      <p class="text-xs text-gray-500"><%= time_ago_in_words(post.created_at) %>前</p>
+    </div>
+  </div>
+
+  <div class="mb-3 text-gray-800 dark:text-gray-300">
+    <% if post.weather %>
+      <span class="text-2xl mr-2" title="天気: <%= post.weather %>"><%= post.weather_emoji %></span>
+    <% end %>
+    <% if post.feeling %>
+      <span class="text-2xl mr-2" title="気分: <%= post.feeling %>"><%= post.feeling_emoji %></span>
+    <% end %>
+
+    <%= simple_format(post.body) %>
+  </div>
+
+  <%# リアクションボタン %>
+  <%= render "posts/reactions", post: post %>
+
+  <%# 削除ボタン（自分の投稿のみ） %>
+  <% if post.user == current_user %>
+    <div class="mt-2 text-right">
+      <%= link_to "削除", post_path(post), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: "text-xs text-red-500 hover:text-red-700" %>
+    </div>
+  <% end %>
+</div>
