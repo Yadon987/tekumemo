@@ -37,7 +37,10 @@
 
     <!-- インライン風投稿トリガー（FABの代替） -->
     <div class="mb-8">
-      <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 group" onclick="document.getElementById('new_post_modal').showModal()">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300 group"
+           data-controller="modal"
+           data-modal-dialog-id-value="new_post_modal"
+           data-action="click->modal#open">
         <div class="flex items-center gap-4">
           <!-- 自分のアバター -->
           <div class="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden flex-shrink-0 border-2 border-white dark:border-slate-600 shadow-sm">
@@ -92,13 +95,16 @@
   </main>
 
   <!-- 簡易的な新規投稿モーダル（dialogタグを使用） -->
-  <dialog id="new_post_modal" class="p-0 rounded-2xl shadow-2xl backdrop:bg-gray-900/50 backdrop:backdrop-blur-sm bg-transparent open:animate-fade-in-up">
+  <dialog id="new_post_modal"
+          class="p-0 rounded-2xl shadow-2xl backdrop:bg-gray-900/50 backdrop:backdrop-blur-sm bg-transparent open:animate-zoom-in"
+          data-controller="modal"
+          data-modal-target="dialog">
     <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-2xl border border-gray-100 dark:border-gray-700">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
           <span class="text-2xl">📝</span> 今日の記録
         </h3>
-        <button onclick="document.getElementById('new_post_modal').close()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+        <button type="button" data-controller="modal" data-action="click->modal#close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>

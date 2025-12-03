@@ -25,10 +25,17 @@ class ReactionsController < ApplicationController
     end
 
     respond_to do |format|
-      # Turbo Stream: リアクションボタンのみ更新
+      # Turbo Stream: リアクションボタンのみ更新（既存機能維持）
       format.turbo_stream
       # HTML: 通常のリダイレクト
       format.html { redirect_back(fallback_location: posts_path) }
+      # JSON: Stimulusコントローラー用
+      format.json {
+        render json: {
+          reacted: @action == 'added',
+          count: @post.reactions.where(kind: reaction_params[:kind]).count
+        }
+      }
     end
   end
 

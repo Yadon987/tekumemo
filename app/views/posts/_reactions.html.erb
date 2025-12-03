@@ -40,18 +40,22 @@
                         "reaction-btn flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200 transition"
                       end %>
 
-    <!-- リアクションボタン（トグル動作：クリックで追加/削除） -->
-    <%= button_to post_reactions_path(post),
-                  method: :post,
-                  params: { reaction: { kind: kind } },
-                  class: button_class do %>
-      <!-- 絵文字 -->
-      <span class="text-lg"><%= reaction_info[:emoji] %></span>
+    <!-- リアクションボタン（Stimulus対応） -->
+    <button type="button"
+            class="<%= button_class %>"
+            data-controller="reaction"
+            data-action="click->reaction#toggle"
+            data-reaction-target="button"
+            data-reaction-url-value="<%= post_reactions_path(post) %>"
+            data-reaction-kind-value="<%= kind %>"
+            data-reaction-count-value="<%= count %>"
+            data-reaction-reacted-value="<%= is_reacted %>">
 
-      <!-- リアクション数（1件以上の場合のみ表示） -->
-      <% if count > 0 %>
-        <span class="text-sm font-medium"><%= count %></span>
-      <% end %>
-    <% end %>
+      <!-- 絵文字 -->
+      <span class="text-lg transition-transform duration-200" data-reaction-target="emoji"><%= reaction_info[:emoji] %></span>
+
+      <!-- リアクション数 -->
+      <span class="text-sm font-medium <%= count > 0 ? '' : 'hidden' %>" data-reaction-target="count"><%= count %></span>
+    </button>
   <% end %>
 </div>
