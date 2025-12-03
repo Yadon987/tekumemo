@@ -16,6 +16,9 @@ application.register("modal", ModalController)
 import ReactionController from "./reaction_controller"
 application.register("reaction", ReactionController)
 
+import PopoverController from "./popover_controller"
+application.register("popover", PopoverController)
+
 import CounterController from "./counter_controller"
 application.register("counter", CounterController)
 

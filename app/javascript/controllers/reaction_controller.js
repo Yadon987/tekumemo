@@ -70,11 +70,14 @@ export default class extends Controller {
     }
 
     // カウント表示の更新
-    if (this.countValue > 0) {
-      this.countTarget.textContent = this.countValue
+    this.countTarget.textContent = this.countValue
+
+    // ボタン全体の表示/非表示制御
+    if (this.countValue > 0 || this.reactedValue) {
+      btn.classList.remove("hidden")
       this.countTarget.classList.remove("hidden")
     } else {
-      this.countTarget.classList.add("hidden")
+      btn.classList.add("hidden")
     }
 
     // アニメーション効果

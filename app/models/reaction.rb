@@ -6,12 +6,12 @@ class Reaction < ApplicationRecord
   # バリデーション（データの検証ルール）
   validates :kind, presence: true  # リアクションの種類（kind）は必須
   validates :user_id, uniqueness: {
-    scope: [:post_id, :kind],
+    scope: [ :post_id, :kind ],
     message: "は同じ投稿に同じリアクションを複数回つけられません"
   }
 
   # enum（整数値に名前をつける機能）
-  enum kind: {
+  enum :kind, {
     thumbs_up: 0,      # 👍 いいね
     heart: 1,          # ❤️ 素敵
     bulb: 2,           # 💡 参考になる
@@ -20,7 +20,7 @@ class Reaction < ApplicationRecord
     party: 5,          # 🎉 おめでとう
     sun: 6,            # ☀️ 良い天気だね
     walking: 7         # 🚶 一緒に歩きたい
-  }, _prefix: true
+  }, prefix: true
 
   # インスタンスメソッド（各リアクションが持つ機能）
   def emoji

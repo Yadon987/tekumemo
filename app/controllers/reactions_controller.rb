@@ -11,7 +11,7 @@ class ReactionsController < ApplicationController
     if @reaction
       # 既にある場合は削除（トグル動作）
       @reaction.destroy
-      @action = 'removed'
+      @action = "removed"
     else
       # 新しいリアクションを作成
       @reaction = @post.reactions.build(reaction_params)
@@ -19,9 +19,9 @@ class ReactionsController < ApplicationController
 
       unless @reaction.save
         # 保存失敗時
-        redirect_back(fallback_location: posts_path, alert: 'リアクションできませんでした') and return
+        redirect_back(fallback_location: posts_path, alert: "リアクションできませんでした") and return
       end
-      @action = 'added'
+      @action = "added"
     end
 
     respond_to do |format|
@@ -32,7 +32,7 @@ class ReactionsController < ApplicationController
       # JSON: Stimulusコントローラー用
       format.json {
         render json: {
-          reacted: @action == 'added',
+          reacted: @action == "added",
           count: @post.reactions.where(kind: reaction_params[:kind]).count
         }
       }
@@ -50,7 +50,7 @@ class ReactionsController < ApplicationController
         format.html { redirect_back(fallback_location: posts_path) }
       end
     else
-      redirect_back(fallback_location: posts_path, alert: 'リアクションが見つかりませんでした')
+      redirect_back(fallback_location: posts_path, alert: "リアクションが見つかりませんでした")
     end
   end
 

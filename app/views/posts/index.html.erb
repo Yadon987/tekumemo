@@ -1,5 +1,5 @@
 <%# app/views/posts/index.html.erb %>
-<div class="min-h-screen w-full bg-[#f0f4f8] dark:bg-[#0f172a] relative overflow-hidden font-body">
+<div class="min-h-screen w-full relative font-body">
 
   <!-- 背景装飾 -->
   <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
@@ -75,7 +75,7 @@
     <!-- 投稿一覧エリア -->
     <div class="space-y-6 pb-24">
       <% if @posts.any? %>
-        <%= render @posts %>
+        <%= render partial: "post", collection: @posts %>
       <% else %>
         <!-- 空の状態（Empty State） -->
         <div class="flex flex-col items-center justify-center py-20 text-center bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm rounded-3xl border-2 border-dashed border-gray-300 dark:border-gray-700">
@@ -102,7 +102,7 @@
     <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-2xl border border-gray-100 dark:border-gray-700">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
-          <span class="text-2xl">📝</span> 今日の記録
+          <span class="text-2xl">👟</span> てくてくシェア
         </h3>
         <button type="button" data-controller="modal" data-action="click->modal#close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
           <span class="material-symbols-outlined">close</span>

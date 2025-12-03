@@ -9,8 +9,8 @@ class CreateReactions < ActiveRecord::Migration[7.2]
     end
 
     # 1ユーザーが1投稿に対して1種類のリアクションのみ（重複防止）
-    add_index :reactions, [:user_id, :post_id, :kind], unique: true, name: 'index_reactions_on_user_post_kind'
+    add_index :reactions, [ :user_id, :post_id, :kind ], unique: true, name: 'index_reactions_on_user_post_kind'
     # 投稿ごとのリアクション集計の高速化
-    add_index :reactions, [:post_id, :kind]
+    add_index :reactions, [ :post_id, :kind ]
   end
 end

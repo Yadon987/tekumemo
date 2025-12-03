@@ -28,7 +28,7 @@ class PostsController < ApplicationController
 
     if @post.save
       # 成功：元のページに戻る
-      redirect_back(fallback_location: posts_path, notice: '投稿しました！')
+      redirect_back(fallback_location: posts_path, notice: "投稿しました！")
     else
       # 失敗：Turbo Streamでフォーム部分だけをエラーメッセージ付きで更新
       respond_to do |format|
@@ -37,7 +37,7 @@ class PostsController < ApplicationController
         end
         format.html do
           @posts = Post.with_associations.recent.page(params[:page]).per(10)
-          flash.now[:alert] = '投稿に失敗しました'
+          flash.now[:alert] = "投稿に失敗しました"
           render :index, status: :unprocessable_entity
         end
       end
@@ -50,7 +50,7 @@ class PostsController < ApplicationController
     # 自分の投稿のみ削除可能（他人の投稿は RecordNotFound）
     post = current_user.posts.find(params[:id])
     post.destroy!
-    redirect_back(fallback_location: posts_path, notice: '投稿を削除しました', status: :see_other)
+    redirect_back(fallback_location: posts_path, notice: "投稿を削除しました", status: :see_other)
   end
 
   private

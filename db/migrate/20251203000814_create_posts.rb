@@ -14,6 +14,6 @@ class CreatePosts < ActiveRecord::Migration[7.2]
     add_index :posts, :created_at
 
     # 特定ユーザーの投稿履歴表示を高速化
-    add_index :posts, [:user_id, :created_at]
+    add_index :posts, [ :user_id, :created_at ]
   end
 end

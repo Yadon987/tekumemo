@@ -35,11 +35,16 @@ module.exports = {
       // アニメーション設定
       animation: {
         'zoom-in': 'zoomIn 0.3s ease-out',
+        'fade-in-up': 'fadeInUp 0.2s ease-out forwards',
       },
       keyframes: {
         zoomIn: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px) scale(0.95)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
         },
       },
     },

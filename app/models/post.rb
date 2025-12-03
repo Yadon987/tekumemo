@@ -12,21 +12,21 @@ class Post < ApplicationRecord
   validate :must_have_content
 
   # enum（整数値に名前をつける機能）
-  enum weather: {
+  enum :weather, {
     sunny: 0,      # ☀️ 晴れ
     cloudy: 1,     # ☁️ 曇り
     rainy: 2,      # 🌧️ 雨
     snowy: 3,      # ⛄ 雪
     stormy: 4      # ⚡ 嵐
-  }, _prefix: true
+  }, prefix: true
 
-  enum feeling: {
+  enum :feeling, {
     great: 0,      # 😊 最高
     good: 1,       # 🙂 良い
     normal: 2,     # 😐 普通
     tired: 3,      # 😮‍💨 疲れた
     exhausted: 4   # 😫 ヘトヘト
-  }, _prefix: true
+  }, prefix: true
 
   # スコープ（よく使うクエリに名前をつける）
   scope :recent, -> { order(created_at: :desc) }  # 新しい順に並べる
@@ -72,6 +72,32 @@ class Post < ApplicationRecord
     when :normal then "😐"
     when :tired then "😮‍💨"
     when :exhausted then "😫"
+    end
+  end
+
+  # 天気の日本語ラベルを返す
+  def weather_label
+    return nil unless weather
+    case weather.to_sym
+    when :sunny then "晴れ"
+    when :cloudy then "曇り"
+    when :rainy then "雨"
+    when :snowy then "雪"
+    when :stormy then "嵐"
+    else weather.to_s.humanize
+    end
+  end
+
+  # 気分の日本語ラベルを返す
+  def feeling_label
+    return nil unless feeling
+    case feeling.to_sym
+    when :great then "最高！"
+    when :good then "良い"
+    when :normal then "普通"
+    when :tired then "疲れた"
+    when :exhausted then "ヘトヘト"
+    else feeling.to_s.humanize
     end
   end
 

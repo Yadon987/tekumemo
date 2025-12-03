@@ -1,0 +1,713 @@
+*......................../home/nukon999/workspace/tekumemo/vendor/bundle/ruby/3.2.0/gems/rspec-rails-8.0.2/lib/rspec/rails/matchers/have_http_status.rb:219: warning: Status code :unprocessable_entity is deprecated and will be removed in a future version of Rack. Please use :unprocessable_content instead.
+....F..FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF*
+
+Pending: (Failures listed here are expected and do not affect your suite's status)
+
+  1) StaticPagesHelper add some examples to (or delete) /home/nukon999/workspace/tekumemo/spec/helpers/static_pages_helper_spec.rb
+     # Not yet implemented
+     # ./spec/helpers/static_pages_helper_spec.rb:14
+
+  2) static_pages/privacy.html.erb add some examples to (or delete) /home/nukon999/workspace/tekumemo/spec/views/static_pages/privacy.html.erb_spec.rb
+     # Not yet implemented
+     # ./spec/views/static_pages/privacy.html.erb_spec.rb:4
+
+Failures:
+
+  1) StaticPages GET /privacy returns http success
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ./spec/requests/static_pages_spec.rb:6:in `block (3 levels) in <main>'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  2) WalksPagination ページネーションが表示され、ページ遷移ができること
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ./spec/requests/walks_pagination_spec.rb:27:in `block (2 levels) in <main>'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  3) Home Carousel displays weather and ranking cards
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_home_carousel_displays_weather_and_ranking_cards_771.png
+
+
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  4) Home Carousel on mobile view shows carousel indicators
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_home_carousel_on_mobile_view_shows_carousel_indicators_9.png
+
+
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  5) Home Carousel on mobile view automatically scrolls (simulated check)
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_home_carousel_on_mobile_view_automatically_scrolls_-simulated_check-_910.png
+
+
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  6) Home Carousel on desktop view hides carousel indicators
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  7) Home ホーム画面の表示 位置情報と天気が表示されること
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_home_nested_-_356.png
+
+
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  8) Home ホーム画面の表示 今日の散歩記録がある場合 今日の記録が表示されること
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_home_nested_nested_-_948.png
+
+
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  9) Home ホーム画面の表示 今日の散歩記録がない場合 今日の散歩カードが表示され、距離が0mであること
+     Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+     ActionView::Template::Error:
+       Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_home_nested_nested_2_-0m-_877.png
+
+
+     # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+     # ------------------
+     # --- Caused by: ---
+     # Errno::EACCES:
+     #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+     #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  10) LoginStamps カレンダー画面の表示 現在の年月が表示されていること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_-_915.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  11) LoginStamps カレンダー画面の表示 カレンダーの日付が表示されていること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_-_861.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  12) LoginStamps スタンプの表示 散歩記録がある場合 その日にスタンプが表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_2_nested_-_698.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  13) LoginStamps スタンプの表示 散歩記録がある場合 「てくてく日数」が1日と表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_2_nested_-1-_217.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  14) LoginStamps スタンプの表示 散歩記録がない場合 スタンプが表示されないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_2_nested_2_-_559.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  15) LoginStamps スタンプの表示 散歩記録がない場合 今日の日付には「今日」と表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_2_nested_2_-_384.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  16) LoginStamps 連続日数の表示 昨日と今日連続で散歩している場合 連続日数が「2日」と表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_3_nested_-2-_386.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  17) LoginStamps 月移動の動作 前月ボタンを押すと前月のカレンダーが表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_4_-_592.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  18) LoginStamps 月移動の動作 次月ボタンを押すと次月のカレンダーが表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_login_stamps_nested_4_-_758.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  19) ユーザー認証・認可 ログイン 正しいメールアドレスとパスワードでログインできること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:12:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  20) ユーザー認証・認可 ログイン 誤ったパスワードではログインできないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:24:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  21) ユーザー認証・認可 ログイン 存在しないメールアドレスではログインできないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:36:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  22) ユーザー認証・認可 ログアウト ログアウトできること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:53:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  23) ユーザー認証・認可 アクセス制御 ログインしていない場合 設定画面にアクセスするとログイン画面にリダイレクトされること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:87:in `block (4 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  24) ユーザー認証・認可 アクセス制御 ログインしていない場合 トップページにアクセスするとログイン画面にリダイレクトされること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:93:in `block (4 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  25) ユーザー認証・認可 アクセス制御 ログインしている場合 ログイン画面にアクセスするとトップページにリダイレクトされること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:105:in `block (4 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  26) ユーザー認証・認可 アクセス制御 ログインしている場合 新規登録画面にアクセスするとトップページにリダイレクトされること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:111:in `block (4 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  27) ユーザー認証・認可 パスワードリセット パスワードリセット画面が表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_auth_spec.rb:120:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  28) ユーザー設定 新規登録とログイン メールアドレスで新規登録し、ログインできること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:29:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  29) ユーザー設定 新規登録とログイン 未連携のGoogleアカウントではログインできないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:79:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  30) ユーザー設定 新規登録とログイン 入力内容に不備がある場合 必須項目が未入力だと登録できず、エラーメッセージが表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:44:in `block (4 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  31) ユーザー設定 新規登録とログイン 入力内容に不備がある場合 パスワード（確認用）が一致しないと登録できないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:58:in `block (4 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  32) ユーザー設定 設定画面の操作 プロフィール（名前・目標距離）を更新できること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  33) ユーザー設定 設定画面の操作 パスワードを変更できること（現在のパスワード必須）
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  34) ユーザー設定 設定画面の操作 現在のパスワードが間違っていると更新できないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  35) ユーザー設定 設定画面の操作 確認用パスワードが一致しないと更新できないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  36) ユーザー設定 設定画面の操作 Google連携を行い、その後解除できること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_nested_2_nested_2_google-_838.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  37) ユーザー設定 設定画面の操作 Google連携解除時にパスワードを間違えると解除できないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_nested_2_nested_2_google-_95.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  38) ユーザー設定 設定画面の操作 アカウントを削除できること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  39) ユーザー設定 設定画面の操作 プロフィール更新（異常系） 名前を空にすると更新できないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  40) ユーザー設定 設定画面の操作 プロフィール更新（異常系） 目標距離に不正な値（0以下）を入力すると更新できないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  41) ユーザー設定 設定画面の操作 プロフィール更新（異常系） 目標距離に不正な値（上限超え）を入力すると更新できないこと
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ./spec/system/user_settings_spec.rb:92:in `block (3 levels) in <main>'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  42) Walks 散歩記録の新規作成 散歩記録が保存され、一覧画面に表示されること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_walks_nested_-_494.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  43) Walks 散歩記録の編集 記録を編集できること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_walks_nested_2_-_386.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  44) Walks 散歩記録の削除 記録を削除できること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_walks_nested_3_-_165.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+  45) Walks ページネーション ページネーションが表示され、次ページに遷移できること
+      Failure/Error: <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+      ActionView::Template::Error:
+        Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+
+      [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_walks_nested_4_-_126.png
+
+
+      # ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+      # ------------------
+      # --- Caused by: ---
+      # Errno::EACCES:
+      #   Permission denied @ apply2files - /home/nukon999/workspace/tekumemo/tmp/cache/assets/sprockets/v4.0.0/Tr/TrM-gqoWWUV1_UfXJeg3bSnyuusSGgVxFAdIOGxki7A.cache
+      #   ./app/views/layouts/application.html.erb:21:in `_app_views_layouts_application_html_erb__3982428914749827976_32160'
+
+Finished in 42.66 seconds (files took 3.18 seconds to load)
+77 examples, 45 failures, 2 pending
+
+Failed examples:
+
+rspec ./spec/requests/static_pages_spec.rb:5 # StaticPages GET /privacy returns http success
+rspec ./spec/requests/walks_pagination_spec.rb:25 # WalksPagination ページネーションが表示され、ページ遷移ができること
+rspec ./spec/system/carousel_spec.rb:11 # Home Carousel displays weather and ranking cards
+rspec ./spec/system/carousel_spec.rb:22 # Home Carousel on mobile view shows carousel indicators
+rspec ./spec/system/carousel_spec.rb:26 # Home Carousel on mobile view automatically scrolls (simulated check)
+rspec ./spec/system/carousel_spec.rb:39 # Home Carousel on desktop view hides carousel indicators
+rspec ./spec/system/home_spec.rb:58 # Home ホーム画面の表示 位置情報と天気が表示されること
+rspec ./spec/system/home_spec.rb:80 # Home ホーム画面の表示 今日の散歩記録がある場合 今日の記録が表示されること
+rspec ./spec/system/home_spec.rb:93 # Home ホーム画面の表示 今日の散歩記録がない場合 今日の散歩カードが表示され、距離が0mであること
+rspec ./spec/system/login_stamps_spec.rb:31 # LoginStamps カレンダー画面の表示 現在の年月が表示されていること
+rspec ./spec/system/login_stamps_spec.rb:36 # LoginStamps カレンダー画面の表示 カレンダーの日付が表示されていること
+rspec ./spec/system/login_stamps_spec.rb:51 # LoginStamps スタンプの表示 散歩記録がある場合 その日にスタンプが表示されること
+rspec ./spec/system/login_stamps_spec.rb:58 # LoginStamps スタンプの表示 散歩記録がある場合 「てくてく日数」が1日と表示されること
+rspec ./spec/system/login_stamps_spec.rb:71 # LoginStamps スタンプの表示 散歩記録がない場合 スタンプが表示されないこと
+rspec ./spec/system/login_stamps_spec.rb:75 # LoginStamps スタンプの表示 散歩記録がない場合 今日の日付には「今日」と表示されること
+rspec ./spec/system/login_stamps_spec.rb:91 # LoginStamps 連続日数の表示 昨日と今日連続で散歩している場合 連続日数が「2日」と表示されること
+rspec ./spec/system/login_stamps_spec.rb:106 # LoginStamps 月移動の動作 前月ボタンを押すと前月のカレンダーが表示されること
+rspec ./spec/system/login_stamps_spec.rb:115 # LoginStamps 月移動の動作 次月ボタンを押すと次月のカレンダーが表示されること
+rspec ./spec/system/user_auth_spec.rb:11 # ユーザー認証・認可 ログイン 正しいメールアドレスとパスワードでログインできること
+rspec ./spec/system/user_auth_spec.rb:23 # ユーザー認証・認可 ログイン 誤ったパスワードではログインできないこと
+rspec ./spec/system/user_auth_spec.rb:35 # ユーザー認証・認可 ログイン 存在しないメールアドレスではログインできないこと
+rspec ./spec/system/user_auth_spec.rb:56 # ユーザー認証・認可 ログアウト ログアウトできること
+rspec ./spec/system/user_auth_spec.rb:86 # ユーザー認証・認可 アクセス制御 ログインしていない場合 設定画面にアクセスするとログイン画面にリダイレクトされること
+rspec ./spec/system/user_auth_spec.rb:92 # ユーザー認証・認可 アクセス制御 ログインしていない場合 トップページにアクセスするとログイン画面にリダイレクトされること
+rspec ./spec/system/user_auth_spec.rb:104 # ユーザー認証・認可 アクセス制御 ログインしている場合 ログイン画面にアクセスするとトップページにリダイレクトされること
+rspec ./spec/system/user_auth_spec.rb:110 # ユーザー認証・認可 アクセス制御 ログインしている場合 新規登録画面にアクセスするとトップページにリダイレクトされること
+rspec ./spec/system/user_auth_spec.rb:119 # ユーザー認証・認可 パスワードリセット パスワードリセット画面が表示されること
+rspec ./spec/system/user_settings_spec.rb:28 # ユーザー設定 新規登録とログイン メールアドレスで新規登録し、ログインできること
+rspec ./spec/system/user_settings_spec.rb:71 # ユーザー設定 新規登録とログイン 未連携のGoogleアカウントではログインできないこと
+rspec ./spec/system/user_settings_spec.rb:43 # ユーザー設定 新規登録とログイン 入力内容に不備がある場合 必須項目が未入力だと登録できず、エラーメッセージが表示されること
+rspec ./spec/system/user_settings_spec.rb:57 # ユーザー設定 新規登録とログイン 入力内容に不備がある場合 パスワード（確認用）が一致しないと登録できないこと
+rspec ./spec/system/user_settings_spec.rb:115 # ユーザー設定 設定画面の操作 プロフィール（名前・目標距離）を更新できること
+rspec ./spec/system/user_settings_spec.rb:125 # ユーザー設定 設定画面の操作 パスワードを変更できること（現在のパスワード必須）
+rspec ./spec/system/user_settings_spec.rb:135 # ユーザー設定 設定画面の操作 現在のパスワードが間違っていると更新できないこと
+rspec ./spec/system/user_settings_spec.rb:144 # ユーザー設定 設定画面の操作 確認用パスワードが一致しないと更新できないこと
+rspec ./spec/system/user_settings_spec.rb:154 # ユーザー設定 設定画面の操作 Google連携を行い、その後解除できること
+rspec ./spec/system/user_settings_spec.rb:195 # ユーザー設定 設定画面の操作 Google連携解除時にパスワードを間違えると解除できないこと
+rspec ./spec/system/user_settings_spec.rb:220 # ユーザー設定 設定画面の操作 アカウントを削除できること
+rspec ./spec/system/user_settings_spec.rb:96 # ユーザー設定 設定画面の操作 プロフィール更新（異常系） 名前を空にすると更新できないこと
+rspec ./spec/system/user_settings_spec.rb:102 # ユーザー設定 設定画面の操作 プロフィール更新（異常系） 目標距離に不正な値（0以下）を入力すると更新できないこと
+rspec ./spec/system/user_settings_spec.rb:108 # ユーザー設定 設定画面の操作 プロフィール更新（異常系） 目標距離に不正な値（上限超え）を入力すると更新できないこと
+rspec ./spec/system/walks_spec.rb:27 # Walks 散歩記録の新規作成 散歩記録が保存され、一覧画面に表示されること
+rspec ./spec/system/walks_spec.rb:66 # Walks 散歩記録の編集 記録を編集できること
+rspec ./spec/system/walks_spec.rb:100 # Walks 散歩記録の削除 記録を削除できること
+rspec ./spec/system/walks_spec.rb:143 # Walks ページネーション ページネーションが表示され、次ページに遷移できること
+

@@ -10,9 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_01_090805) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_03_000817) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "posts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "walk_id"
+    t.text "body"
+    t.integer "weather"
+    t.integer "feeling"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_posts_on_created_at"
+    t.index ["user_id", "created_at"], name: "index_posts_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_posts_on_user_id"
+    t.index ["walk_id"], name: "index_posts_on_walk_id"
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.integer "kind", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "kind"], name: "index_reactions_on_post_id_and_kind"
+    t.index ["post_id"], name: "index_reactions_on_post_id"
+    t.index ["user_id", "post_id", "kind"], name: "index_reactions_on_user_post_kind", unique: true
+    t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -48,5 +74,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_01_090805) do
     t.index ["user_id"], name: "index_walks_on_user_id"
   end
 
+  add_foreign_key "posts", "users"
+  add_foreign_key "posts", "walks"
+  add_foreign_key "reactions", "posts"
+  add_foreign_key "reactions", "users"
   add_foreign_key "walks", "users"
 end
