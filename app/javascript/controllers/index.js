@@ -7,6 +7,18 @@ import { application } from "./application"
 import CarouselController from "./carousel_controller"
 application.register("carousel", CarouselController)
 
+import CharacterCounterController from "./character_counter_controller"
+application.register("character-counter", CharacterCounterController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
+import ReactionController from "./reaction_controller"
+application.register("reaction", ReactionController)
+
+import PopoverController from "./popover_controller"
+application.register("popover", PopoverController)
+
 import CounterController from "./counter_controller"
 application.register("counter", CounterController)
 
