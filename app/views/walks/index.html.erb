@@ -4,18 +4,18 @@
   <!-- ページタイトル -->
   <div class="mb-8 flex items-center justify-between">
     <div>
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center space-x-3">
-        <span class="material-symbols-outlined text-4xl text-sky-500 dark:text-cyan-400 drop-shadow-sm dark:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-bounce-slow">footprint</span>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-blue-600 dark:from-cyan-300 dark:to-purple-400 drop-shadow-sm">散歩記録</span>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white flex items-center space-x-3">
+        <span class="material-symbols-outlined text-4xl text-orange-400 dark:text-purple-400 drop-shadow-sm dark:drop-shadow-[0_0_10px_rgba(168,85,247,0.8)] animate-bounce-slow">footprint</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 dark:from-purple-400 dark:to-pink-400 drop-shadow-sm">散歩記録</span>
       </h1>
-      <p class="text-sm text-sky-600/80 dark:text-slate-400 mt-1 ml-1 font-medium">あなたの足跡、青空の下で。</p>
+      <p class="text-sm text-gray-500 dark:text-purple-200/70 mt-1 ml-1 font-medium">あなたの足跡、ひとつひとつ。</p>
     </div>
   </div>
 
   <!-- 新規作成ボタン -->
   <div class="mb-10">
     <%= link_to new_walk_path,
-        class: "group w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-sky-400 to-blue-500 dark:from-fuchsia-600 dark:to-purple-600 hover:from-sky-500 hover:to-blue-600 dark:hover:from-fuchsia-500 dark:hover:to-purple-500 text-white font-bold py-4 px-8 rounded-full shadow-lg shadow-sky-200 dark:shadow-[0_0_20px_rgba(192,38,211,0.5)] hover:shadow-xl hover:shadow-sky-300 dark:hover:shadow-[0_0_30px_rgba(192,38,211,0.7)] transition-all duration-300 transform hover:-translate-y-1" do %>
+        class: "group w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-orange-400 to-pink-500 dark:from-purple-600 dark:to-pink-600 hover:from-orange-500 hover:to-pink-600 dark:hover:from-purple-500 dark:hover:to-pink-500 text-white font-bold py-4 px-8 rounded-full shadow-[6px_6px_12px_rgba(166,175,195,0.4),-6px_-6px_12px_rgba(255,255,255,0.9)] dark:shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:shadow-[8px_8px_16px_rgba(166,175,195,0.5),-8px_-8px_16px_rgba(255,255,255,0.9)] dark:hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95 active:shadow-inner" do %>
       <span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300">add</span>
       <span class="text-lg">新しい散歩を記録する</span>
     <% end %>
@@ -27,119 +27,109 @@
   </div>
 
   <!-- 散歩記録一覧 -->
-  <div class="grid grid-cols-1 gap-6">
+  <div class="grid grid-cols-1 gap-8">
     <% if @walks.any? %>
       <% @walks.each do |walk| %>
-        <!-- 各散歩記録カード -->
-        <%= link_to walk_path(walk), class: "block group relative" do %>
-          <div class="relative overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 dark:from-slate-900/90 dark:to-indigo-950/90 backdrop-blur-xl border border-sky-100 dark:border-cyan-500/30 rounded-3xl shadow-lg shadow-sky-100/50 dark:shadow-[0_0_15px_rgba(6,182,212,0.15)] p-6 transition-all duration-300 hover:shadow-xl hover:shadow-sky-200/50 hover:dark:shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:scale-[1.02] hover:dark:border-cyan-400/50">
+        <!-- 各散歩記録カード (Claymorphism / Neon Noir) -->
+        <%= link_to walk_path(walk), class: "block group relative transform transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]" do %>
+          <div class="relative overflow-hidden bg-[#fdfbf7] dark:bg-[#1a0b2e]/80 backdrop-blur-xl border border-white/60 dark:border-purple-500/30 rounded-[2.5rem] shadow-[14px_14px_28px_rgba(166,175,195,0.25),-14px_-14px_28px_rgba(255,255,255,0.9)] dark:shadow-[0_0_20px_rgba(168,85,247,0.2)] p-8 transition-all duration-300 hover:shadow-[18px_18px_36px_rgba(166,175,195,0.3),-18px_-18px_36px_rgba(255,255,255,0.9)] hover:dark:shadow-[0_0_40px_rgba(168,85,247,0.4)]">
 
-            <!-- 装飾用背景（青空の光 / ネオンの光） -->
-            <div class="absolute -top-10 -right-10 w-40 h-40 bg-sky-200/30 dark:bg-purple-500/20 rounded-full blur-3xl pointer-events-none group-hover:bg-sky-300/30 dark:group-hover:bg-purple-500/30 transition-colors duration-300"></div>
-
-            <!-- 雲のイラスト（ライトモードのみ） -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 dark:hidden">
-              <span class="material-symbols-outlined text-[200px] text-white/40 select-none">cloud</span>
-            </div>
+            <!-- 装飾用背景（パステルカラーのオーブ / ネオンの光） -->
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-orange-100/50 dark:bg-purple-600/20 rounded-full blur-3xl pointer-events-none group-hover:bg-orange-200/50 dark:group-hover:bg-purple-500/30 transition-colors duration-300"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-32 h-32 bg-blue-100/50 dark:bg-pink-600/10 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-200/50 dark:group-hover:bg-pink-500/20 transition-colors duration-300"></div>
 
             <!-- ヘッダー部分（日付・曜日） -->
-            <div class="flex items-center justify-between mb-4 relative z-10">
-              <div class="flex items-center space-x-3">
-                <div class="bg-sky-100 dark:bg-slate-800/80 p-2 rounded-full text-sky-600 dark:text-cyan-400 dark:shadow-[0_0_10px_rgba(34,211,238,0.3)]">
-                  <span class="material-symbols-outlined text-xl">calendar_month</span>
+            <div class="flex items-center justify-between mb-6 relative z-10">
+              <div class="flex items-center space-x-4">
+                <div class="bg-orange-50 dark:bg-[#2e1a47] p-3 rounded-2xl text-orange-500 dark:text-purple-300 shadow-inner border border-orange-100 dark:border-purple-500/30 dark:shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                  <span class="material-symbols-outlined text-2xl">calendar_month</span>
                 </div>
                 <div>
-                  <p class="text-lg font-bold text-gray-800 dark:text-slate-100">
+                  <p class="text-xl font-bold text-gray-700 dark:text-purple-100">
                     <%= walk.walked_on.strftime('%Y年%m月%d日') %>
                   </p>
-                  <p class="text-xs text-sky-500 dark:text-cyan-400 font-bold">
+                  <p class="text-sm text-orange-400 dark:text-purple-400 font-bold">
                     <%= %w[日 月 火 水 木 金 土][walk.walked_on.wday] %>曜日
                   </p>
                 </div>
               </div>
 
-              <!-- 詳細へ矢印 -->
-              <span class="material-symbols-outlined text-gray-300 dark:text-slate-600 group-hover:text-sky-500 dark:group-hover:text-cyan-400 transition-colors duration-300">arrow_forward_ios</span>
+              <!-- 詳細へ矢印 (円形ボタン風) -->
+              <div class="w-10 h-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center shadow-[4px_4px_8px_rgba(166,175,195,0.2),-4px_-4px_8px_rgba(255,255,255,0.9)] dark:shadow-none group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-gray-400 dark:text-purple-300 group-hover:text-orange-500 dark:group-hover:text-pink-400 transition-colors">arrow_forward_ios</span>
+              </div>
             </div>
 
             <!-- 場所 -->
-            <div class="flex items-center space-x-2 mb-6 relative z-10 pl-1">
-              <span class="material-symbols-outlined text-sky-400 dark:text-purple-400">location_on</span>
-              <span class="font-bold text-gray-600 dark:text-slate-300 line-clamp-1"><%= walk.location %></span>
+            <div class="flex items-center space-x-2 mb-8 relative z-10 pl-1">
+              <span class="material-symbols-outlined text-gray-400 dark:text-purple-400">location_on</span>
+              <span class="font-bold text-gray-600 dark:text-purple-200 line-clamp-1"><%= walk.location %></span>
             </div>
 
-            <!-- スタッツグリッド（スマホはシンプル、PCはカード） -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 sm:gap-2 relative z-10 mt-2 sm:mt-0">
+            <!-- スタッツグリッド (くぼみデザイン / ネオンパネル) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 relative z-10">
               <!-- 距離 -->
-              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
-                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
-                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
-                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">straighten</span>
-                  </div>
-                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">距離</span>
+              <div class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-[#0b0514]/40 rounded-3xl shadow-inner border border-black/5 dark:border-purple-500/20 dark:shadow-none">
+                <div class="flex items-center space-x-1 mb-1">
+                  <span class="material-symbols-outlined text-lg text-blue-400 dark:text-cyan-400 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.6)]">straighten</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-300/70 font-bold">距離</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                  <span class="font-bold text-gray-700 dark:text-cyan-200 text-xl mr-1">
                     <%= walk.distance || 0 %>
                   </span>
-                  <span class="text-xs text-gray-400 dark:text-slate-500">km</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-400/60">km</span>
                 </div>
               </div>
 
               <!-- 時間 -->
-              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
-                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
-                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
-                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">timer</span>
-                  </div>
-                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">時間</span>
+              <div class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-[#0b0514]/40 rounded-3xl shadow-inner border border-black/5 dark:border-purple-500/20 dark:shadow-none">
+                <div class="flex items-center space-x-1 mb-1">
+                  <span class="material-symbols-outlined text-lg text-green-400 dark:text-green-400 dark:drop-shadow-[0_0_5px_rgba(74,222,128,0.6)]">timer</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-300/70 font-bold">時間</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                  <span class="font-bold text-gray-700 dark:text-green-200 text-xl mr-1">
                     <%= walk.duration || 0 %>
                   </span>
-                  <span class="text-xs text-gray-400 dark:text-slate-500">分</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-400/60">分</span>
                 </div>
               </div>
 
               <!-- 歩数 -->
-              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
-                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
-                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
-                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">footprint</span>
-                  </div>
-                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">歩数</span>
+              <div class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-[#0b0514]/40 rounded-3xl shadow-inner border border-black/5 dark:border-purple-500/20 dark:shadow-none">
+                <div class="flex items-center space-x-1 mb-1">
+                  <span class="material-symbols-outlined text-lg text-purple-400 dark:text-fuchsia-400 dark:drop-shadow-[0_0_5px_rgba(232,121,249,0.6)]">footprint</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-300/70 font-bold">歩数</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                  <span class="font-bold text-gray-700 dark:text-fuchsia-200 text-xl mr-1">
                     <%= number_with_delimiter(walk.steps || 0) %>
                   </span>
-                  <span class="text-xs text-gray-400 dark:text-slate-500">歩</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-400/60">歩</span>
                 </div>
               </div>
 
               <!-- カロリー -->
-              <div class="flex sm:flex-col items-center sm:justify-center justify-between p-0 sm:p-2 sm:bg-white/60 sm:dark:bg-slate-950/50 sm:rounded-2xl sm:border sm:border-sky-50 sm:dark:border-cyan-500/20 sm:shadow-sm transition-colors sm:hover:bg-white/80 sm:dark:hover:bg-slate-900/60">
-                <div class="flex items-center space-x-2 sm:space-x-1 sm:mb-1">
-                  <div class="p-1.5 rounded-lg bg-sky-100/50 dark:bg-cyan-900/30 sm:bg-transparent sm:p-0">
-                    <span class="material-symbols-outlined text-lg sm:text-base text-sky-500 dark:text-cyan-400">local_fire_department</span>
-                  </div>
-                  <span class="text-xs text-gray-500 dark:text-cyan-200/70 font-bold sm:block hidden">カロリー</span>
+              <div class="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-[#0b0514]/40 rounded-3xl shadow-inner border border-black/5 dark:border-purple-500/20 dark:shadow-none">
+                <div class="flex items-center space-x-1 mb-1">
+                  <span class="material-symbols-outlined text-lg text-orange-400 dark:text-orange-400 dark:drop-shadow-[0_0_5px_rgba(251,146,60,0.6)]">local_fire_department</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-300/70 font-bold">カロリー</span>
                 </div>
                 <div class="flex items-baseline">
-                  <span class="font-bold text-sky-700 dark:text-cyan-300 text-lg sm:text-lg mr-1">
+                  <span class="font-bold text-gray-700 dark:text-orange-200 text-xl mr-1">
                     <%= walk.calories_burned || 0 %>
                   </span>
-                  <span class="text-xs text-gray-400 dark:text-slate-500">kcal</span>
+                  <span class="text-xs text-gray-400 dark:text-purple-400/60">kcal</span>
                 </div>
               </div>
             </div>
 
             <!-- メモ（あれば） -->
             <% if walk.notes.present? %>
-              <div class="mt-4 pt-3 border-t border-sky-100 dark:border-white/10 relative z-10">
-                <div class="flex items-start space-x-2 text-gray-500 dark:text-slate-400">
-                  <span class="material-symbols-outlined text-sm mt-0.5 text-sky-400 dark:text-purple-400">edit_note</span>
+              <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/10 relative z-10">
+                <div class="flex items-start space-x-2 text-gray-500 dark:text-purple-200/80">
+                  <span class="material-symbols-outlined text-sm mt-0.5 text-gray-400 dark:text-purple-400">edit_note</span>
                   <p class="text-sm line-clamp-1"><%= walk.notes %></p>
                 </div>
               </div>
@@ -154,18 +144,18 @@
     </div>
 
     <% else %>
-      <!-- 記録がない場合のメッセージ -->
-      <div class="col-span-1 bg-gradient-to-br from-white to-sky-50 dark:from-slate-900 dark:to-indigo-950 p-10 rounded-3xl shadow-lg border border-sky-100 dark:border-cyan-500/30 text-center">
-        <div class="bg-sky-100 dark:bg-slate-800/50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-slow dark:shadow-[0_0_20px_rgba(6,182,212,0.3)]">
-          <span class="material-symbols-outlined text-5xl text-sky-500 dark:text-cyan-400 dark:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">hiking</span>
+      <!-- 記録がない場合のメッセージ (Claymorphism / Neon Noir) -->
+      <div class="col-span-1 bg-[#fdfbf7] dark:bg-[#1a0b2e]/80 p-12 rounded-[2.5rem] shadow-[14px_14px_28px_rgba(166,175,195,0.25),-14px_-14px_28px_rgba(255,255,255,0.9)] dark:shadow-[0_0_20px_rgba(168,85,247,0.2)] border border-white/60 dark:border-purple-500/30 text-center">
+        <div class="bg-orange-50 dark:bg-[#2e1a47] w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner animate-pulse-slow dark:shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+          <span class="material-symbols-outlined text-6xl text-orange-400 dark:text-purple-400 dark:drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]">hiking</span>
         </div>
-        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-3">さあ、冒険に出かけよう！</h3>
-        <p class="text-gray-500 dark:text-gray-400 mb-8 text-sm leading-relaxed">
+        <h3 class="text-2xl font-bold text-gray-700 dark:text-purple-100 mb-3">さあ、冒険に出かけよう！</h3>
+        <p class="text-gray-500 dark:text-purple-200/70 mb-10 text-base leading-relaxed">
           まだ散歩の記録がありません。<br>
           最初の足跡を刻んで、思い出を作りませんか？
         </p>
         <%= link_to new_walk_path,
-            class: "inline-flex items-center space-x-2 bg-sky-500 hover:bg-sky-600 dark:bg-cyan-600 dark:hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-full shadow-md dark:shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all duration-300 transform hover:scale-105" do %>
+            class: "inline-flex items-center space-x-2 bg-gradient-to-r from-orange-400 to-pink-500 dark:from-purple-600 dark:to-pink-600 hover:from-orange-500 hover:to-pink-600 dark:hover:from-purple-500 dark:hover:to-pink-500 text-white font-bold py-4 px-8 rounded-full shadow-[6px_6px_12px_rgba(166,175,195,0.4),-6px_-6px_12px_rgba(255,255,255,0.9)] dark:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95 active:shadow-inner" do %>
           <span class="material-symbols-outlined">arrow_forward</span>
           <span>最初の記録を作成する</span>
         <% end %>

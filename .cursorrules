@@ -63,7 +63,7 @@ Your internal thought process (Thinking/Reasoning) MUST be generated in **JAPANE
 5. **洗練と最適化:** UX全体を見直し、アニメーションや遷移をスムーズにする。
 6. **ブランチ:** ブランチはユーザーから指示があるまで新規作成をして作業を進めてはいけません。
 
-## デザインシステム (Puni-Puni Claymorphism)
+## デザインシステム (Light Mode: Puni-Puni Claymorphism)
 **コンセプト:** 「触りたくなるような、柔らかく、楽しく、温かい（ポップ × リッチ × わくわく） UI」
 
 ### スタイリングルール (Tailwind CSS)
@@ -83,6 +83,25 @@ Your internal thought process (Thinking/Reasoning) MUST be generated in **JAPANE
 
 4. **インタラクション:**
    - ホバーで少し浮き (`-translate-y-1`)、クリックで凹む (`scale-95` + `shadow-inner`) 動きをつける。
+
+## デザインシステム (Dark Mode: Neon Noir / Synthwave)
+**コンセプト:** 「夜のネオン街のような、妖艶で大人なポップさ（リッチ × 幻想的 × 発光感）」
+
+### スタイリングルール (Tailwind CSS - `dark:` prefix)
+1. **配色 (Color Palette):**
+   - **Base:** `dark:bg-[#0b0514]` (Deep Purple Black) や `dark:bg-[#1a0b2e]/80` (Midnight Blue)。単なる黒は避ける。
+   - **Accent:** `Purple-500`, `Fuchsia-500`, `Cyan-400` を使用し、サイバーパンクな雰囲気を出す。
+   - **Text:** `dark:text-purple-100` (薄い紫) を基本とし、真っ白は強調時のみ使用。
+
+2. **エフェクト (Effects):**
+   - **発光 (Glow):** 影ではなく「光」として `box-shadow` を使う。
+     - 例: `dark:shadow-[0_0_20px_rgba(168,85,247,0.4)]`
+   - **枠線:** 要素の境界を光らせる (`dark:border-purple-500/30`)。
+   - **ガラス:** `backdrop-blur-xl` と半透明背景で奥行きを作る。
+
+3. **共存のルール:**
+   - HTML構造は変更せず、必ず `dark:` プレフィックスを使用してスタイルを上書きすること。
+   - ライトモードの形状（角丸など）は維持しつつ、色と光で世界観をガラリと変える。
 
 ## SEO・パフォーマンス
 - 適切なタイトルタグとメタディスクリプションを設定する。

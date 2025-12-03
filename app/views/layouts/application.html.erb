@@ -33,7 +33,10 @@
   </script>
 </head>
 
-<body class="min-h-screen bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 font-display transition-colors duration-200" data-controller="scroll-hide">
+<body class="min-h-screen bg-fixed bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 font-display transition-colors duration-200" data-controller="scroll-hide">
+  <!-- 背景装飾アニメーション（全ページ共通） -->
+  <%= render 'shared/background_animation' %>
+
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->

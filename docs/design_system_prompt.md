@@ -1,90 +1,85 @@
-# Design System: Puni-Puni Claymorphism
+# Neon Noir / Synthwave Design System Prompt
 
-# このプロンプトは、アプリケーション全体で統一された「プニプニ・クレイモーフィズム」デザインを適用するためのガイドラインです。
+今後、ダークモードのデザインを依頼する際は、以下のプロンプトを使用してください。
+このプロンプトは、これまでの実装内容（カラーパレット、影の設定、雰囲気）を体系化したものです。
 
-## 🎨 デザインコンセプト
+---
 
-**「触りたくなるような、柔らかく、楽しく、温かい（ポップ × リッチ × わくわく） UI」**
+## 🎨 デザイン指示プロンプト
 
-- **キーワード:** Claymorphism（クレイモーフィズム）, Soft UI, Puni-Puni（プニプニ感）, Colorful, Tactile（触感）, Rounded
-
-## 🛠️ スタイリングルール (Tailwind CSS)
-
-### 1. 形状 (Shape)
-
-- **角丸:** 基本的に `rounded-3xl` (24px) 以上を使用する。
-  - カード: `rounded-[2.5rem]` (40px)
-  - ボタン: `rounded-full` (完全な円/カプセル)
-  - 入力エリア: `rounded-2xl` ~ `rounded-3xl`
-- **意図:** 鋭利な角を排除し、徹底的に「柔らかさ」を強調する。
-
-### 2. 質感と立体感 (Texture & Depth)
-
-Claymorphism の核となる要素。単色の背景ではなく、光と影で形を作る。
-
-#### A. 浮き出し (Floating Elements) - カード、モーダル、ボタン
-
-要素が背景から「プニッ」と浮き出ている表現。
-
-- **Shadow:** 2 つの影を組み合わせる（右下の暗い影 + 左上の白いハイライト）。
-- **Border:** 背景と同化しないよう、極薄の白ボーダーを入れる。
-
-```css
-/* Tailwind Example */
-class="bg-white rounded-[2.5rem] border border-white/60 shadow-[14px_14px_28px_rgba(166,175,195,0.25),-14px_-14px_28px_rgba(255,255,255,0.9)]"
-```
-
-#### B. くぼみ (Indented Elements) - 入力フォーム、リアクションエリア
-
-要素が粘土に指で押し込まれたような表現。
-
-- **Shadow:** `shadow-inner` をベースに、内側に影を落とす。
-- **Background:** 周囲より少し暗い色、または半透明の背景色。
-
-```css
-/* Tailwind Example */
-class="bg-slate-50 rounded-3xl shadow-inner border border-black/5"
-```
-
-#### C. ドーム状 (Dome Shape) - 重要なアクションボタン（削除など）
-
-おはじきのような、中央が盛り上がった球体表現。
-
-- **Background:** `radial-gradient` で光沢を表現。
-- **Shadow:** `inset` シャドウで立体感を強調。
-
-```css
-/* Tailwind Example */
-style="background: radial-gradient(circle at 30% 30%, #ffffff, #e2e8f0);
-       box-shadow: 6px 6px 12px rgba(0,0,0,0.1), -6px -6px 12px rgba(255,255,255,0.9), inset 2px 2px 5px rgba(255,255,255,1);"
-```
-
-### 3. 配色 (Color Palette)
-
-感情や状況の「強度」に合わせて彩度を調整する。
-
-- **Base (背景):** `bg-[#fdfbf7]` (Warm White) や `bg-slate-50` など、真っ白すぎない温かみのある色。
-- **Pastel (通常):** 淡い色味で優しさを表現。
-  - 例: `bg-orange-50`, `bg-blue-50`, `text-orange-600`
-- **Vivid (強調):** 強い感情やアクションには、少し濃い色をアクセントに使うが、背景色は淡く保ち、**ボーダーとテキスト色**で強度を出す。
-  - 例: `border-purple-400`, `text-purple-800` (背景は `bg-purple-50` 程度に抑える)
-
-### 4. インタラクション (Micro-interactions)
-
-「生きている」ような動きをつける。
-
-- **Hover:** `hover:-translate-y-1` (少し浮く) + `hover:scale-105` (少し膨らむ)
-- **Active:** `active:scale-95` (押される) + `active:shadow-inner` (凹む)
-- **Animation:** `animate-bounce-slow`, `animate-pulse-slow` など、ゆっくりとした有機的な動き。
-
-## 📝 実装時のプロンプト例
-
-AI にデザインを依頼する際は、以下の指示を含めてください。
-
-> 「UI デザインは『Puni-Puni Claymorphism』テーマを採用してください。
-> 具体的には、TailwindCSS を使用して以下の特徴を持たせてください：
+> **「ダークモードのデザインは『Neon Noir / Synthwave』テーマを適用してください。」**
 >
-> 1. 角丸は `rounded-3xl` 以上で大きく取る。
-> 2. `box-shadow` を駆使して、粘土のような『浮き出し』と『くぼみ』を表現する（単なるフラットデザイン禁止）。
-> 3. ボタンは `rounded-full` で、押すと凹むアニメーションをつける。
-> 4. 配色はパステルカラーを基調とし、要素の境界には薄い白のボーダー (`border-white/60`) を入れて質感を高める。」
+> 以下のデザインルール（Tailwind CSS）を厳守し、既存の HTML 構造を維持したまま `dark:` クラスを追加・修正してください。
+>
+> ### 1. コンセプト (Concept)
+>
+> - **テーマ:** 夜のネオン街、サイバーパンク、シンセウェーブ。
+> - **雰囲気:** 妖艶、大人なポップさ、幻想的、リッチな発光感。
+> - **キーワード:** Midnight Blue, Hot Pink, Ultraviolet, Glow.
+>
+> ### 2. カラーパレット (Color Palette)
+>
+> - **背景 (Base):**
+>   - メイン背景: `dark:bg-[#0b0514]` (ほぼ黒に近い紫) または `dark:bg-slate-900`。
+>   - カード/モーダル背景: `dark:bg-[#1a0b2e]/80` (ミッドナイトブルー、半透明)。
+>   - 入力エリア背景: `dark:bg-[#2e1a47]` (一段階明るい紫)。
+> - **アクセント (Accent):**
+>   - プライマリ: `Purple-500` (#a855f7) 〜 `Fuchsia-500` (#d946ef)。
+>   - セカンダリ: `Cyan-400` (#22d3ee) (サイバーな差し色)。
+>   - グラデーション: `dark:bg-gradient-to-r dark:from-purple-600 dark:to-pink-600`。
+> - **テキスト (Text):**
+>   - 見出し: `dark:text-white` または `dark:text-transparent bg-clip-text` (グラデーション)。
+>   - 本文: `dark:text-purple-100` (真っ白ではなく、薄い紫)。
+>   - 補足: `dark:text-purple-300/70`。
+>
+> ### 3. エフェクト (Effects)
+>
+> - **発光 (Glow):**
+>   - 影ではなく「光」として `box-shadow` を使う。
+>   - 例: `dark:shadow-[0_0_20px_rgba(168,85,247,0.4)]` (紫色の光)。
+>   - ホバー時: 光を強くする (`dark:shadow-[0_0_30px_rgba(...)]`)。
+> - **枠線 (Border):**
+>   - 要素の境界を光らせる。
+>   - 例: `dark:border-purple-500/30` (薄い紫のボーダー)。
+> - **ガラス (Glassmorphism):**
+>   - `backdrop-blur-xl` と半透明背景を組み合わせて、奥行きを作る。
+>
+> ### 4. UI 要素の振る舞い
+>
+> - **ボタン:** グラデーション背景 ＋ 発光する影。ホバーで少し浮き上がり、光が強くなる。
+> - **入力フォーム:** 非フォーカス時は薄い紫の枠線。フォーカス時は紫に強く発光 (`dark:focus:shadow-[0_0_15px_rgba(...)]`)。
+> - **アイコン:** `drop-shadow` を使ってアイコン自体をネオン管のように光らせる。
+>
+> ---
+>
+> **実装時の注意:**
+>
+> - HTML 構造（タグのネスト）は変更しないこと。
+> - ライトモード（Claymorphism）のデザインを破壊しないよう、必ず `dark:` プレフィックスを付けること。
+
+---
+
+## 🤖 AI による解釈レポート
+
+私があなたの指示をどのように解釈し、コードに変換していたかの分析です。
+
+### 1. 「黒」ではなく「深い紫」
+
+単なる `bg-black` や `bg-gray-900` では「無機質」になりすぎるため、常に **Blue** や **Purple** の色味を含んだ黒（例: `#0b0514`, `#1a0b2e`）を選択しました。これにより、「夜の空気感」や「妖艶さ」を表現しています。
+
+### 2. 「影」を「光」として使う
+
+Tailwind の `shadow` クラスは通常、影を落とすために使いますが、Neon Noir では **色付きの影（rgba）** を指定することで、**「要素自体が発光して周囲を照らしている」** ように見せています。
+
+- 通常: `shadow-lg` (黒い影)
+- Neon: `shadow-[0_0_20px_rgba(168,85,247,0.5)]` (紫の光)
+
+### 3. 透明度とぼかしの活用
+
+「サイバーパンク」や「シンセウェーブ」の世界観では、霧がかったような表現や、ガラス越しのネオンが好まれます。そのため、背景色には `/80` などの透明度を持たせ、`backdrop-blur` で背景をぼかすことで、**「奥行き」と「空気感」** を演出しました。
+
+### 4. コントラストの確保
+
+強い色（ホットピンクやシアン）を使う一方で、文字が読みにくくならないよう、テキスト色には `purple-100` や `purple-200` などの「白に近い紫」を採用し、可読性と世界観の統一を両立させました。
+
+このプロンプトを使えば、私（または他の AI）は即座に「あの時のあのデザイン」を再現できます。
