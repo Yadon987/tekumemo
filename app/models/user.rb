@@ -9,6 +9,10 @@ class User < ApplicationRecord
   # dependent: :destroy は、ユーザーが削除されたときに関連する散歩記録も一緒に削除する
   has_many :walks, dependent: :destroy
 
+  # SNS機能の関連付け
+  has_many :posts, dependent: :destroy
+  has_many :reactions, dependent: :destroy
+
   # ユーザー名のバリデーション
   validates :name, presence: true
 
