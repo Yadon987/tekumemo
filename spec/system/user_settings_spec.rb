@@ -28,7 +28,7 @@ RSpec.describe "ユーザー設定", type: :system do
     it "メールアドレスで新規登録し、ログインできること" do
       visit new_user_registration_path
 
-      fill_in "ユーザー名", with: "テストユーザー"
+      fill_in "ユーザー名（表示名）", with: "テストユーザー"
       fill_in "メールアドレス", with: "new@example.com"
       fill_in "パスワード", with: "password123"
       fill_in "register-password-confirmation-field", with: "password123"
@@ -56,7 +56,7 @@ RSpec.describe "ユーザー設定", type: :system do
 
       it "パスワード（確認用）が一致しないと登録できないこと" do
         visit new_user_registration_path
-        fill_in "ユーザー名", with: "テストユーザー"
+        fill_in "ユーザー名（表示名）", with: "テストユーザー"
         fill_in "メールアドレス", with: "new@example.com"
         fill_in "パスワード", with: "password123"
         fill_in "register-password-confirmation-field", with: "mismatch"

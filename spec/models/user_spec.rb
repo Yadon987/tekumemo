@@ -115,4 +115,84 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe ".ranking" do
+    let!(:user_a) { FactoryBot.create(:user, name: "User A") }
+    let!(:user_b) { FactoryBot.create(:user, name: "User B") }
+    let!(:user_c) { FactoryBot.create(:user, name: "User C") }
+
+    before do
+      # User A: 今日 5km, 昨日 3km, 先月 10km
+      FactoryBot.create(:walk, user: user_a, walked_on: Date.today, distance: 5.0)
+      FactoryBot.create(:walk, user: user_a, walked_on: 1.day.ago, distance: 3.0)
+      FactoryBot.create(:walk, user: user_a, walked_on: 1.month.ago, distance: 10.0)
+
+      # User B: 今日 10km
+      FactoryBot.create(:walk, user: user_b, walked_on: Date.today, distance: 10.0)
+
+      # User C: 昨日 20km (今日はなし)
+      FactoryBot.create(:walk, user: user_c, walked_on: 1.day.ago, distance: 20.0)
+    end
+
+    context "期間: daily (今日)" do
+      it "今日の記録のみが集計され、距離順に並ぶこと" do
+        ranking = User.ranking(period: 'daily')
+
+        # User B (10km) -> User A (5km)。User Cは今日歩いていないので含まれない
+        expect(ranking.length).to eq 2
+        expect(ranking[0].id).to eq user_b.id
+        expect(ranking[0].total_distance).to eq 10.0
+        expect(ranking[1].id).to eq user_a.id
+        expect(ranking[1].total_distance).to eq 5.0
+      end
+    end
+
+    context "期間: monthly (今月)" do
+      it "今月の記録が集計され、距離順に並ぶこと" do
+        # 前提: 1.day.ago が今月であること（月初1日の場合はテストが落ちる可能性があるが、Timecop等は使わず簡易的に）
+        # 安全のため、1.day.ago が先月になる場合（1日）は考慮が必要だが、
+        # ここでは「今日」と「昨日」が同じ月であると仮定するか、
+        # 明示的に日付を指定する方が良い。
+
+        # テストデータを再設定（日付を固定）
+        Walk.delete_all
+        current_month = Time.current.beginning_of_month
+        last_month = 1.month.ago.beginning_of_month
+
+        # User A: 今月5km, 先月10km
+        FactoryBot.create(:walk, user: user_a, walked_on: current_month + 1.day, distance: 5.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: last_month + 1.day, distance: 10.0)
+
+        # User B: 今月10km
+        FactoryBot.create(:walk, user: user_b, walked_on: current_month + 2.days, distance: 10.0)
+
+        ranking = User.ranking(period: 'monthly')
+
+        expect(ranking.length).to eq 2
+        expect(ranking[0].id).to eq user_b.id # 10km
+        expect(ranking[1].id).to eq user_a.id # 5km
+      end
+    end
+
+    context "期間: yearly (今年)" do
+      it "今年の記録が集計され、距離順に並ぶこと" do
+        Walk.delete_all
+        current_year = Time.current.beginning_of_year
+        last_year = 1.year.ago.beginning_of_year
+
+        # User A: 今年5km, 去年10km
+        FactoryBot.create(:walk, user: user_a, walked_on: current_year + 1.day, distance: 5.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: last_year + 1.day, distance: 10.0)
+
+        # User B: 今年10km
+        FactoryBot.create(:walk, user: user_b, walked_on: current_year + 2.days, distance: 10.0)
+
+        ranking = User.ranking(period: 'yearly')
+
+        expect(ranking.length).to eq 2
+        expect(ranking[0].id).to eq user_b.id # 10km
+        expect(ranking[1].id).to eq user_a.id # 5km
+      end
+    end
+  end
 end

@@ -1,0 +1,61 @@
+<%# app/views/stats_coming_soon/index.html.erb %>
+<div class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+
+  <!-- 背景装飾（ダークモード用ネオン） -->
+  <div class="hidden dark:block absolute inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+  </div>
+
+  <!-- メインカード -->
+  <div class="relative w-full max-w-md bg-[#fdfbf7] dark:bg-slate-900/80 dark:backdrop-blur-xl rounded-[2.5rem] p-8 sm:p-12 text-center shadow-[20px_20px_60px_#d1d9e6,-20px_-20px_60px_#ffffff] dark:shadow-[0_0_40px_rgba(139,92,246,0.3)] border border-white/50 dark:border-purple-500/30 transition-all duration-500 hover:scale-[1.02]">
+
+    <!-- アイコンエリア -->
+    <div class="mb-8 relative inline-block">
+      <!-- Light Mode Icon -->
+      <div class="dark:hidden text-8xl animate-bounce">
+        🚧
+      </div>
+      <!-- Dark Mode Icon -->
+      <div class="hidden dark:block text-8xl relative">
+        <span class="absolute inset-0 blur-lg opacity-50">📊</span>
+        <span class="relative z-10">📊</span>
+      </div>
+
+      <!-- 装飾パーツ -->
+      <div class="absolute -top-4 -right-4 text-4xl animate-spin-slow">⚙️</div>
+      <div class="absolute -bottom-2 -left-4 text-3xl animate-pulse">✨</div>
+    </div>
+
+    <!-- タイトル -->
+    <h1 class="text-3xl sm:text-4xl font-black text-slate-700 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 mb-4 tracking-tight">
+      COMING SOON
+    </h1>
+
+    <!-- サブタイトル -->
+    <h2 class="text-lg font-bold text-slate-500 dark:text-purple-200 mb-6">
+      データ分析機能は準備中です
+    </h2>
+
+    <!-- 説明文 -->
+    <p class="text-slate-400 dark:text-slate-400 text-sm mb-10 leading-relaxed">
+      あなたの毎日の歩みを、美しいグラフや統計データで振り返れる機能を開発しています。<br>
+      公開までもうしばらくお待ちください！
+    </p>
+
+    <!-- アクションボタン -->
+    <%= link_to root_path, class: "group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-gradient-to-r from-blue-400 to-blue-600 dark:from-purple-600 dark:to-blue-600 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-purple-500" do %>
+      <span class="absolute inset-0 w-full h-full -mt-1 rounded-full opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
+      <span class="relative flex items-center gap-2">
+        <span class="material-symbols-outlined">home</span>
+        ホームに戻る
+      </span>
+    <% end %>
+
+  </div>
+
+  <!-- フッター的な装飾 -->
+  <div class="mt-12 text-slate-300 dark:text-slate-600 text-xs font-mono">
+    SYSTEM STATUS: <span class="text-green-500 animate-pulse">●</span> BUILDING...
+  </div>
+</div>

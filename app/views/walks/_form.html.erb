@@ -77,7 +77,8 @@
         <%= form.date_field :walked_on,
             id: "walk_walked_on",
             data: { google_fit_target: "date" },
-            class: "block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-lg font-medium" %>
+            onclick: "this.showPicker()",
+            class: "block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900 border-2 border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-400 text-gray-900 dark:text-white placeholder-gray-400 transition-colors shadow-sm text-lg font-medium cursor-pointer" %>
       </div>
     </div>
 
@@ -187,7 +188,7 @@
 
     <!-- アクションボタン -->
     <div class="flex flex-col sm:flex-row gap-4 pt-6">
-      <%= form.submit "記録を保存", class: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 dark:from-fuchsia-600 dark:to-purple-600 dark:hover:from-fuchsia-500 dark:hover:to-purple-500 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-cyan-500/30 dark:shadow-[0_0_20px_rgba(192,38,211,0.5)] transition-all transform hover:-translate-y-1 cursor-pointer text-lg" %>
+      <%= form.submit "保存する", class: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 dark:from-fuchsia-600 dark:to-purple-600 dark:hover:from-fuchsia-500 dark:hover:to-purple-500 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-cyan-500/30 dark:shadow-[0_0_20px_rgba(192,38,211,0.5)] transition-all transform hover:-translate-y-1 cursor-pointer text-lg" %>
 
       <%= link_to "キャンセル", walks_path,
           class: "flex-1 text-center bg-transparent hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 dark:text-slate-400 font-bold py-4 px-6 rounded-2xl transition-all border-2 border-transparent hover:border-gray-200 dark:hover:border-slate-700" %>
