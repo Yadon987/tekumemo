@@ -65,7 +65,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_051500) do
     t.datetime "google_expires_at"
     t.string "avatar_url"
     t.string "name"
-    t.integer "target_distance", default: 5000, null: false
+    t.integer "target_distance", default: 3000, null: false
     t.boolean "use_google_avatar", default: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -78,10 +78,14 @@ class User < ApplicationRecord
   # ランキング集計
   def self.ranking(period: "daily", limit: 100)
     range = case period.to_s
-    when "daily"   then Date.current.all_day
-    when "monthly" then Date.current.all_month
-    when "yearly"  then Date.current.all_year
-    else Date.current.all_day
+    when "daily"
+      Date.current
+    when "monthly"
+      Date.current.beginning_of_month..Date.current
+    when "yearly"
+      Date.current.beginning_of_year..Date.current
+    else
+      Date.current
     end
 
     joins(:walks)

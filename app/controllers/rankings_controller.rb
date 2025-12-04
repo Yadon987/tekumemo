@@ -72,10 +72,10 @@ class RankingsController < ApplicationController
     else
       # ランキング外の場合、個別に集計する
       range = case @period
-      when "daily" then Time.current.all_day
-      when "monthly" then Time.current.all_month
-      when "yearly" then Time.current.all_year
-      else Time.current.all_day
+      when "daily" then Date.current
+      when "monthly" then Date.current.beginning_of_month..Date.current
+      when "yearly" then Date.current.beginning_of_year..Date.current
+      else Date.current
       end
 
       @my_distance = current_user.walks.where(walked_on: range).sum(:distance) # walked_onカラムを使用
