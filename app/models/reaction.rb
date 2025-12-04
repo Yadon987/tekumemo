@@ -1,7 +1,7 @@
 class Reaction < ApplicationRecord
   # アソシエーション（他のモデルとの関連付け）
   belongs_to :user
-  belongs_to :post
+  belongs_to :post, touch: true
 
   # バリデーション（データの検証ルール）
   validates :kind, presence: true  # リアクションの種類（kind）は必須

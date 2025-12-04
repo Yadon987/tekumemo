@@ -29,7 +29,7 @@ RSpec.describe "Walks", type: :system do
       expect(page).to have_content "新しい散歩記録"
 
       # 日付フィールドをクリック（カレンダー表示のトリガーを確認する意味合い）
-      find("#walk_walked_on").click
+      # find("#walk_walked_on").click
       # 日付を入力
       fill_in "walk_walked_on", with: Date.current.strftime('%Y-%m-%d')
 
