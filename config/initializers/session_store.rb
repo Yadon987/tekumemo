@@ -3,4 +3,4 @@
 Rails.application.config.session_store :cookie_store,
   key: "_tekumemo_session_v4",
   secure: Rails.env.production?,
-  same_site: Rails.env.production? ? :none : :lax
+  same_site: :lax

@@ -26,6 +26,7 @@ Rails.application.configure do
   # SSL設定
   config.force_ssl = true
   config.assume_ssl = true # Renderなどのロードバランサ配下でHTTPSとして認識させる
+  config.action_controller.forgery_protection_origin_check = false # Cloudflare等のプロキシ経由でのCSRFエラー回避
 
   # ログ設定
   config.logger = ActiveSupport::Logger.new(STDOUT)
