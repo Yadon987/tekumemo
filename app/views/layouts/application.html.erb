@@ -271,10 +271,10 @@
             <span class="material-symbols-outlined text-lg sm:text-2xl #{current_page?(posts_path) ? 'font-bold' : ''}">groups</span>
           <% end %>
 
-          <!-- 記録 -->
-          <%= link_to "#",
-              class: "relative flex items-center justify-center w-full text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
-            <span class="material-symbols-outlined text-lg sm:text-2xl">incomplete_circle</span>
+          <!-- 記録（統計） -->
+          <%= link_to stats_path,
+              class: "relative flex items-center justify-center w-full #{current_page?(stats_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+            <span class="material-symbols-outlined text-lg sm:text-2xl #{current_page?(stats_path) ? 'font-bold' : ''}">incomplete_circle</span>
           <% end %>
 
           <!-- ランキング -->

@@ -45,4 +45,36 @@ RSpec.describe Post, type: :model do
       expect { post.destroy }.to change(Reaction, :count).by(-1)
     end
   end
+
+  describe 'メソッド' do
+    describe '#weather_emoji' do
+      it '天気に対応した絵文字を返すこと' do
+        post = build(:post, weather: :sunny)
+        expect(post.weather_emoji).to eq "☀️"
+
+        post.weather = :rainy
+        expect(post.weather_emoji).to eq "🌧️"
+      end
+
+      it '天気が未設定の場合はnilを返すこと' do
+        post = build(:post, weather: nil)
+        expect(post.weather_emoji).to be_nil
+      end
+    end
+
+    describe '#feeling_emoji' do
+      it '気分に対応した絵文字を返すこと' do
+        post = build(:post, feeling: :great)
+        expect(post.feeling_emoji).to eq "😆"
+
+        post.feeling = :tired
+        expect(post.feeling_emoji).to eq "😮‍💨"
+      end
+
+      it '気分が未設定の場合はnilを返すこと' do
+        post = build(:post, feeling: nil)
+        expect(post.feeling_emoji).to be_nil
+      end
+    end
+  end
 end

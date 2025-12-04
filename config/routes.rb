@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "stats_coming_soon/index"
   # =====  # Deviseの設定（コントローラーをカスタマイズ）
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
@@ -18,6 +19,10 @@ Rails.application.routes.draw do
   # 散歩記録をカレンダー形式で表示
   resources :login_stamps, only: [ :index ]
   resources :rankings, only: [ :index ]
+
+  # 統計機能（準備中）
+  # 将来的にStatsControllerに差し替える
+  get "stats", to: "stats_coming_soon#index", as: :stats
 
   # Google Fit連携
   # ログインユーザーのGoogle Fitデータを取得する
