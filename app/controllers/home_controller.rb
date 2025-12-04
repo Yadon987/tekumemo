@@ -38,29 +38,49 @@ class HomeController < ApplicationController
     @latest_post = Post.with_associations.recent.first
 
     # ===== 月間ランキング情報の取得 =====
-    start_date = Date.current.beginning_of_month
-    end_date = Date.current
+    # キャッシュキー: ユーザーIDと日付（月）ベース
+    # 1時間ごとに有効期限切れとする
+    cache_key = "ranking/monthly/#{current_user.id}/#{Date.current.strftime('%Y-%m')}/#{Time.current.hour}"
 
-    # 1. 自分の今月の総距離
-    my_total_distance = current_user.walks.where(walked_on: start_date..end_date).sum(:distance)
+    ranking_data = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      start_date = Date.current.beginning_of_month
+      end_date = Date.current
 
-    # 2. 全ユーザー数（歩いていないユーザーも含む）
-    @ranking_total_users = User.count
+      # 1. 自分の今月の総距離
+      my_total_distance = current_user.walks.where(walked_on: start_date..end_date).sum(:distance)
 
-    # 3. 自分の順位（自分より多く歩いている人数 + 1）
-    #    ※同距離の場合は同じ順位になる
-    higher_rankers_count = User.joins(:walks)
-                               .where(walks: { walked_on: start_date..end_date })
-                               .group(:id)
-                               .having("SUM(walks.distance) > ?", my_total_distance)
-                               .to_a.size
-    @my_rank = higher_rankers_count + 1
+      # 2. 全ユーザー数（歩いていないユーザーも含む）
+      total_users = User.count
 
-    # 4. 上位何%か（1位なら1%に近づく）
-    @ranking_percentile = if @ranking_total_users > 0
-                            ((@my_rank.to_f / @ranking_total_users) * 100).ceil
-    else
-                            0
+      # 3. 自分の順位（自分より多く歩いている人数 + 1）
+      #    SQL最適化: to_a.size でメモリ展開せず、サブクエリを使ってDB側でカウントする
+      higher_rankers_query = User.joins(:walks)
+                                 .where(walks: { walked_on: start_date..end_date })
+                                 .group(:id)
+                                 .having("SUM(walks.distance) > ?", my_total_distance)
+                                 .select(:id) # SELECT句を最小限に
+
+      # User.from を使ってサブクエリの結果セットの行数をカウント
+      higher_rankers_count = User.from(higher_rankers_query, :users).count
+
+      my_rank = higher_rankers_count + 1
+
+      # 4. 上位何%か
+      percentile = if total_users > 0
+                     ((my_rank.to_f / total_users) * 100).ceil
+                   else
+                     0
+                   end
+
+      {
+        rank: my_rank,
+        total_users: total_users,
+        percentile: percentile
+      }
     end
+
+    @my_rank = ranking_data[:rank]
+    @ranking_total_users = ranking_data[:total_users]
+    @ranking_percentile = ranking_data[:percentile]
   end
 end
