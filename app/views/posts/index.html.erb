@@ -71,11 +71,11 @@
     <div class="space-y-6 pb-24">
       <!-- 上部ページネーション -->
       <div class="flex justify-center mb-4">
-        <%= paginate @posts %>
+        <%= paginate @posts, window: 1, outer_window: 1 %>
       </div>
 
       <% if @posts.any? %>
-        <%= render partial: "post", collection: @posts, cached: true %>
+        <%= render partial: "post", collection: @posts %>
       <% else %>
         <!-- 空の状態（Empty State） -->
         <div class="flex flex-col items-center justify-center py-20 text-center bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-300 dark:border-gray-700">
@@ -89,7 +89,7 @@
 
       <!-- ページネーション -->
       <div class="mt-10 flex justify-center">
-        <%= paginate @posts %>
+        <%= paginate @posts, window: 1, outer_window: 1 %>
       </div>
     </div>
   </main>
