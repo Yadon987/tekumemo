@@ -13,10 +13,10 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       fill_in "メールアドレス", with: "test@example.com"
       fill_in "login-password-field", with: "password123"
       within "#new_user" do
-        click_button "ログイン"
+        click_button "ログインする"
       end
 
-      expect(page).to have_content("ログインしました。")
+      expect(page).to have_content 'ログインしました。'
       expect(current_path).to eq root_path
     end
 
@@ -25,10 +25,10 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       fill_in "メールアドレス", with: "test@example.com"
       fill_in "login-password-field", with: "wrongpassword"
       within "#new_user" do
-        click_button "ログイン"
+        click_button "ログインする"
       end
 
-      expect(page).to have_content("メールアドレスまたはパスワードが違います。")
+      expect(page).to have_content 'メールアドレスまたはパスワードが違います。'
       expect(current_path).to eq new_user_session_path
     end
 
@@ -37,10 +37,10 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       fill_in "メールアドレス", with: "unknown@example.com"
       fill_in "login-password-field", with: "password123"
       within "#new_user" do
-        click_button "ログイン"
+        click_button "ログインする"
       end
 
-      expect(page).to have_content("メールアドレスまたはパスワードが違います。")
+      expect(page).to have_content 'メールアドレスまたはパスワードが違います。'
       expect(current_path).to eq new_user_session_path
     end
   end
@@ -74,7 +74,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       # ログアウトリンクをクリック（非表示要素も対象にする）
       find("a", text: "ログアウト", visible: :all).click
 
-      expect(page).to have_content("ログアウトしました。")
+      expect(page).to have_content 'ログアウトしました。'
       expect(current_path).to eq new_user_session_path
     end
   end
@@ -86,13 +86,13 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       it "設定画面にアクセスするとログイン画面にリダイレクトされること" do
         visit edit_user_registration_path
         expect(current_path).to eq new_user_session_path
-        expect(page).to have_content("アカウント登録もしくはログインしてください。")
+        expect(page).to have_content 'アカウント登録もしくはログインしてください。'
       end
 
       it "トップページにアクセスするとログイン画面にリダイレクトされること" do
         visit root_path
         expect(current_path).to eq new_user_session_path
-        expect(page).to have_content("アカウント登録もしくはログインしてください。")
+        expect(page).to have_content 'アカウント登録もしくはログインしてください。'
       end
     end
 
@@ -104,13 +104,13 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       it "ログイン画面にアクセスするとトップページにリダイレクトされること" do
         visit new_user_session_path
         expect(current_path).to eq root_path
-        expect(page).to have_content("すでにログインしています。")
+        expect(page).to have_content 'すでにログインしています。'
       end
 
       it "新規登録画面にアクセスするとトップページにリダイレクトされること" do
         visit new_user_registration_path
         expect(current_path).to eq root_path
-        expect(page).to have_content("すでにログインしています。")
+        expect(page).to have_content 'すでにログインしています。'
       end
     end
   end

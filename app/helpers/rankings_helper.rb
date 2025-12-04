@@ -27,27 +27,27 @@ module RankingsHelper
 
   def period_label_ja(period)
     case period
-    when 'daily'
-      '今日'
-    when 'monthly'
-      '今月'
-    when 'yearly'
-      '今年'
+    when "daily"
+      "今日"
+    when "monthly"
+      "今月"
+    when "yearly"
+      "今年"
     else
-      '今日'
+      "今日"
     end
   end
 
   # 英語の序数サフィックスを返す（st, nd, rd, th）
   def ordinal_suffix(number)
     n = number.to_i.abs
-    return 'th' if (11..13).include?(n % 100)
+    return "th" if (11..13).include?(n % 100)
 
     case n % 10
-    when 1 then 'st'
-    when 2 then 'nd'
-    when 3 then 'rd'
-    else 'th'
+    when 1 then "st"
+    when 2 then "nd"
+    when 3 then "rd"
+    else "th"
     end
   end
 end

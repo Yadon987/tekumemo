@@ -3,32 +3,23 @@ class RankingsController < ApplicationController
 
   def index
     # パラメータ取得
-    @period = params[:period] || 'monthly'
+    @period = params[:period] || "monthly"
 
     # キャッシュキー生成（日付ごとに更新）
     cache_key = case @period
-                when 'daily'
+    when "daily"
                   "rankings_daily_#{Date.today}"
-                when 'monthly'
+    when "monthly"
                   "rankings_monthly_#{Date.today.strftime('%Y-%m')}"
-                when 'all_time'
+    when "all_time"
                   "rankings_all_time_#{Date.today}"
-                else
+    else
                   "rankings_monthly_#{Date.today.strftime('%Y-%m')}"
-                end
+    end
 
     # ランキング取得（1時間キャッシュ）
-    case @period
-    when 'daily'
-      daily_rankings
-    when 'monthly'
-      monthly_rankings
-    when 'yearly'
-      yearly_rankings
-    else # default to daily
-      @period = 'daily'
-      daily_rankings
-    end
+    # ランキング取得（1時間キャッシュ）
+    fetch_rankings_for_period(@period)
 
     # 自分の順位と距離を特定
     if user_signed_in?
@@ -47,44 +38,14 @@ class RankingsController < ApplicationController
 
   private
 
-  def daily_rankings
-    # キャッシュキー: rankings_daily_2025-12-04
-    cache_key = "rankings_daily_#{Time.current.to_date}"
+  def fetch_rankings_for_period(period)
+    # キャッシュキーの生成（期間と現在の時間に基づいて1時間ごとに更新）
+    # Time.current.hour をキーに含めることで、毎時0分にキャッシュが無効化される
+    cache_key = "rankings_#{period}_#{Time.current.strftime('%Y%m%d%H')}"
 
     @rankings = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-      # 本日の0:00から現在までの歩行距離を集計
-      aggregate_rankings(Time.current.all_day)
+      User.ranking(period: period).to_a
     end
-  end
-
-  def monthly_rankings
-    # キャッシュキー: rankings_monthly_2025-12
-    cache_key = "rankings_monthly_#{Time.current.strftime('%Y-%m')}"
-
-    @rankings = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-      # 今月の1日から月末までの歩行距離を集計
-      aggregate_rankings(Time.current.all_month)
-    end
-  end
-
-  def yearly_rankings
-    # キャッシュキー: rankings_yearly_2025
-    cache_key = "rankings_yearly_#{Time.current.year}"
-
-    @rankings = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-      # 今年の1月1日から12月31日までの歩行距離を集計
-      aggregate_rankings(Time.current.all_year)
-    end
-  end
-
-  def aggregate_rankings(range)
-    User.joins(:walks)
-        .where(walks: { walked_on: range }) # walked_onカラムを使用
-        .group('users.id')
-        .select('users.*, SUM(walks.distance) as total_distance')
-        .order('total_distance DESC')
-        .limit(100) # 上位100名まで
-        .to_a # 配列化してキャッシュ可能にする
   end
 
   def find_my_rank
@@ -111,11 +72,11 @@ class RankingsController < ApplicationController
     else
       # ランキング外の場合、個別に集計する
       range = case @period
-              when 'daily' then Time.current.all_day
-              when 'monthly' then Time.current.all_month
-              when 'yearly' then Time.current.all_year
-              else Time.current.all_day
-              end
+      when "daily" then Time.current.all_day
+      when "monthly" then Time.current.all_month
+      when "yearly" then Time.current.all_year
+      else Time.current.all_day
+      end
 
       @my_distance = current_user.walks.where(walked_on: range).sum(:distance) # walked_onカラムを使用
     end

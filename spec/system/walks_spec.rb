@@ -19,7 +19,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログイン"
+        click_button "ログインする"
       end
       expect(page).to have_content "ログインしました"
     end
@@ -28,8 +28,11 @@ RSpec.describe "Walks", type: :system do
       visit new_walk_path
       expect(page).to have_content "新しい散歩記録"
 
-      # 日付は今日
+      # 日付フィールドをクリック（カレンダー表示のトリガーを確認する意味合い）
+      find("#walk_walked_on").click
+      # 日付を入力
       fill_in "walk_walked_on", with: Date.current.strftime('%Y-%m-%d')
+
       fill_in "walk_location", with: "テスト公園"
       fill_in "walk_distance", with: "5.5"
       fill_in "walk_duration", with: "60"
@@ -37,9 +40,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "walk_calories_burned", with: "300"
       fill_in "walk_notes", with: "テスト散歩の記録です"
 
-      click_button "記録を保存"
-
-
+      click_button "保存する"
 
       expect(page).to have_current_path(walks_path)
       expect(page).to have_content "散歩記録を作成しました"
@@ -58,7 +59,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログイン"
+        click_button "ログインする"
       end
       expect(page).to have_content "ログインしました"
     end
@@ -73,7 +74,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "距離", with: "10.0"
       fill_in "時間", with: "45"
 
-      click_button "記録を保存"
+      click_button "保存する"
 
 
 
@@ -92,7 +93,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログイン"
+        click_button "ログインする"
       end
       expect(page).to have_content "ログインしました"
     end
@@ -135,7 +136,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログイン"
+        click_button "ログインする"
       end
       expect(page).to have_content "ログインしました"
     end

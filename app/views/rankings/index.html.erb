@@ -155,7 +155,7 @@
   </div>
 
   <!-- 表彰台（トップ3専用エリア） -->
-  <% if @rankings.size >= 3 %>
+  <% if @rankings.present? %>
     <div class="px-4 mb-8 max-w-2xl mx-auto">
       <h2 class="text-center text-xl font-black text-slate-700 dark:text-purple-200 mb-6 flex items-center justify-center gap-2">
         <span>🏆</span> <%= t('rankings.index.podium') %> <span>🏆</span>
@@ -163,58 +163,61 @@
 
       <div class="flex items-end justify-center gap-4 mb-8">
         <!-- 2位 -->
-        <div class="flex-1 text-center transform hover:scale-105 transition-transform">
-          <div class="relative inline-block mb-2">
-            <% second = @rankings[1] %>
-            <% if second.avatar_url.present? && second.use_google_avatar %>
-              <%= image_tag second.avatar_url, class: "relative w-16 h-16 rounded-full border-4 border-slate-300 dark:border-slate-400 shadow-[8px_8px_16px_rgba(166,175,195,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl" %>
-            <% else %>
-              <div class="relative w-16 h-16 rounded-full border-4 border-slate-300 dark:border-slate-400 bg-slate-100 dark:bg-slate-600 flex items-center justify-center text-2xl shadow-[8px_8px_16px_rgba(166,175,195,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl">👤</div>
-            <% end %>
-            <div class="absolute -bottom-2 -right-2 text-3xl">🥈</div>
-          </div>
-          <p class="text-slate-700 dark:text-white font-bold text-sm truncate"><%= second.name.presence || "No Name" %></p>
-          <p class="text-slate-500 dark:text-slate-300 text-xs"><%= number_with_precision(second.total_distance, precision: 1) %>km</p>
-          <div class="mt-2 h-24 bg-gradient-to-t from-slate-300 to-slate-200 dark:from-slate-400 dark:to-slate-500 rounded-t-2xl border-4 border-white dark:border-slate-300 shadow-[8px_8px_16px_rgba(166,175,195,0.3)] dark:shadow-lg flex items-center justify-center">
-            <span class="text-3xl font-black text-slate-600 dark:text-white drop-shadow-sm">2</span>
-          </div>
+        <div class="flex-1 text-center transform hover:scale-105 transition-transform <%= 'opacity-0' unless @rankings[1] %>">
+          <% if second = @rankings[1] %>
+            <div class="relative inline-block mb-2">
+              <% if second.avatar_url.present? && second.use_google_avatar %>
+                <%= image_tag second.avatar_url, class: "relative w-16 h-16 rounded-full border-4 border-slate-300 dark:border-slate-400 shadow-[8px_8px_16px_rgba(166,175,195,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl" %>
+              <% else %>
+                <div class="relative w-16 h-16 rounded-full border-4 border-slate-300 dark:border-slate-400 bg-slate-100 dark:bg-slate-600 flex items-center justify-center text-2xl shadow-[8px_8px_16px_rgba(166,175,195,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl">👤</div>
+              <% end %>
+              <div class="absolute -bottom-2 -right-2 text-3xl">🥈</div>
+            </div>
+            <p class="text-slate-700 dark:text-white font-bold text-sm truncate"><%= second.name.presence || "No Name" %></p>
+            <p class="text-slate-500 dark:text-slate-300 text-xs"><%= number_with_precision(second.total_distance, precision: 1) %>km</p>
+            <div class="mt-2 h-24 bg-gradient-to-t from-slate-300 to-slate-200 dark:from-slate-400 dark:to-slate-500 rounded-t-2xl border-4 border-white dark:border-slate-300 shadow-[8px_8px_16px_rgba(166,175,195,0.3)] dark:shadow-lg flex items-center justify-center">
+              <span class="text-3xl font-black text-slate-600 dark:text-white drop-shadow-sm">2</span>
+            </div>
+          <% end %>
         </div>
 
         <!-- 1位 -->
-        <div class="flex-1 text-center transform hover:scale-110 transition-transform">
-          <div class="relative inline-block mb-2">
-            <% first = @rankings[0] %>
-            <% if first.avatar_url.present? && first.use_google_avatar %>
-              <%= image_tag first.avatar_url, class: "relative w-20 h-20 rounded-full border-4 border-yellow-400 shadow-[10px_10px_20px_rgba(250,204,21,0.4),-10px_-10px_20px_rgba(255,255,255,0.9)] dark:shadow-2xl" %>
-            <% else %>
-              <div class="relative w-20 h-20 rounded-full border-4 border-yellow-400 bg-yellow-100 dark:bg-yellow-600 flex items-center justify-center text-3xl shadow-[10px_10px_20px_rgba(250,204,21,0.4),-10px_-10px_20px_rgba(255,255,255,0.9)] dark:shadow-2xl">👤</div>
-            <% end %>
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 text-4xl animate-bounce">👑</div>
-            <div class="absolute -bottom-2 -right-2 text-4xl drop-shadow-lg">🥇</div>
-          </div>
-          <p class="text-yellow-700 dark:text-yellow-300 font-black text-base truncate">🌟 <%= first.name.presence || "No Name" %></p>
-          <p class="text-yellow-600 dark:text-yellow-200 text-sm font-bold"><%= number_with_precision(first.total_distance, precision: 1) %>km</p>
-          <div class="mt-2 h-32 bg-gradient-to-t from-yellow-400 via-yellow-300 to-yellow-200 dark:from-yellow-400 dark:via-yellow-500 dark:to-yellow-600 rounded-t-2xl border-4 border-white dark:border-yellow-300 shadow-[10px_10px_20px_rgba(250,204,21,0.4),-10px_-10px_20px_rgba(255,255,255,0.9)] dark:shadow-[0_0_30px_rgba(250,204,21,0.5)] flex items-center justify-center">
-            <span class="text-4xl font-black text-yellow-800 dark:text-white drop-shadow-sm">1</span>
-          </div>
+        <div class="flex-1 text-center transform hover:scale-110 transition-transform <%= 'opacity-0' unless @rankings[0] %>">
+          <% if first = @rankings[0] %>
+            <div class="relative inline-block mb-2">
+              <% if first.avatar_url.present? && first.use_google_avatar %>
+                <%= image_tag first.avatar_url, class: "relative w-20 h-20 rounded-full border-4 border-yellow-400 shadow-[10px_10px_20px_rgba(250,204,21,0.4),-10px_-10px_20px_rgba(255,255,255,0.9)] dark:shadow-2xl" %>
+              <% else %>
+                <div class="relative w-20 h-20 rounded-full border-4 border-yellow-400 bg-yellow-100 dark:bg-yellow-600 flex items-center justify-center text-3xl shadow-[10px_10px_20px_rgba(250,204,21,0.4),-10px_-10px_20px_rgba(255,255,255,0.9)] dark:shadow-2xl">👤</div>
+              <% end %>
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2 text-4xl animate-bounce">👑</div>
+              <div class="absolute -bottom-2 -right-2 text-4xl drop-shadow-lg">🥇</div>
+            </div>
+            <p class="text-yellow-700 dark:text-yellow-300 font-black text-base truncate">🌟 <%= first.name.presence || "No Name" %></p>
+            <p class="text-yellow-600 dark:text-yellow-200 text-sm font-bold"><%= number_with_precision(first.total_distance, precision: 1) %>km</p>
+            <div class="mt-2 h-32 bg-gradient-to-t from-yellow-400 via-yellow-300 to-yellow-200 dark:from-yellow-400 dark:via-yellow-500 dark:to-yellow-600 rounded-t-2xl border-4 border-white dark:border-yellow-300 shadow-[10px_10px_20px_rgba(250,204,21,0.4),-10px_-10px_20px_rgba(255,255,255,0.9)] dark:shadow-[0_0_30px_rgba(250,204,21,0.5)] flex items-center justify-center">
+              <span class="text-4xl font-black text-yellow-800 dark:text-white drop-shadow-sm">1</span>
+            </div>
+          <% end %>
         </div>
 
         <!-- 3位 -->
-        <div class="flex-1 text-center transform hover:scale-105 transition-transform">
-          <div class="relative inline-block mb-2">
-            <% third = @rankings[2] %>
-            <% if third.avatar_url.present? && third.use_google_avatar %>
-              <%= image_tag third.avatar_url, class: "relative w-16 h-16 rounded-full border-4 border-orange-300 dark:border-orange-400 shadow-[8px_8px_16px_rgba(251,146,60,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl" %>
-            <% else %>
-              <div class="relative w-16 h-16 rounded-full border-4 border-orange-300 dark:border-orange-400 bg-orange-100 dark:bg-orange-600 flex items-center justify-center text-2xl shadow-[8px_8px_16px_rgba(251,146,60,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl">👤</div>
-            <% end %>
-            <div class="absolute -bottom-2 -right-2 text-3xl">🥉</div>
-          </div>
-          <p class="text-slate-700 dark:text-white font-bold text-sm truncate"><%= third.name.presence || "No Name" %></p>
-          <p class="text-orange-600 dark:text-orange-300 text-xs"><%= number_with_precision(third.total_distance, precision: 1) %>km</p>
-          <div class="mt-2 h-20 bg-gradient-to-t from-orange-300 to-orange-200 dark:from-orange-400 dark:to-orange-500 rounded-t-2xl border-4 border-white dark:border-orange-300 shadow-[8px_8px_16px_rgba(251,146,60,0.3)] dark:shadow-lg flex items-center justify-center">
-            <span class="text-3xl font-black text-orange-700 dark:text-white drop-shadow-sm">3</span>
-          </div>
+        <div class="flex-1 text-center transform hover:scale-105 transition-transform <%= 'opacity-0' unless @rankings[2] %>">
+          <% if third = @rankings[2] %>
+            <div class="relative inline-block mb-2">
+              <% if third.avatar_url.present? && third.use_google_avatar %>
+                <%= image_tag third.avatar_url, class: "relative w-16 h-16 rounded-full border-4 border-orange-300 dark:border-orange-400 shadow-[8px_8px_16px_rgba(251,146,60,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl" %>
+              <% else %>
+                <div class="relative w-16 h-16 rounded-full border-4 border-orange-300 dark:border-orange-400 bg-orange-100 dark:bg-orange-600 flex items-center justify-center text-2xl shadow-[8px_8px_16px_rgba(251,146,60,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-xl">👤</div>
+              <% end %>
+              <div class="absolute -bottom-2 -right-2 text-3xl">🥉</div>
+            </div>
+            <p class="text-slate-700 dark:text-white font-bold text-sm truncate"><%= third.name.presence || "No Name" %></p>
+            <p class="text-orange-600 dark:text-orange-300 text-xs"><%= number_with_precision(third.total_distance, precision: 1) %>km</p>
+            <div class="mt-2 h-20 bg-gradient-to-t from-orange-300 to-orange-200 dark:from-orange-400 dark:to-orange-500 rounded-t-2xl border-4 border-white dark:border-orange-300 shadow-[8px_8px_16px_rgba(251,146,60,0.3)] dark:shadow-lg flex items-center justify-center">
+              <span class="text-3xl font-black text-orange-700 dark:text-white drop-shadow-sm">3</span>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

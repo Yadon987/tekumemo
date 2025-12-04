@@ -74,4 +74,21 @@ class User < ApplicationRecord
 
     consecutive_count
   end
+
+  # ランキング集計
+  def self.ranking(period: "daily", limit: 100)
+    range = case period.to_s
+    when "daily"   then Time.current.all_day
+    when "monthly" then Time.current.all_month
+    when "yearly"  then Time.current.all_year
+    else Time.current.all_day
+    end
+
+    joins(:walks)
+      .where(walks: { walked_on: range })
+      .group("users.id")
+      .select("users.*, SUM(walks.distance) as total_distance")
+      .order("total_distance DESC")
+      .limit(limit)
+  end
 end
