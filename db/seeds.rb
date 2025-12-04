@@ -111,8 +111,8 @@ users.each_with_index do |user, index|
       end
 
       # 投稿時刻は散歩時刻の10分〜2時間後（ただし現在時刻は超えない）
-      max_post_delay = day == 0 ? [(Time.current - walk_time - 1.minute).to_i / 60, 120].min : 120
-      post_delay = rand(10..[max_post_delay, 10].max).minutes
+      max_post_delay = day == 0 ? [ (Time.current - walk_time - 1.minute).to_i / 60, 120 ].min : 120
+      post_delay = rand(10..[ max_post_delay, 10 ].max).minutes
       post_time = walk_time + post_delay
       post = user.posts.create!(
         body: body,

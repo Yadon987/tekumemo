@@ -29,7 +29,7 @@ class Post < ApplicationRecord
   }, prefix: true
 
   # スコープ（よく使うクエリに名前をつける）
-  scope :recent, -> { order('posts.created_at DESC, posts.id DESC') }  # 新しい順に並べる（テーブル名明示）
+  scope :recent, -> { order("posts.created_at DESC, posts.id DESC") }  # 新しい順に並べる（テーブル名明示）
   scope :with_walk, -> { where.not(walk_id: nil) }  # 散歩記録が紐付いている投稿のみ取得
   scope :with_associations, -> { preload(:user, :walk, :reactions) }  # N+1対策（preloadで別クエリ化）
 
