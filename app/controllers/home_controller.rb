@@ -54,10 +54,11 @@ class HomeController < ApplicationController
 
       # 3. 自分の順位（自分より多く歩いている人数 + 1）
       #    SQL最適化: to_a.size でメモリ展開せず、サブクエリを使ってDB側でカウントする
+      #    小数点以下の誤差対策: ROUND関数で小数点第2位までで比較する
       higher_rankers_query = User.joins(:walks)
                                  .where(walks: { walked_on: start_date..end_date })
                                  .group(:id)
-                                 .having("SUM(walks.distance) > ?", my_total_distance)
+                                 .having("ROUND(SUM(walks.distance), 2) > ?", my_total_distance.round(2))
                                  .select(:id) # SELECT句を最小限に
 
       # User.from を使ってサブクエリの結果セットの行数をカウント
@@ -68,9 +69,9 @@ class HomeController < ApplicationController
       # 4. 上位何%か
       percentile = if total_users > 0
                      ((my_rank.to_f / total_users) * 100).ceil
-                   else
+      else
                      0
-                   end
+      end
 
       {
         rank: my_rank,

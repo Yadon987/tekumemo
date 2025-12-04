@@ -39,9 +39,14 @@ class RankingsController < ApplicationController
   private
 
   def fetch_rankings_for_period(period)
-    # キャッシュキーの生成（期間と現在の時間に基づいて1時間ごとに更新）
-    # Time.current.hour をキーに含めることで、毎時0分にキャッシュが無効化される
-    cache_key = "rankings_#{period}_#{Time.current.strftime('%Y%m%d%H')}"
+    # キャッシュキーの生成
+    # 1. 期間 (period)
+    # 2. 時間 (Time.current.hour): 1時間ごとに強制更新
+    # 3. ユーザー更新 (User.maximum(:updated_at)): プロフィール変更（アバター等）を即時反映させるため
+    #    注意: ユーザー数が数万規模になると maximum(:updated_at) 自体が重くなる可能性があるため、
+    #          その場合はキャッシュ戦略の見直し（IDのみキャッシュして表示時にロードするなど）が必要。
+    latest_update = User.maximum(:updated_at).to_i
+    cache_key = "rankings_#{period}_#{Time.current.strftime('%Y%m%d%H')}_#{latest_update}"
 
     @rankings = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
       User.ranking(period: period).to_a
@@ -53,8 +58,11 @@ class RankingsController < ApplicationController
     user_in_ranking = @rankings.find { |user| user.id == current_user.id }
 
     if user_in_ranking
-      # ランキング内にいれば、そのインデックス+1が順位
-      @my_rank = @rankings.index(user_in_ranking) + 1
+      # ランキング内にいれば、順位を計算（同順位対応）
+      # 自分より距離が多い人の数 + 1
+      my_dist = user_in_ranking.total_distance.to_f.round(2)
+      higher_rankers = @rankings.count { |u| u.total_distance.to_f.round(2) > my_dist }
+      @my_rank = higher_rankers + 1
     else
       # ランキング外の場合、DBから直接順位を計算するのは重いので、
       # ここでは「ランキング外」として扱う（nilのまま）
