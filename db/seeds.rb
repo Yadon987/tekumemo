@@ -58,16 +58,23 @@ users.each_with_index do |user, index|
     probability = day == 0 ? 1.0 : 0.6
     next unless rand < probability
 
-    # 距離: 0.1km 〜 10.0km のランダム
-    distance = rand(0.1..10.0).round(2)
+    # 距離: 0.1km 〜 0.6km のランダム
+    distance = rand(0.1..0.6).round(2)
 
     # 歩数・時間・カロリー概算
     steps = (distance * 1300 * rand(0.9..1.1)).to_i
     duration = (distance * 15 * rand(0.9..1.1)).to_i
     calories = (distance * 50 * rand(0.9..1.1)).to_i
 
-    # 作成時刻ランダム
-    walk_time = date.to_time + rand(6..22).hours + rand(0..59).minutes
+    # 作成時刻ランダム（今日の場合は現在時刻より前に限定）
+    if day == 0
+      # 今日の場合：現在時刻の1時間前〜24時間前の範囲でランダム
+      hours_ago = rand(1..24)
+      walk_time = Time.current - hours_ago.hours - rand(0..59).minutes
+    else
+      # 過去の日付：6時〜22時のランダムな時刻
+      walk_time = date.to_time + rand(6..22).hours + rand(0..59).minutes
+    end
 
     walk = user.walks.create!(
       walked_on: date,
@@ -103,7 +110,10 @@ users.each_with_index do |user, index|
         feeling = Post.feelings.keys.sample
       end
 
-      post_time = walk_time + rand(10..120).minutes
+      # 投稿時刻は散歩時刻の10分〜2時間後（ただし現在時刻は超えない）
+      max_post_delay = day == 0 ? [ (Time.current - walk_time - 1.minute).to_i / 60, 120 ].min : 120
+      post_delay = rand(10..[ max_post_delay, 10 ].max).minutes
+      post_time = walk_time + post_delay
       post = user.posts.create!(
         body: body,
         weather: weather,
@@ -138,8 +148,8 @@ users.each_with_index do |user, index|
     # 既にその日の記録があればスキップ
     next if user.walks.exists?(walked_on: date)
 
-    # 距離: 0.1km 〜 0.9km のランダム
-    distance = rand(0.1..0.9).round(2)
+    # 距離: 0.1km 〜 0.6km のランダム
+    distance = rand(0.1..0.6).round(2)
 
     steps = (distance * 1300 * rand(0.9..1.1)).to_i
     duration = (distance * 15 * rand(0.9..1.1)).to_i

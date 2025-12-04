@@ -1,5 +1,5 @@
 <%= paginator.render do -%>
-  <nav class="flex justify-center items-center space-x-2" role="navigation" aria-label="pager">
+  <nav class="flex flex-wrap justify-center items-center gap-2" role="navigation" aria-label="pager">
     <%= first_page_tag unless current_page.first? %>
     <%= prev_page_tag unless current_page.first? %>
     <% each_page do |page| -%>

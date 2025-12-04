@@ -33,5 +33,34 @@ class HomeController < ApplicationController
 
     # 今日の散歩記録を取得
     @today_walk = current_user.walks.find_by(walked_on: Date.today)
+
+    # 最新の投稿を取得
+    @latest_post = Post.with_associations.recent.first
+
+    # ===== 月間ランキング情報の取得 =====
+    start_date = Date.current.beginning_of_month
+    end_date = Date.current
+
+    # 1. 自分の今月の総距離
+    my_total_distance = current_user.walks.where(walked_on: start_date..end_date).sum(:distance)
+
+    # 2. 全ユーザー数（歩いていないユーザーも含む）
+    @ranking_total_users = User.count
+
+    # 3. 自分の順位（自分より多く歩いている人数 + 1）
+    #    ※同距離の場合は同じ順位になる
+    higher_rankers_count = User.joins(:walks)
+                               .where(walks: { walked_on: start_date..end_date })
+                               .group(:id)
+                               .having("SUM(walks.distance) > ?", my_total_distance)
+                               .to_a.size
+    @my_rank = higher_rankers_count + 1
+
+    # 4. 上位何%か（1位なら1%に近づく）
+    @ranking_percentile = if @ranking_total_users > 0
+                            ((@my_rank.to_f / @ranking_total_users) * 100).ceil
+    else
+                            0
+    end
   end
 end
