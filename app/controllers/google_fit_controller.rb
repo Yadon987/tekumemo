@@ -40,6 +40,12 @@ class GoogleFitController < ApplicationController
     render json: {
       error: "無効な日付形式です。"
     }, status: :bad_request
+  rescue StandardError => e
+    # Google Fit API呼び出しやトークン期限切れなどのエラー
+    Rails.logger.error "Google Fit API Error: #{e.class} - #{e.message}"
+    render json: {
+      error: "Google Fitとの連携が切れています。設定画面から再度連携してください。"
+    }, status: :unauthorized
   end
 
   # Google Fitとの連携状態を確認する

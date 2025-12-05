@@ -45,7 +45,8 @@ class PostsController < ApplicationController
         end
         format.html do
           @posts = Post.with_associations.recent.page(params[:page]).per(10)
-          flash.now[:alert] = "投稿に失敗しました"
+          # エラーメッセージを具体的に表示して、ユーザーが修正できるようにする
+          flash.now[:alert] = "投稿に失敗しました: #{@post.errors.full_messages.join(', ')}"
           render :index, status: :unprocessable_entity
         end
       end

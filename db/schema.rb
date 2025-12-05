@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_04_051500) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_05_012042) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -82,7 +82,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_051500) do
     t.datetime "updated_at", null: false
     t.integer "steps"
     t.integer "calories_burned"
+    t.index ["user_id", "walked_on"], name: "index_walks_on_user_id_and_walked_on"
     t.index ["user_id"], name: "index_walks_on_user_id"
+    t.index ["walked_on"], name: "index_walks_on_walked_on"
   end
 
   add_foreign_key "posts", "users"
