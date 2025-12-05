@@ -195,10 +195,21 @@
             <div class="absolute bottom-0 right-2 sm:right-6 pointer-events-auto">
               <!-- アクションボタン（展開時に表示されるボタン群） -->
 
+              <!-- プライバシー＆利用規約 -->
+              <%= link_to privacy_path,
+                  data: { expandable_fab_target: "actionButton" },
+                  class: "hidden opacity-0 absolute bottom-64 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                  style: "transform: translateY(20px);" do %>
+                <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">プライバシー＆利用規約</span>
+                <div class="bg-blue-500 dark:bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
+                  <span class="material-symbols-outlined text-xl">privacy_tip</span>
+                </div>
+              <% end %>
+
               <!-- ログインスタンプ -->
               <%= link_to login_stamps_path,
                   data: { expandable_fab_target: "actionButton" },
-                  class: "hidden opacity-0 absolute bottom-64 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                  class: "hidden opacity-0 absolute bottom-52 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
                   style: "transform: translateY(20px);" do %>
                 <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">てくてくスタンプ</span>
                 <div class="bg-purple-500 dark:bg-purple-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-purple-600 dark:hover:bg-purple-700 transition-colors">
@@ -209,22 +220,11 @@
               <!-- 新しい散歩記録 -->
               <%= link_to new_walk_path,
                   data: { expandable_fab_target: "actionButton" },
-                  class: "hidden opacity-0 absolute bottom-52 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                  class: "hidden opacity-0 absolute bottom-40 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
                   style: "transform: translateY(20px);" do %>
                 <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">新しい散歩記録</span>
                 <div class="bg-green-500 dark:bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 dark:hover:bg-green-700 transition-colors">
                   <span class="material-symbols-outlined text-xl">add_circle</span>
-                </div>
-              <% end %>
-
-              <!-- プライバシー＆利用規約 -->
-              <%= link_to privacy_path,
-                  data: { expandable_fab_target: "actionButton" },
-                  class: "hidden opacity-0 absolute bottom-40 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
-                  style: "transform: translateY(20px);" do %>
-                <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">プライバシー＆利用規約</span>
-                <div class="bg-blue-500 dark:bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
-                  <span class="material-symbols-outlined text-xl">privacy_tip</span>
                 </div>
               <% end %>
 
