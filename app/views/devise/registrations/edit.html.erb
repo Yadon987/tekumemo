@@ -117,7 +117,7 @@
             <div class="flex justify-end space-x-3">
               <button type="button" onclick="document.getElementById('connect_warning_modal').classList.add('hidden')" class="px-4 py-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm">キャンセル</button>
 
-              <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors text-sm flex items-center" do %>
+              <%= link_to user_google_oauth2_omniauth_authorize_path, data: { turbo: false }, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors text-sm flex items-center" do %>
                 <span class="material-symbols-outlined text-lg mr-1">arrow_forward</span>
                 連携に進む
               <% end %>
@@ -202,7 +202,7 @@
                 autocomplete: "current-password",
                 placeholder: "変更時のみ入力",
                 class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-            <p class="text-xs text-gray-500 dark:text-slate-500 mt-1">
+            <p class="text-xs text-red-600 dark:text-red-400 mt-1 font-bold">
               <span class="material-symbols-outlined text-sm align-bottom mr-0.5">info</span>
               メールアドレス・パスワード変更時は入力必須です
             </p>

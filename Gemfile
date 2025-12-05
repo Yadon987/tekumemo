@@ -13,7 +13,7 @@ gem "bootsnap", require: false
 gem "devise"
 gem "foreman"
 gem "omniauth-google-oauth2"
-gem "omniauth-rails_csrf_protection", "~> 2.0.0"
+# gem "omniauth-rails_csrf_protection", "~> 2.0.0"  # Rails 7 + Turbo環境では不要（CSRFトークンの二重チェックが問題を引き起こす）
 gem "google-apis-fitness_v1"
 gem "simple_calendar", "~> 3.0"
 gem "dotenv-rails"

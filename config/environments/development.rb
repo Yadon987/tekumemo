@@ -53,5 +53,6 @@ Rails.application.configure do
   config.action_view.annotate_rendered_view_with_filenames = true
 
   # コールバックエラー設定
-  config.action_controller.raise_on_missing_callback_actions = true
+  # Rails 7.1のデフォルトではtrueだが、OmniAuthのpassthruアクションとの互換性のためfalseに設定
+  config.action_controller.raise_on_missing_callback_actions = false
 end
