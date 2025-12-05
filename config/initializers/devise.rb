@@ -178,7 +178,9 @@ Devise.setup do |config|
                     # 左だと可読性がバツ "userinfo.email,userinfo.profile,https://www.googleapis.com/auth/fitness.activity.read"
 
                     access_type: "offline",
-                    prompt: "consent"
+                    prompt: "consent",
+                    # CSRF保護の設定（Cloudflareなどのプロキシ経由でもエラーにならないように）
+                    provider_ignores_state: true
                   }
 
   # ===== Warden設定 =====

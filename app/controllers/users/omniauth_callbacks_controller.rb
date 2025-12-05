@@ -1,6 +1,7 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # CSRF保護をスキップ（OmniAuthのコールバックのため）
-  skip_before_action :verify_authenticity_token, only: [ :google_oauth2 ]
+  # google_oauth2, failure, passthr uの3つすべてに適用
+  skip_before_action :verify_authenticity_token, only: [ :google_oauth2, :failure, :passthru ]
 
   # Google OAuth2のコールバック処理
   # Googleから認証が完了した後に呼ばれる
