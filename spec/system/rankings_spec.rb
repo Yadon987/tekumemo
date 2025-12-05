@@ -9,9 +9,9 @@ RSpec.describe "Rankings", type: :system do
 
     # データを準備
     # 自分: 今日 5km
-    FactoryBot.create(:walk, user: user, walked_on: Date.today, distance: 5.0)
+    FactoryBot.create(:walk, user: user, walked_on: Date.current, distance: 5.0)
     # ライバル: 今日 10km
-    FactoryBot.create(:walk, user: other_user, walked_on: Date.today, distance: 10.0)
+    FactoryBot.create(:walk, user: other_user, walked_on: Date.current, distance: 10.0)
 
     sign_in user
   end

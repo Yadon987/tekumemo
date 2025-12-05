@@ -18,7 +18,7 @@ RSpec.describe "Home", type: :system do
     visit new_user_session_path
     fill_in "user_email", with: user.email
     fill_in "login-password-field", with: user.password
-    click_button "ログインする"
+    click_button "ログイン"
     expect(page).to have_content "ログインしました"
   end
 
@@ -70,7 +70,7 @@ RSpec.describe "Home", type: :system do
       before do
         FactoryBot.create(:walk,
           user: user,
-          walked_on: Date.today,
+          walked_on: Date.current,
           distance: 5.5,
           steps: 8000
         )

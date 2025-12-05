@@ -148,19 +148,19 @@
       <div class="relative group">
         <div class="hidden dark:block absolute -inset-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-[2rem] blur-lg opacity-50 group-hover:opacity-75 transition"></div>
 
-        <div class="relative bg-orange-50 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 rounded-[2rem] p-6 border-2 border-white dark:border-orange-500/50 shadow-[14px_14px_28px_rgba(166,175,195,0.25),-14px_-14px_28px_rgba(255,255,255,0.9)] dark:shadow-2xl">
-          <div class="flex items-center gap-4">
-            <div class="text-5xl animate-bounce">🔥</div>
+        <div class="relative bg-orange-50 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 rounded-[2rem] p-4 border-2 border-white dark:border-orange-500/50 shadow-lg dark:shadow-2xl">
+          <div class="flex items-center gap-3">
+            <div class="text-3xl animate-bounce">🔥</div>
             <div class="flex-1">
-              <p class="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 dark:from-orange-300 dark:to-red-300 mb-1">
+              <p class="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 dark:from-orange-300 dark:to-red-300 mb-0.5">
                 <%= t('rankings.index.empty.challenge') %>
               </p>
-              <p class="text-sm text-slate-600 dark:text-purple-200">
+              <p class="text-xs text-slate-600 dark:text-purple-200">
                 <%= period_label_ja(@period) %>: <span class="font-bold text-slate-800 dark:text-white"><%= number_with_precision(@my_distance, precision: 1) %>km</span>
               </p>
-              <p class="text-xs text-orange-500 dark:text-orange-400 mt-2">💪 <%= t('rankings.index.empty.cheer') %></p>
+              <p class="text-[10px] text-orange-500 dark:text-orange-400 mt-1">💪 <%= t('rankings.index.empty.cheer') %></p>
             </div>
-            <div class="text-4xl">⚡</div>
+            <div class="text-2xl">⚡</div>
           </div>
         </div>
       </div>

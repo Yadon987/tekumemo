@@ -66,19 +66,19 @@ RSpec.describe Walk, type: :model do
     context '一意性の検証' do
       it '同じユーザーが同じ日に重複して記録できないこと' do
         # 1つ目の記録を作成
-        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        FactoryBot.create(:walk, user: user, walked_on: Date.current)
 
         # 同じ日付で2つ目の記録を作成しようとする
-        duplicate_walk = FactoryBot.build(:walk, user: user, walked_on: Date.today)
+        duplicate_walk = FactoryBot.build(:walk, user: user, walked_on: Date.current)
         expect(duplicate_walk).to be_invalid
         expect(duplicate_walk.errors[:walked_on]).to include("の記録は既に存在します。同じ日付の記録を編集、もしくは削除してください。")
       end
 
       it '異なるユーザーであれば同じ日付でも記録できること' do
         other_user = FactoryBot.create(:user)
-        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        FactoryBot.create(:walk, user: user, walked_on: Date.current)
 
-        other_user_walk = FactoryBot.build(:walk, user: other_user, walked_on: Date.today)
+        other_user_walk = FactoryBot.build(:walk, user: other_user, walked_on: Date.current)
         expect(other_user_walk).to be_valid
       end
     end

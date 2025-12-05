@@ -45,21 +45,21 @@ class User < ApplicationRecord
 
   # Google Fitのアクセストークンが有効かチェック
   def google_token_valid?
-    google_token.present? && google_expires_at.present? && google_expires_at > Time.now
+    google_token.present? && google_expires_at.present? && google_expires_at > Time.current
   end
 
   # 連続して散歩した日数を計算する
   def consecutive_walk_days
     # N+1対策: ループ内でのクエリ発行を避けるため、必要な日付データを一括取得
     # 今日以前の記録の日付を重複なしで降順（新しい順）に取得
-    walk_dates = walks.where("walked_on <= ?", Date.today)
+    walk_dates = walks.where("walked_on <= ?", Date.current)
                       .select(:walked_on)
                       .distinct
                       .order(walked_on: :desc)
                       .pluck(:walked_on)
 
     consecutive_count = 0
-    check_date = Date.today
+    check_date = Date.current
 
     walk_dates.each do |date|
       if date == check_date

@@ -19,7 +19,7 @@ module ShareHelper
     user = post.user
 
     # 今日の歩行距離
-    today_distance = user.walks.where(walked_on: Date.today).sum(:distance)
+    today_distance = user.walks.where(walked_on: Date.current).sum(:distance)
     today_km = (today_distance / 1000.0).round(2)
 
     # 今月のランキング順位

@@ -6,7 +6,7 @@ class GoogleFitController < ApplicationController
   # GET /google_fit/daily_data?date=2025-01-15
   def daily_data
     # リクエストパラメータから日付を取得（デフォルトは今日）
-    date = params[:date] ? Date.parse(params[:date]) : Date.today
+    date = params[:date] ? Date.parse(params[:date]) : Date.current
 
     # ユーザーがGoogle認証済みかチェック
     unless current_user.google_token_valid?

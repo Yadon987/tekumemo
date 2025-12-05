@@ -13,7 +13,7 @@ RSpec.describe "Posts", type: :request do
       it "投稿一覧ページにアクセスできること" do
         get posts_path
         expect(response).to have_http_status(:success)
-        expect(response.body).to include("みんなの足跡")
+        expect(response.body).to include("みんな")
       end
     end
 

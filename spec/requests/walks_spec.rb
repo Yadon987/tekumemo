@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "Walks", type: :request do
   let(:user) { FactoryBot.create(:user) }
   let(:other_user) { FactoryBot.create(:user) }
-  let!(:my_walk) { FactoryBot.create(:walk, user: user, walked_on: Date.today) }
-  let!(:other_walk) { FactoryBot.create(:walk, user: other_user, walked_on: Date.today) }
+  let!(:my_walk) { FactoryBot.create(:walk, user: user, walked_on: Date.current) }
+  let!(:other_walk) { FactoryBot.create(:walk, user: other_user, walked_on: Date.current) }
 
   describe "GET /walks/new" do
     context "ログインしている場合" do

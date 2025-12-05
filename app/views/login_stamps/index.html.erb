@@ -65,7 +65,7 @@
       <%= month_calendar(attribute: :walked_on, start_date: @start_date, events: @walks, week_start: :sunday) do |date, walks| %>
         <%
           has_stamp = @walks_by_date[date].present?
-          is_today = date == Date.today
+          is_today = date == Date.current
           is_other_month = date.month != @start_date.month
 
           classes = ["calendar-day"]

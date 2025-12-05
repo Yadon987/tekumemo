@@ -37,7 +37,7 @@ class HomeController < ApplicationController
     end
 
     # 今日の散歩記録を取得
-    @today_walk = current_user.walks.find_by(walked_on: Date.today)
+    @today_walk = current_user.walks.find_by(walked_on: Date.current)
 
     # 最新の投稿を取得
     @latest_post = Post.with_associations.recent.first

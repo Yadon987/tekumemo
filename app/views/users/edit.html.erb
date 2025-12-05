@@ -147,15 +147,19 @@
           </div>
 
           <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/10">
+            <!-- 情報ボックス -->
+            <div class="bg-blue-50/80 dark:bg-blue-900/20 backdrop-blur-sm rounded-xl p-3 mb-4 border border-blue-200 dark:border-blue-800/30">
+              <p class="text-xs text-blue-700 dark:text-blue-300 flex items-start leading-relaxed">
+                <span class="material-symbols-outlined text-sm mr-1.5 mt-0.5 flex-shrink-0">info</span>
+                <span>メールアドレスまたはパスワードを変更する場合のみ、現在のパスワードの入力が必要です。</span>
+              </p>
+            </div>
+
             <%= f.label :current_password, "現在のパスワード", class: "block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1" %>
             <%= f.password_field :current_password,
                 autocomplete: "current-password",
-                placeholder: "変更時のみ入力",
-                class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-            <p class="text-xs text-red-600 dark:text-red-400 mt-1 font-bold">
-              <span class="material-symbols-outlined text-sm align-bottom mr-0.5">info</span>
-              メールアドレス・パスワード変更時は入力必須です
-            </p>
+                placeholder: "セキュリティ変更時のみ入力",
+                class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
           </div>
       </div>
 

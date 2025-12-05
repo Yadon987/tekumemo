@@ -1,6 +1,8 @@
 <%# app/views/posts/_form.html.erb %>
 <%# アイコン選択式のリッチな投稿フォーム %>
-<%= form_with(model: post, local: true, class: "space-y-6", id: "new_post_form") do |f| %>
+<%= form_with(model: post, local: true, class: "flex flex-col flex-1 min-h-0", id: "new_post_form") do |f| %>
+
+  <div class="flex-1 overflow-y-auto pr-2 space-y-6 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
 
   <%# エラーメッセージ表示エリア %>
   <% if post.errors.any? %>
@@ -80,7 +82,9 @@
     </div>
   </div>
 
-  <div class="pt-6">
+  </div>
+
+  <div class="pt-6 mt-auto flex-shrink-0">
     <%= f.button type: :submit, class: "w-full bg-gradient-to-r from-blue-500 to-cyan-400 dark:from-purple-600 dark:to-pink-600 hover:from-blue-600 hover:to-cyan-500 dark:hover:from-purple-500 dark:hover:to-pink-500 text-white font-bold text-lg py-4 px-6 rounded-full shadow-lg shadow-blue-500/30 dark:shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-blue-500/50 dark:hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3 group" do %>
       <span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">send</span>
       投稿する

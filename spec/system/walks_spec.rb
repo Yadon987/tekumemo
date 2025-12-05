@@ -19,7 +19,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログインする"
+        click_button "ログイン"
       end
       expect(page).to have_content "ログインしました"
     end
@@ -59,7 +59,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログインする"
+        click_button "ログイン"
       end
       expect(page).to have_content "ログインしました"
     end
@@ -93,7 +93,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログインする"
+        click_button "ログイン"
       end
       expect(page).to have_content "ログインしました"
     end
@@ -136,7 +136,7 @@ RSpec.describe "Walks", type: :system do
       fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: user.password
       within "#new_user" do
-        click_button "ログインする"
+        click_button "ログイン"
       end
       expect(page).to have_content "ログインしました"
     end
