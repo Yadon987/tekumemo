@@ -1,5 +1,5 @@
 # OmniAuthの初期化設定
-# omniauth-rails_csrf_protection gemを使用してCSRF保護を有効化
+# Rails 7のデフォルトCSRF保護を使用（omniauth-rails_csrf_protection gemは不要）
 
 # Rails 7のTurboとOmniAuthを連携させるための設定
 # POSTとGETの両方を許可（Google OAuth2のコールバックフローに必要）
