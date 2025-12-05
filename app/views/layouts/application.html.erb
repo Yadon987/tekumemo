@@ -198,7 +198,7 @@
               <!-- ログインスタンプ -->
               <%= link_to login_stamps_path,
                   data: { expandable_fab_target: "actionButton" },
-                  class: "hidden opacity-0 absolute bottom-52 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                  class: "hidden opacity-0 absolute bottom-64 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
                   style: "transform: translateY(20px);" do %>
                 <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">てくてくスタンプ</span>
                 <div class="bg-purple-500 dark:bg-purple-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-purple-600 dark:hover:bg-purple-700 transition-colors">
@@ -209,7 +209,7 @@
               <!-- 新しい散歩記録 -->
               <%= link_to new_walk_path,
                   data: { expandable_fab_target: "actionButton" },
-                  class: "hidden opacity-0 absolute bottom-40 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                  class: "hidden opacity-0 absolute bottom-52 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
                   style: "transform: translateY(20px);" do %>
                 <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">新しい散歩記録</span>
                 <div class="bg-green-500 dark:bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 dark:hover:bg-green-700 transition-colors">
@@ -220,11 +220,22 @@
               <!-- プライバシー＆利用規約 -->
               <%= link_to privacy_path,
                   data: { expandable_fab_target: "actionButton" },
-                  class: "hidden opacity-0 absolute bottom-28 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                  class: "hidden opacity-0 absolute bottom-40 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
                   style: "transform: translateY(20px);" do %>
                 <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">プライバシー＆利用規約</span>
                 <div class="bg-blue-500 dark:bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
                   <span class="material-symbols-outlined text-xl">privacy_tip</span>
+                </div>
+              <% end %>
+
+              <!-- SNS投稿 -->
+              <%= link_to posts_path(open_modal: true),
+                  data: { expandable_fab_target: "actionButton", turbo: false },
+                  class: "hidden opacity-0 absolute bottom-28 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                  style: "transform: translateY(20px);" do %>
+                <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">SNS投稿</span>
+                <div class="bg-pink-500 dark:bg-pink-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-pink-600 dark:hover:bg-pink-700 transition-colors">
+                  <span class="material-symbols-outlined text-xl">edit_square</span>
                 </div>
               <% end %>
 
@@ -252,34 +263,7 @@
         </div>
       </div>
 
-      <!-- ===== FAB (Floating Action Button) - 新規作成ボタン ===== -->
-      <div class="fixed bottom-20 sm:bottom-24 right-4 sm:right-8 z-40" data-controller="fab">
-        <!-- サブボタン群（展開時に表示） -->
-        <div class="absolute bottom-16 right-0 flex flex-col gap-3 transition-all duration-300 opacity-0 scale-0" data-fab-target="menu">
-          <!-- SNS投稿ボタン -->
-          <%= link_to posts_path(open_modal: true),
-              class: "flex items-center gap-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all transform hover:scale-105",
-              data: { turbo: false } do %>
-            <span class="material-symbols-outlined text-2xl">edit_square</span>
-            <span class="text-sm font-bold whitespace-nowrap">投稿する</span>
-          <% end %>
 
-          <!-- 散歩記録ボタン -->
-          <%= link_to new_walk_path,
-              class: "flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all transform hover:scale-105" do %>
-            <span class="material-symbols-outlined text-2xl">footprint</span>
-            <span class="text-sm font-bold whitespace-nowrap">散歩を記録</span>
-          <% end %>
-        </div>
-
-        <!-- メインFABボタン -->
-        <button
-          type="button"
-          data-action="click->fab#toggle"
-          class="w-14 h-14 bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center transform hover:scale-110 active:scale-95">
-          <span class="material-symbols-outlined text-3xl transition-transform duration-300" data-fab-target="icon">add</span>
-        </button>
-      </div>
 
       <!-- ===== ボトムナビゲーション（ログイン時のみ・モバイルファースト・レスポンシブ対応） ===== -->
       <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-gray-100 dark:border-indigo-500/30 dark:shadow-[0_0_15px_rgba(99,102,241,0.15)] shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50 transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
