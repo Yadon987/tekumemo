@@ -9,15 +9,15 @@ class HomeController < ApplicationController
     # プロキシ環境（Cloudflare等）では X-Forwarded-For ヘッダーの最初の値が実際のクライアントIP
     user_ip = GeolocationService.extract_ip(request)
 
-    # デバッグ用：取得したIPアドレスをログに出力
-    Rails.logger.info("========================================")
-    Rails.logger.info("リクエストIP情報:")
-    Rails.logger.info("  使用するIP: #{user_ip}")
-    Rails.logger.info("  remote_ip: #{request.remote_ip}")
-    Rails.logger.info("  ip: #{request.ip}")
-    Rails.logger.info("  X-Forwarded-For: #{request.headers['X-Forwarded-For']}")
-    Rails.logger.info("  X-Real-IP: #{request.headers['X-Real-IP']}")
-    Rails.logger.info("========================================")
+    # デバッグ用：取得したIPアドレスをログに出力（本番環境では出力しない）
+    Rails.logger.debug("========================================")
+    Rails.logger.debug("リクエストIP情報:")
+    Rails.logger.debug("  使用するIP: #{user_ip}")
+    Rails.logger.debug("  remote_ip: #{request.remote_ip}")
+    Rails.logger.debug("  ip: #{request.ip}")
+    Rails.logger.debug("  X-Forwarded-For: #{request.headers['X-Forwarded-For']}")
+    Rails.logger.debug("  X-Real-IP: #{request.headers['X-Real-IP']}")
+    Rails.logger.debug("========================================")
 
     # IP位置情報を取得
     @location = GeolocationService.get_location(user_ip)
@@ -26,10 +26,15 @@ class HomeController < ApplicationController
     @location_name = @location[:city] || @location[:region] || "不明な場所"
 
     # 天気情報を取得（位置情報を使用）
-    @weather = WeatherService.get_forecast(
-      lat: @location[:latitude],
-      lon: @location[:longitude]
-    )
+    # 外部APIへのリクエストを減らすため、1時間キャッシュする
+    # キーには緯度経度を含める（場所が変われば再取得）
+    weather_cache_key = "weather_cache_#{@location[:latitude]}_#{@location[:longitude]}"
+    @weather = Rails.cache.fetch(weather_cache_key, expires_in: 1.hour) do
+      WeatherService.get_forecast(
+        lat: @location[:latitude],
+        lon: @location[:longitude]
+      )
+    end
 
     # 今日の散歩記録を取得
     @today_walk = current_user.walks.find_by(walked_on: Date.today)
@@ -39,10 +44,12 @@ class HomeController < ApplicationController
 
     # ===== 月間ランキング情報の取得 =====
     # キャッシュキー: ユーザーIDと日付（月）ベース
-    # 1時間ごとに有効期限切れとする
-    cache_key = "ranking/monthly/#{current_user.id}/#{Date.current.strftime('%Y-%m')}/#{Time.current.hour}"
+    # ユーザー体験向上のため、15分ごとに更新する（モチベーション維持）
+    # Time.current.to_i / 15.minutes.to_i で15分ごとのタイムスタンプを生成
+    cache_timestamp = Time.current.to_i / 15.minutes.to_i
+    cache_key = "ranking/monthly/#{current_user.id}/#{Date.current.strftime('%Y-%m')}/#{cache_timestamp}"
 
-    ranking_data = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+    ranking_data = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
       start_date = Date.current.beginning_of_month
       end_date = Date.current
 

@@ -71,7 +71,7 @@ class GoogleFitService
 
     # データポイントから歩数を合計
     total_steps = 0
-    dataset.point.each do |point|
+    (dataset.point || []).each do |point|
       point.value.each do |value|
         total_steps += value.int_val if value.int_val
       end
@@ -96,7 +96,7 @@ class GoogleFitService
 
     # データポイントから距離を合計（メートル → キロメートル）
     total_distance = 0.0
-    dataset.point.each do |point|
+    (dataset.point || []).each do |point|
       point.value.each do |value|
         total_distance += value.fp_val if value.fp_val
       end
