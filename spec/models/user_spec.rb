@@ -85,7 +85,7 @@ RSpec.describe User, type: :model do
     end
 
     context "今日記録がある場合" do
-      before { FactoryBot.create(:walk, user: user, walked_on: Date.today) }
+      before { FactoryBot.create(:walk, user: user, walked_on: Date.current) }
 
       it "1を返すこと" do
         expect(user.consecutive_walk_days).to eq 1
@@ -94,7 +94,7 @@ RSpec.describe User, type: :model do
 
     context "今日と昨日記録がある場合" do
       before do
-        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        FactoryBot.create(:walk, user: user, walked_on: Date.current)
         FactoryBot.create(:walk, user: user, walked_on: 1.day.ago.to_date)
       end
 
@@ -105,7 +105,7 @@ RSpec.describe User, type: :model do
 
     context "連続が途切れている場合" do
       before do
-        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        FactoryBot.create(:walk, user: user, walked_on: Date.current)
         # 昨日はなし
         FactoryBot.create(:walk, user: user, walked_on: 2.days.ago.to_date)
       end
@@ -123,12 +123,12 @@ RSpec.describe User, type: :model do
 
     before do
       # User A: 今日 5km, 昨日 3km, 先月 10km
-      FactoryBot.create(:walk, user: user_a, walked_on: Date.today, distance: 5.0)
+      FactoryBot.create(:walk, user: user_a, walked_on: Date.current, distance: 5.0)
       FactoryBot.create(:walk, user: user_a, walked_on: 1.day.ago, distance: 3.0)
       FactoryBot.create(:walk, user: user_a, walked_on: 1.month.ago, distance: 10.0)
 
       # User B: 今日 10km
-      FactoryBot.create(:walk, user: user_b, walked_on: Date.today, distance: 10.0)
+      FactoryBot.create(:walk, user: user_b, walked_on: Date.current, distance: 10.0)
 
       # User C: 昨日 20km (今日はなし)
       FactoryBot.create(:walk, user: user_c, walked_on: 1.day.ago, distance: 20.0)

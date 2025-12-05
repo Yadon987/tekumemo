@@ -21,7 +21,7 @@ class WalksController < ApplicationController
   def new
     # 新しい散歩記録のインスタンスを作成
     # デフォルト値として今日の日付を設定
-    @walk = Walk.new(walked_on: Date.today)
+    @walk = Walk.new(walked_on: Date.current)
   end
 
   # 散歩記録編集ページ（GET /walks/:id/edit）

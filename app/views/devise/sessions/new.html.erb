@@ -1,107 +1,157 @@
 <% content_for :title, "てくメモ - ログイン" %>
 
-<div class="flex flex-1 flex-col items-center justify-center p-4 pb-24">
-  <div class="w-full max-w-md bg-gradient-to-b from-white to-slate-50 dark:bg-gradient-to-br dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-gray-100 dark:border-indigo-500/30 shadow-xl dark:shadow-[0_0_20px_rgba(99,102,241,0.2)] rounded-3xl p-6 sm:p-8 transition-all duration-300">
+<div class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-slate-50 dark:bg-[#0b0f19]">
+  <!-- 背景装飾（アニメーション付きオーブ） -->
+  <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style="animation-delay: 1s;"></div>
 
-    <!-- Header -->
-    <div class="mb-8 flex flex-col items-center">
-      <h1 class="text-3xl font-bold text-gray-800 dark:text-slate-50">おかえりなさい</h1>
-      <p class="mt-2 text-base text-gray-600 dark:text-slate-400">てくメモへようこそ!</p>
-    </div>
+  <div class="w-full max-w-md relative z-10">
+    <!-- メインカード -->
+    <div class="bg-white/80 dark:bg-[#1a1f2e]/80 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-[2.5rem] p-8 sm:p-10 overflow-hidden relative group">
 
-    <!-- Login Form -->
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+      <!-- カード上部の光沢エフェクト -->
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent opacity-50"></div>
 
-      <!-- Email Field -->
-      <div class="space-y-2">
-        <%= f.label :email, "メールアドレス", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
-        <div class="relative">
-          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">mail</span>
-          <%= f.email_field :email,
-              autofocus: true,
-              autocomplete: "email",
-              placeholder: "例: user@example.com",
-              class: "block w-full h-14 pl-12 pr-4 text-base text-gray-900 bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:text-slate-50 dark:placeholder-slate-500 transition-colors duration-200" %>
+      <!-- Header -->
+      <div class="mb-10 text-center relative">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-lg shadow-blue-500/30 mb-4 transform rotate-[-5deg] group-hover:rotate-0 transition-transform duration-500">
+          <span class="material-symbols-outlined text-3xl">hiking</span>
+        </div>
+        <h1 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight">おかえりなさい</h1>
+        <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 font-medium">今日も歩いて、記録を残そう。</p>
+      </div>
+
+      <!-- Login Form -->
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-5" }) do |f| %>
+
+        <!-- Email Field -->
+        <div class="group/field">
+          <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 mb-1.5 ml-1 uppercase tracking-wider transition-colors duration-200" %>
+          <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <span class="material-symbols-outlined text-slate-400 group-focus-within/field:text-blue-500 transition-colors">mail</span>
+            </div>
+            <%= f.email_field :email,
+                autofocus: true,
+                autocomplete: "email",
+                placeholder: "name@example.com",
+                class: "block w-full h-12 pl-11 pr-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-sm font-medium" %>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="group/field">
+          <div class="flex justify-between items-center mb-1.5 ml-1">
+            <%= f.label :password, "パスワード", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 uppercase tracking-wider transition-colors duration-200" %>
+            <% if devise_mapping.recoverable? %>
+              <%= link_to "忘れた場合", new_password_path(resource_name), class: "text-xs font-bold text-blue-500 hover:text-blue-600 dark:text-blue-400 transition-colors" %>
+            <% end %>
+          </div>
+          <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+              <span class="material-symbols-outlined text-slate-400 group-focus-within/field:text-blue-500 transition-colors">lock</span>
+            </div>
+            <%= f.password_field :password,
+                autocomplete: "current-password",
+                placeholder: "パスワード",
+                id: "login-password-field",
+                class: "block w-full h-12 pl-11 pr-12 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-sm font-medium" %>
+
+            <!-- パスワード表示切り替えボタン -->
+            <button type="button"
+                    onclick="togglePasswordVisibility('login-password-field', 'login-password-icon')"
+                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer focus:outline-none z-10">
+              <span class="material-symbols-outlined text-xl" id="login-password-icon">visibility</span>
+            </button>
+          </div>
+          <p class="mt-1 ml-1 text-[10px] text-slate-400 dark:text-slate-500">※6文字以上</p>
+        </div>
+
+        <!-- Remember Me & Submit -->
+        <div class="pt-2">
+          <% if devise_mapping.rememberable? %>
+            <div class="flex items-center mb-6">
+              <%= f.check_box :remember_me,
+                  class: "w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-0 focus:ring-offset-0 focus:outline-none dark:bg-slate-800 dark:border-slate-600 dark:ring-offset-slate-900 cursor-pointer" %>
+              <%= f.label :remember_me, "ログイン状態を保持", class: "ml-2 text-sm text-slate-600 dark:text-slate-300 cursor-pointer select-none" %>
+            </div>
+          <% end %>
+
+          <%= f.button class: "w-full h-12 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 group/btn" do %>
+            <span>ログイン</span>
+            <span class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Divider -->
+      <div class="relative my-8">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+        </div>
+        <div class="relative flex justify-center text-xs uppercase">
+          <span class="bg-white dark:bg-[#1a1f2e] px-4 text-slate-400 font-medium tracking-wider">or continue with</span>
         </div>
       </div>
 
-      <!-- Password Field -->
-      <div class="space-y-2">
-        <%= f.label :password, "パスワード", class: "block text-base font-medium text-gray-700 dark:text-slate-300" %>
-        <div class="relative">
-          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">lock</span>
-          <%= f.password_field :password,
-              autocomplete: "current-password",
-              placeholder: "6文字以上のパスワード",
-              id: "login-password-field",
-              class: "block w-full h-14 pl-12 pr-12 text-base text-gray-900 bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent dark:text-slate-50 dark:placeholder-slate-500 transition-colors duration-200" %>
-          <button type="button"
-                  onclick="togglePasswordVisibility('login-password-field', 'login-password-icon')"
-                  class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors">
-            <span class="material-symbols-outlined" id="login-password-icon">visibility</span>
-          </button>
-        </div>
+      <!-- Google Login Button -->
+      <%= link_to user_google_oauth2_omniauth_authorize_path,
+          data: { turbo: false },
+          class: "w-full h-12 flex items-center justify-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 group/google relative overflow-hidden" do %>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-50 to-white opacity-0 group-hover/google:opacity-100 transition-opacity dark:hidden"></div>
+        <svg class="w-5 h-5 mr-3 relative z-10 group-hover/google:scale-110 transition-transform duration-300" viewBox="0 0 48 48">
+          <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" fill="#FFC107"></path>
+          <path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" fill="#FF3D00"></path>
+          <path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" fill="#4CAF50"></path>
+          <path d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C41.38,36.43,44,30.63,44,24C44,22.659,43.862,21.35,43.611,20.083z" fill="#1976D2"></path>
+        </svg>
+        <span class="text-sm font-bold text-slate-700 dark:text-slate-200 relative z-10">Googleでログイン</span>
+      <% end %>
 
-        <!-- Remember Me -->
-        <% if devise_mapping.rememberable? %>
-          <div class="flex items-center mt-3">
-            <%= f.check_box :remember_me,
-                class: "w-5 h-5 text-cyan-600 bg-white border-gray-300 rounded focus:ring-0 focus:ring-offset-0 dark:bg-slate-800 dark:border-slate-600" %>
-            <%= f.label :remember_me, "ログインしたままにする", class: "ml-2 text-sm text-gray-700 dark:text-slate-300" %>
-          </div>
-        <% end %>
+      <!-- Googleログイン警告対策ガイド -->
+      <div class="mt-6">
+        <%= render "shared/google_auth_guide" %>
       </div>
-
-      <!-- Submit Button -->
-      <div class="space-y-4">
-        <%= f.submit "ログインする",
-            class: "w-full h-14 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white text-base font-bold rounded-full shadow-lg shadow-cyan-500/30 transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:ring-offset-slate-900" %>
-
-        <!-- Forgot Password Link -->
-        <% if devise_mapping.recoverable? %>
-          <div class="text-center">
-            <%= link_to "パスワードをお忘れですか?",
-                new_password_path(resource_name),
-                class: "text-sm text-cyan-600 dark:text-cyan-400 hover:underline" %>
-            <p class="text-xs text-red-500 dark:text-red-400 mt-1">※MVPでは未実装です</p>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <!-- Divider -->
-    <div class="my-8 flex items-center">
-      <div class="flex-1 border-t border-gray-300 dark:border-white/10"></div>
-      <span class="px-4 text-sm text-gray-500 dark:text-slate-400">または</span>
-      <div class="flex-1 border-t border-gray-300 dark:border-white/10"></div>
     </div>
 
-    <!-- Google Login Button (GETリクエストに変更) -->
-    <%= link_to user_google_oauth2_omniauth_authorize_path,
-        data: { turbo: false },
-        class: "w-full h-14 flex items-center justify-center bg-white dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors duration-200" do %>
-      <svg class="w-6 h-6 mr-3" viewBox="0 0 48 48">
-        <path d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" fill="#FFC107"></path>
-        <path d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" fill="#FF3D00"></path>
-        <path d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" fill="#4CAF50"></path>
-        <path d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C41.38,36.43,44,30.63,44,24C44,22.659,43.862,21.35,43.611,20.083z" fill="#1976D2"></path>
-      </svg>
-      <span class="text-base font-medium text-gray-700 dark:text-slate-300">Googleでログイン</span>
+    <!-- 新規登録エリア（強調デザイン） -->
+    <% if devise_mapping.registerable? %>
+      <div class="mt-8 relative group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 rounded-2xl blur-md opacity-40 group-hover:opacity-70 transition duration-500 animate-pulse-slow"></div>
+        <div class="relative bg-white dark:bg-[#1a1f2e] rounded-2xl p-6 flex flex-col items-center text-center border border-slate-100 dark:border-slate-700/50 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+          <div class="w-14 h-14 rounded-full bg-gradient-to-br from-green-100 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/20 flex items-center justify-center text-green-600 dark:text-green-400 mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+            <span class="material-symbols-outlined text-2xl">person_add</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-1">初めてのご利用ですか？</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-5 leading-relaxed">アカウントを作成して、散歩の記録を始めましょう。</p>
+
+          <%= link_to new_registration_path(resource_name), class: "w-full py-3 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-50 text-white dark:text-slate-900 text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-slate-900/25 dark:hover:shadow-white/10 hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2" do %>
+            <span>新規登録する</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          <% end %>
+        </div>
+      </div>
     <% end %>
 
-    <!-- Googleログイン警告対策ガイド（アコーディオン） -->
-    <%= render "shared/google_auth_guide" %>
-
-    <!-- Sign Up Link -->
+    <!-- Footer Links -->
     <div class="mt-8 text-center">
-      <p class="text-base text-gray-600 dark:text-slate-400">アカウントをお持ちでないですか?</p>
-      <% if devise_mapping.registerable? %>
-        <%= link_to "新規登録", new_registration_path(resource_name), class: "inline-block mt-2 font-bold text-lg text-cyan-600 dark:text-cyan-400 hover:underline" %>
+      <%= link_to privacy_path, class: "inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-slate-500 dark:hover:decoration-slate-400" do %>
+        <span class="material-symbols-outlined text-xs">shield</span>
+        <span>プライバシーポリシー</span>
       <% end %>
     </div>
-
   </div>
 </div>
+
+<style>
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+</style>
 
 <script>
 function togglePasswordVisibility(fieldId, iconId) {

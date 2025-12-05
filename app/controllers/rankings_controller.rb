@@ -8,13 +8,13 @@ class RankingsController < ApplicationController
     # キャッシュキー生成（日付ごとに更新）
     cache_key = case @period
     when "daily"
-                  "rankings_daily_#{Date.today}"
+                  "rankings_daily_#{Date.current}"
     when "monthly"
-                  "rankings_monthly_#{Date.today.strftime('%Y-%m')}"
+                  "rankings_monthly_#{Date.current.strftime('%Y-%m')}"
     when "all_time"
-                  "rankings_all_time_#{Date.today}"
+                  "rankings_all_time_#{Date.current}"
     else
-                  "rankings_monthly_#{Date.today.strftime('%Y-%m')}"
+                  "rankings_monthly_#{Date.current.strftime('%Y-%m')}"
     end
 
     # ランキング取得（1時間キャッシュ）

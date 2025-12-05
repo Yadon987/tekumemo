@@ -47,7 +47,7 @@ class GoogleFitService
     )
 
     # トークンが期限切れの場合は更新
-    if @user.google_expires_at < Time.now
+    if @user.google_expires_at < Time.current
       auth.refresh!
       @user.update(
         google_token: auth.access_token,

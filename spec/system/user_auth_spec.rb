@@ -13,7 +13,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       fill_in "メールアドレス", with: "test@example.com"
       fill_in "login-password-field", with: "password123"
       within "#new_user" do
-        click_button "ログインする"
+        click_button "ログイン"
       end
 
       expect(page).to have_content 'ログインしました。'
@@ -25,7 +25,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       fill_in "メールアドレス", with: "test@example.com"
       fill_in "login-password-field", with: "wrongpassword"
       within "#new_user" do
-        click_button "ログインする"
+        click_button "ログイン"
       end
 
       expect(page).to have_content 'メールアドレスまたはパスワードが違います。'
@@ -37,7 +37,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       fill_in "メールアドレス", with: "unknown@example.com"
       fill_in "login-password-field", with: "password123"
       within "#new_user" do
-        click_button "ログインする"
+        click_button "ログイン"
       end
 
       expect(page).to have_content 'メールアドレスまたはパスワードが違います。'
@@ -118,7 +118,7 @@ RSpec.describe "ユーザー認証・認可", type: :system do
   describe "パスワードリセット" do
     it "パスワードリセット画面が表示されること" do
       visit new_user_session_path
-      click_link "パスワードをお忘れですか?"
+      click_link "忘れた場合"
 
       expect(page).to have_content("Coming")
       expect(page).to have_content("Soon")

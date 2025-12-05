@@ -19,7 +19,7 @@ RSpec.describe "LoginStamps", type: :system do
     visit new_user_session_path
     fill_in "user_email", with: user.email
     fill_in "login-password-field", with: user.password
-    click_button "ログインする"
+    click_button "ログイン"
     expect(page).to have_content "ログインしました"
   end
 
@@ -29,12 +29,12 @@ RSpec.describe "LoginStamps", type: :system do
     end
 
     it "現在の年月が表示されていること" do
-      current_month = Date.today.strftime("%Y年%m月")
+      current_month = Date.current.strftime("%Y年%m月")
       expect(page).to have_content current_month
     end
 
     it "カレンダーの日付が表示されていること" do
-      today_day = Date.today.day.to_s
+      today_day = Date.current.day.to_s
       # 日付の数字が表示されているか確認（カレンダー内の日付セル）
       expect(page).to have_css(".date-number", text: today_day)
     end
@@ -44,7 +44,7 @@ RSpec.describe "LoginStamps", type: :system do
     context "散歩記録がある場合" do
       before do
         # 今日の散歩記録を作成
-        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        FactoryBot.create(:walk, user: user, walked_on: Date.current)
         visit login_stamps_path
       end
 
@@ -83,7 +83,7 @@ RSpec.describe "LoginStamps", type: :system do
   describe "連続日数の表示" do
     context "昨日と今日連続で散歩している場合" do
       before do
-        FactoryBot.create(:walk, user: user, walked_on: Date.today)
+        FactoryBot.create(:walk, user: user, walked_on: Date.current)
         FactoryBot.create(:walk, user: user, walked_on: 1.day.ago.to_date)
         visit login_stamps_path
       end

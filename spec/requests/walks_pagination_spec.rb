@@ -9,7 +9,7 @@ RSpec.describe "WalksPagination", type: :request do
     15.times do |i|
       Walk.create!(
         user: user,
-        walked_on: Date.today - i.days,
+        walked_on: Date.current - i.days,
         location: "場所#{i}",
         distance: 1.0,
         duration: 10,

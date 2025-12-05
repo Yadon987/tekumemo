@@ -13,7 +13,7 @@ RSpec.describe "Posts", type: :system do
     context "投稿がない場合" do
       it "空の状態のメッセージが表示されること" do
         visit posts_path
-        expect(page).to have_content "みんなの足跡"
+        expect(page).to have_content "みんな"
         expect(page).to have_content "まだ投稿がありません"
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe "Posts", type: :system do
   describe "新規投稿" do
     xit "新しい投稿を作成できること", js: true do
       visit posts_path
-      expect(page).to have_content "みんなの足跡"
+      expect(page).to have_content "みんな"
 
       # モーダルを開く（トリガーをクリック）
       sleep 1

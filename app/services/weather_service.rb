@@ -54,7 +54,7 @@ class WeatherService
     forecasts = data["list"]
 
     # 今日の日付
-    today = Date.today
+    today = Date.current
     # 明日の日付
     tomorrow = today + 1
 
@@ -63,7 +63,7 @@ class WeatherService
 
     # 明日の天気情報を取得（日付が変わる最初のデータを探す）
     tomorrow_forecast = forecasts.find do |forecast|
-      forecast_date = Time.at(forecast["dt"]).to_date
+      forecast_date = Time.zone.at(forecast["dt"]).to_date
       forecast_date == tomorrow
     end
 

@@ -35,8 +35,10 @@ class PostsController < ApplicationController
     end
 
     if @post.save
-      # 成功：元のページに戻る
-      redirect_back(fallback_location: posts_path, notice: "投稿しました！")
+      # 成功：セッションに投稿IDを保存してモーダル表示フラグを立てる
+      session[:show_post_success_modal] = @post.id
+      # 投稿一覧ページに明示的にリダイレクト（モーダル表示のため）
+      redirect_to posts_path, notice: "投稿しました！"
     else
       # 失敗：Turbo Streamでフォーム部分だけをエラーメッセージ付きで更新
       respond_to do |format|
