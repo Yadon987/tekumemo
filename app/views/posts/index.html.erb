@@ -151,3 +151,60 @@
     }
   });
 </script>
+
+<!-- 投稿成功モーダル -->
+<% if session[:show_post_success_modal].present? %>
+  <% success_post = Post.find_by(id: session[:show_post_success_modal]) %>
+  <% session.delete(:show_post_success_modal) %>
+
+  <dialog id="post_success_modal" class="rounded-3xl p-0 backdrop:bg-black/50 max-w-md w-full" data-controller="modal" data-modal-dialog-id-value="post_success_modal">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 relative">
+      <!-- タイトル -->
+      <div class="text-center mb-6">
+        <div class="text-4xl mb-3">🎉</div>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">投稿しました！</h3>
+      </div>
+
+      <!-- ボタン -->
+      <div class="space-y-3">
+        <!-- Xに投稿ボタン -->
+        <% if success_post %>
+          <%= link_to share_post_on_twitter_url(success_post),
+              target: "_blank",
+              rel: "noopener noreferrer",
+              class: "w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition",
+              data: { action: "click->modal#close" } do %>
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            X に投稿
+          <% end %>
+        <% end %>
+
+        <!-- 閉じるボタン -->
+        <button type="button"
+                data-action="click->modal#close"
+                class="w-full px-6 py-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    (function() {
+      const openSuccessModal = () => {
+        const successModal = document.getElementById('post_success_modal');
+        if (successModal && !successModal.open) {
+          successModal.showModal();
+        }
+      };
+
+      // 即時実行（HTMLが描画された直後）
+      openSuccessModal();
+
+      // Turbo Driveでの遷移完了時にも実行
+      document.addEventListener('turbo:load', openSuccessModal, { once: true });
+    })();
+  </script>
+<% end %>

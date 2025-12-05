@@ -24,7 +24,7 @@
       <span data-character-counter-target="counter" class="text-xs text-gray-400 dark:text-purple-300/70 font-medium">0 / 200</span>
     </div>
     <div class="relative">
-      <%= f.text_area :body, rows: 6,
+      <%= f.text_area :body, rows: 4,
           class: "w-full rounded-3xl border-none bg-gray-100 dark:bg-[#2e1a47] text-gray-700 dark:text-purple-100 placeholder-gray-400 dark:placeholder-purple-400/50 focus:ring-2 focus:ring-blue-400/50 dark:focus:ring-purple-500/50 focus:bg-white dark:focus:bg-[#1a0b2e] p-5 shadow-inner dark:shadow-none dark:border dark:border-solid dark:border-purple-400/50 dark:focus:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all resize-none",
           placeholder: "今日の散歩はどうでしたか？",
           "data-character-counter-target": "input",
@@ -35,45 +35,48 @@
     </div>
   </div>
 
-  <!-- 天気選択（アイコンラジオボタン） -->
-  <div data-controller="radio-toggle">
-    <label class="block text-sm font-bold text-gray-700 dark:text-purple-200 mb-3 px-2">天気</label>
-    <div class="grid grid-cols-5 gap-3">
-      <% Post.weathers.keys.each do |weather_key| %>
-        <% temp_post = Post.new(weather: weather_key) %>
-        <label class="cursor-pointer group relative">
-          <%= f.radio_button :weather, weather_key, class: "peer sr-only", data: { radio_toggle_target: "input", action: "click->radio-toggle#toggle" } %>
-          <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-[#2e1a47] shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-blue-50 dark:peer-checked:bg-cyan-900/40 peer-checked:border-blue-200 dark:peer-checked:border-cyan-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(34,211,238,0.3)]">
-            <span class="text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"><%= temp_post.weather_emoji %></span>
-            <span class="text-[10px] font-bold text-gray-400 dark:text-gray-400 peer-checked:text-blue-600 dark:peer-checked:text-cyan-300"><%= temp_post.weather_label %></span>
-          </div>
-          <!-- 選択時のチェックマーク -->
-          <div class="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 dark:bg-cyan-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity shadow-sm transform scale-0 peer-checked:scale-100 duration-200 dark:shadow-[0_0_8px_rgba(34,211,238,0.6)]">
-            <span class="material-symbols-outlined text-xs font-bold">check</span>
-          </div>
-        </label>
-      <% end %>
+  <!-- PC画面では天気と気分を横並びにする -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- 天気選択（アイコンラジオボタン） -->
+    <div data-controller="radio-toggle">
+      <label class="block text-sm font-bold text-gray-700 dark:text-purple-200 mb-3 px-2">天気</label>
+      <div class="grid grid-cols-5 gap-2">
+        <% Post.weathers.keys.each do |weather_key| %>
+          <% temp_post = Post.new(weather: weather_key) %>
+          <label class="cursor-pointer group relative">
+            <%= f.radio_button :weather, weather_key, class: "peer sr-only", data: { radio_toggle_target: "input", action: "click->radio-toggle#toggle" } %>
+            <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-[#2e1a47] shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-blue-50 dark:peer-checked:bg-cyan-900/40 peer-checked:border-blue-200 dark:peer-checked:border-cyan-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+              <span class="text-2xl md:text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"><%= temp_post.weather_emoji %></span>
+              <span class="text-[8px] md:text-[10px] font-bold text-gray-400 dark:text-gray-400 peer-checked:text-blue-600 dark:peer-checked:text-cyan-300"><%= temp_post.weather_label %></span>
+            </div>
+            <!-- 選択時のチェックマーク -->
+            <div class="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-blue-500 dark:bg-cyan-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity shadow-sm transform scale-0 peer-checked:scale-100 duration-200 dark:shadow-[0_0_8px_rgba(34,211,238,0.6)]">
+              <span class="material-symbols-outlined text-[10px] md:text-xs font-bold">check</span>
+            </div>
+          </label>
+        <% end %>
+      </div>
     </div>
-  </div>
 
-  <!-- 気分選択（アイコンラジオボタン） -->
-  <div data-controller="radio-toggle">
-    <label class="block text-sm font-bold text-gray-700 dark:text-purple-200 mb-3 px-2">気分</label>
-    <div class="grid grid-cols-5 gap-3">
-      <% Post.feelings.keys.each do |feeling_key| %>
-        <% temp_post = Post.new(feeling: feeling_key) %>
-        <label class="cursor-pointer group relative">
-          <%= f.radio_button :feeling, feeling_key, class: "peer sr-only", data: { radio_toggle_target: "input", action: "click->radio-toggle#toggle" } %>
-          <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-[#2e1a47] shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-green-50 dark:peer-checked:bg-fuchsia-900/40 peer-checked:border-green-200 dark:peer-checked:border-fuchsia-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(232,121,249,0.3)]">
-            <span class="text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"><%= temp_post.feeling_emoji %></span>
-            <span class="text-[10px] font-bold text-gray-400 dark:text-gray-400 peer-checked:text-green-600 dark:peer-checked:text-fuchsia-300"><%= temp_post.feeling_label %></span>
-          </div>
-          <!-- 選択時のチェックマーク -->
-          <div class="absolute -top-1 -right-1 w-5 h-5 bg-green-500 dark:bg-fuchsia-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity shadow-sm transform scale-0 peer-checked:scale-100 duration-200 dark:shadow-[0_0_8px_rgba(232,121,249,0.6)]">
-            <span class="material-symbols-outlined text-xs font-bold">check</span>
-          </div>
-        </label>
-      <% end %>
+    <!-- 気分選択（アイコンラジオボタン） -->
+    <div data-controller="radio-toggle">
+      <label class="block text-sm font-bold text-gray-700 dark:text-purple-200 mb-3 px-2">気分</label>
+      <div class="grid grid-cols-5 gap-2">
+        <% Post.feelings.keys.each do |feeling_key| %>
+          <% temp_post = Post.new(feeling: feeling_key) %>
+          <label class="cursor-pointer group relative">
+            <%= f.radio_button :feeling, feeling_key, class: "peer sr-only", data: { radio_toggle_target: "input", action: "click->radio-toggle#toggle" } %>
+            <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-[#2e1a47] shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-green-50 dark:peer-checked:bg-fuchsia-900/40 peer-checked:border-green-200 dark:peer-checked:border-fuchsia-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(232,121,249,0.3)]">
+              <span class="text-2xl md:text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"><%= temp_post.feeling_emoji %></span>
+              <span class="text-[8px] md:text-[10px] font-bold text-gray-400 dark:text-gray-400 peer-checked:text-green-600 dark:peer-checked:text-fuchsia-300"><%= temp_post.feeling_label %></span>
+            </div>
+            <!-- 選択時のチェックマーク -->
+            <div class="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-green-500 dark:bg-fuchsia-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity shadow-sm transform scale-0 peer-checked:scale-100 duration-200 dark:shadow-[0_0_8px_rgba(232,121,249,0.6)]">
+              <span class="material-symbols-outlined text-[10px] md:text-xs font-bold">check</span>
+            </div>
+          </label>
+        <% end %>
+      </div>
     </div>
   </div>
 
