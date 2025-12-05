@@ -76,9 +76,8 @@
       <div class="flex-1 border-t border-gray-300 dark:border-white/10"></div>
     </div>
 
-    <!-- Google Login Button -->
-    <%= button_to user_google_oauth2_omniauth_authorize_path,
-        method: :post,
+    <!-- Google Login Button (GETリクエストに変更) -->
+    <%= link_to user_google_oauth2_omniauth_authorize_path,
         data: { turbo: false },
         class: "w-full h-14 flex items-center justify-center bg-white dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors duration-200" do %>
       <svg class="w-6 h-6 mr-3" viewBox="0 0 48 48">
