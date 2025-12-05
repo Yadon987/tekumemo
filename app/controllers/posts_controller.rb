@@ -26,6 +26,14 @@ class PostsController < ApplicationController
     # ログインユーザーの投稿として作成
     @post = current_user.posts.build(post_params)
 
+    # セキュリティ対策：他人の散歩記録を紐付けられないようにチェック
+    if @post.walk_id.present?
+      unless current_user.walks.exists?(id: @post.walk_id)
+        redirect_to posts_path, alert: "不正な操作です。指定された散歩記録は存在しないか、権限がありません。"
+        return
+      end
+    end
+
     if @post.save
       # 成功：元のページに戻る
       redirect_back(fallback_location: posts_path, notice: "投稿しました！")

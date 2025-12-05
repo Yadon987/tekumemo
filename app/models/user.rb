@@ -79,7 +79,7 @@ class User < ApplicationRecord
   def self.ranking(period: "daily", limit: 100)
     range = case period.to_s
     when "daily"
-      Date.current
+      Date.current..Date.current
     when "monthly"
       Date.current.beginning_of_month..Date.current
     when "yearly"

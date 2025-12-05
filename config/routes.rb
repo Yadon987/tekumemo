@@ -46,6 +46,11 @@ Rails.application.routes.draw do
   # Deviseのスコープ内で独自アクションを定義
   devise_scope :user do
     patch "users/disconnect_google", to: "users/registrations#disconnect_google", as: :disconnect_google_user
+
+    # メールアドレス変更確認画面
+    get "users/confirm_email_change", to: "users/omniauth_callbacks#confirm_email_change", as: :confirm_email_change_users
+    # メールアドレス更新＆連携実行
+    post "users/update_email_and_connect", to: "users/omniauth_callbacks#update_email_and_connect", as: :update_email_and_connect_users
   end
 
   # ===== 静的ページ =====

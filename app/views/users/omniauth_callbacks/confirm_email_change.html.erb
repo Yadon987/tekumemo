@@ -1,0 +1,63 @@
+<% content_for :title, "メールアドレスの確認 - てくメモ" %>
+
+<div class="flex-1 p-4 pb-24 sm:pb-10 w-full max-w-2xl mx-auto">
+  <div class="mb-8 text-center">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-slate-50 flex items-center justify-center space-x-2">
+      <span class="material-symbols-outlined text-3xl text-yellow-500">warning</span>
+      <span>メールアドレスの確認</span>
+    </h1>
+  </div>
+
+  <div class="bg-white/80 dark:bg-slate-950/50 backdrop-blur-xl rounded-3xl shadow-xl p-6 sm:p-8 border border-white/20 dark:border-white/10">
+    <div class="text-center mb-8">
+      <p class="text-gray-600 dark:text-slate-300 mb-4">
+        Googleアカウントのメールアドレスが、現在のアカウントと異なります。<br>
+        連携を行うには、メールアドレスをGoogleアカウントのものに変更する必要があります。
+      </p>
+
+      <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700/50 rounded-xl p-4 mb-6 text-left">
+        <p class="text-xs font-bold text-yellow-800 dark:text-yellow-400 mb-1 flex items-center">
+          <span class="material-symbols-outlined text-sm mr-1">info</span>
+          MVP期間中の特別仕様について
+        </p>
+        <p class="text-xs text-yellow-700 dark:text-yellow-300/80 leading-relaxed">
+          現在、Google Fit連携機能はテスト運用の段階（MVPプレビュー版）です。<br>
+          Google Cloudの仕様上、テストユーザーとして登録されたメールアドレスと一致させる必要があるため、
+          <span class="font-bold underline">一時的にメールアドレスの変更をお願いしております。</span><br>
+          正式リリース時には、異なるメールアドレスでも連携できるよう改善予定です。
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-8">
+        <!-- 現在のアドレス -->
+        <div class="w-full sm:w-auto bg-gray-50 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">現在のアドレス</p>
+          <p class="font-mono text-sm font-bold text-gray-700 dark:text-slate-300 break-all">
+            <%= current_user.email %>
+          </p>
+        </div>
+
+        <span class="material-symbols-outlined text-gray-400 dark:text-gray-600 rotate-90 sm:rotate-0">arrow_forward</span>
+
+        <!-- 新しいアドレス -->
+        <div class="w-full sm:w-auto bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
+          <p class="text-xs text-blue-500 dark:text-blue-400 mb-1">変更後のアドレス</p>
+          <p class="font-mono text-sm font-bold text-blue-700 dark:text-blue-300 break-all">
+            <%= session.dig(:google_auth_data, "email") %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col-reverse sm:flex-row justify-center gap-4">
+      <%= link_to edit_user_registration_path, class: "px-6 py-3 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 font-bold text-sm hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors text-center" do %>
+        キャンセル
+      <% end %>
+
+      <%= button_to update_email_and_connect_users_path, method: :post, class: "w-full sm:w-auto bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center" do %>
+        <span class="material-symbols-outlined mr-2">sync_alt</span>
+        更新して連携する
+      <% end %>
+    </div>
+  </div>
+</div>
