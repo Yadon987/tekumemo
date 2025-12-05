@@ -252,6 +252,35 @@
         </div>
       </div>
 
+      <!-- ===== FAB (Floating Action Button) - 新規作成ボタン ===== -->
+      <div class="fixed bottom-20 sm:bottom-24 right-4 sm:right-8 z-40" data-controller="fab">
+        <!-- サブボタン群（展開時に表示） -->
+        <div class="absolute bottom-16 right-0 flex flex-col gap-3 transition-all duration-300 opacity-0 scale-0" data-fab-target="menu">
+          <!-- SNS投稿ボタン -->
+          <%= link_to posts_path(open_modal: true),
+              class: "flex items-center gap-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all transform hover:scale-105",
+              data: { turbo: false } do %>
+            <span class="material-symbols-outlined text-2xl">edit_square</span>
+            <span class="text-sm font-bold whitespace-nowrap">投稿する</span>
+          <% end %>
+
+          <!-- 散歩記録ボタン -->
+          <%= link_to new_walk_path,
+              class: "flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all transform hover:scale-105" do %>
+            <span class="material-symbols-outlined text-2xl">footprint</span>
+            <span class="text-sm font-bold whitespace-nowrap">散歩を記録</span>
+          <% end %>
+        </div>
+
+        <!-- メインFABボタン -->
+        <button
+          type="button"
+          data-action="click->fab#toggle"
+          class="w-14 h-14 bg-gradient-to-r from-orange-400 to-pink-500 hover:from-orange-500 hover:to-pink-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center transform hover:scale-110 active:scale-95">
+          <span class="material-symbols-outlined text-3xl transition-transform duration-300" data-fab-target="icon">add</span>
+        </button>
+      </div>
+
       <!-- ===== ボトムナビゲーション（ログイン時のみ・モバイルファースト・レスポンシブ対応） ===== -->
       <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-gray-100 dark:border-indigo-500/30 dark:shadow-[0_0_15px_rgba(99,102,241,0.15)] shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50 transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
         <div class="flex justify-around items-center h-10 sm:h-16 max-w-2xl mx-auto">
