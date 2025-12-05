@@ -48,4 +48,3 @@ package-lock.json
 node_modules/
 vendor/bundle
 *.sqlite3
-docs/pull_request_draft.md

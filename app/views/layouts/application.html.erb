@@ -25,7 +25,8 @@
   <script>
     // ページ読み込み前にダークモードを設定（フラッシュ防止してくれる魔法の呪文）
     (function() {
-      const theme = localStorage.getItem('theme') || 'light';
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
       if (theme === 'dark') {
         document.documentElement.classList.add('dark');
       }

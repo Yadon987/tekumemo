@@ -51,7 +51,7 @@
                 </div>
                 <div>
                   <p class="text-xl font-bold text-gray-700 dark:text-purple-100">
-                    <%= walk.walked_on.strftime('%Y年%m月%d日') %>
+                    <%= walk.walked_on.strftime('%Y/%m/%d') %>
                   </p>
                   <p class="text-sm text-orange-400 dark:text-purple-400 font-bold">
                     <%= %w[日 月 火 水 木 金 土][walk.walked_on.wday] %>曜日
