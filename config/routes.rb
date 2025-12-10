@@ -20,9 +20,9 @@ Rails.application.routes.draw do
   resources :login_stamps, only: [ :index ]
   resources :rankings, only: [ :index ]
 
-  # 統計機能（準備中）
-  # 将来的にStatsControllerに差し替える
-  get "stats", to: "stats_coming_soon#index", as: :stats
+  # 統計機能
+  get "stats", to: "stats#index", as: :stats
+  get "stats/chart_data", to: "stats#chart_data", as: :stats_chart_data
 
   # Google Fit連携
   # ログインユーザーのGoogle Fitデータを取得する

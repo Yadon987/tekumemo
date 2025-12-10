@@ -1,0 +1,212 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- ヘッダー -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+        📊 統計・分析
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400">
+        あなたの散歩データを詳しく分析します
+      </p>
+    </div>
+
+    <!-- 基本統計カード (6つ) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <!-- 累計距離 -->
+      <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-blue-100 text-4xl">🎯</div>
+          <div class="text-right">
+            <p class="text-blue-100 text-sm font-medium">累計距離</p>
+            <p class="text-4xl font-bold"><%= number_with_delimiter(@total_distance) %></p>
+            <p class="text-blue-100 text-xs">km</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 累計日数 -->
+      <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-green-100 text-4xl">📅</div>
+          <div class="text-right">
+            <p class="text-green-100 text-sm font-medium">累計散歩日数</p>
+            <p class="text-4xl font-bold"><%= @total_days %></p>
+            <p class="text-green-100 text-xs">日</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 連続記録日数 -->
+      <div class="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-orange-100 text-4xl">🔥</div>
+          <div class="text-right">
+            <p class="text-orange-100 text-sm font-medium">連続記録</p>
+            <p class="text-4xl font-bold"><%= @current_streak %></p>
+            <p class="text-orange-100 text-xs">日連続</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 平均距離 -->
+      <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-purple-100 text-4xl">📈</div>
+          <div class="text-right">
+            <p class="text-purple-100 text-sm font-medium">平均距離/日</p>
+            <p class="text-4xl font-bold"><%= @average_distance %></p>
+            <p class="text-purple-100 text-xs">km</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最長記録 -->
+      <div class="bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-pink-100 text-4xl">🏆</div>
+          <div class="text-right">
+            <p class="text-pink-100 text-sm font-medium">最長記録</p>
+            <p class="text-4xl font-bold"><%= @max_distance %></p>
+            <p class="text-pink-100 text-xs">km</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 目標達成率 -->
+      <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-amber-100 text-4xl">✨</div>
+          <div class="text-right">
+            <p class="text-amber-100 text-sm font-medium">今月の目標達成率</p>
+            <p class="text-4xl font-bold"><%= @monthly_goal_rate %>%</p>
+            <p class="text-amber-100 text-xs">月間目標</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- グラフセクション -->
+    <div
+      data-controller="stats-chart"
+      data-stats-chart-daily-url-value="<%= stats_chart_data_path(type: 'daily') %>"
+      data-stats-chart-weekly-url-value="<%= stats_chart_data_path(type: 'weekly') %>"
+      data-stats-chart-monthly-url-value="<%= stats_chart_data_path(type: 'monthly') %>"
+      data-stats-chart-weekday-url-value="<%= stats_chart_data_path(type: 'weekday') %>"
+      data-stats-chart-pace-url-value="<%= stats_chart_data_path(type: 'pace') %>"
+      data-stats-chart-calories-url-value="<%= stats_chart_data_path(type: 'calories') %>"
+      class="space-y-8"
+    >
+      <!-- 時系列グラフ (タブ切り替え) -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          📈 距離の推移
+        </h2>
+
+        <!-- タブナビゲーション -->
+        <div class="flex space-x-2 mb-6 border-b border-gray-200 dark:border-gray-700">
+          <button
+            class="tab-button active px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400"
+            data-tab="daily-chart"
+            onclick="switchTab(event, 'daily-chart')"
+          >
+            日別 (30日)
+          </button>
+          <button
+            class="tab-button px-4 py-2 font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            data-tab="weekly-chart"
+            onclick="switchTab(event, 'weekly-chart')"
+          >
+            週別 (12週)
+          </button>
+          <button
+            class="tab-button px-4 py-2 font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            data-tab="monthly-chart"
+            onclick="switchTab(event, 'monthly-chart')"
+          >
+            月別 (12ヶ月)
+          </button>
+        </div>
+
+        <!-- グラフエリア -->
+        <div class="tab-content" id="daily-chart">
+          <div class="h-80">
+            <canvas data-stats-chart-target="dailyCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="tab-content hidden" id="weekly-chart">
+          <div class="h-80">
+            <canvas data-stats-chart-target="weeklyCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="tab-content hidden" id="monthly-chart">
+          <div class="h-80">
+            <canvas data-stats-chart-target="monthlyCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 曜日別分析 -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          📊 曜日別の傾向
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+          どの曜日に散歩していますか?平均距離を比較してみましょう
+        </p>
+        <div class="h-80">
+          <canvas data-stats-chart-target="weekdayCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- パフォーマンス分析 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- ペース推移 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            ⏱️ ペースの推移
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+            過去30日間の平均ペース (分/km)
+          </p>
+          <div class="h-64">
+            <canvas data-stats-chart-target="paceCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- カロリー推移 -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            🔥 カロリー消費の推移
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+            過去30日間の消費カロリー
+          </p>
+          <div class="h-64">
+            <canvas data-stats-chart-target="caloriesCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- タブ切り替え用スクリプト -->
+<script>
+  function switchTab(event, tabId) {
+    // 全てのタブボタンとコンテンツを非アクティブ化
+    document.querySelectorAll('.tab-button').forEach(btn => {
+      btn.classList.remove('active', 'text-blue-600', 'border-blue-600', 'dark:text-blue-400', 'dark:border-blue-400')
+      btn.classList.add('text-gray-500', 'border-transparent', 'dark:text-gray-400')
+    })
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.add('hidden')
+    })
+
+    // クリックされたタブをアクティブ化
+    event.target.classList.remove('text-gray-500', 'border-transparent', 'dark:text-gray-400')
+    event.target.classList.add('active', 'text-blue-600', 'border-blue-600', 'dark:text-blue-400', 'dark:border-blue-400')
+    document.getElementById(tabId).classList.remove('hidden')
+  }
+</script>

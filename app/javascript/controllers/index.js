@@ -45,3 +45,6 @@ application.register("reaction", ReactionController)
 
 import ScrollHideController from "./scroll_hide_controller"
 application.register("scroll-hide", ScrollHideController)
+
+import StatsChartController from "./stats_chart_controller"
+application.register("stats-chart", StatsChartController)
