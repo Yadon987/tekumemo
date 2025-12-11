@@ -57,6 +57,36 @@
   <!-- 背景装飾アニメーション（全ページ共通） -->
   <%= render 'shared/background_animation' %>
 
+  <!-- PWAインストール促進バナー -->
+  <div data-controller="pwa-install" class="fixed left-0 right-0 bottom-0 p-4 pointer-events-none" style="z-index: 9999;">
+    <div data-pwa-install-target="banner" class="hidden translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto max-w-2xl mx-auto">
+      <div class="bg-gradient-to-r from-blue-500 to-cyan-400 dark:from-blue-600 dark:to-cyan-500 rounded-2xl shadow-2xl p-4 flex items-center gap-3">
+        <!-- アイコン -->
+        <div class="flex-shrink-0">
+          <div class="w-12 h-12 bg-white dark:bg-white/10 rounded-xl flex items-center justify-center shadow-lg">
+            <span class="material-symbols-outlined text-2xl text-blue-600 dark:text-cyan-300">install_mobile</span>
+          </div>
+        </div>
+
+        <!-- メッセージ -->
+        <div class="flex-1 text-white">
+          <p class="font-bold text-sm sm:text-base">てくメモをインストール</p>
+          <p class="text-xs sm:text-sm opacity-90">ホーム画面から簡単にアクセスできます</p>
+        </div>
+
+        <!-- インストールボタン -->
+        <button type="button" data-action="click->pwa-install#install" class="flex-shrink-0 px-4 py-2 bg-white dark:bg-white/20 text-blue-600 dark:text-white font-bold text-sm rounded-full hover:bg-blue-50 dark:hover:bg-white/30 transition-colors shadow-md">
+          追加
+        </button>
+
+        <!-- 閉じるボタン -->
+        <button type="button" data-action="click->pwa-install#dismiss" class="flex-shrink-0 w-8 h-8 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center">
+          <span class="material-symbols-outlined text-white text-lg">close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->

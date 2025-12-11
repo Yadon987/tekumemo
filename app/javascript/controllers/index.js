@@ -37,6 +37,9 @@ application.register("modal", ModalController)
 import PopoverController from "./popover_controller"
 application.register("popover", PopoverController)
 
+import PwaInstallController from "./pwa_install_controller"
+application.register("pwa-install", PwaInstallController)
+
 import RadioToggleController from "./radio_toggle_controller"
 application.register("radio-toggle", RadioToggleController)
 

@@ -7,6 +7,9 @@ Rails.application.configure do
   config.consider_all_requests_local = true
   config.server_timing = true
 
+  # ngrokやlocaltunnelなど、外部からのアクセスを許可
+  config.hosts.clear
+
   # アセット設定を最適化
   config.assets.debug = false
   config.assets.digest = true
