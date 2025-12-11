@@ -24,7 +24,7 @@
       <div class="flex items-center gap-4">
         <!-- アバター -->
         <div class="w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden border-4 border-white dark:border-white/10 transform group-hover:rotate-6 transition-transform duration-300 shadow-md dark:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-          <% if post.user.avatar_url.present? %>
+          <% if post.user.avatar_url.present? && post.user.use_google_avatar %>
             <%= image_tag post.user.avatar_url, class: "w-full h-full object-cover", alt: post.user.name %>
           <% else %>
             <span class="text-xl font-black text-gray-400 dark:text-gray-400">
