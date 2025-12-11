@@ -20,8 +20,9 @@ class ApplicationController < ActionController::Base
   end
 
   # ログイン後のリダイレクト先を指定
+  # stored_location（ログイン前にアクセスしようとしたページ）があればそこへ、なければホームへ
   def after_sign_in_path_for(resource_or_scope)
-    root_path
+    stored_location_for(resource_or_scope) || root_path
   end
 
   # ログアウト後のリダイレクト先を指定
