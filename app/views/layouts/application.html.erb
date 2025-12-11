@@ -7,6 +7,15 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="<%= pwa_manifest_path %>" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="てくメモ" />
+  <link rel="apple-touch-icon" href="/icon.png" />
+  <meta name="theme-color" content="#3b82f6" />
+
   <!-- DNS prefetch: Google Fonts のドメインに事前接続 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +40,15 @@
         document.documentElement.classList.add('dark');
       }
     })();
+  </script>
+
+  <!-- Service Worker 登録 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => console.log('Service Worker registered'))
+        .catch(error => console.log('Service Worker registration failed:', error));
+    }
   </script>
 </head>
 
