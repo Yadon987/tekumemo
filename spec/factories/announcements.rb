@@ -1,11 +1,10 @@
 FactoryBot.define do
   factory :announcement do
-    title { "MyString" }
-    content { "MyText" }
-    announcement_type { "MyString" }
-    published_at { "2025-12-11 17:39:39" }
-    expires_at { "2025-12-11 17:39:39" }
-    is_published { false }
-    priority { 1 }
+    title { "テストお知らせ" }
+    content { "これはテスト用のお知らせです。" }
+    announcement_type { "info" }
+    published_at { Time.current }
+    expires_at { nil }
+    is_published { true }
   end
 end

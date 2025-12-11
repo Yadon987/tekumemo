@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_11_084125) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_11_121714) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,11 +21,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_084125) do
     t.datetime "published_at"
     t.datetime "expires_at"
     t.boolean "is_published", default: false, null: false
-    t.integer "priority", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["is_published"], name: "index_announcements_on_is_published"
     t.index ["published_at"], name: "index_announcements_on_published_at"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "announcement_id", null: false
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["announcement_id"], name: "index_notifications_on_announcement_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -103,6 +112,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_084125) do
     t.index ["walked_on"], name: "index_walks_on_walked_on"
   end
 
+  add_foreign_key "notifications", "announcements"
+  add_foreign_key "notifications", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "posts", "walks"
   add_foreign_key "reactions", "posts"

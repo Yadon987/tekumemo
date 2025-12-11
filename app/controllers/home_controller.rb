@@ -42,8 +42,8 @@ class HomeController < ApplicationController
     # 最新の投稿を取得
     @latest_post = Post.with_associations.recent.first
 
-    # 最新のお知らせを取得（公開中かつ有効期限内、最新20件）
-    @announcements = Announcement.active.by_priority.limit(20)
+    # 最新のお知らせを取得（公開中かつ有効期限内、最新3件）
+    @announcements = Announcement.active.recent.limit(3)
 
     # ===== 月間ランキング情報の取得 =====
     # キャッシュキー: ユーザーIDと日付（月）ベース

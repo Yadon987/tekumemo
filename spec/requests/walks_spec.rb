@@ -28,7 +28,7 @@ RSpec.describe "Walks", type: :request do
     before { sign_in user }
 
     context "有効なパラメータの場合" do
-      let(:walk_params) { { walk: { walked_on: Date.tomorrow, distance: 5.0, duration: 60, steps: 5000, calories_burned: 300 } } }
+      let(:walk_params) { { walk: { walked_on: 1.week.from_now.to_date, distance: 5.0, duration: 60, steps: 5000, calories_burned: 300 } } }
 
       it "散歩記録が作成されること" do
         expect {

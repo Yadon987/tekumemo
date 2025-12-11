@@ -1,5 +1,55 @@
 require 'rails_helper'
 
 RSpec.describe Announcement, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'コールバック' do
+    before do
+      Notification.destroy_all
+      Announcement.destroy_all
+      Post.destroy_all
+      Walk.destroy_all
+      User.destroy_all
+    end
+
+    let!(:user1) { FactoryBot.create(:user) }
+    let!(:user2) { FactoryBot.create(:user) }
+
+    context 'お知らせが公開された場合' do
+      it '全ユーザーに通知が作成されること' do
+        expect {
+          FactoryBot.create(:announcement, is_published: true, published_at: Time.current)
+        }.to change(Notification, :count).by(2)
+      end
+    end
+
+    context 'お知らせが非公開で作成された場合' do
+      it '通知は作成されないこと' do
+        expect {
+          FactoryBot.create(:announcement, is_published: false)
+        }.not_to change(Notification, :count)
+      end
+    end
+
+    context '非公開のお知らせが公開に更新された場合' do
+      let(:announcement) { FactoryBot.create(:announcement, is_published: false) }
+
+      it '全ユーザーに通知が作成されること' do
+        expect {
+          announcement.update!(is_published: true, published_at: Time.current)
+        }.to change(Notification, :count).by(2)
+      end
+    end
+
+    context '公開済みのお知らせが更新された場合' do
+      let!(:announcement) { FactoryBot.create(:announcement, is_published: true, published_at: Time.current) }
+
+      it '通知は再作成されないこと' do
+        # 最初の作成で通知が作られているはず
+        expect(Notification.count).to eq(2)
+
+        expect {
+          announcement.update!(title: '更新されたタイトル')
+        }.not_to change(Notification, :count)
+      end
+    end
+  end
 end

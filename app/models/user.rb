@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :reactions, dependent: :destroy
 
+  # 通知機能の関連付け
+  has_many :notifications, dependent: :destroy
+
   # ユーザー名のバリデーション
   validates :name, presence: true
 
@@ -103,5 +106,10 @@ class User < ApplicationRecord
       .select("users.*, SUM(walks.distance) as total_distance")
       .order("SUM(walks.distance) DESC")
       .limit(limit)
+  end
+
+  # 未読通知数を取得
+  def unread_notifications_count
+    notifications.unread.count
   end
 end
