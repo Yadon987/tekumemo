@@ -231,7 +231,7 @@
             <div class="flex items-center gap-2">
               <!-- アバター -->
               <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden flex-shrink-0 border border-white/50">
-                <% if @latest_post.user.avatar_url.present? %>
+                <% if @latest_post.user.avatar_url.present? && @latest_post.user.use_google_avatar %>
                   <%= image_tag @latest_post.user.avatar_url, class: "w-full h-full object-cover" %>
                 <% else %>
                   <div class="flex items-center justify-center w-full h-full text-xs font-bold text-gray-500">

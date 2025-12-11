@@ -22,6 +22,20 @@ RSpec.describe "Reactions", type: :request do
         expect(response.media_type).to eq Mime[:turbo_stream]
         expect(response).to have_http_status(:success)
       end
+
+      it "JSON形式でリクエストすると、JSON形式でレスポンスが返ること" do
+        post post_reactions_path(post_item),
+             params: reaction_params,
+             headers: { "Accept" => "application/json", "Content-Type" => "application/json" },
+             as: :json
+
+        expect(response).to have_http_status(:success)
+        expect(response.media_type).to eq "application/json"
+
+        json_response = JSON.parse(response.body)
+        expect(json_response["reacted"]).to eq(true)
+        expect(json_response["count"]).to eq(1)
+      end
     end
 
     context "重複するリアクションの場合（トグル動作）" do
@@ -33,6 +47,20 @@ RSpec.describe "Reactions", type: :request do
         expect {
           post post_reactions_path(post_item), params: { reaction: { kind: "thumbs_up" } }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
         }.to change(Reaction, :count).by(-1)
+      end
+
+      it "JSON形式でリクエストすると、削除後のステータスがJSON形式で返ること" do
+        post post_reactions_path(post_item),
+             params: { reaction: { kind: "thumbs_up" } },
+             headers: { "Accept" => "application/json", "Content-Type" => "application/json" },
+             as: :json
+
+        expect(response).to have_http_status(:success)
+        expect(response.media_type).to eq "application/json"
+
+        json_response = JSON.parse(response.body)
+        expect(json_response["reacted"]).to eq(false)
+        expect(json_response["count"]).to eq(0)
       end
     end
   end

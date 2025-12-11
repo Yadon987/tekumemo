@@ -19,23 +19,27 @@ class ReactionsController < ApplicationController
 
       unless @reaction.save
         # 保存失敗時
-        redirect_back(fallback_location: posts_path, alert: "リアクションできませんでした") and return
+        respond_to do |format|
+          format.json { render json: { error: "リアクションできませんでした" }, status: :unprocessable_entity }
+          format.any { redirect_back(fallback_location: posts_path, alert: "リアクションできませんでした") }
+        end
+        return
       end
       @action = "added"
     end
 
     respond_to do |format|
-      # Turbo Stream: リアクションボタンのみ更新（既存機能維持）
-      format.turbo_stream
-      # HTML: 通常のリダイレクト
-      format.html { redirect_back(fallback_location: posts_path) }
-      # JSON: Stimulusコントローラー用
-      format.json {
+      # JSON: Stimulusコントローラー用（優先）
+      format.json do
         render json: {
           reacted: @action == "added",
           count: @post.reactions.where(kind: reaction_params[:kind]).count
         }
-      }
+      end
+      # Turbo Stream: リアクションボタンのみ更新（既存機能維持）
+      format.turbo_stream
+      # HTML: 通常のリダイレクト
+      format.html { redirect_back(fallback_location: posts_path) }
     end
   end
 

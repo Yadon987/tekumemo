@@ -13,7 +13,18 @@ export default class extends Controller {
   toggle(event) {
     event.preventDefault()
 
+    // デバッグログ
+    console.log('[Reaction] Toggle started:', {
+      url: this.urlValue,
+      kind: this.kindValue,
+      currentReacted: this.reactedValue,
+      currentCount: this.countValue
+    })
+
     // 1. Optimistic UI: サーバー応答を待たずにUIを即座に更新
+    const previousReacted = this.reactedValue
+    const previousCount = this.countValue
+
     this.reactedValue = !this.reactedValue
     if (this.reactedValue) {
       this.countValue++
@@ -28,31 +39,32 @@ export default class extends Controller {
       headers: {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "X-Requested-With": "XMLHttpRequest"
       },
       body: JSON.stringify({ reaction: { kind: this.kindValue } })
     })
     .then(response => {
-      if (!response.ok) throw new Error("Network response was not ok")
+      console.log('[Reaction] Response status:', response.status)
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status}`)
+      }
       return response.json()
     })
     .then(data => {
+      console.log('[Reaction] Server response:', data)
       // 3. サーバーからの正確な値で同期
       this.reactedValue = data.reacted
       this.countValue = data.count
       this.updateUI()
     })
     .catch(error => {
-      console.error("Error:", error)
+      console.error('[Reaction] Error:', error)
       // エラー時は元に戻す
-      this.reactedValue = !this.reactedValue
-      if (this.reactedValue) {
-        this.countValue++
-      } else {
-        this.countValue--
-      }
+      this.reactedValue = previousReacted
+      this.countValue = previousCount
       this.updateUI()
-      alert("通信エラーが発生しました")
+      alert(`リアクションの更新に失敗しました: ${error.message}`)
     })
   }
 
@@ -60,13 +72,13 @@ export default class extends Controller {
     const btn = this.buttonTarget
 
     if (this.reactedValue) {
-      // Active state
-      btn.classList.add("bg-blue-100", "text-blue-600", "border-blue-300")
-      btn.classList.remove("bg-gray-100", "text-gray-600", "border-gray-300")
+      // Active state - HTMLテンプレートと完全一致
+      btn.classList.remove("bg-white", "dark:bg-white/5", "text-gray-600", "dark:text-gray-300", "border-gray-200", "dark:border-white/10")
+      btn.classList.add("bg-blue-100", "dark:bg-blue-900/40", "text-blue-600", "dark:text-blue-300", "border-blue-300", "dark:border-blue-500/50")
     } else {
-      // Inactive state
-      btn.classList.remove("bg-blue-100", "text-blue-600", "border-blue-300")
-      btn.classList.add("bg-gray-100", "text-gray-600", "border-gray-300")
+      // Inactive state - HTMLテンプレートと完全一致
+      btn.classList.remove("bg-blue-100", "dark:bg-blue-900/40", "text-blue-600", "dark:text-blue-300", "border-blue-300", "dark:border-blue-500/50")
+      btn.classList.add("bg-white", "dark:bg-white/5", "text-gray-600", "dark:text-gray-300", "border-gray-200", "dark:border-white/10")
     }
 
     // カウント表示の更新
