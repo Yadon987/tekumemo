@@ -18,6 +18,13 @@ class ApplicationController < ActionController::Base
     # アカウント更新時に追加フィールドを許可する場合
     devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :target_distance ])
   end
+
+  # ログイン後のリダイレクト先を指定
+  # stored_location（ログイン前にアクセスしようとしたページ）があればそこへ、なければホームへ
+  def after_sign_in_path_for(resource_or_scope)
+    stored_location_for(resource_or_scope) || root_path
+  end
+
   # ログアウト後のリダイレクト先を指定
   def after_sign_out_path_for(resource_or_scope)
     new_user_session_path
