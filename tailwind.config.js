@@ -77,6 +77,7 @@ module.exports = {
   ],
   // 重要: JITモードでのsafelist設定（必要に応じて）
   safelist: [
+    // グラデーション関連
     'bg-gradient-to-r',
     'bg-gradient-to-br',
     'from-sky-400',
@@ -91,5 +92,11 @@ module.exports = {
     'to-indigo-950',
     'bg-clip-text',
     'text-transparent',
+    // お知らせバッジ用の背景色
+    'bg-red-500',
+    'bg-orange-500',
+    'bg-yellow-500',
+    'bg-yellow-600',
+    'bg-blue-500',
   ],
 }

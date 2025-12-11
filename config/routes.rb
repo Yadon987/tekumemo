@@ -40,6 +40,16 @@ Rails.application.routes.draw do
     resources :reactions, only: [ :create, :destroy ]
   end
 
+  # ===== 管理者機能 =====
+  namespace :admin do
+    resources :announcements do
+      member do
+        patch :publish    # 公開
+        patch :unpublish  # 非公開
+      end
+    end
+  end
+
   # ===== システム関連 =====
   # ヘルスチェック
   get "up" => "rails/health#show", as: :rails_health_check

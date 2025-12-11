@@ -51,6 +51,8 @@
     </div>
   </div>
 
+
+
   <!-- 天気予報とランキングのグリッド/カルーセル -->
   <div data-controller="carousel" class="relative group mb-6">
     <!-- カルーセルコンテナ（スマホ: 横スクロール, PC: グリッド） -->
@@ -216,6 +218,7 @@
     </div>
   </div>
 
+
   <!-- 下段グリッド：最新の投稿とメモ帳 -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <!-- 最新の投稿カード -->
@@ -289,38 +292,65 @@
     <% end %>
   </div>
 
-  <!-- 運営からのお知らせカード -->
-  <div class="space-y-4">
-    <!-- 運営からのお知らせカード -->
-    <div class="relative bg-gradient-to-br from-indigo-100/90 to-purple-200/90 dark:from-purple-950/80 dark:to-pink-950/80 backdrop-blur-xl border border-white/40 dark:border-pink-500/40 p-5 rounded-3xl shadow-lg dark:shadow-[0_0_20px_rgba(236,72,153,0.25)] hover:dark:shadow-[0_0_30px_rgba(236,72,153,0.4)] transition-all duration-300 hover:shadow-xl hover:scale-[1.01] drop-shadow-lg group overflow-hidden">
-      <!-- 背景装飾（巨大アイコン） -->
-      <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-purple-200/20 dark:text-pink-500/10 transform rotate-12 group-hover:rotate-0 transition-transform duration-500 pointer-events-none">campaign</span>
+  <!-- 運営からのお知らせ -->
+  <% if @announcements.any? %>
+    <div class="block mt-6">
+      <div class="relative bg-gradient-to-br from-indigo-100/90 to-purple-200/90 dark:from-purple-950/80 dark:to-pink-950/80 backdrop-blur-xl border border-white/40 dark:border-pink-500/40 p-5 rounded-3xl shadow-lg dark:shadow-[0_0_20px_rgba(236,72,153,0.25)] transition-all duration-300 drop-shadow-lg overflow-hidden">
+        <!-- 背景装飾（巨大アイコン） -->
+        <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-purple-200/20 dark:text-pink-500/10 transform rotate-12 transition-transform duration-500 pointer-events-none">campaign</span>
 
-      <!-- ヘッダー -->
-      <div class="relative z-10 flex justify-between items-start mb-4">
-        <div class="flex items-center space-x-2">
-          <div class="bg-white/60 dark:bg-white/10 p-2 rounded-full backdrop-blur-sm shadow-sm">
-            <span class="material-symbols-outlined text-purple-600 dark:text-pink-200 text-xl">notifications_active</span>
+        <!-- ヘッダー -->
+        <div class="relative z-10 flex justify-between items-start mb-4">
+          <div class="flex items-center space-x-2">
+            <div class="bg-white/60 dark:bg-white/10 p-2 rounded-full backdrop-blur-sm shadow-sm">
+              <span class="material-symbols-outlined text-purple-600 dark:text-pink-200 text-xl">notifications_active</span>
+            </div>
+            <h3 class="font-bold text-purple-900 dark:text-pink-100 text-lg text-shadow-sm">運営からのお知らせ</h3>
           </div>
-          <h3 class="font-bold text-purple-900 dark:text-pink-100 text-lg text-shadow-sm">運営からのお知らせ</h3>
         </div>
-      </div>
 
-      <!-- コンテンツ -->
-      <div class="relative z-10 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl p-3 border border-white/40 dark:border-white/10 shadow-inner">
-        <div class="flex items-start space-x-3">
-          <div class="flex-shrink-0 mt-0.5 flex flex-col items-center space-y-1">
-            <span class="text-xs font-bold bg-white/50 dark:bg-white/10 text-purple-900 dark:text-pink-200 px-2 py-0.5 rounded-md shadow-sm">11/23</span>
-            <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">NEW</span>
+        <!-- スクロール可能なコンテンツエリア -->
+        <div class="relative z-10 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl border border-white/40 dark:border-white/10 shadow-inner max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-purple-300 dark:scrollbar-thumb-pink-500/50 scrollbar-track-transparent">
+          <div class="space-y-2 p-3">
+            <% @announcements.each do |announcement| %>
+              <div class="block">
+                <div class="flex items-start space-x-3 p-2 rounded-lg">
+                  <!-- 日付とバッジ -->
+                  <div class="flex-shrink-0 mt-0.5 flex flex-col items-center space-y-1">
+                    <span class="text-xs font-bold bg-white/50 dark:bg-white/10 text-purple-900 dark:text-pink-200 px-2 py-0.5 rounded-md shadow-sm">
+                      <%= announcement.published_at.strftime('%m/%d') %>
+                    </span>
+                    <% if announcement.announcement_type == 'urgent' %>
+                      <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse">緊急</span>
+                    <% elsif announcement.announcement_type == 'warning' %>
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm" style="background-color: #eab308; color: #000;">重要</span>
+                    <% else %>
+                      <span class="bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">NEW</span>
+                    <% end %>
+                  </div>
+
+                  <!-- タイトルと本文 -->
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-purple-900 dark:text-pink-100 leading-relaxed text-shadow-sm">
+                      <%= announcement.title %>
+                    </p>
+                    <p class="text-xs text-purple-800/80 dark:text-pink-200/70 mt-1 line-clamp-2">
+                      <%= announcement.content %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 区切り線（最後の要素以外） -->
+              <% unless announcement == @announcements.last %>
+                <div class="border-t border-purple-200/30 dark:border-pink-500/20"></div>
+              <% end %>
+            <% end %>
           </div>
-          <p class="text-sm text-purple-900 dark:text-pink-100 font-medium leading-relaxed text-shadow-sm">
-            MVPリリースに近いところまで完成しました！<br>
-            <span class="text-xs text-purple-800/80 dark:text-pink-200/70 mt-1 block">引き続き機能改善を行っていきます。</span>
-          </p>
         </div>
       </div>
     </div>
-
+  <% end %>
 
   </div>
 </div>

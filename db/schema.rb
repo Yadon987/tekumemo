@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_05_012042) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_11_084125) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "announcements", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "content", null: false
+    t.string "announcement_type", default: "info"
+    t.datetime "published_at"
+    t.datetime "expires_at"
+    t.boolean "is_published", default: false, null: false
+    t.integer "priority", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["is_published"], name: "index_announcements_on_is_published"
+    t.index ["published_at"], name: "index_announcements_on_published_at"
+  end
 
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -67,7 +81,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_05_012042) do
     t.string "name"
     t.integer "target_distance", default: 3000, null: false
     t.boolean "use_google_avatar", default: true
+    t.boolean "is_admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["is_admin"], name: "index_users_on_is_admin"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
