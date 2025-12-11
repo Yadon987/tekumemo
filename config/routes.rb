@@ -37,11 +37,11 @@ Rails.application.routes.draw do
     end
 
     # 投稿に対するリアクション
-    resources :reactions, only: [:create, :destroy]
+    resources :reactions, only: [ :create, :destroy ]
   end
 
   # 通知機能
-  resources :notifications, only: [:index] do
+  resources :notifications, only: [ :index ] do
     member do
       patch :mark_as_read  # 個別既読
     end

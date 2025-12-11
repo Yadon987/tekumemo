@@ -28,9 +28,19 @@ RSpec.describe StatsService do
     it '最長記録距離を正しく取得できる' do
       expect(service.max_distance).to eq(5000.0)
     end
+  end
+
+  describe '今月の統計' do
+    before do
+      # 今月のデータ
+      create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+      # 先月のデータ
+      create(:walk, user: user, walked_on: Date.current.prev_month, distance: 3000, duration: 30, steps: 4000, calories_burned: 150)
+      create(:walk, user: user, walked_on: Date.current.prev_month - 1.day, distance: 4000, duration: 45, steps: 5000, calories_burned: 200)
+    end
 
     it '今月の距離を正しく計算できる' do
-      # Date.currentが今月なので、5000mのみが対象
+      # 今月のデータ（5000m）のみが対象
       expect(service.current_month_distance).to eq(5000.0)
     end
   end

@@ -17,7 +17,7 @@ class Admin::AnnouncementsController < ApplicationController
     @announcement = Announcement.new(announcement_params)
 
     if @announcement.save
-      redirect_to admin_announcements_path, notice: 'お知らせを作成しました'
+      redirect_to admin_announcements_path, notice: "お知らせを作成しました"
     else
       render :new, status: :unprocessable_entity
     end
@@ -30,7 +30,7 @@ class Admin::AnnouncementsController < ApplicationController
   # 更新処理
   def update
     if @announcement.update(announcement_params)
-      redirect_to admin_announcements_path, notice: 'お知らせを更新しました'
+      redirect_to admin_announcements_path, notice: "お知らせを更新しました"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class Admin::AnnouncementsController < ApplicationController
   # 削除処理
   def destroy
     @announcement.destroy
-    redirect_to admin_announcements_path, notice: 'お知らせを削除しました'
+    redirect_to admin_announcements_path, notice: "お知らせを削除しました"
   end
 
   # 公開
@@ -47,13 +47,13 @@ class Admin::AnnouncementsController < ApplicationController
     # 公開日時が未設定の場合のみ現在時刻を設定
     published_at = @announcement.published_at || Time.current
     @announcement.update(is_published: true, published_at: published_at)
-    redirect_to admin_announcements_path, notice: 'お知らせを公開しました'
+    redirect_to admin_announcements_path, notice: "お知らせを公開しました"
   end
 
   # 非公開
   def unpublish
     @announcement.update(is_published: false)
-    redirect_to admin_announcements_path, notice: 'お知らせを非公開にしました'
+    redirect_to admin_announcements_path, notice: "お知らせを非公開にしました"
   end
 
   private
@@ -61,7 +61,7 @@ class Admin::AnnouncementsController < ApplicationController
   # 管理者チェック
   def require_admin
     unless current_user&.is_admin?
-      redirect_to root_path, alert: '管理者権限が必要です'
+      redirect_to root_path, alert: "管理者権限が必要です"
     end
   end
 
