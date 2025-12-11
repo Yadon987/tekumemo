@@ -1,0 +1,61 @@
+<div class="min-h-screen bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 py-8">
+  <div class="max-w-3xl mx-auto px-4">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+      <%= announcement.persisted? ? 'お知らせ編集' : 'お知らせ作成' %>
+    </h1>
+
+    <%= form_with model: [:admin, announcement], class: "bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 space-y-6" do |f| %>
+      <% if announcement.errors.any? %>
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <h3 class="text-red-800 dark:text-red-300 font-bold mb-2">エラーがあります</h3>
+          <ul class="listdisc list-inside text-red-700 dark:text-red-400 text-sm">
+            <% announcement.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- タイトル -->
+      <div>
+        <%= f.label :title, 'タイトル', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+        <%= f.text_field :title, class: 'w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500', placeholder: 'メンテナンスのお知らせ' %>
+      </div>
+
+      <!-- 本文 -->
+      <div>
+        <%= f.label :content, '本文', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+        <%= f.text_area :content, rows: 8, class: 'w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500', placeholder: 'お知らせの内容を入力してください...' %>
+      </div>
+
+      <!-- 種類 -->
+      <div>
+        <%= f.label :announcement_type, '種類', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+        <%= f.select :announcement_type, Announcement::ANNOUNCEMENT_TYPES.invert, {}, class: 'w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500' %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 公開日時 -->
+        <div>
+          <%= f.label :published_at, '公開日時', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+          <%= f.datetime_local_field :published_at, value: (announcement.published_at || Time.current).strftime('%Y-%m-%dT%H:%M'), class: 'w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500', style: 'color-scheme: light dark;' %>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">未設定の場合は即座に公開されます</p>
+        </div>
+
+        <!-- 有効期限 -->
+        <div>
+          <%= f.label :expires_at, '有効期限', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+          <%= f.datetime_local_field :expires_at, value: announcement.expires_at&.strftime('%Y-%m-%dT%H:%M'), class: 'w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500', style: 'color-scheme: light dark;' %>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">未設定の場合は無期限です</p>
+        </div>
+      </div>
+
+
+      <!-- アクションボタン -->
+      <div class="flex gap-4 pt-4">
+        <%= f.submit announcement.persisted? ? '更新' : '作成', class: 'flex-1 px-6 py-3 border border-blue-600 bg-white dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 font-bold rounded-lg transition-colors cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 shadow-sm' %>
+        <%= link_to 'キャンセル', admin_announcements_path, class: 'px-6 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold rounded-lg transition-colors text-center hover:bg-gray-50 dark:hover:bg-slate-600 shadow-sm' %>
+      </div>
+    <% end %>
+  </div>
+</div>

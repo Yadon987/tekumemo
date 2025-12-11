@@ -244,6 +244,19 @@
             <div class="absolute bottom-0 right-2 sm:right-6 pointer-events-auto">
               <!-- アクションボタン（展開時に表示されるボタン群） -->
 
+              <!-- 管理者メニュー（管理者のみ表示、一番上） -->
+              <% if current_user.is_admin? %>
+                <%= link_to admin_announcements_path,
+                    data: { expandable_fab_target: "actionButton" },
+                    class: "hidden opacity-0 absolute bottom-[19rem] right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
+                    style: "transform: translateY(20px);" do %>
+                  <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">管理者メニュー</span>
+                  <div class="bg-orange-500 dark:bg-orange-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-orange-600 dark:hover:bg-orange-700 transition-colors">
+                    <span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+                  </div>
+                <% end %>
+              <% end %>
+
               <!-- プライバシー＆利用規約 -->
               <%= link_to privacy_path,
                   data: { expandable_fab_target: "actionButton" },

@@ -1,0 +1,92 @@
+<% content_for :title, '通知一覧 - てくメモ' %>
+
+<div class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-100 dark:from-[#0a0118] dark:via-[#0d0221] dark:to-[#1a0b2e] py-8 px-4 pb-24">
+  <div class="max-w-2xl mx-auto">
+    <!-- ヘッダー -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+        🔔 通知
+      </h1>
+
+      <% if @notifications.unread.any? %>
+        <div class="flex items-center justify-between">
+          <p class="text-gray-600 dark:text-gray-300">
+            未読: <span class="font-bold text-blue-600 dark:text-cyan-400"><%= @notifications.unread.count %></span>件
+          </p>
+          <%= button_to '全て既読にする', mark_all_as_read_notifications_path,
+                        method: :patch,
+                        class: 'px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition',
+                        data: { turbo_confirm: '全ての通知を既読にしますか？' } %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- 通知リスト -->
+    <div class="space-y-3">
+      <% if @notifications.any? %>
+        <% @notifications.each do |notification| %>
+          <div class="bg-white/80 dark:bg-white/10 backdrop-blur-md rounded-xl border <%= notification.unread? ? 'border-blue-300 dark:border-cyan-500/50' : 'border-white/40 dark:border-white/10' %> p-4 shadow-sm">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <!-- バッジ -->
+                <div class="flex items-center gap-2 mb-2">
+                  <% if notification.unread? %>
+                    <span class="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <% end %>
+
+                  <% if notification.announcement.announcement_type == 'urgent' %>
+                    <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">緊急</span>
+                  <% elsif notification.announcement.announcement_type == 'warning' %>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background-color: #eab308; color: #000;">重要</span>
+                  <% else %>
+                    <span class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>
+                  <% end %>
+
+                  <span class="text-sm text-gray-500 dark:text-gray-400">
+                    <%= notification.announcement.published_at&.strftime('%Y/%m/%d') %>
+                  </span>
+                </div>
+
+                <!-- タイトル -->
+                <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-1">
+                  <%= notification.announcement.title %>
+                </h3>
+
+                <!-- 内容 -->
+                <p class="text-gray-600 dark:text-gray-300 text-sm">
+                  <%= notification.announcement.content %>
+                </p>
+              </div>
+
+              <!-- 既読ボタン/ステータス -->
+              <div class="ml-4 flex-shrink-0">
+                <% if notification.unread? %>
+                  <%= button_to mark_as_read_notification_path(notification),
+                                method: :patch,
+                                class: 'px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition flex items-center gap-1 shadow-sm' do %>
+                    <span class="material-symbols-outlined text-base">check_circle</span>
+                    <span>既読にする</span>
+                  <% end %>
+                <% else %>
+                  <div class="px-4 py-2 text-gray-400 dark:text-gray-500 rounded-lg text-sm font-medium flex items-center gap-1">
+                    <span class="material-symbols-outlined text-base">done_all</span>
+                    <span>既読済み</span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+
+      <% else %>
+        <!-- 通知がない場合 -->
+        <div class="bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl border border-white/40 dark:border-white/10 p-12 text-center">
+          <p class="text-gray-500 dark:text-gray-400 text-lg">
+            📭 通知はありません
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

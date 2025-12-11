@@ -1,0 +1,117 @@
+<div class="min-h-screen bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 py-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- ヘッダー -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+        📢 お知らせ管理
+      </h1>
+      <%= link_to new_admin_announcement_path, class: "inline-flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-700 hover:bg-gray-50 dark:hover:bg-slate-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors shadow-sm" do %>
+        <span class="material-symbols-outlined text-lg">add</span>
+        <span>新規作成</span>
+      <% end %>
+    </div>
+
+    <!-- お知らせ一覧 -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6">
+      <% if @announcements.any? %>
+        <div class="space-y-4">
+          <% @announcements.each do |announcement| %>
+            <div class="border border-gray-200 dark:border-slate-700 rounded-xl p-4 hover:shadow-md transition-shadow">
+              <div class="flex justify-between items-start gap-4">
+                <!-- お知らせ情報 -->
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-2">
+                    <!-- ステータスバッジ -->
+                    <% if announcement.active? %>
+                      <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full">
+                        公開中
+                      </span>
+                    <% elsif announcement.is_published %>
+                      <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-xs rounded-full">
+                        期限切れ
+                      </span>
+                    <% else %>
+                      <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">
+                        下書き
+                      </span>
+                    <% end %>
+
+                    <!-- 種類バッジ -->
+                    <% case announcement.announcement_type %>
+                    <% when 'urgent' %>
+                      <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-xs rounded-full">
+                        🚨 緊急
+                      </span>
+                    <% when 'warning' %>
+                      <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 text-xs rounded-full">
+                        ⚠️ 重要
+                      </span>
+                    <% else %>
+                      <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded-full">
+                        ℹ️ お知らせ
+                      </span>
+                    <% end %>
+                  </div>
+
+                  <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                    <%= announcement.title %>
+                  </h3>
+
+                  <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
+                    <%= announcement.content.truncate(100) %>
+                  </p>
+
+                  <div class="text-xs text-gray-500 dark:text-gray-500">
+                    <% if announcement.published_at %>
+                      公開日: <%= announcement.published_at.strftime('%Y/%m/%d %H:%M') %>
+                    <% end %>
+                    <% if announcement.expires_at %>
+                      | 有効期限: <%= announcement.expires_at.strftime('%Y/%m/%d %H:%M') %>
+                    <% end %>
+                  </div>
+                </div>
+
+                <!--アクションボタン -->
+                <div class="flex gap-2">
+                  <%= link_to edit_admin_announcement_path(announcement), class: "p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" do %>
+                    <span class="material-symbols-outlined text-xl">edit</span>
+                  <% end %>
+
+                  <% if announcement.is_published %>
+                    <%= button_to unpublish_admin_announcement_path(announcement), method: :patch, class: "p-2 text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors" do %>
+                      <span class="material-symbols-outlined text-xl">visibility_off</span>
+                    <% end %>
+                  <% else %>
+                    <%= button_to publish_admin_announcement_path(announcement), method: :patch, class: "p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" do %>
+                      <span class="material-symbols-outlined text-xl">visibility</span>
+                    <% end %>
+                  <% end %>
+
+                  <%= button_to admin_announcement_path(announcement), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" do %>
+                    <span class="material-symbols-outlined text-xl">delete</span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- ページネーション -->
+        <div class="mt-6">
+          <%= paginate @announcements %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <p class="text-gray-500 dark:text-gray-400">お知らせがありません</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- 戻るリンク -->
+    <div class="mt-6">
+      <%= link_to root_path, class: "text-blue-600 hover:text-blue-700 dark:text-blue-400" do %>
+        ← ホームに戻る
+      <% end %>
+    </div>
+  </div>
+</div>
