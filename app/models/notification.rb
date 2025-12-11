@@ -8,6 +8,8 @@ class Notification < ApplicationRecord
   scope :read, -> { where.not(read_at: nil) }
   # 新しい順に並べ替え
   scope :recent, -> { order(created_at: :desc) }
+  # お知らせの公開日順に並べ替え
+  scope :ordered_by_announcement, -> { joins(:announcement).order("announcements.published_at DESC, notifications.created_at DESC") }
 
   # 既読にする
   def mark_as_read!
