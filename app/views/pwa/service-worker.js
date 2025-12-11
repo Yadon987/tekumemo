@@ -1,6 +1,6 @@
 // てくメモ PWA Service Worker
 // バージョン管理：アプリを更新する際はバージョンを上げる
-const CACHE_VERSION = 'tekumemo-v1';
+const CACHE_VERSION = 'tekumemo-v2'; // アイコン更新のためバージョンアップ
 const CACHE_NAME = `${CACHE_VERSION}`;
 
 // キャッシュ対象のファイル（アプリの起動に最低限必要なもの）
@@ -10,7 +10,8 @@ const PRECACHE_URLS = [
   '/posts',
   '/rankings',
   '/icon.png',
-  '/icon.svg'
+  '/512x512.png',
+  '/favicon.ico'
 ];
 
 // ========================================
