@@ -5,7 +5,7 @@ class InactiveReminderService
 
     users.find_each do |user|
       # 最終散歩日を取得（なければ登録日）
-      last_walk_date = user.walks.maximum(:date) || user.created_at.to_date
+      last_walk_date = user.walks.maximum(:walked_on) || user.created_at.to_date
 
       # 経過日数を計算
       days_since_last_walk = (Date.current - last_walk_date).to_i

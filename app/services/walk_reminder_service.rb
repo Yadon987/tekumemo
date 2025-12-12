@@ -5,7 +5,7 @@ class WalkReminderService
 
     users.find_each do |user|
       # 今日の散歩記録がある場合はスキップ
-      next if user.walks.where(date: Date.current).exists?
+      next if user.walks.where(walked_on: Date.current).exists?
 
       # ユーザーの設定時刻を取得（時と分のみ）
       reminder_hour = user.walk_reminder_time.hour
