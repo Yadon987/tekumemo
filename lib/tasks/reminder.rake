@@ -12,4 +12,11 @@ namespace :reminder do
     InactiveReminderService.send_reminders
     Rails.logger.info "Inactive reminder task completed."
   end
+
+  desc "リアクションのまとめ通知を送信（1日1回実行推奨、朝9時など）"
+  task reaction_summary: :environment do
+    Rails.logger.info "Starting reaction summary task..."
+    ReactionSummaryService.send_summaries
+    Rails.logger.info "Reaction summary task completed."
+  end
 end
