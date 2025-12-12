@@ -18,22 +18,39 @@ export default class extends Controller {
     try {
       console.log("VAPID Public Key:", this.vapidPublicKeyValue)
 
-      // Service Workerを登録
-      const registration = await navigator.serviceWorker.register("/service-worker.js")
+      // 1. 通知権限を要求
+      const permission = await Notification.requestPermission()
+      if (permission !== "granted") {
+        alert("通知を許可してください")
+        return
+      }
 
-      // プッシュ通知の購読を要求
-      const subscription = await registration.pushManager.subscribe({
+      // 2. Service Workerを登録して、完全に有効になるまで待つ
+      const registration = await navigator.serviceWorker.register("/service-worker.js")
+      await navigator.serviceWorker.ready
+
+      // 3. 既存の購読を確認
+      let subscription = await registration.pushManager.getSubscription()
+
+      // 既存の購読があれば削除
+      if (subscription) {
+        await subscription.unsubscribe()
+      }
+
+      // 4. 新しく購読を登録
+      subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: this.urlBase64ToUint8Array(this.vapidPublicKeyValue)
       })
 
-      // 購読情報をサーバーに送信
+      // 5. 購読情報をサーバーに送信
       await this.sendSubscriptionToServer(subscription)
 
       alert("通知設定が完了しました！")
     } catch (error) {
       console.error("Unable to subscribe to push.", error)
-      alert("通知設定に失敗しました。ブラウザの設定を確認してください。")
+      console.error("Error details:", error.name, error.message)
+      alert("通知設定に失敗しました。ブラウザの設定を確認してください。\nエラー: " + error.message)
     }
   }
 
