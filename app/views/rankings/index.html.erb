@@ -31,13 +31,23 @@
     <p class="text-slate-600 dark:text-purple-200 text-sm mt-3 font-bold tracking-wide"><%= t('rankings.index.subtitle') %></p>
 
     <!-- リアルタイム更新インジケーター -->
-    <div class="mt-4 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-purple-300">
-      <span class="relative flex h-2 w-2">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-      </span>
-      <span><%= period_label_ja(@period) %><%= t('rankings.index.list_title') %></span>
-      <span class="text-slate-400 dark:text-purple-400"><%= t('rankings.index.update_frequency') %></span>
+    <div class="mt-4 flex flex-col items-center justify-center gap-1 text-xs text-slate-500 dark:text-purple-300">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+        </span>
+        <span><%= period_label_ja(@period) %><%= t('rankings.index.list_title') %></span>
+      </div>
+      <div class="text-slate-400 dark:text-purple-400 text-xs">
+        <% if @last_data_updated_at && @next_cache_update_at %>
+          <span class="inline-block">
+            最終集計: <%= @last_data_updated_at.strftime('%m/%d %H:%M') %>
+            <span class="mx-1 opacity-50">|</span>
+            次回目安: <%= @next_cache_update_at.strftime('%m/%d %H:%M') %>
+          </span>
+        <% end %>
+      </div>
     </div>
   </div>
 
