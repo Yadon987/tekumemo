@@ -47,8 +47,61 @@ class User < ApplicationRecord
   end
 
   # Google Fitのアクセストークンが有効かチェック
+  # 期限切れの場合は自動的にリフレッシュを試みる
   def google_token_valid?
-    google_token.present? && google_expires_at.present? && google_expires_at > Time.current
+    return false unless google_token.present? && google_refresh_token.present?
+
+    # トークンの有効期限をチェック
+    if google_expires_at.present? && google_expires_at > Time.current
+      true
+    else
+      # 期限切れの場合、リフレッシュトークンで自動更新を試みる
+      refresh_google_token!
+    end
+  end
+
+  # リフレッシュトークンを使用してアクセストークンを更新する
+  def refresh_google_token!
+    return false unless google_refresh_token.present?
+
+    require "net/http"
+    require "json"
+
+    # Google OAuth2のトークンエンドポイント
+    uri = URI("https://oauth2.googleapis.com/token")
+
+    # リフレッシュリクエストのパラメータ
+    google_creds = Rails.application.credentials.google || {}
+    params = {
+      client_id: google_creds[:client_id],
+      client_secret: google_creds[:client_secret],
+      refresh_token: google_refresh_token,
+      grant_type: "refresh_token"
+    }
+
+    begin
+      # POSTリクエストを送信
+      response = Net::HTTP.post_form(uri, params)
+      data = JSON.parse(response.body)
+
+      if response.is_a?(Net::HTTPSuccess) && data["access_token"]
+        # 新しいトークン情報で更新
+        update!(
+          google_token: data["access_token"],
+          google_expires_at: Time.current + data["expires_in"].to_i.seconds
+        )
+
+        Rails.logger.info "Google token refreshed successfully for user #{id}"
+        true
+      else
+        # リフレッシュ失敗（リフレッシュトークンも無効）
+        Rails.logger.error "Failed to refresh Google token for user #{id}: #{data['error']}"
+        false
+      end
+    rescue StandardError => e
+      Rails.logger.error "Error refreshing Google token for user #{id}: #{e.message}"
+      false
+    end
   end
 
   # 連続して散歩した日数を計算する
