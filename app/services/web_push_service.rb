@@ -1,5 +1,12 @@
 class WebPushService
   def self.send_notification(user, title:, body:, url: "/", icon: "/icon-192.png")
+    subscriptions = user.web_push_subscriptions
+
+    if subscriptions.empty?
+      Rails.logger.info "No push subscriptions found for user #{user.id}"
+      return
+    end
+
     payload = {
       title: title,
       body: body,
@@ -7,7 +14,7 @@ class WebPushService
       url: url
     }.to_json
 
-    user.web_push_subscriptions.find_each do |subscription|
+    subscriptions.find_each do |subscription|
       begin
         WebPush.payload_send(
           message: payload,
