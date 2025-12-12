@@ -1,177 +1,154 @@
-# Supabase CLI
+# README
+# **てくメモ**
 
-[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
-](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
+> ⚠️ **MVP(β版)について**
+> 本アプリは現在開発中のベータ版です。バグや不具合が含まれる可能性があります。
+> 既知の問題は→ [GitHub Issues](https://github.com/Yadon987/tekumemo/issues/142)
+> 💡 本プロジェクトでは、カリキュラムの復習と自分に足りない物の洗い出しのため、AIエージェントを積極的に活用しています。
 
-[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
+アプリ正式名称：てくてくメモリア
 
-This repository contains all the functionality for Supabase CLI.
+## サービス概要
+散歩の記録、歩数の可視化、ランキング機能を核とし、働き盛り世代のモチベーション維持と習慣化をサポートします。
 
-- [x] Running Supabase locally
-- [x] Managing database migrations
-- [x] Creating and deploying Supabase Functions
-- [x] Generating types directly from your database schema
-- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
+投稿やリアクション機能を通じて「頑張り」を共有し、フォロー機能で気の合う仲間とのつながりを作ることで、飽きによる挫折を防ぎ達成感を与えます。
 
-## Getting started
+天気予報やランキング機能で、毎日の散歩を「ちょっとしたイベント」に変え、日々の健康づくりを継続的に促す**コミュニティ型のお散歩習慣化アプリ**です。
 
-### Install the CLI
+## このサービスへの思い・作りたい理由
+散歩を習慣化したい働き盛り世代の挫折を防ぐため。
 
-Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
+日々の**「頑張り」を記録・可視化することで達成感とモチベーション**を維持したい。
 
-```bash
-npm i supabase --save-dev
-```
+単調な散歩を乗り越え、健康習慣を定着させるためのアプリを提供したい。
 
-When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
+## ユーザー層について
+**ターゲット：** 健康に気を使い始める30代から60代の働き盛り世代　外出中のスマホ利用を想定
 
-```
-NODE_OPTIONS=--no-experimental-fetch yarn add supabase
-```
+## サービスの利用イメージ
+- 外で使うことを想定
+- 早朝や深夜に使う想定で配色(ダークモード機能など)に配慮が必要
+- 歩きながら短時間で操作しやすいようにボタンの大きさの配慮が必要
 
-> **Note**
-For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
+## ユーザーの獲得について
+Coming soon…
 
-<details>
-  <summary><b>macOS</b></summary>
+## サービスの差別化ポイント・推しポイント
+### **1. 多様なリアクション機能**
+- 単なる「いいね」ではなく「応援」「すごい」「頑張って」など感情豊かな反応
+- 働き盛り世代の励まし合いに特化したリアクション設計
 
-  Available via [Homebrew](https://brew.sh). To install:
+### **2. 実用性重視の設計**
+- 天気予報連携で散歩計画をサポート
+- Google Keep連携で散歩中のひらめきを逃さない
+- 忙しい世代でも続けやすいシンプルな記録方式
 
-  ```sh
-  brew install supabase/tap/supabase
-  ```
+### **3. 適度なコミュニティ感**
+- フォロー機能で気の合う仲間を見つけられる
+- 過度なSNS化を避け、健康習慣に集中した設計
+- プライバシー設定で安心して利用可能
 
-  To install the beta release channel:
-  
-  ```sh
-  brew install supabase/tap/supabase-beta
-  brew link --overwrite supabase-beta
-  ```
-  
-  To upgrade:
+### **4. 継続を支える仕組み**
+- ログインスタンプで習慣化をサポート
+- 目標達成率の可視化でモチベーション維持
+- ランキングで適度な競争要素を提供
 
-  ```sh
-  brew upgrade supabase
-  ```
-</details>
+## できること（機能一覧）
+### **認証・基本機能**
+* ログイン・ユーザー管理
+* ユーザープロフィール設定
+* ログインスタンプ機能
 
-<details>
-  <summary><b>Windows</b></summary>
+### **散歩記録機能**
+* 散歩投稿の追加・編集・削除
+* 歩数・距離・時間の記録
+* Google Fit連携
 
-  Available via [Scoop](https://scoop.sh). To install:
+### **コミュニティ機能**
+* リアクション機能（いいね、応援、すごい等）
+* フォロー・フォロワー機能（将来実装）
 
-  ```powershell
-  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
-  scoop install supabase
-  ```
+### **実用機能**
+* 天気予報の閲覧
+* 歩数・距離ランキング
+* 目標設定と達成率表示
 
-  To upgrade:
+### **外部連携**
+* Google Keepのリンク・アプリ起動
 
-  ```powershell
-  scoop update supabase
-  ```
-</details>
+### **将来実装予定**
+* 位置情報の取得・ルート表示
+* 歩数と距離の自動計算
+* 散歩リマインダー通知
+* グラフ・統計表示
+* Googleログイン
 
-<details>
-  <summary><b>Linux</b></summary>
+## 機能候補と優先順位
 
-  Available via [Homebrew](https://brew.sh) and Linux packages.
+| 優先度 | 技術要素 | 目的 |
+| :--- | :--- | :--- |
+| **最優先（MVP）**| **CRUD操作・DB操作** | 投稿、ユーザー認証・ログインなどのデータ永続化に必須 |
+| **最優先（MVP）**| **歩数記録・表示** | メイン機能 |
+| **最優先（MVP）**| **継続スタンプ + カレンダー** | 習慣化の核機能。実装が比較的容易 |
+| **最優先（MVP）**| **リアクション機能** | コミュニティの基盤。多様な反応で継続モチベーション向上 |
+| **最優先（MVP）**| **非同期通信** | 投稿データの送受信、外部APIデータ取得時のUX向上 |
+| **最優先（MVP）**| **外部API連携（Google Fit）** | ユーザーの面倒なデータ入力の手間を省く |
+| **最優先（MVP）**| **外部API連携（天気予報）** | ユーザーが散歩計画を立てるための実用性 |
+| **最優先（MVP）**| **Googleログイン** | ログインの手間を減らす |
+| **高優先** | **フォロー機能** | 継続的なコミュニティ形成。モチベーション維持の核 |
+| **中優先** | **ランキング機能** | ゲーミフィケーション要素 |
+| **中優先** | **GoogleマップAPI連携** | 歩行距離表示など、高度なUXを実現 |
+| **低優先** | **通知機能** | 継続利用を促すためのプッシュ通知 |
+| **低優先** | **グラフ機能** | ユーザー体験を向上させるための可視化 |
+| **低優先** | **継続スタンプ補填** | 雨などで連続ログインが止まらないように運動ガチャでスタンプを補填 |
+| **低優先** | **フォロー機能** | 継続的なコミュニティ形成。本来は高優先度だがユーザーが少ないうちは低優先度|
+| **ボツ案** | **アチーブメント機能** | 目標達成の可視化 一つ一つリッチなデザインを考え実装する時間がかかるためボツ |
 
-  #### via Homebrew
+## 使用する技術スタック
+### **バックエンド**
+* **言語・フレームワーク:** Ruby 3.2.2 + Ruby on Rails 7.2.x
+* **データベース:** PostgreSQL(Supabase)
+* **認証:** Devise
+* **API連携:** net-http（Rails標準）or OpenWeatherMap API（天気予報）
 
-  To install:
+### **フロントエンド**
+* **スタイリング:** Tailwind CSS CLI
+* **JavaScript:** Hotwire (Turbo / Stimulus)
 
-  ```sh
-  brew install supabase/tap/supabase
-  ```
 
-  To upgrade:
+### **インフラ・API**
+* **デプロイ先:** Render
+* **デザインツール:** Google Stitch・Figma
+* **バージョン管理:** Git/GitHub
+* **Auth:** Devise, OmniAuth (Google OAuth2)
+* **External APIs:**
+    *   Google Fit API (REST)
+    *   OpenWeatherMap API
+    *   Windy.com (Embed)
 
-  ```sh
-  brew upgrade supabase
-  ```
+## 画面遷移図(暫定版)
+### PC版
+Figma：(https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
+[![Image from Gyazo](https://i.gyazo.com/46f161ccd35179b545c2b700eeb17617.png)](https://gyazo.com/46f161ccd35179b545c2b700eeb17617)
 
-  #### via Linux packages
+### スマホ版
+Coming soon…
 
-  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
 
-  ```sh
-  sudo apk add --allow-untrusted <...>.apk
-  ```
+## ER図(暫定版)
+dbdiagram.io：(https://dbdiagram.io/d/68f9ef31357668b7323f223e)
+[![Image from Gyazo](https://i.gyazo.com/c20dc36a70bfa9218cfd56b62ab7c0dd.png)](https://gyazo.com/c20dc36a70bfa9218cfd56b62ab7c0dd)
 
-  ```sh
-  sudo dpkg -i <...>.deb
-  ```
+### ER図設計メモ
+- **ユーザー情報の分離**: 認証情報、プロフィール、設定を実務に近い形で分離し、パフォーマンスを最適化
+- **散歩投稿の統合**: 投稿内容と実績データを統合し、N+1問題を回避
+- **インデックス最適化**: 検索・ソート・集計処理を高速化
+- **スケーラビリティ**: 将来のフォロー機能など、機能拡張に対応
 
-  ```sh
-  sudo rpm -i <...>.rpm
-  ```
+## 今後の改善ポイント
+Google Cloudの審査を早めに通す
 
-  ```sh
-  sudo pacman -U <...>.pkg.tar.zst
-  ```
-</details>
-
-<details>
-  <summary><b>Other Platforms</b></summary>
-
-  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
-
-  ```sh
-  go install github.com/supabase/cli@latest
-  ```
-
-  Add a symlink to the binary in `$PATH` for easier access:
-
-  ```sh
-  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
-  ```
-
-  This works on other non-standard Linux distros.
-</details>
-
-<details>
-  <summary><b>Community Maintained Packages</b></summary>
-
-  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
-  To install in your working directory:
-
-  ```bash
-  pkgx install supabase
-  ```
-
-  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
-</details>
-
-### Run the CLI
-
-```bash
-supabase bootstrap
-```
-
-Or using npx:
-
-```bash
-npx supabase bootstrap
-```
-
-The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
-
-## Docs
-
-Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
-
-## Breaking changes
-
-We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
-
-However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
-
-## Developing
-
-To run from source:
-
-```sh
-# Go >= 1.22
-go run . help
-```
+## 📝 変更履歴
+v1.3　ER図の作成と仕様変更
+v1.4　アプリ正式名称を『てくてくメモリア』に変更
+v1.5  MVPリリースのドキュメント整理
