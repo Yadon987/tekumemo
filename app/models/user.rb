@@ -14,7 +14,6 @@ class User < ApplicationRecord
   has_many :reactions, dependent: :destroy
 
   # 通知機能の関連付け
-  # 通知機能の関連付け
   has_many :notifications, dependent: :destroy
   has_many :web_push_subscriptions, dependent: :destroy
 
