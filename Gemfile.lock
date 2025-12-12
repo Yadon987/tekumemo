@@ -247,6 +247,7 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    openssl (3.3.2)
     orm_adapter (0.5.0)
     os (1.1.4)
     parallel (1.27.0)
@@ -430,6 +431,9 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    web-push (3.0.2)
+      jwt (~> 3.0)
+      openssl (~> 3.0)
     websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
@@ -474,6 +478,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  web-push (~> 3.0)
 
 BUNDLED WITH
    2.4.20

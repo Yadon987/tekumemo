@@ -14,7 +14,9 @@ class User < ApplicationRecord
   has_many :reactions, dependent: :destroy
 
   # 通知機能の関連付け
+  # 通知機能の関連付け
   has_many :notifications, dependent: :destroy
+  has_many :web_push_subscriptions, dependent: :destroy
 
   # ユーザー名のバリデーション
   validates :name, presence: true
@@ -24,6 +26,10 @@ class User < ApplicationRecord
   # 2. 数値であること
   # 3. 0より大きいこと
   validates :target_distance, presence: true, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 100_000 }
+
+  # 通知設定のバリデーション
+  validates :inactive_days_threshold, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 30 }
+  validates :walk_reminder_time, presence: true, if: :walk_reminder_enabled?
 
   # Google OAuth2認証のコールバック処理
   # OmniAuthから返されたデータを使って、ユーザー情報とトークンを保存する
