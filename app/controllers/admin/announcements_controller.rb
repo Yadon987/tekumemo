@@ -4,7 +4,7 @@ class Admin::AnnouncementsController < ApplicationController
 
   # お知らせ一覧
   def index
-    @announcements = Announcement.order(created_at: :desc).page(params[:page]).per(20)
+    @announcements = Announcement.order(published_at: :desc, created_at: :desc).page(params[:page]).per(20)
   end
 
   # 新規作成フォーム

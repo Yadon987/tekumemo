@@ -32,6 +32,23 @@ RSpec.describe Notification, type: :model do
         expect(Notification.read).not_to include(unread_notification)
       end
     end
+
+    describe '.ordered_by_announcement' do
+      let!(:old_announcement) { FactoryBot.create(:announcement, published_at: 2.days.ago, is_published: false) }
+      let!(:new_announcement) { FactoryBot.create(:announcement, published_at: 1.day.ago, is_published: false) }
+      # old_announcementの通知を「新しく」作成する（作成順と公開順を逆転させる）
+      let!(:notification_for_old) { FactoryBot.create(:notification, user: user, announcement: old_announcement, created_at: Time.current) }
+      let!(:notification_for_new) { FactoryBot.create(:notification, user: user, announcement: new_announcement, created_at: 1.hour.ago) }
+
+      it 'お知らせの公開日順（降順）に並ぶこと' do
+        # created_at順だと notification_for_old が先に来るはずだが、
+        # ordered_by_announcement なら notification_for_new が先に来るはず
+        target_ids = [ notification_for_old.id, notification_for_new.id ]
+        notifications = Notification.where(id: target_ids).ordered_by_announcement
+        expect(notifications.first).to eq notification_for_new
+        expect(notifications.last).to eq notification_for_old
+      end
+    end
   end
 
   describe 'メソッド' do
