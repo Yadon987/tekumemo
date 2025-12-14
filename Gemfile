@@ -48,5 +48,3 @@ gem "solid_cache", "~> 1.0"
 gem "web-push", "~> 3.0"
 
 gem "parallel_tests", "~> 5.5", groups: [ :development, :test ]
-
-gem "database_cleaner-active_record", "~> 2.2", group: :test

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理画面 - てくメモ</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
+  <script>
+    (function() {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="min-h-screen bg-gray-50 dark:bg-slate-900 font-display transition-colors duration-200">
+  <div class="flex flex-col min-h-screen">
+    <!-- 管理画面ヘッダー -->
+    <header class="bg-slate-800 text-white shadow-md z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <%= link_to admin_announcements_path, class: "flex items-center space-x-2" do %>
+              <span class="material-symbols-outlined text-orange-400 text-3xl">admin_panel_settings</span>
+              <span class="font-bold text-xl tracking-tight">てくメモ 管理画面</span>
+            <% end %>
+
+            <!-- PC用ナビゲーション -->
+            <nav class="hidden md:ml-10 md:flex space-x-8">
+              <%= link_to admin_announcements_path, class: "text-gray-300 hover:bg-slate-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center #{current_page?(admin_announcements_path) ? 'bg-slate-900 text-white' : ''}" do %>
+                <span class="material-symbols-outlined mr-1 text-lg">campaign</span>
+                お知らせ管理
+              <% end %>
+
+              <%= link_to admin_users_path, class: "text-gray-300 hover:bg-slate-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center #{current_page?(admin_users_path) ? 'bg-slate-900 text-white' : ''}" do %>
+                <span class="material-symbols-outlined mr-1 text-lg">group</span>
+                ユーザー管理
+              <% end %>
+            </nav>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <%= link_to root_path, class: "text-gray-300 hover:text-white text-sm flex items-center" do %>
+              <span class="material-symbols-outlined mr-1 text-lg">logout</span>
+              アプリに戻る
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="flex-1 w-full max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <!-- Flashメッセージ -->
+      <div id="flash_messages" class="mb-6">
+        <% if notice.present? %>
+          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline"><%= notice %></span>
+          </div>
+        <% end %>
+        <% if alert.present? %>
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline"><%= alert %></span>
+          </div>
+        <% end %>
+      </div>
+
+      <%= yield %>
+    </main>
+  </div>
+</body>
+</html>

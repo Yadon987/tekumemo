@@ -14,6 +14,11 @@ Rails.application.configure do
   # Enable asset compilation for tests (fixes CI asset errors)
   config.assets.compile = true
 
+  # Sprocketsのキャッシュをメモリ上に保存（ファイル権限エラー回避）
+  config.assets.configure do |env|
+    env.cache = ActiveSupport::Cache.lookup_store(:memory_store)
+  end
+
   # Eager loading loads your entire application. When running a single test locally,
   # this is usually not necessary, and can slow down your test suite. However, it's
   # recommended that you enable it in continuous integration systems to ensure eager

@@ -6,12 +6,12 @@ RSpec.describe 'SNS機能', type: :system, js: true do
 
   before do
     login_as(user, scope: :user)
-    visit posts_path
   end
 
   describe '新規投稿' do
     context '正常系' do
       it 'モーダルから投稿を作成できること' do
+        visit posts_path
         # モーダルを開く
         find('[data-action="click->modal#open"]').click
         # モーダルが開くのを待つ
@@ -38,6 +38,7 @@ RSpec.describe 'SNS機能', type: :system, js: true do
 
     context '異常系' do
       it '入力不備がある場合、エラーメッセージが表示されること' do
+        visit posts_path
         find('[data-action="click->modal#open"]').click
 
         # 何も入力せずに送信
@@ -56,6 +57,7 @@ RSpec.describe 'SNS機能', type: :system, js: true do
 
   describe 'リアクション機能' do
     it '投稿に「いいね」できること' do
+      visit posts_path
       # 投稿内のリアクションエリアを特定
       within first('.group.relative') do
         # 「＋」ボタン（リアクション追加）をクリックしてポップオーバーを開く
@@ -76,6 +78,41 @@ RSpec.describe 'SNS機能', type: :system, js: true do
 
         # カウントが1になることを確認
         expect(page).to have_content '1'
+      end
+    end
+  end
+
+  describe '投稿の削除' do
+    let!(:my_post) { create(:post, user: user, body: '削除する投稿') }
+
+    it '自分の投稿は削除できること' do
+      visit posts_path
+      # 削除ボタンをクリック
+      accept_confirm do
+        # 自分の投稿内の削除ボタンを探す
+        # 投稿の特定が難しい場合、bodyテキストを含む要素の親を辿るなどの工夫が必要だが、
+        # ここではシンプルに削除ボタンを探す（自分の投稿にしか出ないはずなので）
+        find("a[title='投稿を削除']").click
+      end
+
+      expect(page).to have_content '投稿を削除しました'
+      expect(page).not_to have_content '削除する投稿'
+    end
+
+    it '他人の投稿には削除ボタンが表示されないこと' do
+      visit posts_path
+      # 他人の投稿（other_post）が表示されていることを確認
+      expect(page).to have_content '他人の投稿です'
+
+      # 他人の投稿の要素内には削除ボタンがないことを確認
+      # 自分の投稿（my_post）も表示されているので、削除ボタン自体はページに存在する可能性がある
+      # そのため、他人の投稿のスコープ内で削除ボタンがないことを確認する
+
+      # 他人の投稿要素を特定（bodyテキストで検索）
+      other_post_element = find('p', text: '他人の投稿です').find(:xpath, '../../..') # 構造に合わせて親要素へ
+
+      within other_post_element do
+        expect(page).not_to have_selector "a[data-turbo-method='delete']"
       end
     end
   end

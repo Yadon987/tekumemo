@@ -1,5 +1,4 @@
-class Admin::AnnouncementsController < ApplicationController
-  before_action :require_admin
+class Admin::AnnouncementsController < Admin::BaseController
   before_action :set_announcement, only: %i[edit update destroy publish unpublish]
 
   # お知らせ一覧
@@ -58,12 +57,7 @@ class Admin::AnnouncementsController < ApplicationController
 
   private
 
-  # 管理者チェック
-  def require_admin
-    unless current_user&.is_admin?
-      redirect_to root_path, alert: "管理者権限が必要です"
-    end
-  end
+
 
   def set_announcement
     @announcement = Announcement.find(params[:id])

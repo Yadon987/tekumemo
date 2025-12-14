@@ -46,7 +46,8 @@ RSpec.configure do |config|
     driven_by(:cuprite, screen_size: [ 1400, 1400 ], options: {
       window_size: [ 1400, 1400 ],
       browser_options: { 'no-sandbox' => nil },
-      process_timeout: 30,
+      process_timeout: 60,
+      timeout: 30,
       inspector: true,
       headless: true,
       url_blacklist: [ /fonts\.googleapis\.com/, /fonts\.gstatic\.com/ ]

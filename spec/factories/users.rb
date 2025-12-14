@@ -5,5 +5,13 @@ FactoryBot.define do
     password_confirmation { "password123" }
     name { "テストユーザー" }
     target_distance { 5000 } # 5km
+
+    trait :general do
+      role { :general }
+    end
+
+    trait :admin do
+      role { :admin }
+    end
   end
 end
