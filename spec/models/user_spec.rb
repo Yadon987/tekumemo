@@ -149,14 +149,10 @@ RSpec.describe User, type: :model do
 
     context "期間: monthly (今月)" do
       it "今月の記録が集計され、距離順に並ぶこと" do
-        # 前提: 1.day.ago が今月であること（月初1日の場合はテストが落ちる可能性があるが、Timecop等は使わず簡易的に）
-        # 安全のため、1.day.ago が先月になる場合（1日）は考慮が必要だが、
-        # ここでは「今日」と「昨日」が同じ月であると仮定するか、
-        # 明示的に日付を指定する方が良い。
-
-        # テストデータを再設定（日付を固定）
+        # 既存のデータをクリア
         Walk.delete_all
-        current_month = Time.current.beginning_of_month
+
+        current_month = Date.current.beginning_of_month
         last_month = 1.month.ago.beginning_of_month
 
         # User A: 今月5km, 先月10km
@@ -177,7 +173,7 @@ RSpec.describe User, type: :model do
     context "期間: yearly (今年)" do
       it "今年の記録が集計され、距離順に並ぶこと" do
         Walk.delete_all
-        current_year = Time.current.beginning_of_year
+        current_year = Date.current.beginning_of_year
         last_year = 1.year.ago.beginning_of_year
 
         # User A: 今年5km, 去年10km

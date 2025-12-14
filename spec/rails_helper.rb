@@ -36,14 +36,21 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 require 'capybara/rails'
-require 'selenium-webdriver'
+require 'capybara/cuprite'
+
+# 並列実行時は負荷がかかるため、待機時間を長めに設定
+Capybara.default_max_wait_time = 10
 
 RSpec.configure do |config|
-  config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
-      options.add_argument('no-sandbox')
-      options.add_argument('disable-dev-shm-usage')
-    end
+  config.before(:each, type: :system) do
+    driven_by(:cuprite, screen_size: [ 1400, 1400 ], options: {
+      window_size: [ 1400, 1400 ],
+      browser_options: { 'no-sandbox' => nil },
+      process_timeout: 30,
+      inspector: true,
+      headless: true,
+      url_blacklist: [ /fonts\.googleapis\.com/, /fonts\.gstatic\.com/ ]
+    })
   end
 end
 
@@ -52,6 +59,9 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :system
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Warden::Test::Helpers
+  config.before(:suite) do
+    Warden.test_mode!
+  end
   config.after :each do
     Warden.test_reset!
   end
@@ -63,7 +73,11 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
+  # DatabaseCleanerの設定
+  # Rails標準のトランザクション管理を使用する
   config.use_transactional_fixtures = true
+
+  # DatabaseCleanerの設定は削除（Rails標準機能で十分なため）
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false

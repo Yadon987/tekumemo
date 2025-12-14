@@ -1,27 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Walks", type: :system do
-  before do
-    driven_by(:selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]) do |driver_option|
-      driver_option.add_argument('--no-sandbox')
-      driver_option.add_argument('--disable-dev-shm-usage')
-      driver_option.add_argument('--headless=new')
-      driver_option.add_argument('--disable-gpu')
-    end
-  end
-
+RSpec.describe "Walks", type: :system, js: true do
   describe "散歩記録の新規作成" do
     # シンプルにUser.create!を使用（FactoryBotの依存を排除して原因切り分け）
     let(:user) { User.create!(email: "test_walk@example.com", password: "password123", name: "テスト太郎", target_distance: 5000) }
 
     before do
-      visit new_user_session_path
-      fill_in "メールアドレス", with: user.email
-      fill_in "login-password-field", with: user.password
-      within "#new_user" do
-        click_button "ログイン"
-      end
-      expect(page).to have_content "ログインしました"
+      login_as(user, scope: :user)
     end
 
     it "散歩記録が保存され、一覧画面に表示されること" do
@@ -55,13 +40,7 @@ RSpec.describe "Walks", type: :system do
     let!(:walk) { Walk.create!(user: user, walked_on: Date.current, distance: 3.0, duration: 30, steps: 3000, calories_burned: 150, location: "編集前の場所") }
 
     before do
-      visit new_user_session_path
-      fill_in "メールアドレス", with: user.email
-      fill_in "login-password-field", with: user.password
-      within "#new_user" do
-        click_button "ログイン"
-      end
-      expect(page).to have_content "ログインしました"
+      login_as(user, scope: :user)
     end
 
     it "記録を編集できること" do
@@ -89,13 +68,7 @@ RSpec.describe "Walks", type: :system do
     let!(:walk) { Walk.create!(user: user, walked_on: Date.current, distance: 3.0, duration: 30, steps: 3000, calories_burned: 150, location: "削除する場所") }
 
     before do
-      visit new_user_session_path
-      fill_in "メールアドレス", with: user.email
-      fill_in "login-password-field", with: user.password
-      within "#new_user" do
-        click_button "ログイン"
-      end
-      expect(page).to have_content "ログインしました"
+      login_as(user, scope: :user)
     end
 
     it "記録を削除できること" do
@@ -132,13 +105,7 @@ RSpec.describe "Walks", type: :system do
         )
       end
 
-      visit new_user_session_path
-      fill_in "メールアドレス", with: user.email
-      fill_in "login-password-field", with: user.password
-      within "#new_user" do
-        click_button "ログイン"
-      end
-      expect(page).to have_content "ログインしました"
+      login_as(user, scope: :user)
     end
 
     it "ページネーションが表示され、次ページに遷移できること" do

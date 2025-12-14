@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
-  let(:user) { FactoryBot.create(:user) }
-  let(:announcement) { FactoryBot.create(:announcement) }
-  let(:notification) { FactoryBot.create(:notification, user: user, announcement: announcement) }
+  let(:user) { FactoryBot.build_stubbed(:user) }
+  let(:announcement) { FactoryBot.build_stubbed(:announcement) }
+  let(:notification) { FactoryBot.build_stubbed(:notification, user: user, announcement: announcement) }
 
   describe 'アソシエーション' do
     it 'Userに属していること' do
@@ -16,6 +16,8 @@ RSpec.describe Notification, type: :model do
   end
 
   describe 'スコープ' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:announcement) { FactoryBot.create(:announcement) }
     let!(:unread_notification) { FactoryBot.create(:notification, user: user, announcement: announcement, read_at: nil) }
     let!(:read_notification) { FactoryBot.create(:notification, user: user, announcement: announcement, read_at: 1.day.ago) }
 

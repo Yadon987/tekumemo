@@ -1,26 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe "LoginStamps", type: :system do
+RSpec.describe "LoginStamps", type: :system, js: true do
   # Chrome起動設定
-  before do
-    driven_by(:selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]) do |driver_option|
-      driver_option.add_argument('--no-sandbox')
-      driver_option.add_argument('--disable-dev-shm-usage')
-      driver_option.add_argument('--headless=new')
-      driver_option.add_argument('--disable-gpu')
-    end
-  end
 
   # テストデータの準備
   let(:user) { FactoryBot.create(:user, name: "スタンプ太郎") }
 
   before do
     # ログイン処理
-    visit new_user_session_path
-    fill_in "user_email", with: user.email
-    fill_in "login-password-field", with: user.password
-    click_button "ログイン"
-    expect(page).to have_content "ログインしました"
+    login_as(user, scope: :user)
+    visit root_path
   end
 
   describe "カレンダー画面の表示" do
@@ -42,9 +31,9 @@ RSpec.describe "LoginStamps", type: :system do
 
   describe "スタンプの表示" do
     context "散歩記録がある場合" do
+      let!(:walk) { FactoryBot.create(:walk, user: user, walked_on: Date.current) }
+
       before do
-        # 今日の散歩記録を作成
-        FactoryBot.create(:walk, user: user, walked_on: Date.current)
         visit login_stamps_path
       end
 
@@ -57,7 +46,10 @@ RSpec.describe "LoginStamps", type: :system do
 
       it "「てくてく日数」が1日と表示されること" do
         # 今月の散歩日数の表示確認
-        within first(".bg-gradient-to-br.from-cyan-400") do
+        # 「てくてく日数」というテキストを含む要素を特定
+        target_card = find(".bg-gradient-to-br.from-cyan-400", text: "てくてく日数")
+
+        within target_card do
           expect(page).to have_content "1"
         end
       end

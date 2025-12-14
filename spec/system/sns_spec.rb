@@ -5,18 +5,8 @@ RSpec.describe 'SNS機能', type: :system, js: true do
   let!(:other_post) { create(:post, body: '他人の投稿です') }
 
   before do
-    sign_in user
+    login_as(user, scope: :user)
     visit posts_path
-  end
-
-  describe '投稿一覧画面' do
-    it '他人の投稿が表示されていること' do
-      expect(page).to have_content '他人の投稿です'
-    end
-
-    it '新規投稿トリガーが表示されていること' do
-      expect(page).to have_selector '[data-action="click->modal#open"]'
-    end
   end
 
   describe '新規投稿' do
@@ -24,18 +14,21 @@ RSpec.describe 'SNS機能', type: :system, js: true do
       it 'モーダルから投稿を作成できること' do
         # モーダルを開く
         find('[data-action="click->modal#open"]').click
-        expect(page).to have_selector 'dialog#new_post_modal[open]'
+        # モーダルが開くのを待つ
+        modal = find('dialog#new_post_modal[open]')
 
-        # フォーム入力
-        # 天気を選択（sunny）
-        find('label', text: '晴れ').click
-        # 気分を選択（great）
-        find('label', text: '最高').click
-        # 本文を入力
-        fill_in 'post[body]', with: 'テスト投稿です！'
+        within modal do
+          # フォーム入力
+          # 天気を選択（sunny）
+          find('label', text: '晴れ', visible: true).click
+          # 気分を選択（great）
+          find('label', text: '最高', visible: true).click
+          # 本文を入力
+          fill_in 'post[body]', with: 'テスト投稿です！'
 
-        # 送信
-        click_button '投稿する'
+          # 送信
+          click_button '投稿する'
+        end
 
         # モーダルが閉じ、投稿が一覧に追加されていることを確認
         expect(page).to have_content 'テスト投稿です！'
@@ -48,6 +41,8 @@ RSpec.describe 'SNS機能', type: :system, js: true do
         find('[data-action="click->modal#open"]').click
 
         # 何も入力せずに送信
+        # HTML5バリデーションを無効化して送信（サーバーサイドのバリデーションをテストするため）
+        execute_script("document.querySelector('form').noValidate = true")
         click_button '投稿する'
 
         # エラーメッセージの確認

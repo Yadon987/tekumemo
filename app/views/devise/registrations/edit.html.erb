@@ -160,6 +160,94 @@
         </div>
         <p class="text-xs text-gray-500 dark:text-slate-500 mt-1 ml-1">1日の目標距離をメートル単位で設定します（デフォルト: 3000）</p>
       </div>
+
+      <%# 通知設定セクション %>
+      <div class="border-t border-gray-100 dark:border-white/10 pt-6 mt-6">
+        <h3 class="text-sm font-bold text-gray-700 dark:text-slate-300 mb-4 flex items-center">
+          <span class="material-symbols-outlined text-purple-500 mr-2">notifications</span>
+          通知設定
+        </h3>
+
+        <%# ブラウザ通知許可ボタン %>
+        <div class="mb-6" data-controller="push-notification" data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
+          <button type="button" data-action="click->push-notification#subscribe" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center space-x-2 border border-slate-200 dark:border-slate-700">
+            <span class="material-symbols-outlined">notifications_active</span>
+            <span>この端末で通知を受け取る</span>
+          </button>
+          <p class="text-xs text-center text-gray-400 dark:text-slate-500 mt-2">
+            ※ボタンを押すとブラウザの通知許可ダイアログが表示されます
+          </p>
+        </div>
+
+        <%# 散歩時間リマインド %>
+        <div class="notification-group mb-6 p-4 bg-purple-50/50 dark:bg-purple-900/10 rounded-xl border border-purple-100 dark:border-purple-500/20">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex-1">
+              <label class="flex items-center cursor-pointer">
+                <%= f.check_box :walk_reminder_enabled,
+                    class: "sr-only peer",
+                    onchange: "this.closest('.notification-group').querySelector('.time-input-container').classList.toggle('hidden', !this.checked)" %>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600 relative"></div>
+                <div class="ml-3">
+                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">散歩時間のリマインド</span>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">指定した時刻に散歩を促す通知を送信します</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="time-input-container <%= 'hidden' unless resource.walk_reminder_enabled %> ml-14 mt-2">
+            <div class="flex items-center space-x-2">
+              <span class="material-symbols-outlined text-gray-400 text-lg">schedule</span>
+              <%= f.time_field :walk_reminder_time,
+                  class: "px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none dark:text-white" %>
+              <span class="text-xs text-gray-500 dark:text-gray-400">に通知</span>
+            </div>
+          </div>
+        </div>
+
+        <%# 非アクティブリマインド %>
+        <div class="notification-group mb-6 p-4 bg-orange-50/50 dark:bg-orange-900/10 rounded-xl border border-orange-100 dark:border-orange-500/20">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex-1">
+              <label class="flex items-center cursor-pointer">
+                <%= f.check_box :inactive_days_reminder_enabled,
+                    class: "sr-only peer",
+                    onchange: "this.closest('.notification-group').querySelector('.threshold-input-container').classList.toggle('hidden', !this.checked)" %>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600 relative"></div>
+                <div class="ml-3">
+                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">非アクティブ時のリマインド</span>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">一定期間散歩していない場合に通知を送信します</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="threshold-input-container <%= 'hidden' unless resource.inactive_days_reminder_enabled %> ml-14 mt-2">
+            <div class="flex items-center space-x-2">
+              <span class="material-symbols-outlined text-gray-400 text-lg">event_busy</span>
+              <%= f.number_field :inactive_days_threshold,
+                  min: 1,
+                  max: 30,
+                  class: "w-20 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 outline-none dark:text-white text-center" %>
+              <span class="text-xs text-gray-500 dark:text-gray-400">日間散歩していない場合に通知</span>
+            </div>
+          </div>
+        </div>
+
+        <%# リアクションまとめ通知 %>
+        <div class="mb-4 p-4 bg-pink-50/50 dark:bg-pink-900/10 rounded-xl border border-pink-100 dark:border-pink-500/20">
+          <label class="flex items-center cursor-pointer">
+            <%= f.check_box :reaction_summary_enabled, class: "sr-only peer" %>
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600 relative"></div>
+            <div class="ml-3">
+              <span class="text-sm font-bold text-gray-700 dark:text-gray-300">リアクションのまとめ通知</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">1日1回、受け取ったリアクションをまとめて通知します</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
       <%# セキュリティ設定エリア（メール・パスワード） %>
       <div class="border-t border-gray-100 dark:border-white/10 pt-6 mt-6">
         <h3 class="text-sm font-bold text-gray-700 dark:text-slate-300 mb-4">セキュリティ設定</h3>

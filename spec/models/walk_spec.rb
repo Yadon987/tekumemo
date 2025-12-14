@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Walk, type: :model do
   # テストデータのセットアップ
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { FactoryBot.build_stubbed(:user) }
 
   describe 'バリデーション' do
     context '正常系' do
@@ -64,6 +64,8 @@ RSpec.describe Walk, type: :model do
     end
 
     context '一意性の検証' do
+      let(:user) { FactoryBot.create(:user) }
+
       it '同じユーザーが同じ日に重複して記録できないこと' do
         # 1つ目の記録を作成
         FactoryBot.create(:walk, user: user, walked_on: Date.current)
@@ -85,13 +87,15 @@ RSpec.describe Walk, type: :model do
   end
 
   describe 'スコープ' do
+    let(:user) { FactoryBot.create(:user) }
+
     describe '.recent' do
       it '新しい日付順に並び替えられること' do
         walk1 = FactoryBot.create(:walk, user: user, walked_on: 3.days.ago)
         walk2 = FactoryBot.create(:walk, user: user, walked_on: 1.day.ago)
         walk3 = FactoryBot.create(:walk, user: user, walked_on: 2.days.ago)
 
-        expect(Walk.recent).to eq([ walk2, walk3, walk1 ])
+        expect(Walk.where(id: [ walk1.id, walk2.id, walk3.id ]).recent).to eq([ walk2, walk3, walk1 ])
       end
     end
   end

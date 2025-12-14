@@ -50,6 +50,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Web Push通知購読
+  resources :web_push_subscriptions, only: [ :create ]
+
   # ===== 管理者機能 =====
   namespace :admin do
     resources :announcements do

@@ -37,6 +37,9 @@ application.register("modal", ModalController)
 import PopoverController from "./popover_controller"
 application.register("popover", PopoverController)
 
+import PushNotificationController from "./push_notification_controller"
+application.register("push-notification", PushNotificationController)
+
 import PwaInstallController from "./pwa_install_controller"
 application.register("pwa-install", PwaInstallController)
 
