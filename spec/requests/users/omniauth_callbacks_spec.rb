@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Users::OmniauthCallbacks", type: :request do
   describe "POST /users/auth/google_oauth2/callback" do
-    let(:user) { FactoryBot.create(:user, email: "test@example.com") }
+    let(:user) { FactoryBot.create(:user) }
 
     before do
       OmniAuth.config.test_mode = true

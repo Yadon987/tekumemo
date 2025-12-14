@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_11_121714) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_13_011842) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,11 +29,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_121714) do
 
   create_table "notifications", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "announcement_id", null: false
+    t.bigint "announcement_id"
     t.datetime "read_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "notification_type", default: 0, null: false, comment: "通知種類: 0=お知らせ, 1=非アクティブリマインド, 2=リアクションまとめ"
+    t.text "message", comment: "リマインダー通知のメッセージ"
+    t.string "url", comment: "リマインダー通知のリンク先"
     t.index ["announcement_id"], name: "index_notifications_on_announcement_id"
+    t.index ["notification_type"], name: "index_notifications_on_notification_type"
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
@@ -91,6 +96,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_121714) do
     t.integer "target_distance", default: 3000, null: false
     t.boolean "use_google_avatar", default: true
     t.boolean "is_admin", default: false, null: false
+    t.boolean "walk_reminder_enabled", default: false, null: false, comment: "散歩時間リマインド通知の有効/無効"
+    t.time "walk_reminder_time", default: "2000-01-01 19:00:00", comment: "散歩リマインド通知の時刻"
+    t.boolean "inactive_days_reminder_enabled", default: true, null: false, comment: "非アクティブリマインド通知の有効/無効"
+    t.integer "inactive_days_threshold", default: 3, null: false, comment: "非アクティブと判定する日数"
+    t.boolean "reaction_summary_enabled", default: true, null: false, comment: "リアクションまとめ通知の有効/無効"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["is_admin"], name: "index_users_on_is_admin"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -112,6 +122,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_121714) do
     t.index ["walked_on"], name: "index_walks_on_walked_on"
   end
 
+  create_table "web_push_subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "endpoint", null: false, comment: "通知送信先URL"
+    t.string "p256dh", null: false, comment: "暗号化キー (P-256 curve)"
+    t.string "auth_key", null: false, comment: "認証シークレット"
+    t.string "user_agent", comment: "登録したブラウザ/デバイス情報"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["endpoint"], name: "index_web_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_web_push_subscriptions_on_user_id"
+  end
+
   add_foreign_key "notifications", "announcements"
   add_foreign_key "notifications", "users"
   add_foreign_key "posts", "users"
@@ -119,4 +141,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_121714) do
   add_foreign_key "reactions", "posts"
   add_foreign_key "reactions", "users"
   add_foreign_key "walks", "users"
+  add_foreign_key "web_push_subscriptions", "users"
 end

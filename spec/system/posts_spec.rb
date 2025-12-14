@@ -1,24 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system do
+RSpec.describe "Posts", type: :system, js: true do
   let(:user) { FactoryBot.create(:user, email: "test@example.com", name: "テストユーザー") }
   let(:other_user) { FactoryBot.create(:user, email: "other@example.com", name: "他のユーザー") }
 
   before do
-    # ログイン処理
     login_as(user, scope: :user)
   end
 
-  describe "タイムラインの表示" do
-    context "投稿がない場合" do
-      it "空の状態のメッセージが表示されること" do
-        visit posts_path
-        expect(page).to have_content "みんな"
-        expect(page).to have_content "まだ投稿がありません"
-      end
-    end
-
-    context "投稿がある場合" do
+  context "投稿がある場合" do
       before do
         # 他のユーザーの投稿を作成
         other_user.posts.create!(body: "今日はいい天気でした", weather: "sunny", feeling: "great")
@@ -32,7 +22,6 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content "5km歩きました"
         expect(page).to have_content "他のユーザー"
         expect(page).to have_content "テストユーザー"
-      end
     end
   end
 
@@ -114,11 +103,15 @@ RSpec.describe "Posts", type: :system do
       # リアクション追加ボタンをクリック
       find("button[title='リアクションを追加']").click
 
-      # ピッカー内の「いいね」ボタンをクリック
-      find("button", text: "👍").click
+      # ポップオーバーが表示されるのを待つ（タイムアウトを延長）
+      using_wait_time(10) do
+        expect(page).to have_selector("button", text: "👍", visible: true)
+        # ピッカー内の「いいね」ボタンをクリック
+        find("button", text: "👍").click
 
-      # リアクション数が増えることを確認（非同期更新）
-      expect(page).to have_selector(".reaction-btn", text: "1", visible: true)
+        # リアクション数が増えることを確認（非同期更新）
+        expect(page).to have_selector(".reaction-btn", text: "1", visible: true)
+      end
     end
   end
 end

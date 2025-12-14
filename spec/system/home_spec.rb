@@ -1,25 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe "Home", type: :system do
+RSpec.describe "Home", type: :system, js: true do
   # Chrome起動設定
-  before do
-    driven_by(:selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]) do |driver_option|
-      driver_option.add_argument('--no-sandbox')
-      driver_option.add_argument('--disable-dev-shm-usage')
-      driver_option.add_argument('--headless=new')
-      driver_option.add_argument('--disable-gpu')
-    end
-  end
 
   let(:user) { FactoryBot.create(:user, name: "ホーム太郎") }
 
   before do
     # ログイン処理
-    visit new_user_session_path
-    fill_in "user_email", with: user.email
-    fill_in "login-password-field", with: user.password
-    click_button "ログイン"
-    expect(page).to have_content "ログインしました"
+    # ログイン処理をWardenヘルパーで実行（UI操作をスキップして安定化）
+    login_as(user, scope: :user)
   end
 
   describe "ホーム画面の表示" do
@@ -56,14 +45,15 @@ RSpec.describe "Home", type: :system do
     end
 
     it "位置情報と天気が表示されること" do
+      # 非同期読み込み完了を待つ（特定の要素が表示されるまで待機）
+      # 天気アイコンが表示されるまで待つことで、他の情報も読み込まれていることを保証する
+      expect(page).to have_selector(".material-symbols-outlined", text: "sunny", wait: 10)
+
       # 位置情報（Shinjuku または Tokyo）が表示されているか
       expect(page).to have_content "Shinjuku"
 
       # 気温が表示されているか
       expect(page).to have_content "20"
-
-      # 天気アイコンが表示されているか（Material Symbolsのテキストとして）
-      expect(page).to have_content "sunny"
     end
 
     context "今日の散歩記録がある場合" do

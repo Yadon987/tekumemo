@@ -4,11 +4,24 @@ class NotificationsController < ApplicationController
 
   # 通知一覧
   def index
-    @notifications = current_user.notifications
-                                  .includes(:announcement)
-                                  .recent
-                                  .page(params[:page])
-                                  .per(20)
+    # タブの種類を取得（デフォルトは'announcements'）
+    @tab = params[:tab] || "announcements"
+
+    # タブに応じて通知をフィルタリング
+    @notifications = case @tab
+    when "reminders"
+                       # リマインダーは作成日時の降順
+                       current_user.notifications.reminders.recent
+    else  # 'announcements'
+                       # お知らせは公開日時の降順（ordered_by_announcementがorder句を持っているのでrecentは不要）
+                       current_user.notifications.announcements.includes(:announcement).ordered_by_announcement
+    end
+
+    @notifications = @notifications.page(params[:page]).per(20)
+
+    # 各タブの未読数を取得
+    @announcement_unread_count = current_user.notifications.announcements.unread.count
+    @reminder_unread_count = current_user.notifications.reminders.unread.count
   end
 
   # 個別既読

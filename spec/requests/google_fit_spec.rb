@@ -110,7 +110,7 @@ RSpec.describe "GoogleFit", type: :request do
 
     context "連携済みの場合" do
       before do
-        user.update(google_token: "token", google_expires_at: 1.hour.from_now)
+        user.update(google_token: "token", google_refresh_token: "refresh_token", google_expires_at: 1.hour.from_now)
       end
 
       it "connected: true とメールアドレスが返ること" do

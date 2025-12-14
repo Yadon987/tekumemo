@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
-  let(:user) { FactoryBot.create(:user) }
-  let(:announcement) { FactoryBot.create(:announcement) }
-  let(:notification) { FactoryBot.create(:notification, user: user, announcement: announcement) }
+  let(:user) { FactoryBot.build_stubbed(:user) }
+  let(:announcement) { FactoryBot.build_stubbed(:announcement) }
+  let(:notification) { FactoryBot.build_stubbed(:notification, user: user, announcement: announcement) }
 
   describe 'アソシエーション' do
     it 'Userに属していること' do
@@ -16,6 +16,8 @@ RSpec.describe Notification, type: :model do
   end
 
   describe 'スコープ' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:announcement) { FactoryBot.create(:announcement) }
     let!(:unread_notification) { FactoryBot.create(:notification, user: user, announcement: announcement, read_at: nil) }
     let!(:read_notification) { FactoryBot.create(:notification, user: user, announcement: announcement, read_at: 1.day.ago) }
 
@@ -30,6 +32,23 @@ RSpec.describe Notification, type: :model do
       it '既読の通知のみを取得すること' do
         expect(Notification.read).to include(read_notification)
         expect(Notification.read).not_to include(unread_notification)
+      end
+    end
+
+    describe '.ordered_by_announcement' do
+      let!(:old_announcement) { FactoryBot.create(:announcement, published_at: 2.days.ago, is_published: false) }
+      let!(:new_announcement) { FactoryBot.create(:announcement, published_at: 1.day.ago, is_published: false) }
+      # old_announcementの通知を「新しく」作成する（作成順と公開順を逆転させる）
+      let!(:notification_for_old) { FactoryBot.create(:notification, user: user, announcement: old_announcement, created_at: Time.current) }
+      let!(:notification_for_new) { FactoryBot.create(:notification, user: user, announcement: new_announcement, created_at: 1.hour.ago) }
+
+      it 'お知らせの公開日順（降順）に並ぶこと' do
+        # created_at順だと notification_for_old が先に来るはずだが、
+        # ordered_by_announcement なら notification_for_new が先に来るはず
+        target_ids = [ notification_for_old.id, notification_for_new.id ]
+        notifications = Notification.where(id: target_ids).ordered_by_announcement
+        expect(notifications.first).to eq notification_for_new
+        expect(notifications.last).to eq notification_for_old
       end
     end
   end

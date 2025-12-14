@@ -16,7 +16,15 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
 
     # アカウント更新時に追加フィールドを許可する場合
-    devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :target_distance ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [
+      :name,
+      :target_distance,
+      :walk_reminder_enabled,
+      :walk_reminder_time,
+      :inactive_days_reminder_enabled,
+      :inactive_days_threshold,
+      :reaction_summary_enabled
+    ])
   end
 
   # ログイン後のリダイレクト先を指定

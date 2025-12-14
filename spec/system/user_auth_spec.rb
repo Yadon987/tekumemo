@@ -1,10 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "ユーザー認証・認可", type: :system do
-  before do
-    driven_by(:rack_test)
-  end
-
+RSpec.describe "ユーザー認証・認可", type: :system, js: true do
   describe "ログイン" do
     let!(:user) { User.create!(name: "テストユーザー", email: "test@example.com", password: "password123", target_distance: 5000) }
 
@@ -49,30 +45,19 @@ RSpec.describe "ユーザー認証・認可", type: :system do
     let!(:user) { User.create!(name: "テストユーザー", email: "test@example.com", password: "password123", target_distance: 5000) }
 
     before do
-      sign_in user
+      login_as(user, scope: :user)
       visit root_path
     end
 
     it "ログアウトできること" do
-      # ヘッダーのアバターをクリックしてドロップダウンを表示（JSが必要だがrack_testなので直接リンクを踏むか、ボタンを探す）
-      # rack_testではhoverやclickによるJSイベントは発火しないが、
-      # リンクが見えていればclick_linkで遷移できる。
-      # ただし、ドロップダウン内にあるため、Capybaraが見つけられない可能性がある。
-      # その場合は href を指定してリンクをクリックするか、直接DELETEリクエストを送る必要があるが、
-      # System SpecではUI操作を模倣すべき。
+      # アバター画像をクリックしてドロップダウンを開く
+      # 画像がない場合（イニシャル表示）も考慮して、ボタン自体をクリックする
+      find("button[data-dropdown-target='button']").click
 
-      # ドロップダウンがhiddenでも、rack_testならDOM内にあればクリックできる場合がある。
-      # もしダメなら、JSドライバを使う必要があるが、ここでは一旦試す。
-
-      # ログアウトボタンは "ログアウト" というテキストを持っている
-      # ただし、ドロップダウン内にある
-
-      # Capybaraのrack_testドライバはvisible: falseの要素をクリックできないデフォルト設定があるかもしれない
-      # ここではドロップダウンを開く操作（JS）ができないので、
-      # ログアウトリンクを直接探してクリックする（visible: :all オプションが必要かも）
-
-      # ログアウトリンクをクリック（非表示要素も対象にする）
-      find("a", text: "ログアウト", visible: :all).click
+      # ドロップダウンが表示されるのを待ってからログアウトをクリック
+      # "ログアウト" のリンクが表示されるまで待機する
+      expect(page).to have_content("ログアウト")
+      click_link "ログアウト"
 
       expect(page).to have_content 'ログアウトしました。'
       expect(current_path).to eq new_user_session_path
@@ -85,14 +70,14 @@ RSpec.describe "ユーザー認証・認可", type: :system do
     context "ログインしていない場合" do
       it "設定画面にアクセスするとログイン画面にリダイレクトされること" do
         visit edit_user_registration_path
-        expect(current_path).to eq new_user_session_path
         expect(page).to have_content 'アカウント登録もしくはログインしてください。'
+        expect(current_path).to eq new_user_session_path
       end
 
       it "トップページにアクセスするとログイン画面にリダイレクトされること" do
         visit root_path
-        expect(current_path).to eq new_user_session_path
         expect(page).to have_content 'アカウント登録もしくはログインしてください。'
+        expect(current_path).to eq new_user_session_path
       end
     end
 
@@ -103,14 +88,14 @@ RSpec.describe "ユーザー認証・認可", type: :system do
 
       it "ログイン画面にアクセスするとトップページにリダイレクトされること" do
         visit new_user_session_path
-        expect(current_path).to eq root_path
         expect(page).to have_content 'すでにログインしています。'
+        expect(current_path).to eq root_path
       end
 
       it "新規登録画面にアクセスするとトップページにリダイレクトされること" do
         visit new_user_registration_path
-        expect(current_path).to eq root_path
         expect(page).to have_content 'すでにログインしています。'
+        expect(current_path).to eq root_path
       end
     end
   end
@@ -120,9 +105,11 @@ RSpec.describe "ユーザー認証・認可", type: :system do
       visit new_user_session_path
       click_link "忘れた場合"
 
-      expect(page).to have_content("Coming")
-      expect(page).to have_content("Soon")
-      expect(page).to have_content("現在開発中です")
+      # パスワードリセット画面のフォームがあるか確認
+      expect(page).to have_selector("form[action*='password']")
+      expect(page).to have_field("メールアドレス")
+      # expect(page).to have_content("Soon")
+      # expect(page).to have_content("現在開発中です")
     end
   end
 end

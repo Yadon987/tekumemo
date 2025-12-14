@@ -22,7 +22,7 @@ class Announcement < ApplicationRecord
   scope :active, -> {
     published.where("expires_at IS NULL OR expires_at > ?", Time.current)
   }
-  scope :recent, -> { order(published_at: :desc) }
+  scope :recent, -> { order(published_at: :desc, id: :desc) }
 
   # 公開中かどうか
   def active?
