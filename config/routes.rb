@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   # ===== 管理者機能 =====
   namespace :admin do
     resources :users, only: [ :index, :destroy ]
+    resources :posts, only: [ :index, :show, :destroy ]
     resources :announcements do
       member do
         patch :publish    # 公開

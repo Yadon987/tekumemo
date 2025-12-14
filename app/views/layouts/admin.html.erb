@@ -50,6 +50,11 @@
                 <span class="material-symbols-outlined mr-1 text-lg">group</span>
                 ユーザー管理
               <% end %>
+
+              <%= link_to admin_posts_path, class: "text-gray-300 hover:bg-slate-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center #{current_page?(admin_posts_path) ? 'bg-slate-900 text-white' : ''}" do %>
+                <span class="material-symbols-outlined mr-1 text-lg">edit_square</span>
+                投稿管理
+              <% end %>
             </nav>
           </div>
 
