@@ -19,9 +19,9 @@ class Admin::DashboardController < Admin::BaseController
 
     # 人気投稿（リアクションが多い順 TOP5）
     @popular_posts = Post.left_joins(:reactions)
-                         .select('posts.*, COUNT(reactions.id) as reactions_count')
-                         .group('posts.id')
-                         .order('reactions_count DESC')
+                         .select("posts.*, COUNT(reactions.id) as reactions_count")
+                         .group("posts.id")
+                         .order("reactions_count DESC")
                          .limit(5)
                          .includes(:user)
 

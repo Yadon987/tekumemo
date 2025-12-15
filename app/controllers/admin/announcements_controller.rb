@@ -19,9 +19,9 @@ class Admin::AnnouncementsController < Admin::BaseController
     # フィルタ（公開状態）
     if params[:status].present?
       case params[:status]
-      when 'published'
+      when "published"
         @announcements = @announcements.published
-      when 'draft'
+      when "draft"
         @announcements = @announcements.where(is_published: false)
       end
     end

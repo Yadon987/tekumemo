@@ -36,7 +36,7 @@ class Admin::WalksController < Admin::BaseController
   def destroy
     @walk = Walk.find(params[:id])
     walk_user_name = @walk.user.name
-    walk_date = @walk.walked_on.strftime('%Y/%m/%d')
+    walk_date = @walk.walked_on.strftime("%Y/%m/%d")
     @walk.destroy
     redirect_to admin_walks_path, notice: "「#{walk_user_name}」さんの散歩記録（#{walk_date}）を削除しました"
   end

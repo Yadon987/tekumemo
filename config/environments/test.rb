@@ -51,9 +51,15 @@ Rails.application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
+  # メール送信を即座に実行（非同期ジョブを待たない）
+  config.action_mailer.perform_deliveries = false
+
   # Unlike controllers, the mailer instance doesn't have any context about the
   # incoming request so you'll need to provide the :host parameter yourself.
   config.action_mailer.default_url_options = { host: "www.example.com" }
+
+  # ActiveJobをインライン実行（非同期待機なし）
+  config.active_job.queue_adapter = :inline
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr

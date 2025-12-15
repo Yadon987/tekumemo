@@ -66,6 +66,12 @@ RSpec.configure do |config|
   config.after :each do
     Warden.test_reset!
   end
+
+  # メール送信を高速化（メモリ内で完結）
+  config.before(:each) do
+    ActionMailer::Base.deliveries.clear
+  end
+
   config.include FactoryBot::Syntax::Methods
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
