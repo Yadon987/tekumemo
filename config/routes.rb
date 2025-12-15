@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [ :index, :destroy ]
     resources :posts, only: [ :index, :show, :destroy ]
+    resources :walks, only: [ :index, :show, :destroy ]
     resources :announcements do
       member do
         patch :publish    # 公開

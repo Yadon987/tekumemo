@@ -80,6 +80,169 @@
     </div>
   </div>
 
+  <!-- 異常検知セクション -->
+  <div class="bg-white dark:bg-slate-800 rounded-lg shadow overflow-hidden" data-controller="anomaly">
+    <!-- トグルヘッダー -->
+    <button
+      type="button"
+      data-action="click->anomaly#toggle"
+      class="w-full px-6 py-4 flex items-center justify-between <%= @total_anomalies > 0 ? 'bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30' : 'bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30' %> transition-colors"
+    >
+      <div class="flex items-center space-x-3">
+        <% if @total_anomalies > 0 %>
+          <!-- 異常あり：赤いパルスアニメーション -->
+          <div class="relative">
+            <span class="material-symbols-outlined text-2xl text-red-600 dark:text-red-400 relative z-10">warning</span>
+            <span class="absolute inset-0 animate-ping">
+              <span class="material-symbols-outlined text-2xl text-red-600 dark:text-red-400 opacity-75">warning</span>
+            </span>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-red-800 dark:text-red-300">
+              ⚠️ システム異常検出
+            </h2>
+            <p class="text-sm text-red-600 dark:text-red-400">
+              <%= @total_anomalies %> 件の異常が検出されました
+            </p>
+          </div>
+        <% else %>
+          <!-- 正常：緑色のグロー -->
+          <div class="relative">
+            <span class="material-symbols-outlined text-2xl text-green-600 dark:text-green-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">check_circle</span>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-green-800 dark:text-green-300">
+              ✓ システム正常
+            </h2>
+            <p class="text-sm text-green-600 dark:text-green-400">
+              異常は検出されていません
+            </p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 開閉アイコン -->
+      <span class="material-symbols-outlined text-gray-400">expand_more</span>
+    </button>
+
+    <!-- 異常詳細（開閉式） -->
+    <div data-anomaly-target="content" class="hidden">
+      <% if @total_anomalies > 0 %>
+        <div class="px-6 py-4 space-y-6">
+          <!-- 1. スパム疑いユーザー -->
+          <% if @anomalies[:spam_users].any? %>
+            <div>
+              <h3 class="text-md font-bold text-red-700 dark:text-red-300 flex items-center mb-3">
+                <span class="material-symbols-outlined mr-2">report</span>
+                🚨 スパム疑いユーザー（<%= @anomalies[:spam_users].count %>件）
+              </h3>
+              <div class="space-y-2">
+                <% @anomalies[:spam_users].each do |user| %>
+                  <div class="flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-200 dark:border-red-800">
+                    <div class="flex items-center space-x-3">
+                      <%= user_avatar(user, classes: "h-10 w-10 rounded-full") %>
+                      <div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white"><%= user.name %></p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                          短期間に <%= user.try(:post_count) || '大量' %> 件投稿
+                        </p>
+                      </div>
+                    </div>
+                    <%= link_to "詳細", admin_users_path(q: user.email), class: "text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- 2. データ整合性エラー -->
+          <% if @anomalies[:invalid_walks].any? %>
+            <div>
+              <h3 class="text-md font-bold text-orange-700 dark:text-orange-300 flex items-center mb-3">
+                <span class="material-symbols-outlined mr-2">error</span>
+                📊 データ整合性エラー（<%= @anomalies[:invalid_walks].count %>件）
+              </h3>
+              <div class="space-y-2">
+                <% @anomalies[:invalid_walks].each do |walk| %>
+                  <div class="flex items-center justify-between p-3 bg-orange-50 dark:bg-orange-900/10 rounded-lg border border-orange-200 dark:border-orange-800">
+                    <div class="flex items-center space-x-3">
+                      <%= user_avatar(walk.user, classes: "h-10 w-10 rounded-full") %>
+                      <div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white"><%= walk.user.name %></p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                          距離: <%= number_with_delimiter(walk.distance) %>m / 歩数: <%= number_with_delimiter(walk.steps || 0) %>歩
+                        </p>
+                      </div>
+                    </div>
+                    <%= link_to "詳細", admin_walk_path(walk), class: "text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- 3. セキュリティ懸念 -->
+          <% if @anomalies[:security_concern].any? %>
+            <div>
+              <h3 class="text-md font-bold text-yellow-700 dark:text-yellow-300 flex items-center mb-3">
+                <span class="material-symbols-outlined mr-2">security</span>
+                🔒 セキュリティ懸念（<%= @anomalies[:security_concern].count %>件）
+              </h3>
+              <div class="space-y-2">
+                <% @anomalies[:security_concern].each do |user| %>
+                  <div class="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900/10 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                    <div class="flex items-center space-x-3">
+                      <%= user_avatar(user, classes: "h-10 w-10 rounded-full") %>
+                      <div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white"><%= user.name %></p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                          最終ログイン: <%= time_ago_in_words_game_style(user.current_sign_in_at) %> / 最近投稿あり
+                        </p>
+                      </div>
+                    </div>
+                    <%= link_to "詳細", admin_users_path(q: user.email), class: "text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- 4. 非アクティブアカウント -->
+          <% if @anomalies[:inactive_accounts].any? %>
+            <div>
+              <h3 class="text-md font-bold text-gray-700 dark:text-gray-300 flex items-center mb-3">
+                <span class="material-symbols-outlined mr-2">person_off</span>
+                🗑️ 非アクティブアカウント（<%= @anomalies[:inactive_accounts].count %>件）
+              </h3>
+              <div class="space-y-2">
+                <% @anomalies[:inactive_accounts].each do |user| %>
+                  <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center space-x-3">
+                      <%= user_avatar(user, classes: "h-10 w-10 rounded-full") %>
+                      <div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white"><%= user.name %></p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                          登録: <%= time_ago_in_words_game_style(user.created_at) %> / 活動なし
+                        </p>
+                      </div>
+                    </div>
+                    <%= link_to "詳細", admin_users_path(q: user.email), class: "text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="px-6 py-8 text-center">
+          <p class="text-green-600 dark:text-green-400">
+            すべてのシステムが正常に動作しています
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <!-- 2カラムグリッド -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- 人気投稿 -->
