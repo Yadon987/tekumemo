@@ -1,0 +1,126 @@
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white dark:bg-slate-800 shadow rounded-lg overflow-hidden">
+    <!-- ヘッダー -->
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center">
+        <span class="material-symbols-outlined mr-2">article</span>
+        散歩記録詳細
+      </h2>
+      <%= link_to admin_walks_path, class: "text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center" do %>
+        <span class="material-symbols-outlined mr-1">arrow_back</span>
+        一覧に戻る
+      <% end %>
+    </div>
+
+    <!-- 散歩記録内容 -->
+    <div class="p-6">
+      <!-- ユーザー情報 -->
+      <div class="flex items-center mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+        <%= user_avatar(@walk.user, classes: "h-16 w-16 rounded-full") %>
+        <div class="ml-4">
+          <div class="text-lg font-medium text-gray-900 dark:text-white">
+            <%= @walk.user.name %>
+          </div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            記録日: <%= l @walk.walked_on, format: :long %>
+          </div>
+        </div>
+      </div>
+
+      <!-- 基本情報 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- 距離 -->
+        <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">距離</h3>
+          <% if @walk.distance > 50000 %>
+            <p class="text-3xl font-bold text-red-600 dark:text-red-400">
+              <%= number_with_delimiter(@walk.distance) %>m
+            </p>
+            <p class="text-xs text-red-500 dark:text-red-400 mt-1">⚠️ 異常値（50km以上）</p>
+          <% else %>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              <%= number_with_delimiter(@walk.distance) %>m
+            </p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <%= number_with_delimiter((@walk.distance / 1000.0).round(2)) %>km
+            </p>
+          <% end %>
+        </div>
+
+        <!-- 歩数 -->
+        <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">歩数</h3>
+          <% if @walk.steps && @walk.steps > 100000 %>
+            <p class="text-3xl font-bold text-red-600 dark:text-red-400">
+              <%= number_with_delimiter(@walk.steps) %>歩
+            </p>
+            <p class="text-xs text-red-500 dark:text-red-400 mt-1">⚠️ 異常値（10万歩以上）</p>
+          <% elsif @walk.steps %>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              <%= number_with_delimiter(@walk.steps) %>歩
+            </p>
+          <% else %>
+            <p class="text-lg text-gray-400 dark:text-gray-500">記録なし</p>
+          <% end %>
+        </div>
+
+        <!-- 時間 -->
+        <% if @walk.duration %>
+          <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+            <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">所要時間</h3>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">
+              <%= (@walk.duration / 60).to_i %>分
+            </p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <%= number_with_delimiter(@walk.duration) %>秒
+            </p>
+          </div>
+        <% end %>
+
+        <!-- カロリー -->
+        <% if @walk.calories_burned %>
+          <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+            <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">消費カロリー</h3>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">
+              <%= number_with_delimiter(@walk.calories_burned) %>kcal
+            </p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 場所 -->
+      <% if @walk.location.present? %>
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">場所</h3>
+          <p class="text-gray-900 dark:text-white"><%= @walk.location %></p>
+        </div>
+      <% end %>
+
+      <!-- メモ -->
+      <% if @walk.notes.present? %>
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">メモ</h3>
+          <p class="text-gray-900 dark:text-white whitespace-pre-wrap"><%= @walk.notes %></p>
+        </div>
+      <% end %>
+
+      <!-- メタ情報 -->
+      <div class="mb-6 p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">システム情報</h3>
+        <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+          <p>記録ID: <%= @walk.id %></p>
+          <p>作成日時: <%= l @walk.created_at, format: :long %></p>
+          <p>更新日時: <%= l @walk.updated_at, format: :long %></p>
+        </div>
+      </div>
+
+      <!-- 削除ボタン -->
+      <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <%= button_to admin_walk_path(@walk), method: :delete, data: { turbo_confirm: "本当に削除しますか？\nこの操作は取り消せません。" }, class: "w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center" do %>
+          <span class="material-symbols-outlined mr-2">delete</span>
+          この記録を削除
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

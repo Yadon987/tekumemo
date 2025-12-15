@@ -1,0 +1,103 @@
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white dark:bg-slate-800 shadow rounded-lg overflow-hidden">
+    <!-- ヘッダー -->
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center">
+        <span class="material-symbols-outlined mr-2">article</span>
+        投稿詳細
+      </h2>
+      <%= link_to admin_posts_path, class: "text-blue-600 hover:text-blue-700 dark:text-blue-400 flex items-center" do %>
+        <span class="material-symbols-outlined mr-1">arrow_back</span>
+        一覧に戻る
+      <% end %>
+    </div>
+
+    <!-- 投稿内容 -->
+    <div class="p-6">
+      <!-- 投稿者情報 -->
+      <div class="flex items-center mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <%= user_avatar(@post.user, classes: "h-12 w-12 rounded-full") %>
+        <div class="ml-4">
+          <div class="text-lg font-medium text-gray-900 dark:text-white">
+            <%= @post.user.name %>
+          </div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            <%= l @post.created_at, format: :long %>
+          </div>
+        </div>
+      </div>
+
+      <!-- 本文 -->
+      <% if @post.body.present? %>
+        <div class="mb-4">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">本文</h3>
+          <p class="text-gray-900 dark:text-white whitespace-pre-wrap"><%= @post.body %></p>
+        </div>
+      <% end %>
+
+      <!-- 天気・気分 -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <% if @post.weather %>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">天気</h3>
+            <div class="flex items-center text-2xl">
+              <%= @post.weather_emoji %>
+              <span class="ml-2 text-base text-gray-600 dark:text-gray-400"><%= @post.weather_label %></span>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @post.feeling %>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">気分</h3>
+            <div class="flex items-center text-2xl">
+              <%= @post.feeling_emoji %>
+              <span class="ml-2 text-base text-gray-600 dark:text-gray-400"><%= @post.feeling_label %></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 散歩記録 -->
+      <% if @post.walk %>
+        <div class="mb-4">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">紐付け散歩記録</h3>
+          <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span class="text-gray-500 dark:text-gray-400">距離:</span>
+                <span class="ml-2 text-gray-900 dark:text-white font-medium"><%= @post.walk.distance %>m</span>
+              </div>
+              <div>
+                <span class="text-gray-500 dark:text-gray-400">歩数:</span>
+                <span class="ml-2 text-gray-900 dark:text-white font-medium"><%= @post.walk.steps || "-" %>歩</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- リアクション -->
+      <% if @post.reactions.any? %>
+        <div class="mb-4">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">リアクション (<%= @post.reactions.count %>)</h3>
+          <div class="flex flex-wrap gap-2">
+            <% @post.reactions.group_by(&:kind).each do |kind, reactions| %>
+              <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm">
+                <%= Reaction.human_enum_name(:kind, kind) %> × <%= reactions.count %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- 削除ボタン -->
+      <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <%= button_to admin_post_path(@post), method: :delete, data: { turbo_confirm: "本当に削除しますか？\nこの操作は取り消せません。" }, class: "w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center" do %>
+          <span class="material-symbols-outlined mr-2">delete</span>
+          この投稿を削除
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

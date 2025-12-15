@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_13_011842) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_15_082600) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,6 +101,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_13_011842) do
     t.boolean "inactive_days_reminder_enabled", default: true, null: false, comment: "非アクティブリマインド通知の有効/無効"
     t.integer "inactive_days_threshold", default: 3, null: false, comment: "非アクティブと判定する日数"
     t.boolean "reaction_summary_enabled", default: true, null: false, comment: "リアクションまとめ通知の有効/無効"
+    t.integer "role", default: 0, null: false
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["is_admin"], name: "index_users_on_is_admin"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

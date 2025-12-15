@@ -46,7 +46,7 @@
       </div>
 
       <!-- 削除ボタン -->
-      <% if post.user == current_user %>
+      <% if post.user_id == current_user&.id %>
         <div class="absolute top-0 right-0">
           <%= link_to post_path(post),
               data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },

@@ -334,9 +334,15 @@
       </div>
     </div>
 
-  <div class="mt-4 text-center">
-    <%= link_to root_path, class: "text-gray-500 dark:text-slate-400 text-sm hover:text-gray-700 dark:hover:text-slate-200 underline decoration-gray-300 dark:decoration-slate-600 underline-offset-4" do %>
+  <div class="mt-8 pt-6 border-t border-gray-100 dark:border-white/10 flex flex-col items-center space-y-4">
+    <%= link_to root_path, class: "flex items-center text-gray-500 dark:text-slate-400 text-sm hover:text-gray-900 dark:hover:text-slate-200 transition-colors" do %>
+      <span class="material-symbols-outlined text-lg mr-1">home</span>
       ホームに戻る
+    <% end %>
+
+    <%= button_to destroy_user_session_path, method: :delete, class: "text-xs text-red-500/70 hover:text-red-600 dark:text-red-400/70 dark:hover:text-red-300 transition-colors flex items-center" do %>
+      <span class="material-symbols-outlined text-sm mr-1">logout</span>
+      ログアウト
     <% end %>
   </div>
 </div>

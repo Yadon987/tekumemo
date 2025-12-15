@@ -245,7 +245,7 @@
               <!-- アクションボタン（展開時に表示されるボタン群） -->
 
               <!-- 管理者メニュー（管理者のみ表示、一番上） -->
-              <% if current_user.is_admin? %>
+              <% if current_user.admin? %>
                 <%= link_to admin_announcements_path,
                     data: { expandable_fab_target: "actionButton" },
                     class: "hidden opacity-0 absolute bottom-[19rem] right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",

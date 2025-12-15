@@ -1,0 +1,140 @@
+<div class="bg-white dark:bg-slate-800 shadow rounded-lg overflow-hidden">
+  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+    <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center">
+      <span class="material-symbols-outlined mr-2">footprint</span>
+      散歩記録管理
+    </h2>
+    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+      全 <%= @walks.total_count %> 件
+    </span>
+  </div>
+
+  <!-- 検索・フィルタフォーム -->
+  <div class="px-6 py-4 bg-gray-50 dark:bg-slate-700/50 border-b border-gray-200 dark:border-gray-700">
+    <%= form_with url: admin_walks_path, method: :get, class: "space-y-4", local: true do |f| %>
+      <div class="flex flex-wrap gap-4 items-end">
+        <!-- キーワード検索 -->
+        <div class="flex-1 min-w-[200px]">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">ユーザー名</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span class="material-symbols-outlined text-gray-400">search</span>
+            </div>
+            <%= f.text_field :q, value: params[:q], placeholder: "ユーザー名で検索...", class: "pl-10 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <!-- 距離範囲 -->
+        <div class="w-32">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最小距離(m)</label>
+          <%= f.number_field :min_distance, value: params[:min_distance], placeholder: "1000", class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+
+        <div class="w-32">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最大距離(m)</label>
+          <%= f.number_field :max_distance, value: params[:max_distance], placeholder: "50000", class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+
+        <!-- 日付範囲 -->
+        <div class="w-40">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">開始日</label>
+          <%= f.date_field :start_date, value: params[:start_date], class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+
+        <div class="w-40">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">終了日</label>
+          <%= f.date_field :end_date, value: params[:end_date], class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+
+        <!-- 検索ボタン -->
+        <%= f.button type: :submit, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+          検索
+        <% end %>
+
+        <!-- クリアボタン -->
+        <% if params[:q].present? || params[:min_distance].present? || params[:max_distance].present? || params[:start_date].present? || params[:end_date].present? %>
+          <%= link_to admin_walks_path, class: "text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" do %>
+            クリア
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-slate-700">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ID</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ユーザー</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">日付</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">距離</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">歩数</th>
+          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">操作</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-gray-700">
+        <% @walks.each do |walk| %>
+          <tr class="hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              <%= walk.id %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <%= user_avatar(walk.user, classes: "h-10 w-10 rounded-full") %>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900 dark:text-white">
+                    <%= walk.user.name %>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+              <%= l walk.walked_on, format: :long %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <% if walk.distance > 50000 %>
+                <span class="text-red-600 dark:text-red-400 font-bold">
+                  <%= number_with_delimiter(walk.distance) %>m
+                </span>
+              <% else %>
+                <span class="text-gray-900 dark:text-white">
+                  <%= number_with_delimiter(walk.distance) %>m
+                </span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <% if walk.steps && walk.steps > 100000 %>
+                <span class="text-red-600 dark:text-red-400 font-bold">
+                  <%= number_with_delimiter(walk.steps) %>歩
+                </span>
+              <% elsif walk.steps %>
+                <span class="text-gray-900 dark:text-white">
+                  <%= number_with_delimiter(walk.steps) %>歩
+                </span>
+              <% else %>
+                <span class="text-gray-400 dark:text-gray-500">-</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              <%= link_to admin_walk_path(walk), class: "text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 inline-flex items-center" do %>
+                <span class="material-symbols-outlined text-sm mr-1">visibility</span>
+                詳細
+              <% end %>
+              <%= button_to admin_walk_path(walk), method: :delete, data: { turbo_confirm: "本当に削除しますか？\nこの操作は取り消せません。" }, class: "text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 inline-flex items-center" do %>
+                <span class="material-symbols-outlined text-sm mr-1">delete</span>
+                削除
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+    <%= paginate @walks %>
+  </div>
+</div>

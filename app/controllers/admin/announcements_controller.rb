@@ -1,10 +1,32 @@
-class Admin::AnnouncementsController < ApplicationController
-  before_action :require_admin
+class Admin::AnnouncementsController < Admin::BaseController
   before_action :set_announcement, only: %i[edit update destroy publish unpublish]
 
   # お知らせ一覧
   def index
-    @announcements = Announcement.order(published_at: :desc, created_at: :desc).page(params[:page]).per(20)
+    @announcements = Announcement.all
+
+    # 検索（タイトル・本文）
+    if params[:q].present?
+      search_term = "%#{params[:q]}%"
+      @announcements = @announcements.where("title ILIKE ? OR content ILIKE ?", search_term, search_term)
+    end
+
+    # フィルタ（種類）
+    if params[:type].present?
+      @announcements = @announcements.where(announcement_type: params[:type])
+    end
+
+    # フィルタ（公開状態）
+    if params[:status].present?
+      case params[:status]
+      when "published"
+        @announcements = @announcements.published
+      when "draft"
+        @announcements = @announcements.where(is_published: false)
+      end
+    end
+
+    @announcements = @announcements.order(published_at: :desc, created_at: :desc).page(params[:page]).per(20)
   end
 
   # 新規作成フォーム
@@ -58,12 +80,7 @@ class Admin::AnnouncementsController < ApplicationController
 
   private
 
-  # 管理者チェック
-  def require_admin
-    unless current_user&.is_admin?
-      redirect_to root_path, alert: "管理者権限が必要です"
-    end
-  end
+
 
   def set_announcement
     @announcement = Announcement.find(params[:id])

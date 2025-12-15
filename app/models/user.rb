@@ -2,8 +2,10 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
+         :recoverable, :rememberable, :validatable, :trackable,
          :omniauthable, omniauth_providers: [ :google_oauth2 ]
+  # ユーザー権限（0: 一般, 1: 管理者）
+  enum :role, { general: 0, admin: 1 }
 
   # 散歩記録との関連付け（1人のユーザーは複数の散歩記録を持つ）
   # dependent: :destroy は、ユーザーが削除されたときに関連する散歩記録も一緒に削除する
