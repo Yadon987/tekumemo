@@ -55,6 +55,9 @@ Rails.application.routes.draw do
 
   # ===== 管理者機能 =====
   namespace :admin do
+    root to: "dashboard#index"
+    get "dashboard", to: "dashboard#index"
+
     resources :users, only: [ :index, :destroy ]
     resources :posts, only: [ :index, :show, :destroy ]
     resources :announcements do

@@ -1,0 +1,190 @@
+<div class="space-y-6">
+  <!-- ページタイトル -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+      <span class="material-symbols-outlined mr-2 text-3xl">dashboard</span>
+      管理者ダッシュボード
+    </h1>
+    <div class="text-sm text-gray-500 dark:text-gray-400">
+      <%= l Time.current, format: :long %>
+    </div>
+  </div>
+
+  <!-- 統計カード群 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- 総ユーザー数 -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">総ユーザー数</p>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2"><%= @total_users %></p>
+          <p class="text-xs text-green-600 dark:text-green-400 mt-1">
+            今月 +<%= @users_this_month %>
+          </p>
+        </div>
+        <div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-3">
+          <span class="material-symbols-outlined text-3xl text-blue-600 dark:text-blue-400">group</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 総投稿数 -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">総投稿数</p>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2"><%= @total_posts %></p>
+          <p class="text-xs text-green-600 dark:text-green-400 mt-1">
+            今日 +<%= @posts_today %>
+          </p>
+        </div>
+        <div class="bg-purple-100 dark:bg-purple-900/30 rounded-full p-3">
+          <span class="material-symbols-outlined text-3xl text-purple-600 dark:text-purple-400">edit_square</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 総散歩距離 -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">総散歩距離</p>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+            <%= number_with_delimiter((@total_distance / 1000.0).round(1)) %>
+            <span class="text-lg">km</span>
+          </p>
+          <p class="text-xs text-green-600 dark:text-green-400 mt-1">
+            今月 <%= number_with_delimiter((@distance_this_month / 1000.0).round(1)) %>km
+          </p>
+        </div>
+        <div class="bg-green-100 dark:bg-green-900/30 rounded-full p-3">
+          <span class="material-symbols-outlined text-3xl text-green-600 dark:text-green-400">footprint</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- アクティブユーザー -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">アクティブユーザー</p>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2"><%= @active_users_this_month %></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            今日: <%= @active_users_today %> / 今週: <%= @active_users_this_week %>
+          </p>
+        </div>
+        <div class="bg-orange-100 dark:bg-orange-900/30 rounded-full p-3">
+          <span class="material-symbols-outlined text-3xl text-orange-600 dark:text-orange-400">monitoring</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2カラムグリッド -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- 人気投稿 -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+          <span class="material-symbols-outlined mr-2">trending_up</span>
+          人気の投稿 TOP5
+        </h2>
+      </div>
+      <div class="p-6">
+        <% if @popular_posts.any? %>
+          <div class="space-y-4">
+            <% @popular_posts.each do |post| %>
+              <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <%= user_avatar(post.user, classes: "h-10 w-10 rounded-full flex-shrink-0") %>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      <%= post.user.name %>
+                    </p>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                      <%= time_ago_in_words_game_style(post.created_at) %>
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
+                    <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
+                  </p>
+                  <div class="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
+                    <span class="material-symbols-outlined text-sm mr-1">favorite</span>
+                    <%= post.reactions_count %> リアクション
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-center text-gray-500 dark:text-gray-400 py-8">投稿がありません</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 最近の投稿 -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+          <span class="material-symbols-outlined mr-2">schedule</span>
+          最近の投稿
+        </h2>
+      </div>
+      <div class="p-6">
+        <% if @recent_posts.any? %>
+          <div class="space-y-4">
+            <% @recent_posts.each do |post| %>
+              <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <%= user_avatar(post.user, classes: "h-10 w-10 rounded-full flex-shrink-0") %>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      <%= post.user.name %>
+                    </p>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                      <%= time_ago_in_words_game_style(post.created_at) %>
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
+                    <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-center text-gray-500 dark:text-gray-400 py-8">投稿がありません</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- 最近の登録ユーザー -->
+  <div class="bg-white dark:bg-slate-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+        <span class="material-symbols-outlined mr-2">person_add</span>
+        最近の登録ユーザー
+      </h2>
+    </div>
+    <div class="p-6">
+      <% if @recent_users.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <% @recent_users.each do |user| %>
+            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+              <%= user_avatar(user, classes: "h-16 w-16 rounded-full mb-2") %>
+              <p class="text-sm font-medium text-gray-900 dark:text-white text-center truncate w-full">
+                <%= user.name %>
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <%= time_ago_in_words_game_style(user.created_at) %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-center text-gray-500 dark:text-gray-400 py-8">ユーザーがいません</p>
+      <% end %>
+    </div>
+  </div>
+</div>

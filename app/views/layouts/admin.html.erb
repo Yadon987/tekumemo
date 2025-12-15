@@ -41,6 +41,11 @@
 
             <!-- PC用ナビゲーション -->
             <nav class="hidden md:ml-10 md:flex space-x-8">
+              <%= link_to admin_root_path, class: "text-gray-300 hover:bg-slate-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center #{current_page?(admin_root_path) ? 'bg-slate-900 text-white' : ''}" do %>
+                <span class="material-symbols-outlined mr-1 text-lg">dashboard</span>
+                ダッシュボード
+              <% end %>
+
               <%= link_to admin_announcements_path, class: "text-gray-300 hover:bg-slate-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center #{current_page?(admin_announcements_path) ? 'bg-slate-900 text-white' : ''}" do %>
                 <span class="material-symbols-outlined mr-1 text-lg">campaign</span>
                 お知らせ管理
