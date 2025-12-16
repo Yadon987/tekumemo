@@ -74,10 +74,12 @@ RSpec.describe "ユーザー認証・認可", type: :system, js: true do
         expect(current_path).to eq new_user_session_path
       end
 
-      it "トップページにアクセスするとログイン画面にリダイレクトされること" do
+      it "トップページにアクセスするとLPが表示されること" do
         visit root_path
-        expect(page).to have_content 'アカウント登録もしくはログインしてください。'
-        expect(current_path).to eq new_user_session_path
+        expect(page).to have_content 'てくメモ'
+        expect(page).to have_link 'ログイン'
+        expect(page).to have_link '新規登録してはじめる'
+        expect(current_path).to eq root_path
       end
     end
 

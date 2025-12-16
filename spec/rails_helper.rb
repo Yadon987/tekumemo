@@ -37,6 +37,10 @@ end
 
 require 'capybara/rails'
 require 'capybara/cuprite'
+require 'webmock/rspec'
+
+# WebMockの設定: ローカルホストへの接続は許可する（システムテスト等のため）
+WebMock.disable_net_connect!(allow_localhost: true)
 
 # 並列実行時は負荷がかかるため、待機時間を長めに設定
 Capybara.default_max_wait_time = 10
@@ -73,6 +77,7 @@ RSpec.configure do |config|
   end
 
   config.include FactoryBot::Syntax::Methods
+  config.include ActiveSupport::Testing::TimeHelpers
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
   ]

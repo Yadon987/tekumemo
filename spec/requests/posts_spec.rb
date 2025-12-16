@@ -3,12 +3,16 @@ require 'rails_helper'
 RSpec.describe "Posts", type: :request do
   let(:user) { FactoryBot.create(:user) }
   let(:other_user) { FactoryBot.create(:user) }
-  let!(:my_post) { FactoryBot.create(:post, user: user, body: "自分の投稿") }
-  let!(:other_post) { FactoryBot.create(:post, user: other_user, body: "他人の投稿") }
+  let(:my_post) { FactoryBot.create(:post, user: user, body: "自分の投稿") }
+  let(:other_post) { FactoryBot.create(:post, user: other_user, body: "他人の投稿") }
 
   describe "GET /posts" do
     context "ログインしている場合" do
-      before { sign_in user }
+      before do
+        sign_in user
+        my_post
+        other_post
+      end
 
       it "投稿一覧ページにアクセスできること" do
         get posts_path
@@ -59,6 +63,7 @@ RSpec.describe "Posts", type: :request do
 
     context "自分の投稿の場合" do
       it "投稿を削除できること" do
+        my_post # 事前に作成
         expect {
           delete post_path(my_post)
         }.to change(Post, :count).by(-1)
@@ -66,6 +71,8 @@ RSpec.describe "Posts", type: :request do
     end
 
     context "他人の投稿の場合" do
+      before { other_post } # 事前に作成
+
       it "投稿を削除できないこと" do
         expect {
           delete post_path(other_post)

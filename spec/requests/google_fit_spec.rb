@@ -83,7 +83,7 @@ RSpec.describe "GoogleFit", type: :request do
           it "422 Unprocessable Entityとエラーメッセージが返ること" do
             get google_fit_daily_data_path
 
-            expect(response).to have_http_status(:unprocessable_entity)
+            expect(response).to have_http_status(:unprocessable_content)
             json = JSON.parse(response.body)
             expect(json["error"]).to include("取得できませんでした")
           end
