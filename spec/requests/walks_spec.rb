@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "Walks", type: :request do
   let(:user) { FactoryBot.create(:user) }
   let(:other_user) { FactoryBot.create(:user) }
-  let!(:my_walk) { FactoryBot.create(:walk, user: user, walked_on: Date.current) }
-  let!(:other_walk) { FactoryBot.create(:walk, user: other_user, walked_on: Date.current) }
+  let(:my_walk) { FactoryBot.create(:walk, user: user, walked_on: Date.current) }
+  let(:other_walk) { FactoryBot.create(:walk, user: other_user, walked_on: Date.current) }
 
   describe "GET /walks/new" do
     context "ログインしている場合" do
@@ -99,6 +99,7 @@ RSpec.describe "Walks", type: :request do
 
     context "自分の記録の場合" do
       it "削除できること" do
+        my_walk # 事前に作成
         expect {
           delete walk_path(my_walk)
         }.to change(Walk, :count).by(-1)
@@ -106,6 +107,8 @@ RSpec.describe "Walks", type: :request do
     end
 
     context "他人の記録の場合" do
+      before { other_walk } # 事前に作成
+
       it "削除できないこと" do
         expect {
           delete walk_path(other_walk)

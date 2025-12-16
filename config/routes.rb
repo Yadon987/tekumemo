@@ -53,6 +53,13 @@ Rails.application.routes.draw do
   # Web Push通知購読
   resources :web_push_subscriptions, only: [ :create ]
 
+  # ユーザープロフィール編集
+  resources :users, only: [ :edit, :update ] do
+    member do
+      delete :disconnect_google
+    end
+  end
+
   # ===== 管理者機能 =====
   namespace :admin do
     root to: "dashboard#index"
@@ -74,8 +81,6 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   # Deviseのスコープ内で独自アクションを定義
   devise_scope :user do
-    patch "users/disconnect_google", to: "users/registrations#disconnect_google", as: :disconnect_google_user
-
     # メールアドレス変更確認画面
     get "users/confirm_email_change", to: "users/omniauth_callbacks#confirm_email_change", as: :confirm_email_change_users
     # メールアドレス更新＆連携実行

@@ -20,7 +20,7 @@ namespace :admin do
   end
 
   desc "指定したメールアドレスのユーザーに管理者権限を付与"
-  task :grant, [:email] => :environment do |t, args|
+  task :grant, [ :email ] => :environment do |t, args|
     email = args[:email] || ENV["ADMIN_EMAIL"]
 
     if email.blank?
@@ -46,7 +46,7 @@ namespace :admin do
   end
 
   desc "指定したメールアドレスのユーザーから管理者権限を削除"
-  task :revoke, [:email] => :environment do |t, args|
+  task :revoke, [ :email ] => :environment do |t, args|
     email = args[:email] || ENV["ADMIN_EMAIL"]
 
     if email.blank?
