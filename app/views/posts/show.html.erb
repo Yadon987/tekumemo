@@ -2,13 +2,14 @@
 <% content_for :head do %>
   <meta property="og:title" content="ADVENTURE LOG - TekuMemo" />
   <meta property="og:description" content="<%= @post.body.present? ? @post.body.truncate(100) : '散歩の記録をチェックしよう！' %>" />
-  <meta property="og:image" content="<%= post_ogp_image_url(@post) %>" />
+  <%# OGP画像のURLにキャッシュバスターと拡張子を追加 %>
+  <meta property="og:image" content="<%= post_ogp_image_url(@post, format: :jpg, v: @post.updated_at.to_i) %>" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="<%= post_url(@post) %>" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ADVENTURE LOG - TekuMemo" />
   <meta name="twitter:description" content="<%= @post.body.present? ? @post.body.truncate(100) : '散歩の記録をチェックしよう！' %>" />
-  <meta name="twitter:image" content="<%= post_ogp_image_url(@post) %>" />
+  <meta name="twitter:image" content="<%= post_ogp_image_url(@post, format: :jpg, v: @post.updated_at.to_i) %>" />
 <% end %>
 
 <div class="container mx-auto px-4 py-8 min-h-screen flex items-center justify-center">
@@ -18,7 +19,7 @@
 
     <div class="mb-8 relative group">
       <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-      <img src="<%= post_ogp_image_path(@post) %>" alt="Adventure Log" class="relative w-full rounded-xl shadow-lg transform transition duration-500 hover:scale-[1.02]">
+      <img src="<%= post_ogp_image_url(@post, format: :jpg) %>" alt="Adventure Log" class="relative w-full rounded-xl shadow-lg transform transition duration-500 hover:scale-[1.02]">
     </div>
 
     <% if @post.body.present? %>

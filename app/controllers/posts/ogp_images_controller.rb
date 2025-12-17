@@ -10,7 +10,7 @@ class Posts::OgpImagesController < ApplicationController
 
     begin
       image_data = OgpImageGeneratorService.new(@post).generate
-      send_data image_data, type: "image/png", disposition: "inline"
+      send_data image_data, type: "image/jpeg", disposition: "inline"
     rescue => e
       Rails.logger.error "Failed to generate OGP image: #{e.message}"
       head :internal_server_error

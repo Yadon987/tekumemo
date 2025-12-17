@@ -36,7 +36,7 @@ Rails.application.routes.draw do
       get "mine"
     end
 
-    resource :ogp_image, only: [ :show ], module: :posts
+    resource :ogp_image, only: [ :show ], module: :posts, defaults: { format: :jpg }
     resources :reactions, only: [ :create, :destroy ]
   end
 

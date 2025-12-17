@@ -126,4 +126,10 @@ module PostsHelper
       }
     end
   end
+
+  # OGP画像のURLを生成するヘルパー
+  # routes.rbで resource :ogp_image を定義しているため、
+  # post_ogp_image_url(@post) というヘルパーが自動生成されていますが、
+  # もし将来的にロジックを挟みたい場合はここでラップすることも可能です。
+  # 現状はルートヘルパーを直接使用して問題ありません。
 end

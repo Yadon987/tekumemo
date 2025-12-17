@@ -26,14 +26,11 @@ class OgpImageGeneratorService
     walk = @post.walk || @post.user.walks.find_by(walked_on: @post.created_at.to_date)
 
     # ---    # ベース画像の生成 (1200x630, 背景色: #0f172a)
+    # MiniMagick::Tool::Convert が不安定なため、確実なsystemコマンドに戻す
     # systemコマンドの引数を配列にすることでシェル経由の実行を回避（セキュリティ対策）
     system("convert", "-size", "1200x630", "xc:#0f172a", base_image_path)
 
-    image = ::MiniMagick::Image.open(base_image_path)
-    image.combine_options do |c|
-      c.font font_path
-      c.fill "#ffffff"
-    end
+    image = ::MiniMagick::Image.new(base_image_path)
 
     # --- アバター画像の処理 ---
     avatar_path = Tempfile.new([ "avatar", ".png" ]).path
@@ -45,12 +42,18 @@ class OgpImageGeneratorService
       begin
         # Googleアバター画像のダウンロード
         require "open-uri"
-        URI.open(user.avatar_url) do |f|
+        # タイムアウトを設定して、外部要因での遅延を防ぐ
+        URI.open(user.avatar_url, read_timeout: 3, open_timeout: 3) do |f|
           File.binwrite(avatar_path, f.read)
         end
 
-        # リサイズとトリミング (360x360)
-        system("convert", avatar_path, "-resize", "#{avatar_size}x#{avatar_size}^", "-gravity", "center", "-extent", "#{avatar_size}x#{avatar_size}", avatar_path)
+        # リサイズとトリミング (360x360) - MiniMagickで処理してプロセス起動コストを削減
+        avatar = ::MiniMagick::Image.new(avatar_path)
+        avatar.combine_options do |c|
+          c.resize "#{avatar_size}x#{avatar_size}^"
+          c.gravity "center"
+          c.extent "#{avatar_size}x#{avatar_size}"
+        end
         avatar_used = true
       rescue => e
         Rails.logger.error "Failed to download avatar: #{e.message}"
@@ -61,30 +64,30 @@ class OgpImageGeneratorService
     unless avatar_used
       # フォールバック: イニシャル画像 (2文字)
       initial = user.name[0..1].upcase rescue "U"
-      # 背景: 青(#3b82f6)
+
+      # 背景: 青(#3b82f6) - systemコマンドで確実に生成
       system("convert", "-size", "#{avatar_size}x#{avatar_size}", "xc:#3b82f6", avatar_path)
 
-      temp_img = ::MiniMagick::Image.open(avatar_path)
+      # 文字合成はMiniMagickで行う
+      temp_img = ::MiniMagick::Image.new(avatar_path)
       temp_img.combine_options do |c|
         c.font font_path
         c.gravity "Center"
-        c.pointsize 150 # 200 -> 150 に縮小
+        c.pointsize 150
         c.fill "#ffffff"
         c.annotate "+0+0", initial
       end
       temp_img.write(avatar_path)
     end
 
-    # アバターを合成 (左側: x=50, y=120)
-    avatar_image = ::MiniMagick::Image.open(avatar_path)
-    image = image.composite(avatar_image) do |c|
-      c.geometry "+50+120"
-    end
-    File.unlink(avatar_path) if File.exist?(avatar_path)
-
-    # --- 3. 描画処理 (枠線・テキスト) ---
+    # --- 3. 描画処理 (枠線・テキスト・アバター合成を一括実行) ---
+    # プロセス起動回数を減らすため、compositeを使わずdraw imageで合成する
     image.combine_options do |c|
       c.font font_path
+
+      # アバター合成 (draw image Over x,y w,h 'filename')
+      # 座標: +50+120, サイズ: 360x360
+      c.draw "image Over 50,120 360,360 '#{avatar_path}'"
 
       # --- ヘッダーエリア ---
       # タイトル枠
@@ -175,11 +178,16 @@ class OgpImageGeneratorService
       c.stroke "none"
       c.fill "#ffffff"
       c.gravity "NorthWest"
-      c.pointsize 40
+      c.pointsize 36 # 32 -> 36 に少し戻して視認性を上げる
+      # c.interline_spacing -5 # 行間詰めは削除して自然な間隔に
 
       if @post.body.present?
-        body_text = strip_emoji(@post.body).truncate(80)
-        wrapped_body = wrap_text(body_text, 15)  # 18 -> 15 に変更してはみ出しを防ぐ
+        # 改行をスペースに置換して1行にしてからtruncateする（予期せぬ改行によるはみ出し防止）
+        clean_text = strip_emoji(@post.body).gsub(/\R/, " ").squeeze(" ")
+        # 70文字だとギリギリ溢れることがあるので65文字に微調整
+        body_text = clean_text.truncate(65)
+        # フォントサイズ36に合わせて1行17文字程度に調整
+        wrapped_body = wrap_text(body_text, 17)
       else
         # デフォルトメッセージは手動で改行しているのでwrap_textを通さない
         wrapped_body = "冒険の記録が更新されました！\n明日もまた、新たな旅へ出かけよう。"
@@ -229,7 +237,9 @@ class OgpImageGeneratorService
       loc = walk&.location.presence || "TekuMemo"
       c.annotate "+950+545", strip_emoji(loc).truncate(10) # 位置調整 (X:960->950, Y:550->545)
     end
+    File.unlink(avatar_path) if File.exist?(avatar_path)
 
+    image.format "jpg"
     blob = image.to_blob
     image.destroy!
     File.unlink(base_image_path) if File.exist?(base_image_path)
