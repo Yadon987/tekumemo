@@ -1,0 +1,52 @@
+<%# OGP設定 %>
+<% content_for :head do %>
+  <meta property="og:title" content="ADVENTURE LOG - TekuMemo" />
+  <meta property="og:description" content="<%= @post.body.present? ? @post.body.truncate(100) : '散歩の記録をチェックしよう！' %>" />
+  <meta property="og:image" content="<%= post_ogp_image_url(@post) %>" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="<%= post_url(@post) %>" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADVENTURE LOG - TekuMemo" />
+  <meta name="twitter:description" content="<%= @post.body.present? ? @post.body.truncate(100) : '散歩の記録をチェックしよう！' %>" />
+  <meta name="twitter:image" content="<%= post_ogp_image_url(@post) %>" />
+<% end %>
+
+<div class="container mx-auto px-4 py-8 min-h-screen flex items-center justify-center">
+  <div class="max-w-2xl w-full bg-white dark:bg-[#1a0b2e] rounded-[2.5rem] shadow-[10px_10px_20px_#bebebe,-10px_-10px_20px_#ffffff] dark:shadow-[0_0_20px_rgba(168,85,247,0.4)] overflow-hidden border border-white/60 dark:border-purple-500/30 p-8">
+
+    <h1 class="text-3xl font-bold mb-6 text-center text-slate-800 dark:text-purple-100">冒険の記録</h1>
+
+    <div class="mb-8 relative group">
+      <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+      <img src="<%= post_ogp_image_path(@post) %>" alt="Adventure Log" class="relative w-full rounded-xl shadow-lg transform transition duration-500 hover:scale-[1.02]">
+    </div>
+
+    <% if @post.body.present? %>
+      <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 text-center font-medium leading-relaxed">
+        "<%= @post.body %>"
+      </p>
+    <% end %>
+
+    <div class="text-center space-y-4">
+      <% if @post.user_id == current_user&.id %>
+        <% share_text = @post.body.present? ? @post.body.truncate(100) : "冒険の記録をチェック！" %>
+        <% share_url = post_url(@post) %>
+        <%= link_to "https://twitter.com/intent/tweet?text=#{CGI.escape(share_text)}&url=#{CGI.escape(share_url)}&hashtags=TekuMemo,冒険の記録",
+            target: "_blank",
+            rel: "noopener noreferrer",
+            class: "inline-block bg-black hover:bg-gray-800 text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg mb-4" do %>
+          <i class="fab fa-x-twitter mr-2"></i> Xでシェアする
+        <% end %>
+        <br>
+      <% end %>
+
+      <%= link_to root_path, class: "inline-block bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 transform" do %>
+        <i class="fas fa-running mr-2"></i> アプリで冒険を始める
+      <% end %>
+
+      <p class="text-sm text-slate-400 dark:text-slate-500 mt-4">
+        TekuMemo - 楽しく歩く、冒険する。
+      </p>
+    </div>
+  </div>
+</div>

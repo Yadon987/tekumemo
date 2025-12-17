@@ -30,13 +30,13 @@ Rails.application.routes.draw do
   get "google_fit/status", to: "google_fit#status"
 
   # SNS機能
-  resources :posts, only: [ :index, :create, :destroy ] do
+  resources :posts, only: [ :index, :show, :create, :destroy ] do
     collection do
       # 自分の投稿履歴を表示
       get "mine"
     end
 
-    # 投稿に対するリアクション
+    resource :ogp_image, only: [ :show ], module: :posts
     resources :reactions, only: [ :create, :destroy ]
   end
 
