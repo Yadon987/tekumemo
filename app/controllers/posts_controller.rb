@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [ :show ]
 
   # GET /posts
   # タイムライン（みんなの投稿）を表示
@@ -8,6 +8,12 @@ class PostsController < ApplicationController
     @posts = Post.with_associations.recent.page(params[:page]).per(10)
     # 新規投稿フォーム用
     @post = Post.new
+  end
+
+  # GET /posts/:id
+  # 投稿詳細（シェア用ページ）
+  def show
+    @post = Post.find(params[:id])
   end
 
   # GET /posts/mine

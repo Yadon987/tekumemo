@@ -11,8 +11,20 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.2].define(version: 2025_12_15_082600) do
+  create_schema "auth"
+  create_schema "extensions"
+  create_schema "graphql"
+  create_schema "graphql_public"
+  create_schema "pgbouncer"
+  create_schema "realtime"
+  create_schema "storage"
+  create_schema "vault"
+
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "announcements", force: :cascade do |t|
     t.string "title", null: false
@@ -38,7 +50,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_082600) do
     t.string "url", comment: "リマインダー通知のリンク先"
     t.index ["announcement_id"], name: "index_notifications_on_announcement_id"
     t.index ["notification_type"], name: "index_notifications_on_notification_type"
-    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
