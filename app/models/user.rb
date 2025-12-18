@@ -179,4 +179,39 @@ class User < ApplicationRecord
   def unread_notifications_count
     notifications.unread.count
   end
+
+  # ランキングOGP画像生成用の週間統計情報を取得
+  def weekly_ranking_stats
+    start_date = Date.current.beginning_of_week
+    end_date = Date.current.end_of_week
+
+    # 週間データ集計
+    weekly_walks = walks.where(walked_on: start_date..end_date)
+    total_distance = weekly_walks.sum(:distance)
+    total_steps = weekly_walks.sum(:steps)
+
+    # 順位計算
+    # 自分より歩数が多いユーザーの数をカウント + 1 = 順位
+    higher_rank_users_count = User.joins(:walks)
+                                  .where(walks: { walked_on: start_date..end_date })
+                                  .group("users.id")
+                                  .having("SUM(walks.steps) > ?", total_steps)
+                                  .pluck("users.id")
+                                  .count
+
+    rank = higher_rank_users_count + 1
+    rank_with_ordinal = rank.ordinalize
+
+    {
+      level: nil,
+      date: "#{start_date.strftime('%m/%d')} - #{end_date.strftime('%m/%d')}",
+      label1: "RANK",
+      value1: rank_with_ordinal,
+      label2: "STEPS",
+      value2: ActiveSupport::NumberHelper.number_to_delimited(total_steps),
+      label3: "DISTANCE",
+      value3: "#{total_distance.round(1)} km",
+      period_key: "#{start_date.strftime('%Y%m%d')}_#{end_date.strftime('%Y%m%d')}"
+    }
+  end
 end

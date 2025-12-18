@@ -134,7 +134,8 @@ class RpgCardGeneratorService
       end
 
       image.format "jpg"
-      image.quality 80 # ファイルサイズ削減と生成速度向上のため圧縮率を調整
+      image.quality 75 # ファイルサイズ削減と生成速度向上のため圧縮率を調整
+      image.strip # メタデータを削除してサイズを削減
       blob = image.to_blob
       image.destroy!
 
