@@ -50,7 +50,7 @@ module ShareHelper
 
     # ランキングページのURLを含める（OGP画像表示のため）
     # 環境に応じて動的にURLを生成
-    ranking_url = rankings_url(host: request.host, protocol: request.protocol)
+    ranking_url = rankings_url(host: request.host, protocol: request.protocol, user_id: user.id)
 
     text = generate_rpg_text(distance: distance_km, rank: rank_str, message: message, type: :ranking)
     twitter_share_url(text: text, url: ranking_url)

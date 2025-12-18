@@ -270,7 +270,7 @@ class RpgCardGeneratorService
     c.annotate "+#{STATUS_COL1_X}+#{STATUS_LABEL_Y}", label1
     c.fill colors[:accent]
     c.pointsize 40
-    c.annotate "+#{STATUS_COL1_X + 20}+#{STATUS_VALUE_Y}", value1
+    c.annotate "+#{STATUS_COL1_X + 20}+#{STATUS_VALUE_Y}", value1.to_s
 
     # Item 2 (Steps)
     c.fill colors[:text_secondary]
@@ -280,7 +280,7 @@ class RpgCardGeneratorService
     c.annotate "+#{STATUS_COL2_X}+#{STATUS_LABEL_Y}", label2
     c.fill colors[:accent]
     c.pointsize 40
-    c.annotate "+#{STATUS_COL2_X + 20}+#{STATUS_VALUE_Y}", value2
+    c.annotate "+#{STATUS_COL2_X + 20}+#{STATUS_VALUE_Y}", value2.to_s
 
     # Item 3 (Location or Period)
     c.fill colors[:text_secondary]
@@ -300,7 +300,7 @@ class RpgCardGeneratorService
   def strip_emoji(text)
     # 基本的な絵文字範囲 + 異体字セレクタなどを除去
     # 完全にすべての絵文字を除去するのは難しいが、主要な範囲をカバー
-    text.to_s
+    text.to_s.scrub('')
         .gsub(/[\u{1F300}-\u{1F9FF}]/, "") # Miscellaneous Symbols and Pictographs
         .gsub(/[\u{2600}-\u{26FF}]/, "")   # Miscellaneous Symbols
         .gsub(/[\u{2700}-\u{27BF}]/, "")   # Dingbats

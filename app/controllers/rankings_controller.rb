@@ -1,5 +1,6 @@
 class RankingsController < ApplicationController
-  before_action :authenticate_user!
+  # OGPメタタグ取得のため、ログインなしでもアクセス可能にする
+  skip_before_action :authenticate_user!, only: [:index]
 
   def index
     # パラメータ取得

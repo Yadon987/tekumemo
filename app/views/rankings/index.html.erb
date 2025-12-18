@@ -1,11 +1,22 @@
 <!-- app/views/rankings/index.html.erb -->
 <% content_for :head do %>
+  <meta property="og:url" content="<%= request.original_url %>" />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="今週のランキング結果 - てくメモ" />
   <% description = @my_rank ? "今週のランキングで#{@my_rank}位になりました！" : "てくメモで楽しくウォーキング習慣を身につけよう！" %>
   <meta property="og:description" content="<%= description %>" />
-  <meta property="og:image" content="<%= rankings_ogp_image_url(current_user, format: :jpg) %>" />
+  <%
+    # シェアURLに含まれるuser_idを優先、なければログインユーザー
+    ogp_user = params[:user_id].present? ? User.find_by(id: params[:user_id]) : current_user
+  %>
+  <% if ogp_user %>
+    <meta property="og:image" content="<%= ogp_image_rankings_user_url(ogp_user, format: :jpg) %>" />
+  <% end %>
   <meta name="twitter:card" content="summary_large_image" />
 <% end %>
+
+
+
 
 
 
@@ -163,8 +174,8 @@
           </div>
         </div>
       </div>
-    <% else %>
-      <!-- ランキング外 -->
+    <% elsif user_signed_in? %>
+      <!-- ランキング外（ログイン済み） -->
       <div class="relative group">
         <div class="hidden dark:block absolute -inset-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-[2rem] blur-lg opacity-50 group-hover:opacity-75 transition"></div>
 
@@ -291,7 +302,7 @@
 
       <% rank = current_rank %>
       <% next if index < 3 # 上位3名は別枠表示だが、順位計算のためにループは回す %>
-      <% is_current_user = user.id == current_user.id %>
+      <% is_current_user = current_user && user.id == current_user.id %>
 
       <div class="relative group transition-all duration-300 hover:-translate-y-1">
         <!-- ダークモード用グロー（自分の場合） -->
@@ -356,6 +367,13 @@
         </div>
       </div>
     <% end %>
+  </div>
+
+  <!-- 注意書き -->
+  <div class="px-4 mt-12 max-w-2xl mx-auto">
+    <p class="text-xs text-center text-slate-400 dark:text-purple-400/60">
+      このランキングは公開情報です。ユーザー名と歩行距離が表示されます。
+    </p>
   </div>
 
   <div class="h-20"></div>
