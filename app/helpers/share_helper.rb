@@ -36,8 +36,13 @@ module ShareHelper
     # メッセージ（投稿本文があれば優先、なければランダム）
     message = post.body.present? ? "「#{post.body.truncate(30)}」" : get_flavor_text(today_km)
 
+    # 投稿詳細ページのURLを含める（OGP画像表示のため）
+    post_url = post_url(post, host: request.host, protocol: request.protocol)
+
     text = generate_rpg_text(distance: today_km, rank: rank_str, message: message)
-    twitter_share_url(text: text)
+    # URLとハッシュタグの間に改行を入れるため、ハッシュタグをテキストに含める
+    text += "\n#てくメモ #RUNTEQ #散歩"
+    twitter_share_url(text: text, url: post_url)
   end
 
   # ランキングをXでシェアするURLを生成
@@ -109,8 +114,6 @@ module ShareHelper
         ━━━━━━━━━━━━
         一緒に歩いて強くなろう🛡️
         👇
-        https://tekumemo.onrender.com
-        #てくメモ #RUNTEQ #散歩
       TEXT
     end
   end
