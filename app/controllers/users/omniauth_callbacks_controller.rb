@@ -64,6 +64,9 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       google_expires_at: Time.at(auth_data["expires_at"]),
       avatar_url: auth_data["image"]
     )
+      # アバター画像をキャッシュ
+      cache_avatar_image(current_user, auth_data["image"])
+
       session.delete(:google_auth_data) # セッション削除
       redirect_to edit_user_registration_path, notice: "メールアドレスを更新し、Googleアカウントと連携しました。"
     else
@@ -82,11 +85,37 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       google_expires_at: Time.at(auth.credentials.expires_at),
       avatar_url: auth.info.image
     )
+      # アバター画像をキャッシュ（OGP生成高速化のため）
+      cache_avatar_image(current_user, auth.info.image)
+
       set_flash_message(:notice, :success, kind: "Google") if is_navigational_format?
       redirect_to edit_user_registration_path, notice: "Googleアカウントと連携しました"
     else
       error_msg = "Googleアカウントの連携に失敗しました: #{current_user.errors.full_messages.join(', ')}"
       redirect_to edit_user_registration_path, alert: error_msg
+    end
+  end
+
+  # アバター画像をActive Storageにキャッシュ
+  def cache_avatar_image(user, avatar_url)
+    return unless avatar_url.present?
+
+    # 既存のキャッシュがあれば削除（更新のため）
+    user.cached_avatar.purge if user.cached_avatar.attached?
+
+    # Googleからダウンロードしてキャッシュ
+    begin
+      require "open-uri"
+      downloaded_file = URI.open(avatar_url, read_timeout: 3, open_timeout: 3)
+      user.cached_avatar.attach(
+        io: downloaded_file,
+        filename: "avatar_#{user.id}.jpg",
+        content_type: "image/jpeg"
+      )
+      Rails.logger.info "Avatar cached for user #{user.id}"
+    rescue => e
+      Rails.logger.warn "Failed to cache avatar for user #{user.id}: #{e.message}"
+      # キャッシュ失敗は致命的ではないので、エラーを無視
     end
   end
 

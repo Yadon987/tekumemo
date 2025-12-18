@@ -35,14 +35,15 @@ Rails.application.configure do
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
-  config.log_tags = [ :request_id ]
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  # config.log_tags = [ :request_id ]
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "debug")
 
   # キャッシュストアをSolid Cacheに変更
   config.cache_store = :solid_cache_store
 
   # Active Job設定
-  # config.active_job.queue_adapter = :resque
+  # Renderの無料プランでは単一プロセスのため、inlineで同期実行する
+  config.active_job.queue_adapter = :inline
   # config.active_job.queue_name_prefix = "myapp_production"
 
   # メーラー設定

@@ -3,14 +3,23 @@
   <meta property="og:url" content="<%= request.original_url %>" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="今週のランキング結果 - てくメモ" />
-  <% description = @my_rank ? "今週のランキングで#{@my_rank}位になりました！" : "てくメモで楽しくウォーキング習慣を身につけよう！" %>
-  <meta property="og:description" content="<%= description %>" />
   <%
     # シェアURLに含まれるuser_idを優先、なければログインユーザー
     ogp_user = params[:user_id].present? ? User.find_by(id: params[:user_id]) : current_user
+
+    description = if ogp_user
+                    "#{ogp_user.name}さんの今週のランキング結果をチェック！"
+                  else
+                    "てくメモで楽しくウォーキング習慣を身につけよう！"
+                  end
   %>
+  <meta property="og:description" content="<%= description %>" />
   <% if ogp_user %>
-    <meta property="og:image" content="<%= ogp_image_rankings_user_url(ogp_user, format: :jpg) %>" />
+    <meta property="og:image" content="<%= ogp_image_rankings_user_url(ogp_user, format: :jpg, v: Time.current.to_i) %>" />
+    <meta name="twitter:image" content="<%= ogp_image_rankings_user_url(ogp_user, format: :jpg, v: Time.current.to_i) %>" />
+  <% else %>
+    <meta property="og:image" content="<%= image_url('icon.png') %>" />
+    <meta name="twitter:image" content="<%= image_url('icon.png') %>" />
   <% end %>
   <meta name="twitter:card" content="summary_large_image" />
 <% end %>
@@ -375,6 +384,34 @@
       このランキングは公開情報です。ユーザー名と歩行距離が表示されます。
     </p>
   </div>
+
+  <!-- OGPプレビュー（確認用） -->
+  <% if user_signed_in? %>
+    <div class="px-4 mt-8 max-w-2xl mx-auto">
+      <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 border border-slate-200 dark:border-purple-500/20">
+        <h3 class="text-sm font-bold text-slate-600 dark:text-purple-300 mb-2 flex items-center gap-2">
+          <span>🖼️</span> シェア画像プレビュー
+        </h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+          X(Twitter)などでシェアされた時に表示される画像です。<br>
+          <span class="text-orange-500 dark:text-yellow-400">※画像がアイコンのままの場合は、生成中です。数秒待ってからリロードしてください。</span>
+        </p>
+        <div class="relative aspect-[1.91/1] w-full rounded-xl overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-900 group">
+          <%= image_tag ogp_image_rankings_user_path(current_user, format: :jpg, v: Time.current.to_i),
+              class: "w-full h-full object-cover transition-opacity duration-500",
+              alt: "Ranking OGP Preview",
+              loading: "lazy" %>
+
+          <!-- リロードボタン -->
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 backdrop-blur-sm">
+             <%= link_to rankings_path(period: @period), class: "px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-white text-xs font-bold rounded-full shadow-lg hover:scale-105 transition transform" do %>
+               🔄 画像を更新（リロード）
+             <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <div class="h-20"></div>
 </div>

@@ -134,6 +134,7 @@ class RpgCardGeneratorService
       end
 
       image.format "jpg"
+      image.quality 80 # ファイルサイズ削減と生成速度向上のため圧縮率を調整
       blob = image.to_blob
       image.destroy!
 
@@ -176,26 +177,54 @@ class RpgCardGeneratorService
     avatar_used = false
 
     if @user.avatar_url.present? && @user.use_google_avatar
-      begin
-        require "open-uri"
-        URI.open(@user.avatar_url, read_timeout: 3, open_timeout: 3) do |f|
-          File.binwrite(avatar_path, f.read)
-        end
+      # ステップ1: キャッシュされたアバターを優先使用（超高速）
+      if @user.cached_avatar.attached?
+        begin
+          # Active StorageからダウンロードしてTempfileに保存
+          @user.cached_avatar.download do |file|
+            File.binwrite(avatar_path, file.read)
+          end
 
-        avatar = ::MiniMagick::Image.new(avatar_path)
-        avatar.combine_options do |c|
-          c.resize "#{AVATAR_SIZE}x#{AVATAR_SIZE}^"
-          c.gravity "center"
-          c.extent "#{AVATAR_SIZE}x#{AVATAR_SIZE}"
+          avatar = ::MiniMagick::Image.new(avatar_path)
+          avatar.combine_options do |c|
+            c.resize "#{AVATAR_SIZE}x#{AVATAR_SIZE}^"
+            c.gravity "center"
+            c.extent "#{AVATAR_SIZE}x#{AVATAR_SIZE}"
+          end
+          avatar_used = true
+          Rails.logger.info "Using cached avatar for user #{@user.id}"
+        rescue => e
+          Rails.logger.warn "Failed to use cached avatar: #{e.message}"
+          # キャッシュ使用失敗 → 次のステップへ
         end
-        avatar_used = true
-      rescue => e
-        Rails.logger.error "Failed to download avatar: #{e.message}"
+      end
+
+      # ステップ2: キャッシュがない場合、Googleからダウンロード＆保存
+      unless avatar_used
+        begin
+          require "open-uri"
+          downloaded_file = URI.open(@user.avatar_url, read_timeout: 2, open_timeout: 2)
+          File.binwrite(avatar_path, downloaded_file.read)
+
+          avatar = ::MiniMagick::Image.new(avatar_path)
+          avatar.combine_options do |c|
+            c.resize "#{AVATAR_SIZE}x#{AVATAR_SIZE}^"
+            c.gravity "center"
+            c.extent "#{AVATAR_SIZE}x#{AVATAR_SIZE}"
+          end
+          avatar_used = true
+
+          # ダウンロード成功したらキャッシュに保存（次回から高速化）
+          cache_avatar_for_future_use(downloaded_file)
+          Rails.logger.info "Downloaded and cached avatar for user #{@user.id}"
+        rescue => e
+          Rails.logger.error "Failed to download avatar: #{e.message}"
+        end
       end
     end
 
     unless avatar_used
-      # フォールバック: イニシャル画像
+      # ステップ3: フォールバック - イニシャル画像
       initial = @user.name[0..1].upcase rescue "U"
       system("convert", "-size", "#{AVATAR_SIZE}x#{AVATAR_SIZE}", "xc:#3b82f6", avatar_path)
 
@@ -213,6 +242,24 @@ class RpgCardGeneratorService
 
     # Tempfileオブジェクトとパスの両方を返す（ensureブロックでクリーンアップできるように）
     [ avatar_tempfile, avatar_path ]
+  end
+
+  # アバター画像を将来使用するためにキャッシュ
+  def cache_avatar_for_future_use(downloaded_file)
+    return if @user.cached_avatar.attached? # 既にキャッシュ済みならスキップ
+
+    begin
+      downloaded_file.rewind # ファイルポインタを先頭に戻す
+      @user.cached_avatar.attach(
+        io: downloaded_file,
+        filename: "avatar_#{@user.id}.jpg",
+        content_type: "image/jpeg"
+      )
+      Rails.logger.info "Avatar cached for user #{@user.id}"
+    rescue => e
+      Rails.logger.warn "Failed to cache avatar for user #{@user.id}: #{e.message}"
+      # キャッシュ失敗は無視（次回再試行）
+    end
   end
 
   def draw_user_name(c, name)
@@ -300,7 +347,7 @@ class RpgCardGeneratorService
   def strip_emoji(text)
     # 基本的な絵文字範囲 + 異体字セレクタなどを除去
     # 完全にすべての絵文字を除去するのは難しいが、主要な範囲をカバー
-    text.to_s.scrub('')
+    text.to_s.scrub("")
         .gsub(/[\u{1F300}-\u{1F9FF}]/, "") # Miscellaneous Symbols and Pictographs
         .gsub(/[\u{2600}-\u{26FF}]/, "")   # Miscellaneous Symbols
         .gsub(/[\u{2700}-\u{27BF}]/, "")   # Dingbats

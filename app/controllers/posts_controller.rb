@@ -41,6 +41,9 @@ class PostsController < ApplicationController
     end
 
     if @post.save
+      # OGP画像をバックグラウンドで生成（シェア時の高速化）
+      GeneratePostOgpImageJob.perform_later(@post)
+
       # 成功：セッションに投稿IDを保存してモーダル表示フラグを立てる
       session[:show_post_success_modal] = @post.id
       # 投稿一覧ページに明示的にリダイレクト（モーダル表示のため）
