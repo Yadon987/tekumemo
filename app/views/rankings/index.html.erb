@@ -1,4 +1,14 @@
 <!-- app/views/rankings/index.html.erb -->
+<% content_for :head do %>
+  <meta property="og:title" content="今週のランキング結果 - てくメモ" />
+  <% description = @my_rank ? "今週のランキングで#{@my_rank}位になりました！" : "てくメモで楽しくウォーキング習慣を身につけよう！" %>
+  <meta property="og:description" content="<%= description %>" />
+  <meta property="og:image" content="<%= rankings_ogp_image_url(current_user, format: :jpg) %>" />
+  <meta name="twitter:card" content="summary_large_image" />
+<% end %>
+
+
+
 <%# ランキング画面のダークモードでは、共通の背景アニメーション（パルス）が独自背景と干渉するため非表示にする %>
 <style>
   html.dark body > .fixed.-z-10 {
