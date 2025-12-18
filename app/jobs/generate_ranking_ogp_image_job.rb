@@ -12,7 +12,7 @@ class GenerateRankingOgpImageJob < ApplicationJob
     # 既に画像があり、期間キーが一致し、作成から12時間以内ならスキップ
     if user.ranking_ogp_image.attached? &&
        user.ranking_ogp_image.filename.to_s.include?(period_key) &&
-       user.ranking_ogp_image.blob.created_at > 12.hours.ago
+       user.ranking_ogp_image.blob.created_at > 24.hours.ago
       return
     end
 

@@ -26,6 +26,9 @@ class RankingsController < ApplicationController
       find_my_rank
       calculate_my_distance
 
+      # OGP画像の事前生成をキック（非同期）
+      GenerateRankingOgpImageJob.perform_later(current_user)
+
       # 1位との差分を計算（自分が1位でない場合）
       if @my_rank && @my_rank > 1 && @rankings.present?
         top_distance = @rankings.first.total_distance

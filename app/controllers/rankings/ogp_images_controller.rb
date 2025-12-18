@@ -3,8 +3,8 @@ module Rankings
     skip_before_action :authenticate_user!, only: [ :show ]
 
     def show
-      # キャッシュ設定: ランキングは変動するため12時間に設定
-      expires_in 12.hours, public: true
+      # キャッシュ設定: 日々の変動を反映するため24時間に設定
+      expires_in 24.hours, public: true
 
       @user = User.find(params[:id])
 
@@ -13,13 +13,13 @@ module Rankings
       end_date = Date.current.end_of_week
       period_key = "#{start_date.strftime('%Y%m%d')}_#{end_date.strftime('%Y%m%d')}"
 
-      # 【デバッグ用】既存画像チェックを一時的に無効化して、強制再生成
-      # if @user.ranking_ogp_image.attached? &&
-      #    @user.ranking_ogp_image.filename.to_s.include?(period_key) &&
-      #    @user.ranking_ogp_image.blob.created_at > 12.hours.ago
-      #   redirect_to rails_blob_url(@user.ranking_ogp_image, disposition: "inline"), allow_other_host: true
-      #   return
-      # end
+      # 既存の画像があり、ファイル名が今週のもので、かつ作成から12時間以内であれば返す
+      if @user.ranking_ogp_image.attached? &&
+         @user.ranking_ogp_image.filename.to_s.include?(period_key) &&
+         @user.ranking_ogp_image.blob.created_at > 24.hours.ago
+         send_data @user.ranking_ogp_image.download, type: "image/jpeg", disposition: "inline"
+        return
+      end
 
       # 画像がない、または古い場合
       # コントローラー内で同期的に生成（投稿OGPと同じパターン）
@@ -77,9 +77,8 @@ module Rankings
       Rails.logger.info "[Ranking OGP] After reload - attached?: #{@user.ranking_ogp_image.attached?}"
 
       if @user.ranking_ogp_image.attached?
-        blob_url = rails_blob_url(@user.ranking_ogp_image, disposition: "inline")
-        Rails.logger.info "[Ranking OGP] Success! Blob URL: #{blob_url}"
-        redirect_to blob_url, allow_other_host: true
+        Rails.logger.info "[Ranking OGP] Success! Serving image directly."
+        send_data @user.ranking_ogp_image.download, type: "image/jpeg", disposition: "inline"
       else
         Rails.logger.error "[Ranking OGP] CRITICAL: attach() completed but image not attached after reload!"
         redirect_to ActionController::Base.helpers.image_url("icon.png"), allow_other_host: true

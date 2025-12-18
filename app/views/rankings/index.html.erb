@@ -15,8 +15,12 @@
   %>
   <meta property="og:description" content="<%= description %>" />
   <% if ogp_user %>
-    <meta property="og:image" content="<%= ogp_image_rankings_user_url(ogp_user, format: :jpg, v: Time.current.to_i) %>" />
-    <meta name="twitter:image" content="<%= ogp_image_rankings_user_url(ogp_user, format: :jpg, v: Time.current.to_i) %>" />
+    <%
+      # OGP画像URL（.jpg拡張子を明示的に含める）
+      ogp_image_url = ogp_image_rankings_user_url(ogp_user, protocol: 'https') + ".jpg?v=#{Time.current.to_i}"
+    %>
+    <meta property="og:image" content="<%= ogp_image_url %>" />
+    <meta name="twitter:image" content="<%= ogp_image_url %>" />
   <% else %>
     <meta property="og:image" content="<%= image_url('icon.png') %>" />
     <meta name="twitter:image" content="<%= image_url('icon.png') %>" />

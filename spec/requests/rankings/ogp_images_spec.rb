@@ -11,34 +11,31 @@ RSpec.describe "Rankings::OgpImages", type: :request do
     allow_any_instance_of(RpgCardGeneratorService).to receive(:generate).and_return(dummy_image_data)
   end
 
-  xdescribe "GET /rankings/users/:id/ogp_image" do
+  describe "GET /rankings/users/:id/ogp_image" do
     context "ユーザーが存在する場合" do
-      it "リダイレクトされること" do
-        pending "テスト環境でのみ失敗する現象が発生中。本番では動作確認済み。"
+      it "画像データが直接返されること" do
         get ogp_image_rankings_user_path(user, format: :jpg)
-        expect(response.status).to eq(302)
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq("image/jpeg")
+        expect(response.body).to eq(dummy_image_data)
       end
 
       it "キャッシュヘッダーが設定されていること" do
         get ogp_image_rankings_user_path(user, format: :jpg)
-        # リダイレクトでもキャッシュヘッダーはつくはず
-        # expect(response.headers['Cache-Control']).to include('max-age')
+        expect(response.headers['Cache-Control']).to include('max-age')
       end
 
-      it "画像が生成されてActive Storageに添付され、リダイレクトされること" do
+      it "画像が生成されてActive Storageに添付されること" do
         expect {
           get ogp_image_rankings_user_path(user, format: :jpg)
         }.to change { user.reload.ranking_ogp_image.attached? }.from(false).to(true)
-
-        expect(response).to redirect_to(rails_blob_url(user.ranking_ogp_image, disposition: "inline"))
       end
     end
 
     context "ユーザーが存在しない場合" do
-      it "RecordNotFoundが発生すること" do
-        expect {
-          get ogp_image_rankings_user_path(id: 99999, format: :jpg)
-        }.to raise_error(ActiveRecord::RecordNotFound)
+      it "デフォルト画像へリダイレクトされること" do
+        get ogp_image_rankings_user_path(id: 99999, format: :jpg)
+        expect(response).to redirect_to(ActionController::Base.helpers.image_url("icon.png"))
       end
     end
   end
