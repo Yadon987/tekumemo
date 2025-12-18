@@ -157,14 +157,14 @@ class User < ApplicationRecord
   # ランキング集計
   def self.ranking(period: "daily", limit: 100)
     range = case period.to_s
-    when "daily"
-      Date.current..Date.current
+    when "weekly"
+      Date.current.beginning_of_week..Date.current.end_of_week
     when "monthly"
       Date.current.beginning_of_month..Date.current
     when "yearly"
       Date.current.beginning_of_year..Date.current
     else
-      Date.current
+      Date.current.beginning_of_week..Date.current.end_of_week # デフォルトもweeklyにする
     end
 
     joins(:walks)
@@ -178,5 +178,56 @@ class User < ApplicationRecord
   # 未読通知数を取得
   def unread_notifications_count
     notifications.unread.count
+  end
+
+  # ランキングOGP画像生成用の週間統計情報を取得
+  def weekly_ranking_stats
+    start_date = Date.current.beginning_of_week
+    end_date = Date.current.end_of_week
+
+    # 週間データ集計
+    weekly_walks = walks.where(walked_on: start_date..end_date)
+    total_distance = weekly_walks.sum(:distance)
+    total_steps = weekly_walks.sum(:steps)
+
+    # 順位計算
+    # 自分より歩数が多いユーザーの数をカウント + 1 = 順位
+    higher_rank_users_count = User.joins(:walks)
+                                  .where(walks: { walked_on: start_date..end_date })
+                                  .group("users.id")
+                                  .having("SUM(walks.steps) > ?", total_steps)
+                                  .pluck("users.id")
+                                  .count
+
+    rank = higher_rank_users_count + 1
+
+    # 英語の序数を生成（ロケール設定に依存しないように自前で処理）
+    suffix = case rank % 100
+    when 11, 12, 13 then "th"
+    else
+               case rank % 10
+               when 1 then "st"
+               when 2 then "nd"
+               when 3 then "rd"
+               else "th"
+               end
+    end
+    rank_with_ordinal = "#{rank}#{suffix}"
+
+    # レベル計算（全期間の総歩数 / 5000 + 1）
+    lifetime_steps = walks.sum(:steps)
+    level = (lifetime_steps / 5000) + 1
+
+    {
+      level: level,
+      date: "#{start_date.strftime('%m/%d')} - #{end_date.strftime('%m/%d')}",
+      label1: "RANK",
+      value1: rank_with_ordinal,
+      label2: "STEPS",
+      value2: ActiveSupport::NumberHelper.number_to_delimited(total_steps),
+      label3: "DISTANCE",
+      value3: "#{total_distance.round(1)} km",
+      period_key: "#{start_date.strftime('%Y%m%d')}_#{end_date.strftime('%Y%m%d')}"
+    }
   end
 end

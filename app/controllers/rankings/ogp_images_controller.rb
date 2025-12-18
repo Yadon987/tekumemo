@@ -11,7 +11,13 @@ module Rankings
       # 期間設定 (今週)
       start_date = Date.current.beginning_of_week
       end_date = Date.current.end_of_week
-      period_key = "#{start_date.strftime('%Y%m%d')}_#{end_date.strftime('%Y%m%d')}"
+      period_key = "#{start_date.strftime("%Y%m%d")}_#{end_date.strftime("%Y%m%d")}"
+
+      # 強制リフレッシュ: ?refresh=true があれば既存の画像を削除
+      if params[:refresh] == "true" && @user.ranking_ogp_image.attached?
+        Rails.logger.info "[Ranking OGP] Force refreshing image for user #{@user.id}"
+        @user.ranking_ogp_image.purge
+      end
 
       # 既存の画像があり、ファイル名が今週のもので、かつ作成から12時間以内であれば返す
       if @user.ranking_ogp_image.attached? &&
@@ -24,33 +30,8 @@ module Rankings
       # 画像がない、または古い場合
       # コントローラー内で同期的に生成（投稿OGPと同じパターン）
 
-      # 週間データ集計
-      Rails.logger.info "[Ranking OGP] User: #{@user.id}, Period: #{period_key}"
-      weekly_walks = @user.walks.where(walked_on: start_date..end_date)
-      total_distance = weekly_walks.sum(:distance)
-      total_steps = weekly_walks.sum(:steps)
-
-      # 順位計算
-      higher_rank_users_count = User.joins(:walks)
-                                    .where(walks: { walked_on: start_date..end_date })
-                                    .group("users.id")
-                                    .having("SUM(walks.steps) > ?", total_steps)
-                                    .pluck("users.id")
-                                    .count
-
-      rank = higher_rank_users_count + 1
-      rank_with_ordinal = rank.ordinalize
-
-      stats = {
-        level: nil,
-        date: "#{start_date.strftime('%m/%d')} - #{end_date.strftime('%m/%d')}",
-        label1: "RANK",
-        value1: rank_with_ordinal,
-        label2: "STEPS",
-        value2: ActiveSupport::NumberHelper.number_to_delimited(total_steps),
-        label3: "DISTANCE",
-        value3: "#{total_distance.round(1)} km"
-      }
+      # 週間データ集計と順位計算をモデルに委譲
+      stats = @user.weekly_ranking_stats
 
       image_data = RpgCardGeneratorService.new(
         user: @user,

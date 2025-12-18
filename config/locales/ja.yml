@@ -211,7 +211,7 @@ ja:
       subtitle: "競い合って、一緒に成長しよう！"
       update_frequency: "（1時間ごとに更新）"
       tabs:
-        daily: "日次"
+        weekly: "週次"
         monthly: "月次"
         yearly: "年次"
       your_rank:

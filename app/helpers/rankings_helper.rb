@@ -27,14 +27,14 @@ module RankingsHelper
 
   def period_label_ja(period)
     case period
-    when "daily"
-      "今日"
+    when "weekly"
+      "今週"
     when "monthly"
       "今月"
     when "yearly"
       "今年"
     else
-      "今日"
+      "今週"
     end
   end
 

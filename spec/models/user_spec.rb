@@ -134,16 +134,21 @@ RSpec.describe User, type: :model do
       FactoryBot.create(:walk, user: user_c, walked_on: 1.day.ago, distance: 20.0)
     end
 
-    context "期間: daily (今日)" do
-      it "今日の記録のみが集計され、距離順に並ぶこと" do
-        ranking = User.ranking(period: 'daily')
+    context "期間: weekly (今週)" do
+      it "今週の記録が集計され、距離順に並ぶこと" do
+        # User A: 今日 5km + 昨日 3km = 8km
+        # User B: 今日 10km
+        # User C: 昨日 20km
 
-        # User B (10km) -> User A (5km)。User Cは今日歩いていないので含まれない
-        expect(ranking.length).to eq 2
-        expect(ranking[0].id).to eq user_b.id
-        expect(ranking[0].total_distance).to eq 10.0
-        expect(ranking[1].id).to eq user_a.id
-        expect(ranking[1].total_distance).to eq 5.0
+        ranking = User.ranking(period: "weekly")
+
+        expect(ranking.length).to eq 3
+        expect(ranking[0].id).to eq user_c.id # 20km
+        expect(ranking[0].total_distance).to eq 20.0
+        expect(ranking[1].id).to eq user_b.id # 10km
+        expect(ranking[1].total_distance).to eq 10.0
+        expect(ranking[2].id).to eq user_a.id # 8km
+        expect(ranking[2].total_distance).to eq 8.0
       end
     end
 
@@ -162,7 +167,7 @@ RSpec.describe User, type: :model do
         # User B: 今月10km
         FactoryBot.create(:walk, user: user_b, walked_on: current_month + 2.days, distance: 10.0)
 
-        ranking = User.ranking(period: 'monthly')
+        ranking = User.ranking(period: "monthly")
 
         expect(ranking.length).to eq 2
         expect(ranking[0].id).to eq user_b.id # 10km
@@ -183,7 +188,7 @@ RSpec.describe User, type: :model do
         # User B: 今年10km
         FactoryBot.create(:walk, user: user_b, walked_on: current_year + 2.days, distance: 10.0)
 
-        ranking = User.ranking(period: 'yearly')
+        ranking = User.ranking(period: "yearly")
 
         expect(ranking.length).to eq 2
         expect(ranking[0].id).to eq user_b.id # 10km

@@ -4,18 +4,18 @@ class RankingsController < ApplicationController
 
   def index
     # パラメータ取得
-    @period = params[:period] || "monthly"
+    @period = params[:period] || "weekly"
 
     # キャッシュキー生成（日付ごとに更新）
     cache_key = case @period
-    when "daily"
-                  "rankings_daily_#{Date.current}"
+    when "weekly"
+                  "rankings_weekly_#{Date.current.beginning_of_week}"
     when "monthly"
                   "rankings_monthly_#{Date.current.strftime('%Y-%m')}"
     when "all_time"
                   "rankings_all_time_#{Date.current}"
     else
-                  "rankings_monthly_#{Date.current.strftime('%Y-%m')}"
+                  "rankings_weekly_#{Date.current.beginning_of_week}"
     end
 
     # ランキング取得（1時間キャッシュ）
@@ -91,10 +91,10 @@ class RankingsController < ApplicationController
     else
       # ランキング外の場合、個別に集計する
       range = case @period
-      when "daily" then Date.current
+      when "weekly" then Date.current.beginning_of_week..Date.current.end_of_week
       when "monthly" then Date.current.beginning_of_month..Date.current
       when "yearly" then Date.current.beginning_of_year..Date.current
-      else Date.current
+      else Date.current.beginning_of_week..Date.current.end_of_week
       end
 
       @my_distance = current_user.walks.where(walked_on: range).sum(:distance) # walked_onカラムを使用

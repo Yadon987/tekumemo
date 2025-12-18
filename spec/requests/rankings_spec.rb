@@ -24,6 +24,11 @@ RSpec.describe "Rankings", type: :request do
         get rankings_path(period: 'yearly')
         expect(response).to have_http_status(:success)
       end
+
+      it "期間パラメータ(weekly)を指定してもアクセスできること" do
+        get rankings_path(period: 'weekly')
+        expect(response).to have_http_status(:success)
+      end
     end
 
     context "ログインしていない場合" do

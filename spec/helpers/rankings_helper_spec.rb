@@ -60,8 +60,8 @@ RSpec.describe RankingsHelper, type: :helper do
   end
 
   describe "#period_label_ja" do
-    it "dailyの場合は'今日'を返すこと" do
-      expect(helper.period_label_ja("daily")).to eq "今日"
+    it "weeklyの場合は'今週'を返すこと" do
+      expect(helper.period_label_ja("weekly")).to eq "今週"
     end
 
     it "monthlyの場合は'今月'を返すこと" do
@@ -72,8 +72,8 @@ RSpec.describe RankingsHelper, type: :helper do
       expect(helper.period_label_ja("yearly")).to eq "今年"
     end
 
-    it "不正な値の場合はデフォルトで'今日'を返すこと" do
-      expect(helper.period_label_ja("invalid")).to eq "今日"
+    it "不正な値の場合はデフォルトで'今週'を返すこと" do
+      expect(helper.period_label_ja("invalid")).to eq "今週"
     end
   end
 end

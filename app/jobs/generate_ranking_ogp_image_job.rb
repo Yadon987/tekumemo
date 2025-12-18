@@ -19,32 +19,8 @@ class GenerateRankingOgpImageJob < ApplicationJob
     Rails.logger.info "Starting background Ranking OGP generation for User ID: #{user.id}"
 
     begin
-      # 週間データ集計
-      weekly_walks = user.walks.where(walked_on: start_date..end_date)
-      total_distance = weekly_walks.sum(:distance)
-      total_steps = weekly_walks.sum(:steps)
-
-      # 順位計算
-      higher_rank_users_count = User.joins(:walks)
-                                    .where(walks: { walked_on: start_date..end_date })
-                                    .group("users.id")
-                                    .having("SUM(walks.steps) > ?", total_steps)
-                                    .pluck("users.id")
-                                    .count
-
-      rank = higher_rank_users_count + 1
-      rank_with_ordinal = rank.ordinalize
-
-      stats = {
-        level: nil,
-        date: "#{start_date.strftime('%m/%d')} - #{end_date.strftime('%m/%d')}",
-        label1: "RANK",
-        value1: rank_with_ordinal,
-        label2: "STEPS",
-        value2: ActiveSupport::NumberHelper.number_to_delimited(total_steps),
-        label3: "DISTANCE",
-        value3: "#{total_distance.round(1)} km"
-      }
+      # 週間データ集計と順位計算をモデルに委譲
+      stats = user.weekly_ranking_stats
 
       image_data = RpgCardGeneratorService.new(
         user: user,
