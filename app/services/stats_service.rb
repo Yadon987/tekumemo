@@ -38,14 +38,17 @@ class StatsService
   end
 
   # 今月の目標達成率 (%)
+  # 今月の目標達成率 (%)
   def monthly_goal_achievement_rate
-    monthly_distance_m = current_month_distance  # メートル単位
-    target = user.target_distance * days_in_current_month  # メートル単位
-    return 0 if target.zero?
-    ((monthly_distance_m / target) * 100).round(1)
+    monthly_distance_km = current_month_distance  # km単位
+    target_m = user.target_distance * days_in_current_month  # m単位
+    target_km = target_m / 1000.0 # km単位に変換
+
+    return 0 if target_km.zero?
+    ((monthly_distance_km / target_km) * 100).round(1)
   end
 
-  # 今月の歩いた距離（メートル単位）
+  # 今月の歩いた距離（km単位）
   def current_month_distance
     user.walks
         .where(walked_on: Date.current.beginning_of_month..Date.current)
@@ -186,12 +189,10 @@ class StatsService
   def average_pace
     # duration(分) / distance(km) = 分/km
     total_time = user.walks.sum(:duration).to_f  # 分
-    total_dist_m = user.walks.sum(:distance).to_f  # メートル
+    total_dist_km = user.walks.sum(:distance).to_f  # km
 
-    return 0 if total_dist_m.zero?
+    return 0 if total_dist_km.zero?
 
-    # メートルをキロメートルに変換してから計算
-    total_dist_km = total_dist_m / 1000.0
     (total_time / total_dist_km).round(2)
   end
 
@@ -212,8 +213,7 @@ class StatsService
     paces = dates.map do |date|
       if walks_by_date[date]
         walk = walks_by_date[date].first  # 1日1記録の想定
-        distance_m = walk.distance  # メートル
-        distance_km = distance_m / 1000.0  # キロメートルに変換
+        distance_km = walk.distance.to_f  # km
         distance_km.zero? ? 0 : (walk.duration / distance_km).round(2)
       else
         0
