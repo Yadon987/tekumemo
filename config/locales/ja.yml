@@ -142,6 +142,9 @@ ja:
       submit: 保存する
       update: 更新する
   number:
+    nth:
+      ordinals:
+        default: "位"
     currency:
       format:
         delimiter: ","
