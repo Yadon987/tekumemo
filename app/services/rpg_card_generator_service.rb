@@ -1,3 +1,5 @@
+require "mini_magick"
+
 class RpgCardGeneratorService
   # レイアウト定数
   IMAGE_SIZE = "1200x630".freeze
