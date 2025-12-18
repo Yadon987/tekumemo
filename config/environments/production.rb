@@ -21,7 +21,8 @@ Rails.application.configure do
   # config.assets.css_compressor を設定しない
 
   # ストレージ設定
-  config.active_storage.service = :local
+  config.active_storage.service = :cloudinary
+
 
   # SSL設定
   config.force_ssl = true

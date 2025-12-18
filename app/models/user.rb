@@ -19,6 +19,10 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_many :web_push_subscriptions, dependent: :destroy
 
+  # Active Storage: ランキングOGP画像の添付
+  has_one_attached :ranking_ogp_image
+
+
   # ユーザー名のバリデーション
   validates :name, presence: true
 

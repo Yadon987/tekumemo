@@ -30,6 +30,9 @@ gem "simple_calendar", "~> 3.0" # カレンダー表示
 gem "kaminari"                  # ページネーション
 gem "geocoder"                  # 位置情報・ジオコーディング
 gem "mini_magick"               # 画像処理（OGP生成用）
+gem "cloudinary"                # Cloudinary SDK
+gem "activestorage-cloudinary-service"  # Active Storage用Cloudinaryアダプター
+
 
 # キャッシュ
 gem "solid_cache", "~> 1.0"     # Railsの高速キャッシュストア
