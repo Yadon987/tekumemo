@@ -19,6 +19,13 @@ Rails.application.routes.draw do
   # 散歩記録をカレンダー形式で表示
   resources :login_stamps, only: [ :index ]
   resources :rankings, only: [ :index ]
+  namespace :rankings do
+    resources :users, only: [] do
+      member do
+        get :ogp_image, to: "ogp_images#show", defaults: { format: :jpg }, as: :ogp_image
+      end
+    end
+  end
 
   # 統計機能
   get "stats", to: "stats#index", as: :stats

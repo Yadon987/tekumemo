@@ -43,13 +43,17 @@ module ShareHelper
   # ランキングをXでシェアするURLを生成
   def share_ranking_on_twitter_url(user:, rank:, distance:, period: "monthly")
     distance_km = (distance / 1000.0).round(2)
-    rank_str = rank ? "#{rank}th" : "-"
+    rank_str = rank ? "#{rank}位" : "-"
 
     # ランキングシェア時はランダムフレーバーテキスト
-    message = get_flavor_text(distance_km)
+    message = get_ranking_flavor_text(rank)
 
-    text = generate_rpg_text(distance: distance_km, rank: rank_str, message: message)
-    twitter_share_url(text: text)
+    # ランキングページのURLを含める（OGP画像表示のため）
+    # 環境に応じて動的にURLを生成
+    ranking_url = rankings_url(host: request.host, protocol: request.protocol, user_id: user.id)
+
+    text = generate_rpg_text(distance: distance_km, rank: rank_str, message: message, type: :ranking)
+    twitter_share_url(text: text, url: ranking_url)
   end
 
   private
@@ -66,22 +70,48 @@ module ShareHelper
     flavor_texts.sample
   end
 
-  def generate_rpg_text(distance:, rank:, message:)
+  def get_ranking_flavor_text(rank)
+    case rank
+    when 1
+      "「栄光の第1位！素晴らしい！」"
+    when 2..3
+      "「トップ3入り！すごい！」"
+    when 4..10
+      "「トップ10入り！頑張った！」"
+    else
+      "「今週もお疲れ様でした！」"
+    end
+  end
+
+  def generate_rpg_text(distance:, rank:, message:, type: :quest)
     exp = (distance * 100).to_i
 
-    <<~TEXT
-      ✨ 𝐐𝐔𝐄𝐒𝐓 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐄 ✨
+    if type == :ranking
+      <<~TEXT
+        🏆 𝐑𝐀𝐍𝐊𝐈𝐍𝐆 𝐂𝐇𝐀𝐌𝐏𝐈𝐎𝐍 🏆
 
-      👟 𝐃𝐢𝐬𝐭𝐚𝐧𝐜𝐞 : #{distance}km
-      👑 𝐑𝐚𝐧𝐤𝐢𝐧𝐠  : #{rank}
+        👟 𝐃𝐢𝐬𝐭𝐚𝐧𝐜𝐞 : #{distance}km
+        👑 𝐑𝐚𝐧𝐤𝐢𝐧𝐠  : #{rank}
 
-      ⚔️ 獲得経験値... #{exp} exp
-      💬 #{message}
-      ━━━━━━━━━━━━
-      一緒に歩いて強くなろう🛡️
-      👇
-      https://tekumemo.onrender.com
-      #てくメモ #RUNTEQ #散歩
-    TEXT
+        💬 #{message}
+        ━━━━━━━━━━━━
+        一緒に歩いて強くなろう🛡️
+      TEXT
+    else
+      <<~TEXT
+        ✨ 𝐐𝐔𝐄𝐒𝐓 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐄 ✨
+
+        👟 𝐃𝐢𝐬𝐭𝐚𝐧𝐜𝐞 : #{distance}km
+        👑 𝐑𝐚𝐧𝐤𝐢𝐧𝐠  : #{rank}
+
+        ⚔️ 獲得経験値... #{exp} exp
+        💬 #{message}
+        ━━━━━━━━━━━━
+        一緒に歩いて強くなろう🛡️
+        👇
+        https://tekumemo.onrender.com
+        #てくメモ #RUNTEQ #散歩
+      TEXT
+    end
   end
 end

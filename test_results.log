@@ -1,0 +1,225 @@
+--- 1/3: ファイル所有権の修正 (chown) ---
+--- 2/3: RuboCop実行と自動修正 ---
+Inspecting 160 files
+................................................................................................................................................................
+
+160 files inspected, no offenses detected
+--- 3/3: RSpec実行 (並列: 4プロセス) ---
+4 processes for 47 specs, ~ 11 specs per process
+.....................................................................................................................................................................................F................................................................
+
+Top 10 slowest examples (8.52 seconds, 93.0% of total time):
+  Walks 散歩記録の削除 記録を削除できること
+    2.44 seconds ./spec/system/walks_spec.rb:74
+  Walks 散歩記録の新規作成 散歩記録が保存され、一覧画面に表示されること
+    1.43 seconds ./spec/system/walks_spec.rb:12
+  Walks ページネーション ページネーションが表示され、次ページに遷移できること
+    1.33 seconds ./spec/system/walks_spec.rb:111
+  Walks 散歩記録の編集 記録を編集できること
+    1.13 seconds ./spec/system/walks_spec.rb:46
+  Rankings::OgpImages GET /rankings/users/:id/ogp_image ユーザーが存在しない場合 404エラーが返されること
+    0.66226 seconds ./spec/requests/rankings/ogp_images_spec.rb:36
+  Users PATCH /users/:id 他人の情報を更新しようとした場合 更新されず、トップページにリダイレクトされること
+    0.65699 seconds ./spec/requests/users_controller_spec.rb:72
+  Admin::Dashboard GET /admin/dashboard 管理者ユーザーの場合 ダッシュボードにアクセスできること
+    0.37937 seconds ./spec/requests/admin/dashboard_spec.rb:11
+  Post バリデーション 異常系 本文(body)が200文字を超える場合は無効であること
+    0.26242 seconds ./spec/models/post_spec.rb:23
+  Users PATCH /users/:id 無効なパラメータの場合 更新されず、編集ページが再表示されること
+    0.15084 seconds ./spec/requests/users_controller_spec.rb:63
+  Rankings::OgpImages GET /rankings/users/:id/ogp_image ユーザーが存在する場合 キャッシュヘッダーが設定されていること
+    0.07993 seconds ./spec/requests/rankings/ogp_images_spec.rb:22
+
+Top 10 slowest example groups:
+  Walks
+    1.58 seconds average (6.33 seconds / 4 examples) ./spec/system/walks_spec.rb:3
+  Rankings::OgpImages
+    0.20981 seconds average (0.83926 seconds / 4 examples) ./spec/requests/rankings/ogp_images_spec.rb:3
+  Admin::Dashboard
+    0.13399 seconds average (0.40198 seconds / 3 examples) ./spec/requests/admin/dashboard_spec.rb:3
+  Users
+    0.12868 seconds average (0.90079 seconds / 7 examples) ./spec/requests/users_controller_spec.rb:3
+  Post
+    0.03285 seconds average (0.32854 seconds / 10 examples) ./spec/models/post_spec.rb:3
+  StatsComingSoons
+    0.03245 seconds average (0.03245 seconds / 1 example) ./spec/requests/stats_coming_soon_spec.rb:3
+  PostsHelper
+    0.0191 seconds average (0.07642 seconds / 4 examples) ./spec/helpers/posts_helper_spec.rb:13
+  GoogleFit
+    0.01686 seconds average (0.11803 seconds / 7 examples) ./spec/requests/google_fit_spec.rb:3
+  UsersHelper
+    0.01122 seconds average (0.04487 seconds / 4 examples) ./spec/helpers/users_helper_spec.rb:3
+  GoogleFitService
+    0.01021 seconds average (0.03062 seconds / 3 examples) ./spec/services/google_fit_service_spec.rb:4
+
+Finished in 9.16 seconds (files took 0.12765 seconds to load)
+72 examples, 0 failures
+
+............
+
+Failures:
+
+  1) Rankings GET /rankings ログインしていない場合 ログインページにリダイレクトされること
+     Failure/Error: expect(response).to redirect_to(new_user_session_path)
+       Expected response to be a <3XX: redirect>, but was a <200: OK>
+     # ./spec/requests/rankings_spec.rb:32:in `block (4 levels) in <main>'
+
+Top 10 slowest examples (10.66 seconds, 85.4% of total time):
+  SNS機能 新規投稿 正常系 モーダルから投稿を作成できること
+    2.79 seconds ./spec/system/sns_spec.rb:13
+  Home ホーム画面の表示 位置情報と天気が表示されること
+    1.5 seconds ./spec/system/home_spec.rb:47
+  SNS機能 新規投稿 異常系 入力不備がある場合、エラーメッセージが表示されること
+    1.37 seconds ./spec/system/sns_spec.rb:40
+  SNS機能 リアクション機能 投稿に「いいね」できること
+    1.08 seconds ./spec/system/sns_spec.rb:59
+  Posts DELETE /posts/:id 他人の投稿の場合 ルートページなどにリダイレクトされる、またはエラーになること
+    0.88661 seconds ./spec/requests/posts_spec.rb:82
+  SNS機能 投稿の削除 自分の投稿は削除できること
+    0.79976 seconds ./spec/system/sns_spec.rb:88
+  Posts DELETE /posts/:id 他人の投稿の場合 投稿を削除できないこと
+    0.6293 seconds ./spec/requests/posts_spec.rb:76
+  SNS機能 投稿の削除 他人の投稿には削除ボタンが表示されないこと
+    0.5836 seconds ./spec/system/sns_spec.rb:102
+  Home ホーム画面の表示 今日の散歩記録がある場合 今日の記録が表示されること
+    0.57354 seconds ./spec/system/home_spec.rb:70
+  Home ホーム画面の表示 今日の散歩記録がない場合 今日の散歩カードが表示され、距離が0mであること
+    0.45003 seconds ./spec/system/home_spec.rb:83
+
+Top 10 slowest example groups:
+  SNS機能
+    1.32 seconds average (6.62 seconds / 5 examples) ./spec/system/sns_spec.rb:3
+  Home
+    0.84321 seconds average (2.53 seconds / 3 examples) ./spec/system/home_spec.rb:3
+  Posts
+    0.24877 seconds average (1.99 seconds / 8 examples) ./spec/requests/posts_spec.rb:3
+  Announcement
+    0.04459 seconds average (0.17838 seconds / 4 examples) ./spec/models/announcement_spec.rb:3
+  Reaction
+    0.038 seconds average (0.30402 seconds / 8 examples) ./spec/models/reaction_spec.rb:3
+  StatsService
+    0.02722 seconds average (0.35392 seconds / 13 examples) ./spec/services/stats_service_spec.rb:3
+  Rankings
+    0.02294 seconds average (0.09174 seconds / 4 examples) ./spec/requests/rankings_spec.rb:3
+  Stats
+    0.01997 seconds average (0.11981 seconds / 6 examples) ./spec/requests/stats_controller_spec.rb:3
+  Notification
+    0.01596 seconds average (0.14361 seconds / 9 examples) ./spec/models/notification_spec.rb:3
+  WebPushSubscription
+    0.01114 seconds average (0.05571 seconds / 5 examples) ./spec/models/web_push_subscription_spec.rb:3
+
+Finished in 12.49 seconds (files took 0.10293 seconds to load)
+77 examples, 1 failure
+
+Failed examples:
+
+rspec ./spec/requests/rankings_spec.rb:30 # Rankings GET /rankings ログインしていない場合 ログインページにリダイレクトされること
+
+..../home/nukon999/workspace/tekumemo/vendor/bundle/ruby/3.2.0/gems/devise-4.9.4/lib/devise/failure_app.rb:80: warning: Status code :unprocessable_entity is deprecated and will be removed in a future version of Rack. Please use :unprocessable_content instead.
+./home/nukon999/workspace/tekumemo/vendor/bundle/ruby/3.2.0/gems/devise-4.9.4/lib/devise/failure_app.rb:80: warning: Status code :unprocessable_entity is deprecated and will be removed in a future version of Rack. Please use :unprocessable_content instead.
+............
+
+Top 10 slowest examples (11.5 seconds, 58.1% of total time):
+  Admin::Users 管理者権限の制御 一般ユーザーとしてログインしている場合 管理画面にアクセスできず、トップページにリダイレクトされる
+    1.7 seconds ./spec/system/admin_users_spec.rb:13
+  LoginStamps カレンダー画面の表示 カレンダーの日付が表示されていること
+    1.58 seconds ./spec/system/login_stamps_spec.rb:25
+  LoginStamps スタンプの表示 散歩記録がある場合 その日にスタンプが表示されること
+    1.17 seconds ./spec/system/login_stamps_spec.rb:40
+  ユーザー認証・認可 アクセス制御 ログインしていない場合 トップページにアクセスするとLPが表示されること
+    1.12 seconds ./spec/system/user_auth_spec.rb:77
+  LoginStamps 月移動の動作 前月ボタンを押すと前月のカレンダーが表示されること
+    1.12 seconds ./spec/system/login_stamps_spec.rb:98
+  ユーザー認証・認可 ログイン 正しいメールアドレスとパスワードでログインできること
+    1.05 seconds ./spec/system/user_auth_spec.rb:7
+  LoginStamps 月移動の動作 次月ボタンを押すと次月のカレンダーが表示されること
+    1.03 seconds ./spec/system/login_stamps_spec.rb:107
+  ユーザー認証・認可 ログアウト ログアウトできること
+    0.97727 seconds ./spec/system/user_auth_spec.rb:52
+  Home Carousel on desktop view hides carousel indicators
+    0.91438 seconds ./spec/system/carousel_spec.rb:14
+  LoginStamps 連続日数の表示 昨日と今日連続で散歩している場合 連続日数が「2日」と表示されること
+    0.84548 seconds ./spec/system/login_stamps_spec.rb:83
+
+Top 10 slowest example groups:
+  LoginStamps
+    0.94239 seconds average (8.48 seconds / 9 examples) ./spec/system/login_stamps_spec.rb:3
+  Home Carousel
+    0.91473 seconds average (0.91473 seconds / 1 example) ./spec/system/carousel_spec.rb:3
+  Admin::Users
+    0.87288 seconds average (2.62 seconds / 3 examples) ./spec/system/admin_users_spec.rb:3
+  ユーザー認証・認可
+    0.71172 seconds average (6.41 seconds / 9 examples) ./spec/system/user_auth_spec.rb:3
+  Home
+    0.17454 seconds average (0.34908 seconds / 2 examples) ./spec/requests/home_controller_spec.rb:3
+  WalksPagination
+    0.13245 seconds average (0.13245 seconds / 1 example) ./spec/requests/walks_pagination_spec.rb:3
+  User
+    0.03878 seconds average (0.50409 seconds / 13 examples) ./spec/models/user_spec.rb:3
+  ShareHelper
+    0.03837 seconds average (0.1151 seconds / 3 examples) ./spec/helpers/share_helper_spec.rb:3
+  WebPushSubscriptions
+    0.02569 seconds average (0.07707 seconds / 3 examples) ./spec/requests/web_push_subscriptions_controller_spec.rb:3
+  Users::OmniauthCallbacks
+    0.01904 seconds average (0.03808 seconds / 2 examples) ./spec/requests/users/omniauth_callbacks_spec.rb:3
+
+Finished in 19.81 seconds (files took 0.13969 seconds to load)
+56 examples, 0 failures
+
+.
+
+Top 10 slowest examples (12.24 seconds, 60.8% of total time):
+  ユーザー設定 設定画面の操作 Google連携を行い、その後解除できること
+    1.78 seconds ./spec/system/user_settings_spec.rb:147
+  ユーザー設定 新規登録とログイン メールアドレスで新規登録し、ログインできること
+    1.53 seconds ./spec/system/user_settings_spec.rb:15
+  Rankings 同率順位の表示 全員が表示され、距離が正しいこと
+    1.39 seconds ./spec/system/rankings_spec.rb:25
+  ユーザー設定 設定画面の操作 Google連携解除時にパスワードを間違えると解除できないこと
+    1.3 seconds ./spec/system/user_settings_spec.rb:192
+  ユーザー設定 新規登録とログイン 未連携のGoogleアカウントではログインできないこと
+    1.3 seconds ./spec/system/user_settings_spec.rb:57
+  ユーザー設定 設定画面の操作 プロフィール（名前・目標距離）を更新できること
+    1.11 seconds ./spec/system/user_settings_spec.rb:109
+  ユーザー設定 設定画面の操作 確認用パスワードが一致しないと更新できないこと
+    0.99814 seconds ./spec/system/user_settings_spec.rb:138
+  ユーザー設定 設定画面の操作 プロフィール更新（異常系） 目標距離に不正な値（0以下）を入力すると更新できないこと
+    0.95733 seconds ./spec/system/user_settings_spec.rb:88
+  ユーザー設定 設定画面の操作 パスワードを変更できること（現在のパスワード必須）
+    0.95358 seconds ./spec/system/user_settings_spec.rb:119
+  ユーザー設定 設定画面の操作 現在のパスワードが間違っていると更新できないこと
+    0.93197 seconds ./spec/system/user_settings_spec.rb:129
+
+Top 10 slowest example groups:
+  Rankings
+    1.39 seconds average (1.39 seconds / 1 example) ./spec/system/rankings_spec.rb:3
+  ユーザー設定
+    1.04 seconds average (14.58 seconds / 14 examples) ./spec/system/user_settings_spec.rb:3
+  LoginStamps
+    0.48709 seconds average (0.48709 seconds / 1 example) ./spec/requests/login_stamps_controller_spec.rb:3
+  Posts::OgpImages
+    0.20555 seconds average (0.82221 seconds / 4 examples) ./spec/requests/posts/ogp_images_spec.rb:3
+  Walks
+    0.19355 seconds average (2.13 seconds / 11 examples) ./spec/requests/walks_spec.rb:3
+  Notifications
+    0.04197 seconds average (0.08393 seconds / 2 examples) ./spec/requests/notifications_controller_spec.rb:3
+  Reactions
+    0.03681 seconds average (0.22088 seconds / 6 examples) ./spec/requests/reactions_spec.rb:3
+  ReactionSummaryService
+    0.03268 seconds average (0.16339 seconds / 5 examples) ./spec/services/reaction_summary_service_spec.rb:3
+  WalkReminderService
+    0.01211 seconds average (0.04843 seconds / 4 examples) ./spec/services/walk_reminder_service_spec.rb:3
+  WeatherService
+    0.01025 seconds average (0.13327 seconds / 13 examples) ./spec/services/weather_service_spec.rb:3
+
+Finished in 20.15 seconds (files took 0.13236 seconds to load)
+71 examples, 0 failures
+
+Tests Failed
+
+276 examples, 1 failure
+
+Took 22 seconds
+
+🚨 テストが失敗しました。
+AIエージェントに以下のログを共有し、修正を依頼してください。

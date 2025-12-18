@@ -27,9 +27,9 @@ RSpec.describe "Rankings", type: :request do
     end
 
     context "ログインしていない場合" do
-      it "ログインページにリダイレクトされること" do
+      it "ランキングページにアクセスできること" do
         get rankings_path
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to have_http_status(:success)
       end
     end
   end

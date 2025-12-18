@@ -4,6 +4,10 @@ class Post < ApplicationRecord
   belongs_to :walk, optional: true  # 散歩記録の紐付けは任意
   has_many :reactions, dependent: :destroy
 
+  # Active Storage: OGP画像の添付
+  has_one_attached :ogp_image
+
+
   # バリデーション
   validates :body, length: { maximum: 200 }, allow_blank: true
   # enumを使用しているため、数値範囲のinclusionバリデーションは不要（削除）

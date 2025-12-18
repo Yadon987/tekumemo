@@ -39,8 +39,11 @@ RSpec.describe ShareHelper, type: :helper do
       expect(url).to include("https://twitter.com/intent/tweet")
 
       decoded_url = URI.decode_www_form_component(url)
-      expect(decoded_url).to include("1th")
+      expect(decoded_url).to include("1位")
       expect(decoded_url).to include("10.0km")
+      expect(decoded_url).to include("🏆") # ランキングを示す絵文字
+      expect(decoded_url).to include("url=") # ランキングページのURLが含まれる
+      expect(decoded_url).to include("user_id=#{user.id}") # ユーザーIDが含まれる
     end
   end
 end

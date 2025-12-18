@@ -145,6 +145,16 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
     end
 
     it "Google連携を行い、その後解除できること", js: true do
+      # アバター画像のダウンロードをスタブ
+      stub_request(:get, "http://example.com/avatar.jpg").
+        with(
+          headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent'=>'Ruby'
+          }).
+        to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/files/avatar.jpg")), headers: {})
+
       # Google連携のモック
       OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
         provider: "google_oauth2",

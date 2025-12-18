@@ -1,5 +1,6 @@
 class RankingsController < ApplicationController
-  before_action :authenticate_user!
+  # OGPメタタグ取得のため、ログインなしでもアクセス可能にする
+  skip_before_action :authenticate_user!, only: [ :index ]
 
   def index
     # パラメータ取得
@@ -24,6 +25,9 @@ class RankingsController < ApplicationController
     if user_signed_in?
       find_my_rank
       calculate_my_distance
+
+      # OGP画像の事前生成をキック（非同期）
+      GenerateRankingOgpImageJob.perform_later(current_user)
 
       # 1位との差分を計算（自分が1位でない場合）
       if @my_rank && @my_rank > 1 && @rankings.present?
