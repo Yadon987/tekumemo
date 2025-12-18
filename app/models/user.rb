@@ -203,15 +203,15 @@ class User < ApplicationRecord
 
     # 英語の序数を生成（ロケール設定に依存しないように自前で処理）
     suffix = case rank % 100
-             when 11, 12, 13 then 'th'
-             else
+    when 11, 12, 13 then "th"
+    else
                case rank % 10
-               when 1 then 'st'
-               when 2 then 'nd'
-               when 3 then 'rd'
-               else 'th'
+               when 1 then "st"
+               when 2 then "nd"
+               when 3 then "rd"
+               else "th"
                end
-             end
+    end
     rank_with_ordinal = "#{rank}#{suffix}"
 
     # レベル計算（全期間の総歩数 / 5000 + 1）

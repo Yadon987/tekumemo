@@ -11,7 +11,13 @@ module Rankings
       # 期間設定 (今週)
       start_date = Date.current.beginning_of_week
       end_date = Date.current.end_of_week
-      period_key = "#{start_date.strftime('%Y%m%d')}_#{end_date.strftime('%Y%m%d')}"
+      period_key = "#{start_date.strftime("%Y%m%d")}_#{end_date.strftime("%Y%m%d")}"
+
+      # 強制リフレッシュ: ?refresh=true があれば既存の画像を削除
+      if params[:refresh] == "true" && @user.ranking_ogp_image.attached?
+        Rails.logger.info "[Ranking OGP] Force refreshing image for user #{@user.id}"
+        @user.ranking_ogp_image.purge
+      end
 
       # 既存の画像があり、ファイル名が今週のもので、かつ作成から12時間以内であれば返す
       if @user.ranking_ogp_image.attached? &&
