@@ -89,7 +89,7 @@
   <div class="px-6 mt-6 md:mt-0 mb-6 md:mb-8 relative z-10">
     <div class="bg-[#fdfbf7] dark:bg-slate-800/50 dark:backdrop-blur-xl p-1.5 rounded-full shadow-[inset_6px_6px_12px_rgba(166,175,195,0.2),inset_-6px_-6px_12px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(168,85,247,0.3)] border border-white/50 dark:border-purple-500/30 flex justify-between items-center max-w-md mx-auto">
       <% [
-        { id: 'daily', label: t('rankings.index.tabs.daily'), icon: '📅' },
+        { id: 'weekly', label: t('rankings.index.tabs.weekly'), icon: '🗓️' },
         { id: 'monthly', label: t('rankings.index.tabs.monthly'), icon: '📊' },
         { id: 'yearly', label: t('rankings.index.tabs.yearly'), icon: '🌟' }
       ].each do |tab| %>
@@ -184,6 +184,13 @@
               </svg>
               ランキングをシェア
             <% end %>
+          </div>
+
+          <!-- シェア画像プレビューリンク（小） -->
+          <div class="mt-3 text-center">
+            <button onclick="toggleOgpPreview()" class="text-xs text-slate-500 dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300 underline transition">
+              📷 シェア画像を確認
+            </button>
           </div>
         </div>
       </div>
@@ -292,10 +299,10 @@
       <h3 class="text-lg font-bold text-slate-700 dark:text-purple-200 mb-4 flex items-center gap-2">
         <span class="text-2xl">
           <%= case @period
-              when 'daily' then '📅'
+              when 'weekly' then '🗓️'
               when 'monthly' then '📊'
               when 'yearly' then '🌟'
-              else '📊'
+              else '🗓️'
               end %>
         </span>
         <%= t('rankings.index.list_title') %>
@@ -389,35 +396,127 @@
     </p>
   </div>
 
-  <!-- OGPプレビュー（確認用） -->
+
+
+
+  <div class="h-20"></div>
+
+  <!-- OGPプレビューモーダル -->
   <% if user_signed_in? %>
-    <div class="px-4 mt-8 max-w-2xl mx-auto">
-      <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 border border-slate-200 dark:border-purple-500/20">
-        <h3 class="text-sm font-bold text-slate-600 dark:text-purple-300 mb-2 flex items-center gap-2">
+    <div id="ogp-preview-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeOgpPreview(event)">
+      <div class="relative bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl transform transition-all" onclick="event.stopPropagation()">
+        <!-- 閉じるボタン -->
+        <button onclick="closeOgpPreview()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+
+        <!-- タイトル -->
+        <h3 class="text-lg font-bold text-slate-700 dark:text-purple-300 mb-2 flex items-center gap-2">
           <span>🖼️</span> シェア画像プレビュー
         </h3>
         <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
           X(Twitter)などでシェアされた時に表示される画像です。<br>
           <span class="text-orange-500 dark:text-yellow-400">※画像がアイコンのままの場合は、生成中です。数秒待ってからリロードしてください。</span>
         </p>
-        <div class="relative aspect-[1.91/1] w-full rounded-xl overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-900 group">
-          <%= image_tag ogp_image_rankings_user_path(current_user, format: :jpg, v: Time.current.to_i),
-              class: "w-full h-full object-cover transition-opacity duration-500",
-              alt: "Ranking OGP Preview",
-              loading: "lazy" %>
 
-          <!-- リロードボタン -->
-          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 backdrop-blur-sm">
-             <%= link_to rankings_path(period: @period), class: "px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-white text-xs font-bold rounded-full shadow-lg hover:scale-105 transition transform" do %>
-               🔄 画像を更新（リロード）
-             <% end %>
+        <!-- プレビュー画像 -->
+        <div class="relative aspect-[1.91/1] w-full rounded-xl overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-900">
+          <!-- ローディング表示 -->
+          <div id="ogp-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-800">
+            <div class="animate-spin rounded-full h-16 w-16 border-4 border-slate-300 dark:border-slate-600 border-t-purple-600 dark:border-t-purple-400"></div>
+            <p class="mt-4 text-sm font-bold text-slate-600 dark:text-purple-300">画像を読み込み中...</p>
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">生成に数秒かかる場合があります</p>
           </div>
+
+          <!-- OGP画像 -->
+          <%= image_tag ogp_image_rankings_user_path(current_user, format: :jpg, v: Time.current.to_i),
+              id: "ogp-preview-image",
+              class: "w-full h-full object-cover opacity-0 transition-opacity duration-500",
+              alt: "Ranking OGP Preview",
+              onerror: "handleOgpImageError(this)",
+              onload: "handleOgpImageLoad()" %>
         </div>
       </div>
     </div>
-  <% end %>
 
-  <div class="h-20"></div>
+    <script>
+      let retryCount = 0;
+      const MAX_RETRIES = 5;
+
+      // モーダルを開く
+      function toggleOgpPreview() {
+        const modal = document.getElementById('ogp-preview-modal');
+        modal.classList.remove('hidden');
+        // フェードインアニメーション
+        setTimeout(() => {
+          modal.style.opacity = '1';
+        }, 10);
+
+        // モーダルを開いたときにリトライカウントをリセット
+        retryCount = 0;
+      }
+
+      // モーダルを閉じる
+      function closeOgpPreview(event) {
+        const modal = document.getElementById('ogp-preview-modal');
+        // フェードアウト
+        modal.style.opacity = '0';
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 200);
+      }
+
+      // 画像の読み込み成功
+      function handleOgpImageLoad() {
+        const loading = document.getElementById('ogp-loading');
+        const image = document.getElementById('ogp-preview-image');
+
+        // ローディングを非表示、画像を表示
+        loading.style.display = 'none';
+        image.classList.remove('opacity-0');
+        image.classList.add('opacity-100');
+      }
+
+      // 画像の読み込み失敗（生成中の可能性）
+      function handleOgpImageError(img) {
+        const loading = document.getElementById('ogp-loading');
+
+        // まだリトライ回数が残っている場合
+        if (retryCount < MAX_RETRIES) {
+          retryCount++;
+
+          // ローディングメッセージを更新
+          const loadingText = loading.querySelector('p.font-bold');
+          loadingText.textContent = `画像を生成中... (${retryCount}/${MAX_RETRIES})`;
+
+          // 2秒後にリトライ
+          setTimeout(() => {
+            // タイムスタンプを更新してキャッシュバスティング
+            const currentSrc = img.src;
+            img.src = currentSrc.replace(/v=\d+/, `v=${Date.now()}`);
+          }, 2000);
+        } else {
+          // リトライ上限に達した場合
+          loading.innerHTML = `
+            <div class="text-center">
+              <span class="text-4xl">⚠️</span>
+              <p class="mt-4 text-sm font-bold text-slate-600 dark:text-purple-300">画像の読み込みに失敗しました</p>
+              <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">ページをリロードしてください</p>
+            </div>
+          `;
+        }
+      }
+
+      // ESCキーでモーダルを閉じる
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeOgpPreview();
+        }
+      });
+    </script>
+  <% end %>
 </div>
 
 

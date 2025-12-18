@@ -157,14 +157,14 @@ class User < ApplicationRecord
   # ランキング集計
   def self.ranking(period: "daily", limit: 100)
     range = case period.to_s
-    when "daily"
-      Date.current..Date.current
+    when "weekly"
+      Date.current.beginning_of_week..Date.current.end_of_week
     when "monthly"
       Date.current.beginning_of_month..Date.current
     when "yearly"
       Date.current.beginning_of_year..Date.current
     else
-      Date.current
+      Date.current.beginning_of_week..Date.current.end_of_week # デフォルトもweeklyにする
     end
 
     joins(:walks)
@@ -200,10 +200,26 @@ class User < ApplicationRecord
                                   .count
 
     rank = higher_rank_users_count + 1
-    rank_with_ordinal = rank.ordinalize
+
+    # 英語の序数を生成（ロケール設定に依存しないように自前で処理）
+    suffix = case rank % 100
+             when 11, 12, 13 then 'th'
+             else
+               case rank % 10
+               when 1 then 'st'
+               when 2 then 'nd'
+               when 3 then 'rd'
+               else 'th'
+               end
+             end
+    rank_with_ordinal = "#{rank}#{suffix}"
+
+    # レベル計算（全期間の総歩数 / 5000 + 1）
+    lifetime_steps = walks.sum(:steps)
+    level = (lifetime_steps / 5000) + 1
 
     {
-      level: nil,
+      level: level,
       date: "#{start_date.strftime('%m/%d')} - #{end_date.strftime('%m/%d')}",
       label1: "RANK",
       value1: rank_with_ordinal,

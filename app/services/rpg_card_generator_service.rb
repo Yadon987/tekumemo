@@ -73,7 +73,7 @@ class RpgCardGeneratorService
         c.stroke "none"
         c.fill colors[:accent]
         c.gravity "NorthWest"
-        c.pointsize 40
+        c.pointsize 36
         c.annotate HEADER_TITLE_POS, @title
 
         # 日付 (右上のデジタル時計風)
@@ -287,7 +287,7 @@ class RpgCardGeneratorService
     if message.present?
       clean_text = strip_emoji(message).gsub(/\R/, " ").squeeze(" ")
       body_text = clean_text.truncate(65)
-      wrapped_body = wrap_text(body_text, 17)
+      wrapped_body = wrap_text(body_text, 19)
     else
       wrapped_body = "冒険の記録が更新されました！\n明日もまた、新たな旅へ出かけよう。"
     end
