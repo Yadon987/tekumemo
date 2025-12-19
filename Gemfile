@@ -38,7 +38,7 @@ gem "activestorage-cloudinary-service"  # Active Storage用Cloudinaryアダプ�
 gem "solid_cache", "~> 1.0"     # Railsの高速キャッシュストア
 
 # 通知機能
-gem "web-push", "~> 3.0"        # Web Push通知
+gem "web-push", "~> 3.1"        # Web Push通知
 
 # システム・その他
 gem "tzinfo-data", platforms: %i[ windows jruby ]  # WindowsやJRuby向けのタイムゾーンデータ
