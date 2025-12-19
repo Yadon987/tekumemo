@@ -78,7 +78,7 @@ RSpec.describe "ユーザー認証・認可", type: :system, js: true do
         visit root_path
         expect(page).to have_content 'てくメモ'
         expect(page).to have_link 'ログイン'
-        expect(page).to have_link '新規登録してはじめる'
+        expect(page).to have_link '新規登録'
         expect(current_path).to eq root_path
       end
     end
