@@ -96,9 +96,16 @@
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-sky-50/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-sky-100/50 dark:border-white/10">
-      <div class="flex justify-between items-center py-2 px-3 sm:py-4 sm:px-4 w-full max-w-2xl mx-auto">
-        <!-- 左側：ダークモード切り替えトグルスイッチ（モバイル：小、PC：中） -->
-        <div class="w-16 sm:w-24 flex justify-start items-center">
+      <div class="grid grid-cols-3 items-center py-2 px-3 sm:py-4 sm:px-4 w-full max-w-2xl mx-auto">
+        <!-- 左側：アイコン + ダークモードトグル -->
+        <div class="flex justify-start items-center gap-3">
+          <!-- アプリアイコン（ホームリンク） -->
+          <%= link_to root_path, class: "hover:opacity-80 transition-opacity" do %>
+            <div class="h-7 w-7 sm:h-10 sm:w-10 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl sm:rounded-2xl shadow-md">
+              <span class="material-symbols-outlined text-lg sm:text-2xl text-white drop-shadow-2xl text-shadow">footprint</span>
+            </div>
+          <% end %>
+
           <!-- Stimulusコントローラーでダークモード切り替えを制御 -->
           <div data-controller="dark-mode-toggle">
             <!-- トグルスイッチのボタン -->
@@ -139,22 +146,15 @@
           </div>
         </div>
 
-        <!-- 中央：ロゴ（モバイル：小、PC：中） -->
-        <!-- 中央：ロゴ（モバイル：小、PC：中） -->
-        <%= link_to root_path, class: "flex items-center space-x-2 sm:space-x-3 hover:opacity-80 transition-opacity" do %>
-          <!-- 左側のアイコン（モバイル：小、PC：中） -->
-          <div class="h-7 w-7 sm:h-10 sm:w-10 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl sm:rounded-2xl shadow-md">
-            <span class="material-symbols-outlined text-lg sm:text-2xl text-white drop-shadow-2xl text-shadow">footprint</span>
-          </div>
-
-          <!-- グラデーションテキストロゴ（モバイル：小、PC：大） -->
+        <!-- 中央：ロゴテキスト（完全中央） -->
+        <%= link_to root_path, class: "flex justify-center hover:opacity-80 transition-opacity" do %>
           <span class="text-xl sm:text-3xl font-bold bg-gradient-to-r from-sky-500 to-blue-600 dark:from-sky-400 dark:to-blue-500 bg-clip-text text-transparent whitespace-nowrap">
             てくメモ
           </span>
         <% end %>
 
         <!-- 右側：ログイン/ログアウトボタン（モバイル：小、PC：中） -->
-        <div class="w-14 sm:w-20 flex justify-end items-center">
+        <div class="flex justify-end items-center">
           <% if user_signed_in? %>
             <!-- アバタードロップダウンメニュー（モバイル：小、PC：中） -->
             <div class="relative" data-controller="dropdown">
@@ -199,8 +199,8 @@
             <!-- ログインボタン（青いグラデーション丸ボタン・モバイル：小、PC：中） -->
             <%= link_to new_user_session_path,
                 aria_label: "ログイン",
-                class: "w-8 h-8 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
-              <span class="material-symbols-outlined text-lg sm:text-2xl text-white drop-shadow-2xl text-shadow">login</span>
+                class: "w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 flex items-center justify-center shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300" do %>
+              <span class="material-symbols-outlined text-lg sm:text-xl text-white drop-shadow-2xl text-shadow">login</span>
             <% end %>
           <% end %>
         </div>

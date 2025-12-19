@@ -18,6 +18,13 @@ module.exports = {
         // 背景色
         'background-light': '#F7F8FC',
         'background-dark': '#121212',
+        // Claymorphism Colors
+        clay: {
+          bg: '#fdf5e6', // Warm peachy beige (health app style)
+          card: '#ffffff', // Pure White
+          primary: '#60a5fa', // blue-400
+          accent: '#fb923c', // orange-400
+        }
       },
       fontFamily: {
         // 日本語フォント設定
@@ -26,19 +33,42 @@ module.exports = {
       },
       borderRadius: {
         DEFAULT: '1rem',
+        'clay': '2.5rem', // 40px
+      },
+      boxShadow: {
+        // Claymorphism Shadows (TEST: Darker color + Higher opacity)
+        // カード用: 仮説5+6検証 - 影の色を暗く、不透明度を大幅UP
+        'clay-card': '0 20px 50px rgba(50, 60, 70, 0.5), 0 10px 25px rgba(50, 60, 70, 0.35), 0 5px 10px rgba(50, 60, 70, 0.2)',
+        // 右上ボタン用
+        'clay-floating': '0 6px 16px rgba(50, 60, 70, 0.4), 0 3px 8px rgba(50, 60, 70, 0.2)',
+        // アイコン用（凸）: 不要になったので削除可能
+        'clay-icon': '8px 8px 20px rgba(192, 197, 208, 0.3), -6px -6px 12px rgba(255, 255, 255, 0.5)',
+        // ボタン用: 色付きの影（Glow）
+        'clay-btn-blue': '0 10px 25px -5px rgba(59, 130, 246, 0.6), 0 8px 10px -6px rgba(59, 130, 246, 0.2)',
+        'clay-btn-orange': '0 10px 25px -5px rgba(249, 115, 22, 0.6), 0 8px 10px -6px rgba(249, 115, 22, 0.2)',
+        // 凹み（アイコン背景など）- 必要なら残す
+        'clay-inner': 'inset 6px 6px 10px #cbd5e1, inset -6px -6px 10px #ffffff',
+        // Dark Mode Glow
+        'neon-blue': '0 0 15px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.3)',
+        'neon-purple': '0 0 15px rgba(168, 85, 247, 0.6), 0 0 30px rgba(168, 85, 247, 0.3)',
       },
       // グラデーション関連のユーティリティを有効化
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'clay-gradient': 'linear-gradient(145deg, #ffffff, #e6e6e6)',
+        // ボタン用グラデーション
+        'btn-blue-grad': 'linear-gradient(to bottom, #60a5fa, #3b82f6)',
+        'btn-orange-grad': 'linear-gradient(to bottom, #fb923c, #f97316)',
       },
       // カスタムアニメーション
       animation: {
         'bounce-slow': 'bounce 3s ease-in-out infinite',
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.4s ease-out',
+        'fade-in': 'fadeIn 0.8s ease-out',
+        'slide-up': 'slideUp 0.6s ease-out',
         'pulse-fast': 'pulseDeep 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'sparkle': 'sparkle 4.5s ease-in-out infinite',
         'sparkle-scale': 'sparkleScale 4.5s ease-in-out infinite',
+        'float': 'float 6s ease-in-out infinite',
       },
       keyframes: {
         sparkle: {
@@ -60,12 +90,16 @@ module.exports = {
           '50%': { opacity: '0.3' },
         },
         fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '0%': { transform: 'translateY(30px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
         },
       },
     },
@@ -98,5 +132,12 @@ module.exports = {
     'bg-yellow-500',
     'bg-yellow-600',
     'bg-blue-500',
+    // Claymorphism
+    'shadow-clay-card',
+    'shadow-clay-floating',
+    'shadow-clay-btn-blue',
+    'shadow-clay-btn-orange',
+    'shadow-clay-icon',
+    'shadow-clay-inner',
   ],
 }
