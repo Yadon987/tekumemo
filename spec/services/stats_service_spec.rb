@@ -136,6 +136,73 @@ RSpec.describe StatsService do
     end
   end
 
+  describe 'RPG要素' do
+    describe '#level' do
+      it '累計距離に応じてレベルが上昇する' do
+        # Lv1: 0-9km
+        create(:walk, user: user, distance: 5, walked_on: Date.current)
+        expect(service.level).to eq(1)
+
+        # Lv2: 10-29km
+        create(:walk, user: user, distance: 5, walked_on: 1.day.ago) # 合計10km
+        expect(service.level).to eq(2)
+
+        # Lv3: 30-59km
+        create(:walk, user: user, distance: 20, walked_on: 2.days.ago) # 合計30km
+        expect(service.level).to eq(3)
+      end
+    end
+
+    describe '#rank_name' do
+      it 'レベルに応じたランク名を返す' do
+        # Lv1
+        create(:walk, user: user, distance: 5, walked_on: Date.current)
+        expect(service.rank_name).to eq("散歩見習い")
+
+        # Lv3
+        create(:walk, user: user, distance: 25, walked_on: 1.day.ago) # 合計30km
+        expect(service.rank_name).to eq("街の探索者")
+      end
+    end
+
+    describe '#achievements' do
+      it '条件を満たした称号が獲得済み(obtained: true)になる' do
+        # 雨天強行軍の条件: 雨の日の記録(Post)があり、同日の散歩記録(Walk)がある
+        post = create(:post, user: user, weather: :rainy, created_at: Time.current)
+        create(:walk, user: user, walked_on: post.created_at.to_date)
+
+        # 嵐を呼ぶ者の条件: 嵐の日の記録(Post)があり、同日の散歩記録(Walk)がある
+        storm_post = create(:post, user: user, weather: :stormy, created_at: 1.day.ago)
+        create(:walk, user: user, walked_on: storm_post.created_at.to_date)
+
+        # 暁の冒険者の条件: 早朝(4-8時)の記録(Walk)がある
+        # created_atを5時に設定 -> before_saveでtime_of_day: :early_morningになるはず
+        create(:walk, user: user, created_at: Time.current.change(hour: 5), walked_on: 2.days.ago)
+
+        # 太陽の申し子の条件: 日中(9-15時)の記録(Walk)がある
+        create(:walk, user: user, created_at: Time.current.change(hour: 12), walked_on: 3.days.ago)
+
+        # 不屈の精神の条件: ヘトヘト(exhausted)の投稿がある
+        create(:post, user: user, feeling: :exhausted)
+
+        achievements = service.achievements
+
+        expect(achievements.find { |a| a[:id] == :rain_walker }[:obtained]).to be true
+        expect(achievements.find { |a| a[:id] == :storm_walker }[:obtained]).to be true
+        expect(achievements.find { |a| a[:id] == :early_bird }[:obtained]).to be true
+        expect(achievements.find { |a| a[:id] == :sun_child }[:obtained]).to be true
+        expect(achievements.find { |a| a[:id] == :indomitable }[:obtained]).to be true
+      end
+
+      it '条件を満たしていない称号は未獲得(obtained: false)になる' do
+        # まだ記録がない状態
+        achievements = service.achievements
+
+        expect(achievements.find { |a| a[:id] == :rain_walker }[:obtained]).to be false
+      end
+    end
+  end
+
   describe 'エッジケース' do
     it '記録が0件の場合、エラーにならない' do
       empty_user = create(:user)

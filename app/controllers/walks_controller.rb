@@ -22,6 +22,15 @@ class WalksController < ApplicationController
     # 新しい散歩記録のインスタンスを作成
     # デフォルト値として今日の日付を設定
     @walk = Walk.new(walked_on: Date.current)
+
+    # 現在時刻に基づいて時間帯の初期値をセット
+    hour = Time.current.hour
+    @walk.time_of_day = case hour
+                        when 4..8 then :early_morning
+                        when 9..15 then :day
+                        when 16..18 then :evening
+                        else :night
+                        end
   end
 
   # 散歩記録編集ページ（GET /walks/:id/edit）
@@ -76,6 +85,6 @@ class WalksController < ApplicationController
   # フォームから送信されたパラメータを許可するメソッド
   # セキュリティのため、必要なパラメータだけを許可する
   def walk_params
-    params.require(:walk).permit(:walked_on, :duration, :distance, :steps, :calories_burned, :location, :notes)
+    params.require(:walk).permit(:walked_on, :duration, :distance, :steps, :calories_burned, :location, :notes, :time_of_day)
   end
 end

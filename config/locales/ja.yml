@@ -234,3 +234,10 @@ ja:
         action: "散歩を記録する"
         cheer: "もっと歩いてランクイン！"
         challenge: "TOP 100チャレンジ中"
+  enums:
+    walk:
+      time_of_day:
+        early_morning: "早朝"
+        day: "日中"
+        evening: "夕方"
+        night: "夜間"

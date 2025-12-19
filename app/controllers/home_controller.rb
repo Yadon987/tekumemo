@@ -50,6 +50,9 @@ class HomeController < ApplicationController
     # 最新のお知らせを取得（公開中かつ有効期限内、最新3件）
     @announcements = Announcement.active.recent.limit(3)
 
+    # 統計・RPGデータの取得
+    @stats_service = StatsService.new(current_user)
+
     # ===== 月間ランキング情報の取得 =====
     # キャッシュキー: ユーザーIDと日付（月）ベース
     # ユーザー体験向上のため、15分ごとに更新する（モチベーション維持）

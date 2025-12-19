@@ -27,7 +27,8 @@ class GoogleFitController < ApplicationController
         steps: data[:steps],
         distance: data[:distance],
         duration: data[:duration],
-        calories: data[:calories]
+        calories: data[:calories],
+        start_time: data[:start_time]
       }
     else
       # 取得失敗: エラーメッセージを返す
