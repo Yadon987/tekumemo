@@ -19,9 +19,20 @@ class Posts::OgpImagesController < ApplicationController
       user = @post.user
       walk = @post.walk || user.walks.find_by(walked_on: @post.created_at.to_date)
 
-      # レベル計算 (総歩数 / 5000 + 1)
-      total_steps = user.walks.sum(:steps)
-      level = (total_steps / 5000) + 1
+      # レベル計算 (StatsServiceと同じロジック: 累計距離ベース)
+      lifetime_distance = user.walks.sum(:distance)
+      level = case lifetime_distance
+      when 0...10 then 1
+      when 10...30 then 2
+      when 30...60 then 3
+      when 60...100 then 4
+      when 100...150 then 5
+      when 150...220 then 6
+      when 220...300 then 7
+      when 300...400 then 8
+      when 400...550 then 9
+      else 10 + ((lifetime_distance - 550) / 200).to_i
+      end
 
       # 統計情報
       stats = {

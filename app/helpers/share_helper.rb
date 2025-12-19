@@ -18,9 +18,12 @@ module ShareHelper
   def share_post_on_twitter_url(post)
     user = post.user
 
-    # 今日の歩行距離
-    today_distance = user.walks.where(walked_on: Date.current).sum(:distance)
-    today_km = (today_distance / 1000.0).round(2)
+    # 投稿に関連する散歩記録を取得
+    walk = post.walk || user.walks.find_by(walked_on: post.created_at.to_date)
+
+    # 距離を取得 (km単位)
+    distance_km = walk&.distance || 0.0
+    steps = walk&.steps || 0
 
     # 今月のランキング順位
     rankings = User.ranking(period: "monthly", limit: 1000).to_a
@@ -34,12 +37,12 @@ module ShareHelper
     end
 
     # メッセージ（投稿本文があれば優先、なければランダム）
-    message = post.body.present? ? "「#{post.body.truncate(30)}」" : get_flavor_text(today_km)
+    message = post.body.present? ? "「#{post.body.truncate(30)}」" : get_flavor_text(distance_km)
 
     # 投稿詳細ページのURLを含める（OGP画像表示のため）
     post_url = post_url(post, host: request.host, protocol: request.protocol)
 
-    text = generate_rpg_text(distance: today_km, rank: rank_str, message: message)
+    text = generate_rpg_text(distance: distance_km, rank: rank_str, message: message, steps: steps)
     # URLとハッシュタグの間に改行を入れるため、ハッシュタグをテキストに含める
     text += "\n#てくメモ #RUNTEQ #散歩"
     twitter_share_url(text: text, url: post_url)
@@ -88,8 +91,8 @@ module ShareHelper
     end
   end
 
-  def generate_rpg_text(distance:, rank:, message:, type: :quest)
-    exp = (distance * 100).to_i
+  def generate_rpg_text(distance:, rank:, message:, type: :quest, steps: 0)
+    exp = steps > 0 ? steps : (distance * 100).to_i
 
     if type == :ranking
       <<~TEXT

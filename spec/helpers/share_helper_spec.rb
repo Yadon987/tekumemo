@@ -16,8 +16,9 @@ RSpec.describe ShareHelper, type: :helper do
     let(:post) { create(:post, user: user, body: "散歩したよ") }
 
     before do
-      # 今日の散歩データを作成 (5km = 5000m)
-      create(:walk, user: user, walked_on: Date.current, distance: 5000)
+      # 今日の散歩データを作成 (5km, 5000歩)
+      # Walkモデルのdistanceはkm単位
+      create(:walk, user: user, walked_on: Date.current, distance: 5.0, steps: 5000)
     end
 
     it "投稿シェア用のURLを生成すること" do
@@ -26,6 +27,7 @@ RSpec.describe ShareHelper, type: :helper do
       # URLエンコードされているため、デコードしてチェックするか、部分一致で確認
       decoded_url = URI.decode_www_form_component(url)
       expect(decoded_url).to include("5.0km")
+      expect(decoded_url).to include("5000 exp") # 歩数が経験値として表示されること
       expect(decoded_url).to include("散歩したよ")
     end
   end

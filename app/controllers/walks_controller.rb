@@ -26,11 +26,11 @@ class WalksController < ApplicationController
     # 現在時刻に基づいて時間帯の初期値をセット
     hour = Time.current.hour
     @walk.time_of_day = case hour
-                        when 4..8 then :early_morning
-                        when 9..15 then :day
-                        when 16..18 then :evening
-                        else :night
-                        end
+    when 4..8 then :early_morning
+    when 9..15 then :day
+    when 16..18 then :evening
+    else :night
+    end
   end
 
   # 散歩記録編集ページ（GET /walks/:id/edit）

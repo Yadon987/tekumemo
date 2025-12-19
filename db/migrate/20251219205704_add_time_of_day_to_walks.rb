@@ -12,11 +12,11 @@ class AddTimeOfDayToWalks < ActiveRecord::Migration[7.2]
     Walk.find_each do |walk|
       hour = walk.created_at.hour
       time_of_day = case hour
-                    when 4..8 then 0
-                    when 9..15 then 1
-                    when 16..18 then 2
-                    else 3
-                    end
+      when 4..8 then 0
+      when 9..15 then 1
+      when 16..18 then 2
+      else 3
+      end
       walk.update_columns(time_of_day: time_of_day)
     end
   end

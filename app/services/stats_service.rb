@@ -291,17 +291,17 @@ class StatsService
   def distance_to_next_level
     total_dist = total_distance
     next_threshold = case level
-                     when 1 then 10
-                     when 2 then 30
-                     when 3 then 60
-                     when 4 then 100
-                     when 5 then 150
-                     when 6 then 220
-                     when 7 then 300
-                     when 8 then 400
-                     when 9 then 550
-                     else 550 + ((level - 9) * 200)
-                     end
+    when 1 then 10
+    when 2 then 30
+    when 3 then 60
+    when 4 then 100
+    when 5 then 150
+    when 6 then 220
+    when 7 then 300
+    when 8 then 400
+    when 9 then 550
+    else 550 + ((level - 9) * 200)
+    end
     (next_threshold - total_dist).round(2)
   end
 
@@ -309,30 +309,30 @@ class StatsService
   def level_progress_percentage
     total_dist = total_distance
     current_level_start = case level
-                          when 1 then 0
-                          when 2 then 10
-                          when 3 then 30
-                          when 4 then 60
-                          when 5 then 100
-                          when 6 then 150
-                          when 7 then 220
-                          when 8 then 300
-                          when 9 then 400
-                          else 550 + ((level - 10) * 200)
-                          end
+    when 1 then 0
+    when 2 then 10
+    when 3 then 30
+    when 4 then 60
+    when 5 then 100
+    when 6 then 150
+    when 7 then 220
+    when 8 then 300
+    when 9 then 400
+    else 550 + ((level - 10) * 200)
+    end
 
     next_level_start = case level
-                       when 1 then 10
-                       when 2 then 30
-                       when 3 then 60
-                       when 4 then 100
-                       when 5 then 150
-                       when 6 then 220
-                       when 7 then 300
-                       when 8 then 400
-                       when 9 then 550
-                       else 550 + ((level - 9) * 200)
-                       end
+    when 1 then 10
+    when 2 then 30
+    when 3 then 60
+    when 4 then 100
+    when 5 then 150
+    when 6 then 220
+    when 7 then 300
+    when 8 then 400
+    when 9 then 550
+    else 550 + ((level - 9) * 200)
+    end
 
     range = next_level_start - current_level_start
     current_pos = total_dist - current_level_start
