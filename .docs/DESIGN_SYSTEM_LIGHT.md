@@ -161,3 +161,13 @@ AI にデザインを依頼する際は、以下の指示を含めてくださ�
   - ライト: `shadow-clay-card` (色付きの影)
   - ダーク: `dark:shadow-[...]` (発光する影)
   - これらを `class="..."` 内で併記し、完全に分離して管理します。
+
+### 4. Podium (Crystal Pillar)
+
+- **Concept**: Instead of traditional blocks, use "Crystal Pillars" or "Capsules" that look like thick glass containers filled with colored liquid.
+- **Shape**: `rounded-t-[2.5rem]` to `rounded-t-[3.5rem]` (Strongly rounded top).
+- **Texture**:
+  - **Glass Casing**: `border-4 border-white/60`
+  - **Liquid Depth**: Strong `inset` shadows to simulate volume.
+  - **Surface Shine**: A white gradient overlay or blur element to represent reflection.
+- **Usage**: Ranking podiums, progress bars (vertical), or any "meter" visualization.

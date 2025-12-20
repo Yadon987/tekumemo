@@ -154,6 +154,32 @@ class User < ApplicationRecord
     consecutive_count
   end
 
+  # 過去の最大連続記録日数を計算する
+  def max_consecutive_walk_days
+    # 日付のみを取得してソート（重複排除）
+    dates = walks.order(walked_on: :asc).pluck(:walked_on).uniq
+
+    return 0 if dates.empty?
+
+    max_streak = 0
+    current_streak = 0
+    prev_date = nil
+
+    dates.each do |date|
+      if prev_date.nil? || date == prev_date + 1.day
+        current_streak += 1
+      else
+        # 連続が途切れた場合、最大値を更新してリセット
+        max_streak = [max_streak, current_streak].max
+        current_streak = 1
+      end
+      prev_date = date
+    end
+
+    # 最後のストリークも含めて最大値を返す
+    [max_streak, current_streak].max
+  end
+
   # ランキング集計
   def self.ranking(period: "daily", limit: 100)
     range = case period.to_s

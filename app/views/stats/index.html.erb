@@ -150,7 +150,7 @@
             <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-cyan-950/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span class="material-symbols-outlined text-3xl text-blue-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-cyan-300 dark:to-blue-300 dark:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">distance</span>
             </div>
-            <p class="text-blue-500 dark:text-cyan-200 text-xs font-bold tracking-wider uppercase">Total Distance</p>
+            <p class="text-blue-500 dark:text-cyan-200 text-xs font-bold tracking-wider uppercase">総距離</p>
           </div>
           <div class="text-right">
             <p class="inline-block text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-cyan-300 dark:via-blue-300 dark:to-cyan-500 drop-shadow-sm"><%= number_with_delimiter(@total_distance) %></p>
@@ -169,11 +169,11 @@
             <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span class="material-symbols-outlined text-3xl text-emerald-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-emerald-300 dark:to-green-300 dark:drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]">calendar_month</span>
             </div>
-            <p class="text-emerald-600 dark:text-emerald-200 text-xs font-bold tracking-wider uppercase">Total Days</p>
+            <p class="text-emerald-600 dark:text-emerald-200 text-xs font-bold tracking-wider uppercase">記録日数</p>
           </div>
           <div class="text-right">
             <p class="inline-block text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-600 dark:from-emerald-300 dark:via-green-300 dark:to-emerald-500 drop-shadow-sm"><%= @total_days %></p>
-            <p class="text-emerald-600 dark:text-emerald-400/60 text-xs font-medium mt-1">Days</p>
+            <p class="text-emerald-600 dark:text-emerald-400/60 text-xs font-medium mt-1">日</p>
           </div>
         </div>
       </div>
@@ -188,11 +188,11 @@
             <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-950/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span class="material-symbols-outlined text-3xl text-orange-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-300 dark:to-amber-300 dark:drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]">local_fire_department</span>
             </div>
-            <p class="text-orange-600 dark:text-orange-200 text-xs font-bold tracking-wider uppercase">Current Streak</p>
+            <p class="text-orange-600 dark:text-orange-200 text-xs font-bold tracking-wider uppercase">連続日数</p>
           </div>
           <div class="text-right">
             <p class="inline-block text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-300 dark:via-red-300 dark:to-orange-500 drop-shadow-sm"><%= @current_streak %></p>
-            <p class="text-orange-600 dark:text-orange-400/60 text-xs font-medium mt-1">Days</p>
+            <p class="text-orange-600 dark:text-orange-400/60 text-xs font-medium mt-1">日</p>
           </div>
         </div>
       </div>
@@ -207,11 +207,11 @@
             <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-950/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span class="material-symbols-outlined text-3xl text-purple-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-purple-300 dark:to-pink-300 dark:drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]">trending_up</span>
             </div>
-            <p class="text-purple-600 dark:text-purple-200 text-xs font-bold tracking-wider uppercase">Avg Distance</p>
+            <p class="text-purple-600 dark:text-purple-200 text-xs font-bold tracking-wider uppercase">平均距離</p>
           </div>
           <div class="text-right">
             <p class="inline-block text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-violet-600 dark:from-purple-300 dark:via-fuchsia-300 dark:to-purple-500 drop-shadow-sm"><%= @average_distance %></p>
-            <p class="text-purple-600 dark:text-purple-400/60 text-xs font-medium mt-1">km / Day</p>
+            <p class="text-purple-600 dark:text-purple-400/60 text-xs font-medium mt-1">km / 日</p>
           </div>
         </div>
       </div>
@@ -226,7 +226,7 @@
             <div class="w-12 h-12 rounded-xl bg-pink-100 dark:bg-pink-950/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span class="material-symbols-outlined text-3xl text-pink-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-pink-300 dark:to-rose-300 dark:drop-shadow-[0_0_8px_rgba(244,114,182,0.8)]">emoji_events</span>
             </div>
-            <p class="text-pink-600 dark:text-pink-200 text-xs font-bold tracking-wider uppercase">Best Record</p>
+            <p class="text-pink-600 dark:text-pink-200 text-xs font-bold tracking-wider uppercase">自己ベスト</p>
           </div>
           <div class="text-right">
             <p class="inline-block text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-rose-600 dark:from-pink-300 dark:via-rose-300 dark:to-pink-500 drop-shadow-sm"><%= @max_distance %></p>
@@ -245,11 +245,11 @@
             <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span class="material-symbols-outlined text-3xl text-amber-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-amber-300 dark:to-yellow-300 dark:drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]">stars</span>
             </div>
-            <p class="text-amber-600 dark:text-amber-200 text-xs font-bold tracking-wider uppercase">Monthly Goal</p>
+            <p class="text-amber-600 dark:text-amber-200 text-xs font-bold tracking-wider uppercase">今月の目標</p>
           </div>
           <div class="text-right">
             <p class="inline-block text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-500 drop-shadow-sm"><%= @monthly_goal_rate %>%</p>
-            <p class="text-amber-600 dark:text-amber-400/60 text-xs font-medium mt-1">Progress</p>
+            <p class="text-amber-600 dark:text-amber-400/60 text-xs font-medium mt-1">達成率</p>
           </div>
         </div>
       </div>

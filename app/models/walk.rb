@@ -13,8 +13,8 @@ class Walk < ApplicationRecord
   # 散歩時間は任意項目で、入力された場合は0以上の整数のみ許可
   validates :duration, presence: true, numericality: { greater_than: 0, only_integer: true }
 
-  # 距離は任意項目で、入力された場合は0以上の数値のみ許可
-  validates :distance, presence: true, numericality: { greater_than: 0 }
+  # 距離は任意項目で、入力された場合は0以上の数値のみ許可（上限50km）
+  validates :distance, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 50 }
 
   # 歩数は任意項目で、入力された場合は0以上の整数のみ許可
   validates :steps, numericality: { greater_than_or_equal_to: 0, only_integer: true }, allow_nil: true
