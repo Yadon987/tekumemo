@@ -58,7 +58,7 @@
   </script>
 </head>
 
-<body class="min-h-screen bg-fixed bg-gradient-to-b from-sky-50 to-slate-50 dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 font-display transition-colors duration-200" data-controller="scroll-hide">
+<body class="min-h-screen bg-fixed bg-clay-bg dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 font-display transition-colors duration-200" data-controller="scroll-hide">
   <!-- 背景装飾アニメーション（全ページ共通） -->
 
 
@@ -95,7 +95,7 @@
   <div class="flex flex-col min-h-screen">
 
     <!-- ===== フローティングヘッダー（モバイルファースト・レスポンシブ対応） ===== -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-sky-50/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-sky-100/50 dark:border-white/10">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-slate-950/60 backdrop-blur-xl">
       <div class="grid grid-cols-3 items-center py-2 px-3 sm:py-4 sm:px-4 w-full max-w-2xl mx-auto">
         <!-- 左側：アイコン + ダークモードトグル -->
         <div class="flex justify-start items-center gap-3">
@@ -333,29 +333,29 @@
 
 
       <!-- ===== ボトムナビゲーション（ログイン時のみ・モバイルファースト・レスポンシブ対応） ===== -->
-      <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-gray-100 dark:border-indigo-500/30 dark:shadow-[0_0_15px_rgba(99,102,241,0.15)] shadow-[0_-1px_3px_0_rgba(0,0,0,0.02)] z-50 transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
-        <div class="flex justify-around items-center h-10 sm:h-16 max-w-2xl mx-auto">
+      <nav class="fixed bottom-0 left-0 right-0 bg-white/60 dark:bg-slate-950/60 backdrop-blur-xl z-50 transition-all duration-300 transform translate-y-0 opacity-100" data-scroll-hide-target="element">
+        <div class="flex justify-around items-center h-10 sm:h-16 max-w-2xl mx-auto divide-x divide-gray-300 dark:divide-gray-700">
           <!-- ホーム -->
           <%= link_to root_path,
-              class: "relative flex items-center justify-center w-full #{current_page?(root_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full #{current_page?(root_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl #{current_page?(root_path) ? 'font-bold' : ''}">home</span>
           <% end %>
 
           <!-- 散歩 -->
           <%= link_to walks_path,
-              class: "relative flex items-center justify-center w-full #{current_page?(walks_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full #{current_page?(walks_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl #{current_page?(walks_path) ? 'font-bold' : ''}">footprint</span>
           <% end %>
 
           <!-- 投稿 -->
           <%= link_to posts_path,
-              class: "relative flex items-center justify-center w-full #{current_page?(posts_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full #{current_page?(posts_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl #{current_page?(posts_path) ? 'font-bold' : ''}">groups</span>
           <% end %>
 
           <!-- 記録（統計） -->
           <%= link_to stats_path,
-              class: "relative flex items-center justify-center w-full #{current_page?(stats_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-4 sm:after:h-6 after:bg-gray-400 dark:after:bg-gray-600" do %>
+              class: "relative flex items-center justify-center w-full #{current_page?(stats_path) ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'} hover:text-blue-600 dark:hover:text-blue-200 transition-colors" do %>
             <span class="material-symbols-outlined text-lg sm:text-2xl #{current_page?(stats_path) ? 'font-bold' : ''}">incomplete_circle</span>
           <% end %>
 

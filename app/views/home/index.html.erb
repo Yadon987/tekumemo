@@ -1,10 +1,11 @@
 <% content_for :title, "てくメモ - ホーム" %>
 
 <% if user_signed_in? %>
-  <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
+  <div class="min-h-screen w-full bg-clay-bg dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300 -mt-12 sm:-mt-20 pt-12 sm:pt-20">
+    <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
 
     <!-- 今日の散歩ダッシュボード -->
-    <div class="relative block bg-gradient-to-br from-cyan-400 to-indigo-500 dark:from-slate-900 dark:via-cyan-950 dark:to-indigo-950 border border-transparent dark:border-cyan-400/50 dark:shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:dark:shadow-[0_0_30px_rgba(34,211,238,0.4)] text-white p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-2xl group">
+    <div class="relative block bg-gradient-to-br from-cyan-400 to-indigo-500 dark:from-slate-900 dark:via-cyan-950 dark:to-indigo-950 border border-transparent dark:border-cyan-400/50 shadow-[0_10px_30px_rgba(34,211,238,0.3)] dark:shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_15px_40px_rgba(34,211,238,0.4)] hover:dark:shadow-[0_0_30px_rgba(34,211,238,0.4)] text-white p-6 rounded-3xl transition-all duration-300 hover:scale-[1.01] group">
       <!-- カード全体をリンク化（Stretched Link） -->
       <%= link_to "", walks_path, class: "absolute inset-0 z-0 rounded-3xl" %>
 
@@ -62,7 +63,7 @@
 
         <!-- 天気予報カード -->
         <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-          <%= link_to "https://www.windy.com/?#{@location[:latitude]},#{@location[:longitude]},10", target: "_blank", class: "block relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-lg hover:scale-[1.01] drop-shadow-xl h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border border-transparent dark:border-blue-400/50 dark:shadow-[0_0_20px_rgba(96,165,250,0.2)] hover:dark:shadow-[0_0_30px_rgba(96,165,250,0.4)]" do %>
+          <%= link_to "https://www.windy.com/?#{@location[:latitude]},#{@location[:longitude]},10", target: "_blank", class: "block relative rounded-3xl transform transition-all duration-300 hover:scale-[1.01] h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border border-transparent dark:border-blue-400/50 shadow-[0_10px_20px_rgba(56,189,248,0.3)] hover:shadow-[0_15px_30px_rgba(56,189,248,0.4)] dark:shadow-[0_0_20px_rgba(96,165,250,0.2)] hover:dark:shadow-[0_0_30px_rgba(96,165,250,0.4)]" do %>
             <!-- カードヘッダー -->
             <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
               <div class="flex items-center justify-center">
@@ -129,7 +130,7 @@
 
         <!-- ランキングカード -->
         <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-          <%= link_to rankings_path, class: "block relative rounded-3xl shadow-lg transform transition-all duration-300 hover:shadow-xl hover:scale-[1.01] drop-shadow-lg h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-700 dark:from-slate-900 dark:to-indigo-950 border border-transparent dark:border-yellow-400/50 dark:shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:dark:shadow-[0_0_30px_rgba(250,204,21,0.4)]" do %>
+          <%= link_to rankings_path, class: "block relative rounded-3xl transform transition-all duration-300 hover:scale-[1.01] h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-700 dark:from-slate-900 dark:to-indigo-950 border border-transparent dark:border-yellow-400/50 shadow-[0_10px_20px_rgba(59,130,246,0.3)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.4)] dark:shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:dark:shadow-[0_0_30px_rgba(250,204,21,0.4)]" do %>
             <div class="p-3 h-full flex items-center justify-between relative">
 
               <div class="flex flex-col justify-center z-10">
@@ -223,7 +224,7 @@
     <!-- 下段グリッド：最新の投稿とメモ帳 -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <!-- 最新の投稿カード -->
-      <%= link_to posts_path, class: "block bg-gradient-to-br from-blue-100/90 to-white/90 dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-blue-200 dark:border-cyan-500/50 p-4 rounded-3xl shadow-lg dark:shadow-[0_0_15px_rgba(6,182,212,0.15)] hover:dark:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 hover:shadow-xl hover:scale-[1.01] group" do %>
+      <%= link_to posts_path, class: "block bg-gradient-to-br from-blue-50/90 to-white/90 dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-blue-200 dark:border-cyan-500/50 p-4 rounded-3xl shadow-[0_10px_20px_rgba(59,130,246,0.15)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.25)] dark:shadow-[0_0_15px_rgba(6,182,212,0.15)] hover:dark:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 hover:scale-[1.01] group" do %>
         <div class="flex items-center space-x-3 mb-3">
           <span class="material-symbols-outlined text-blue-500 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] text-2xl group-hover:scale-110 transition-transform duration-300">article</span>
           <h3 class="font-bold text-gray-700 dark:text-cyan-50 text-lg">最新の投稿</h3>
@@ -244,7 +245,7 @@
                   <% end %>
                 </div>
                 <span class="text-xs font-bold text-gray-700 dark:text-gray-200 truncate flex-1"><%= @latest_post.user.name %></span>
-                <span class="text-[10px] text-gray-400 whitespace-nowrap"><%= time_ago_in_words(@latest_post.created_at) %>前</span>
+                <span class="text-xs text-gray-400 whitespace-nowrap"><%= time_ago_in_words(@latest_post.created_at) %>前</span>
               </div>
 
               <% if @latest_post.body.present? %>
@@ -273,7 +274,7 @@
       <% end %>
 
       <!-- メモ帳カード -->
-      <%= link_to "https://keep.google.com/", target: "_blank", rel: "noopener noreferrer", class: "block bg-gradient-to-br from-cyan-50/90 to-white/90 dark:from-slate-900/80 dark:to-purple-950/80 backdrop-blur-xl border border-cyan-200 dark:border-purple-500/50 p-5 rounded-3xl shadow-lg dark:shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:dark:shadow-[0_0_30px_rgba(168,85,247,0.4)] relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] group" do %>
+      <%= link_to "https://keep.google.com/", target: "_blank", rel: "noopener noreferrer", class: "block bg-gradient-to-br from-cyan-50/90 to-white/90 dark:from-slate-900/80 dark:to-purple-950/80 backdrop-blur-xl border border-cyan-200 dark:border-purple-500/50 p-5 rounded-3xl shadow-[0_10px_20px_rgba(6,182,212,0.15)] hover:shadow-[0_15px_30px_rgba(6,182,212,0.25)] dark:shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:dark:shadow-[0_0_30px_rgba(168,85,247,0.4)] relative overflow-hidden transition-all duration-300 hover:scale-[1.01] group" do %>
         <div class="flex justify-between items-end relative z-10">
           <div>
             <h3 class="font-bold text-lg mb-2 text-cyan-900 dark:text-purple-50 text-shadow-sm">メモ帳</h3>
@@ -293,37 +294,37 @@
       <% end %>
     </div>
 
-    <!-- 運営からのお知らせ -->
+    <!-- 運営からのお知らせ（大地カラー） -->
     <% if @announcements.any? %>
       <div class="block mt-6">
-        <%= link_to notifications_path, class: "block relative bg-gradient-to-br from-indigo-100/90 to-purple-200/90 dark:from-purple-950/80 dark:to-pink-950/80 backdrop-blur-xl border border-white/40 dark:border-pink-500/40 p-5 rounded-3xl shadow-lg dark:shadow-[0_0_20px_rgba(236,72,153,0.25)] transition-all duration-300 hover:shadow-xl hover:scale-[1.01] drop-shadow-lg overflow-hidden group" do %>
+        <%= link_to notifications_path, class: "block relative bg-gradient-to-br from-white/90 to-orange-50/90 dark:from-stone-900/80 dark:to-orange-950/80 backdrop-blur-xl border border-amber-200/60 dark:border-orange-500/40 p-5 rounded-3xl shadow-[0_10px_20px_rgba(245,158,11,0.15)] hover:shadow-[0_15px_30px_rgba(245,158,11,0.25)] dark:shadow-[0_0_20px_rgba(249,115,22,0.25)] transition-all duration-300 hover:scale-[1.01] overflow-hidden group" do %>
           <!-- 背景装飾（巨大アイコン） -->
-          <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-purple-200/20 dark:text-pink-500/10 transform rotate-12 transition-transform duration-500 group-hover:rotate-6 pointer-events-none">campaign</span>
+          <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-amber-200/30 dark:text-orange-500/10 transform rotate-12 transition-transform duration-500 group-hover:rotate-6 pointer-events-none">campaign</span>
 
           <!-- ヘッダー -->
           <div class="relative z-10 flex justify-between items-start mb-4">
             <div class="flex items-center space-x-2">
               <div class="relative bg-white/60 dark:bg-white/10 p-2 rounded-full backdrop-blur-sm shadow-sm group-hover:bg-white/80 dark:group-hover:bg-white/20 transition-all duration-300 group-hover:scale-110">
-                <span class="material-symbols-outlined text-purple-600 dark:text-pink-200 text-xl">notifications_active</span>
+                <span class="material-symbols-outlined text-amber-600 dark:text-orange-200 text-xl">notifications_active</span>
                 <% if current_user && current_user.unread_notifications_count > 0 %>
                   <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md animate-pulse">
                     <%= current_user.unread_notifications_count %>
                   </span>
                 <% end %>
               </div>
-              <h3 class="font-bold text-purple-900 dark:text-pink-100 text-lg text-shadow-sm">運営からのお知らせ</h3>
+              <h3 class="font-bold text-amber-900 dark:text-orange-100 text-lg text-shadow-sm">運営からのお知らせ</h3>
             </div>
           </div>
 
           <!-- スクロール可能なコンテンツエリア -->
-          <div class="relative z-10 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl border border-white/40 dark:border-white/10 shadow-inner max-h-[180px] overflow-y-auto scrollbar-thin scrollbar-thumb-purple-300 dark:scrollbar-thumb-pink-500/50 scrollbar-track-transparent">
+          <div class="relative z-10 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl border border-white/40 dark:border-white/10 shadow-inner max-h-[180px] overflow-y-auto scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-orange-500/50 scrollbar-track-transparent">
             <div class="space-y-2 p-3">
               <% @announcements.each do |announcement| %>
                 <div class="block">
                   <div class="flex items-start space-x-3 p-2 rounded-lg group-hover:bg-white/40 dark:group-hover:bg-white/5 transition-colors">
                     <!-- 日付とバッジ -->
                     <div class="flex-shrink-0 mt-0.5 flex flex-col items-center space-y-1">
-                      <span class="text-xs font-bold bg-white/50 dark:bg-white/10 text-purple-900 dark:text-pink-200 px-2 py-0.5 rounded-md shadow-sm">
+                      <span class="text-xs font-bold bg-white/50 dark:bg-white/10 text-amber-900 dark:text-orange-200 px-2 py-0.5 rounded-md shadow-sm">
                         <%= announcement.published_at.strftime('%m/%d') %>
                       </span>
                       <% if announcement.announcement_type == 'urgent' %>
@@ -337,10 +338,10 @@
 
                     <!-- タイトルと本文 -->
                     <div class="flex-1 min-w-0">
-                      <p class="text-sm font-bold text-purple-900 dark:text-pink-100 leading-relaxed text-shadow-sm">
+                      <p class="text-sm font-bold text-amber-900 dark:text-orange-100 leading-relaxed text-shadow-sm">
                         <%= announcement.title %>
                       </p>
-                      <p class="text-xs text-purple-800/80 dark:text-pink-200/70 mt-1 line-clamp-2">
+                      <p class="text-xs text-amber-800/80 dark:text-orange-200/70 mt-1 line-clamp-2">
                         <%= announcement.content %>
                       </p>
                     </div>
@@ -349,7 +350,7 @@
 
                 <!-- 区切り線（最後の要素以外） -->
                 <% unless announcement == @announcements.last %>
-                  <div class="border-t border-purple-200/30 dark:border-pink-500/20"></div>
+                  <div class="border-t border-amber-200/30 dark:border-orange-500/20"></div>
                 <% end %>
               <% end %>
             </div>
@@ -357,7 +358,7 @@
 
           <!-- もっと見るリンク（見た目だけ） -->
           <div class="relative z-10 mt-3 text-center">
-            <div class="inline-flex items-center space-x-1 text-sm font-bold text-purple-800 dark:text-pink-200 group-hover:text-purple-600 dark:group-hover:text-pink-100 transition-colors">
+            <div class="inline-flex items-center space-x-1 text-sm font-bold text-amber-800 dark:text-orange-200 group-hover:text-amber-600 dark:group-hover:text-orange-100 transition-colors">
               <span>すべてのお知らせを見る</span>
               <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </div>
@@ -366,5 +367,6 @@
       </div>
     <% end %>
 
+  </div>
   </div>
 <% end %>
