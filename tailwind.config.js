@@ -39,7 +39,7 @@ module.exports = {
         // Claymorphism Shadows (TEST: Darker color + Higher opacity)
         // カード用: 仮説5+6検証 - 影の色を暗く、不透明度を大幅UP
         "clay-card":
-          "0 20px 50px rgba(50, 60, 70, 0.3), 0 10px 25px rgba(50, 60, 70, 0.2), 0 5px 10px rgba(50, 60, 70, 0.1)",
+          "0 20px 40px -5px rgba(59, 130, 246, 0.15), 0 10px 20px -5px rgba(59, 130, 246, 0.1)",
         // 右上ボタン用
         "clay-floating":
           "0 6px 16px rgba(50, 60, 70, 0.4), 0 3px 8px rgba(50, 60, 70, 0.2)",
