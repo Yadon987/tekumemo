@@ -79,6 +79,7 @@ module.exports = {
         sparkle: "sparkle 4.5s ease-in-out infinite",
         "sparkle-scale": "sparkleScale 4.5s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
+        "gradient-xy": "gradient-xy 15s ease infinite",
       },
       keyframes: {
         shimmer: {
@@ -116,6 +117,16 @@ module.exports = {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
+        },
+        "gradient-xy": {
+          "0%, 100%": {
+            "background-size": "400% 400%",
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-size": "400% 400%",
+            "background-position": "100% 100%",
+          },
         },
       },
     },

@@ -102,6 +102,64 @@
     --crystal-inset-shadow: rgba(245, 158, 11, 0.1);
     --crystal-border-color: rgba(253, 230, 138, 0.6);
   }
+
+  /* ===== Cloud Animation Background ===== */
+  .cloud {
+    background: linear-gradient(
+      to bottom,
+      #ffffff 40%,
+      #dbeafe 100%
+    ); /* 白から淡いブルー(#dbeafe)へのグラデーション */
+    border-radius: 50%;
+    position: absolute;
+    filter: blur(12px);
+    opacity: 0.95;
+  }
+
+  .cloud:after,
+  .cloud:before {
+    content: "";
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+  }
+
+  .cloud:after {
+    width: 40%;
+    height: 40%;
+    top: -20%;
+    left: 15%;
+  }
+
+  .cloud:before {
+    width: 60%;
+    height: 60%;
+    top: -30%;
+    right: 10%;
+  }
+
+  .animate-cloud-1 {
+    animation: float-cloud 60s linear infinite;
+  }
+
+  .animate-cloud-2 {
+    animation: float-cloud 90s linear infinite;
+    animation-delay: -30s;
+  }
+
+  .animate-cloud-3 {
+    animation: float-cloud 75s linear infinite;
+    animation-delay: -10s;
+  }
+}
+
+@keyframes float-cloud {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 /* ===== カスタムユーティリティ ===== */

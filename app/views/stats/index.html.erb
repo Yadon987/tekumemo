@@ -13,7 +13,7 @@
     <!-- RPG Status Bar (Hero Section) -->
     <div class="relative mb-12 group">
       <!-- Breathing Glow (呼吸する光) -->
-      <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-[5rem] blur-xl opacity-20 dark:opacity-30 animate-pulse-slow pointer-events-none transition-opacity duration-500 group-hover:opacity-40"></div>
+      <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-[5rem] blur-xl opacity-[0.02] dark:opacity-30 animate-pulse-slow pointer-events-none transition-opacity duration-500 group-hover:opacity-[0.05]"></div>
 
       <div class="relative crystal-card crystal-purple !rounded-[5rem] dark:bg-slate-900/40 dark:backdrop-blur-xl dark:border dark:border-white/10 dark:border-t-white/40 dark:shadow-[0_0_30px_rgba(168,85,247,0.15),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] group hover:dark:border-purple-500/50 hover:dark:shadow-[0_0_60px_rgba(168,85,247,0.3),inset_0_0_0_1px_rgba(255,255,255,0.3),inset_0_1px_0_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105 overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:!rounded-t-[5rem] before:pointer-events-none before:animate-pulse">
         <!-- 背景装飾 -->
@@ -55,11 +55,11 @@
           </div>
 
           <!-- XP Progress Bar -->
-          <div class="relative w-full h-3 rounded-full bg-gray-200 dark:bg-slate-800 overflow-hidden shadow-inner">
-            <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 dark:from-cyan-400 dark:via-blue-500 dark:to-purple-600 transition-all duration-1000 ease-out rounded-full shadow-[0_0_15px_rgba(99,102,241,0.6)] overflow-hidden"
+          <div class="h-3 rounded-full bg-gray-200 dark:bg-slate-800 overflow-hidden shadow-inner">
+            <div class="h-full bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 dark:from-cyan-400 dark:via-blue-500 dark:to-purple-600 transition-all duration-1000 ease-out rounded-full shadow-[0_0_15px_rgba(99,102,241,0.6)] relative overflow-hidden"
                  style="width: <%= @stats_service.level_progress_percentage %>%">
               <!-- シマーエフェクト -->
-              <div class="absolute inset-0 bg-white/40 w-full h-full animate-shimmer skew-x-12"></div>
+              <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"></div>
             </div>
           </div>
         </div>
@@ -102,7 +102,9 @@
 
       <!-- Accordion Content (Horizontal Scroll) -->
       <div class="hidden transition-all duration-300 hover:scale-105 ease-in-out" data-accordion-target="content">
-        <div class="flex overflow-x-auto gap-4 pb-6 px-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-800/30 pt-2">
+        <div class="flex overflow-x-auto gap-4 pb-6 px-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-800/30 pt-2"
+             data-controller="scroll-drag"
+             data-action="mousedown->scroll-drag#mousedown mouseleave->scroll-drag#mouseleave mouseup->scroll-drag#mouseup mousemove->scroll-drag#mousemove">
           <% @stats_service.achievements.each do |ach| %>
             <div class="snap-center flex-shrink-0 w-36 flex flex-col items-center text-center group p-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-white/50 dark:hover:bg-white/5 border border-transparent hover:border-gray-200 dark:hover:border-white/10">
               <!-- Badge Icon -->
