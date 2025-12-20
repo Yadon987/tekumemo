@@ -5,19 +5,23 @@
     <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4">
 
     <!-- 今日の散歩ダッシュボード -->
-    <div class="relative block bg-gradient-to-br from-cyan-400 to-indigo-500 dark:from-slate-900 dark:via-cyan-950 dark:to-indigo-950 border border-transparent dark:border-cyan-400/50 shadow-[0_10px_30px_rgba(34,211,238,0.3)] dark:shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_15px_40px_rgba(34,211,238,0.4)] hover:dark:shadow-[0_0_30px_rgba(34,211,238,0.4)] text-white p-6 rounded-3xl transition-all duration-300 hover:scale-[1.01] group">
-      <!-- カード全体をリンク化（Stretched Link） -->
-      <%= link_to "", walks_path, class: "absolute inset-0 z-0 rounded-3xl" %>
+    <div class="relative block bg-gradient-to-br from-cyan-400 to-indigo-500 dark:from-slate-900 dark:via-indigo-950 dark:to-slate-900 border border-transparent dark:border-cyan-500/50 shadow-[0_10px_30px_rgba(34,211,238,0.3)] dark:shadow-[0_0_40px_-10px_rgba(34,211,238,0.3),inset_0_0_0_1px_rgba(34,211,238,0.2),inset_0_1px_0_rgba(255,255,255,0.2)] text-white p-6 rounded-3xl transition-all duration-300 hover:scale-[1.01] group overflow-hidden">
+      <!-- 1. 呼吸する光のオーラ（背景：ダークモードのみ） -->
+      <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-400 to-purple-600 rounded-[2rem] blur opacity-0 dark:opacity-60 animate-pulse-slow pointer-events-none"></div>
 
-      <p class="text-xl font-bold font-bold opacity-90 text-shadow">今日の散歩</p>
+      <!-- カード全体をリンク化（Stretched Link） -->
+      <%= link_to "", walks_path, class: "absolute inset-0 z-10 rounded-3xl" %>
+
+      <p class="text-xl font-bold opacity-90 drop-shadow-md bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">今日の散歩</p>
 
       <!-- 距離と目標距離 -->
       <div class="flex justify-between items-baseline mt-2">
-        <p class="text-4xl font-bold text-shadow">
+        <p class="text-4xl font-black drop-shadow-lg">
           <span data-controller="counter"
+                class="bg-gradient-to-b from-white via-blue-50 to-blue-200 bg-clip-text text-transparent"
                 data-counter-target-value="<%= ((@today_walk&.distance || 0).to_f * 1000).to_i %>">0
           </span>
-          <span class="text-base font-medium ml-1 text-shadow">m</span>
+          <span class="text-base font-medium ml-1 text-blue-100/80">m</span>
         </p>
         <p class="text-lg font-bold opacity-90 text-shadow relative z-10">
           <%= link_to edit_user_registration_path, class: "text-white hover:text-white transition-all inline-flex items-center gap-0.5 group" do %>
@@ -38,16 +42,16 @@
       <div class="flex justify-between text-lg">
         <!-- 歩数 -->
         <div class="flex items-center space-x-2">
-          <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow w-9 h-9 overflow-hidden">directions_walk</span>
+          <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow w-9 h-9 overflow-hidden text-blue-50">directions_walk</span>
           <div>
-            <p class="font-bold text-lg text-shadow"><%= number_with_delimiter(@today_walk&.steps || 0) %> 歩</p>
+            <p class="font-bold text-lg text-blue-50 drop-shadow-sm"><%= number_with_delimiter(@today_walk&.steps || 0) %> <span class="text-sm font-normal text-blue-200/80">歩</span></p>
           </div>
         </div>
         <!-- 消費カロリー -->
         <div class="flex items-center space-x-2">
-          <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow">local_fire_department</span>
+          <span class="material-symbols-outlined text-4xl animate-pulse-fast text-shadow text-blue-50">local_fire_department</span>
           <div>
-            <p class="font-bold text-lg text-shadow"><%= number_with_delimiter(@today_walk&.calories_burned || 0) %> kcal</p>
+            <p class="font-bold text-lg text-blue-50 drop-shadow-sm"><%= number_with_delimiter(@today_walk&.calories_burned || 0) %> <span class="text-sm font-normal text-blue-200/80">kcal</span></p>
           </div>
         </div>
       </div>
@@ -63,7 +67,7 @@
 
         <!-- 天気予報カード -->
         <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-          <%= link_to "https://www.windy.com/?#{@location[:latitude]},#{@location[:longitude]},10", target: "_blank", class: "block relative rounded-3xl transform transition-all duration-300 hover:scale-[1.01] h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border border-transparent dark:border-blue-400/50 shadow-[0_10px_20px_rgba(56,189,248,0.3)] hover:shadow-[0_15px_30px_rgba(56,189,248,0.4)] dark:shadow-[0_0_20px_rgba(96,165,250,0.2)] hover:dark:shadow-[0_0_30px_rgba(96,165,250,0.4)]" do %>
+          <%= link_to "https://www.windy.com/?#{@location[:latitude]},#{@location[:longitude]},10", target: "_blank", class: "block relative rounded-3xl transform transition-all duration-300 hover:scale-[1.01] h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border border-transparent dark:border-blue-500/30 shadow-[0_10px_20px_rgba(56,189,248,0.3)] hover:shadow-[0_15px_30px_rgba(56,189,248,0.4)] dark:shadow-[0_0_20px_rgba(59,130,246,0.15),inset_0_0_0_1px_rgba(255,255,255,0.05)]" do %>
             <!-- カードヘッダー -->
             <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
               <div class="flex items-center justify-center">
@@ -130,7 +134,7 @@
 
         <!-- ランキングカード -->
         <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-          <%= link_to rankings_path, class: "block relative rounded-3xl transform transition-all duration-300 hover:scale-[1.01] h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-700 dark:from-slate-900 dark:to-indigo-950 border border-transparent dark:border-yellow-400/50 shadow-[0_10px_20px_rgba(59,130,246,0.3)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.4)] dark:shadow-[0_0_20px_rgba(250,204,21,0.2)] hover:dark:shadow-[0_0_30px_rgba(250,204,21,0.4)]" do %>
+          <%= link_to rankings_path, class: "block relative rounded-3xl transform transition-all duration-300 hover:scale-[1.01] h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-700 dark:from-blue-900 dark:to-indigo-900 border border-transparent dark:border-indigo-500/30 shadow-[0_10px_20px_rgba(59,130,246,0.3)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.4)] dark:shadow-[0_0_25px_rgba(99,102,241,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1)]" do %>
             <div class="p-3 h-full flex items-center justify-between relative">
 
               <div class="flex flex-col justify-center z-10">
@@ -142,7 +146,7 @@
                   </div>
                 </div>
                 <div class="text-white">
-                  <span class="text-4xl sm:text-5xl font-bold font-mono tracking-tighter text-shadow"><%= sprintf('%02d', @my_rank) %></span>
+                  <span class="text-4xl sm:text-5xl font-black font-mono tracking-tighter drop-shadow-md bg-gradient-to-b from-white via-yellow-50 to-yellow-200 bg-clip-text text-transparent"><%= sprintf('%02d', @my_rank) %></span>
                   <span class="text-sm font-bold opacity-70">/ <%= @ranking_total_users %></span>
                 </div>
 
@@ -224,13 +228,13 @@
     <!-- 下段グリッド：最新の投稿とメモ帳 -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <!-- 最新の投稿カード -->
-      <%= link_to posts_path, class: "block bg-gradient-to-br from-blue-50/90 to-white/90 dark:from-slate-900/80 dark:to-indigo-950/80 backdrop-blur-xl border border-blue-200 dark:border-cyan-500/50 p-4 rounded-3xl shadow-[0_10px_20px_rgba(59,130,246,0.15)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.25)] dark:shadow-[0_0_15px_rgba(6,182,212,0.15)] hover:dark:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all duration-300 hover:scale-[1.01] group" do %>
+      <%= link_to posts_path, class: "block bg-gradient-to-br from-blue-50/90 to-white/90 dark:from-slate-900/80 dark:to-teal-950/80 backdrop-blur-xl border border-blue-200 dark:border-teal-500/50 p-4 rounded-3xl shadow-[0_10px_20px_rgba(59,130,246,0.15)] hover:shadow-[0_15px_30px_rgba(59,130,246,0.25)] dark:shadow-[0_0_15px_rgba(20,184,166,0.15)] hover:dark:shadow-[0_0_30px_rgba(20,184,166,0.4)] transition-all duration-300 hover:scale-[1.01] group" do %>
         <div class="flex items-center space-x-3 mb-3">
-          <span class="material-symbols-outlined text-blue-500 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] text-2xl group-hover:scale-110 transition-transform duration-300">article</span>
-          <h3 class="font-bold text-gray-700 dark:text-cyan-50 text-lg">最新の投稿</h3>
+          <span class="material-symbols-outlined text-blue-500 dark:text-teal-300 dark:drop-shadow-[0_0_5px_rgba(45,212,191,0.8)] text-2xl group-hover:scale-110 transition-transform duration-300">article</span>
+          <h3 class="font-bold text-gray-700 dark:text-teal-50 text-lg">最新の投稿</h3>
         </div>
 
-        <div class="bg-white/60 dark:bg-slate-800/50 rounded-2xl p-3 border border-blue-100 dark:border-cyan-500/20 h-24 flex items-center justify-center overflow-hidden relative">
+        <div class="bg-white/60 dark:bg-slate-800/50 rounded-2xl p-3 border border-blue-100 dark:border-teal-500/20 h-24 flex items-center justify-center overflow-hidden relative">
           <% if @latest_post %>
             <div class="w-full h-full flex flex-col justify-between">
               <div class="flex items-center gap-2">
@@ -266,8 +270,8 @@
             </div>
           <% else %>
             <div class="text-center">
-              <p class="text-blue-900 dark:text-cyan-100 font-medium text-sm">まだ投稿はありません。</p>
-              <p class="text-blue-600 dark:text-cyan-400 text-xs mt-1">散歩の記録をシェアしてみましょう！</p>
+              <p class="text-blue-900 dark:text-teal-100 font-medium text-sm">まだ投稿はありません。</p>
+              <p class="text-blue-600 dark:text-teal-400 text-xs mt-1">散歩の記録をシェアしてみましょう！</p>
             </div>
           <% end %>
         </div>
@@ -297,7 +301,7 @@
     <!-- 運営からのお知らせ（大地カラー） -->
     <% if @announcements.any? %>
       <div class="block mt-6">
-        <%= link_to notifications_path, class: "block relative bg-gradient-to-br from-white/90 to-orange-50/90 dark:from-stone-900/80 dark:to-orange-950/80 backdrop-blur-xl border border-amber-200/60 dark:border-orange-500/40 p-5 rounded-3xl shadow-[0_10px_20px_rgba(245,158,11,0.15)] hover:shadow-[0_15px_30px_rgba(245,158,11,0.25)] dark:shadow-[0_0_20px_rgba(249,115,22,0.25)] transition-all duration-300 hover:scale-[1.01] overflow-hidden group" do %>
+        <%= link_to notifications_path, class: "block relative bg-gradient-to-br from-white/90 to-orange-50/90 dark:from-stone-900 dark:to-stone-950 backdrop-blur-xl border border-amber-200/60 dark:border-stone-800 p-5 rounded-3xl shadow-[0_10px_20px_rgba(245,158,11,0.15)] hover:shadow-[0_15px_30px_rgba(245,158,11,0.25)] dark:shadow-[0_0_20px_rgba(249,115,22,0.25)] transition-all duration-300 hover:scale-[1.01] overflow-hidden group" do %>
           <!-- 背景装飾（巨大アイコン） -->
           <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-amber-200/30 dark:text-orange-500/10 transform rotate-12 transition-transform duration-500 group-hover:rotate-6 pointer-events-none">campaign</span>
 
@@ -317,7 +321,7 @@
           </div>
 
           <!-- スクロール可能なコンテンツエリア -->
-          <div class="relative z-10 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl border border-white/40 dark:border-white/10 shadow-inner max-h-[180px] overflow-y-auto scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-orange-500/50 scrollbar-track-transparent">
+          <div class="relative z-10 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl border border-white/40 dark:border-white/10 shadow-inner max-h-[180px] overflow-y-auto scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-stone-600 dark:scrollbar-track-stone-800/50">
             <div class="space-y-2 p-3">
               <% @announcements.each do |announcement| %>
                 <div class="block">

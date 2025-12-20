@@ -124,4 +124,28 @@
   .text-shadow {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   }
+
+  /* カスタムスクロールバー（Webkit系） */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5); /* gray-400/50 */
+    border-radius: 20px;
+  }
+
+  /* ダークモード用スクロールバー */
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(87, 83, 78, 0.8); /* stone-600/80 */
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: rgba(41, 37, 36, 0.3); /* stone-900/30 */
+  }
 }

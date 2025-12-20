@@ -122,10 +122,10 @@ RSpec.describe StatsService do
 
       expect(result).to have_key(:labels)
       expect(result).to have_key(:data)
-      expect(result[:labels]).to eq(["早朝 (4-9時)", "日中 (9-16時)", "夕方 (16-19時)", "夜間 (19-4時)"])
+      expect(result[:labels]).to eq([ "早朝 (4-9時)", "日中 (9-16時)", "夕方 (16-19時)", "夜間 (19-4時)" ])
 
       # 早朝: 1, 日中: 2, 夕方: 1, 夜間: 0
-      expect(result[:data]).to eq([1, 2, 1, 0])
+      expect(result[:data]).to eq([ 1, 2, 1, 0 ])
     end
   end
 
