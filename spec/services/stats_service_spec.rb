@@ -105,6 +105,30 @@ RSpec.describe StatsService do
     end
   end
 
+  describe '時間帯別分析' do
+    before do
+      # 早朝 (4-8時)
+      create(:walk, user: user, created_at: Time.current.change(hour: 6), walked_on: 1.day.ago)
+      # 日中 (9-15時)
+      create(:walk, user: user, created_at: Time.current.change(hour: 12), walked_on: 2.days.ago)
+      create(:walk, user: user, created_at: Time.current.change(hour: 14), walked_on: 3.days.ago)
+      # 夕方 (16-18時)
+      create(:walk, user: user, created_at: Time.current.change(hour: 17), walked_on: 4.days.ago)
+      # 夜間 (19-3時) - なし
+    end
+
+    it '時間帯別の散歩回数を正しく集計できる' do
+      result = service.walks_count_by_time_of_day
+
+      expect(result).to have_key(:labels)
+      expect(result).to have_key(:data)
+      expect(result[:labels]).to eq(["早朝 (4-9時)", "日中 (9-16時)", "夕方 (16-19時)", "夜間 (19-4時)"])
+
+      # 早朝: 1, 日中: 2, 夕方: 1, 夜間: 0
+      expect(result[:data]).to eq([1, 2, 1, 0])
+    end
+  end
+
   describe 'パフォーマンス分析' do
     before do
       create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分

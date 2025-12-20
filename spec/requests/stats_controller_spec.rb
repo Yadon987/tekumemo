@@ -50,6 +50,16 @@ RSpec.describe "Stats", type: :request do
       expect(response.content_type).to include("application/json")
     end
 
+    it "JSON形式で時間帯別データが返されること" do
+      get stats_chart_data_path(type: "time_of_day")
+      expect(response).to have_http_status(:success)
+      expect(response.content_type).to include("application/json")
+
+      json = JSON.parse(response.body)
+      expect(json).to be_a(Hash)
+      expect(json).to include("labels", "data")
+    end
+
     it "無効なタイプの場合は400エラーが返されること" do
       get stats_chart_data_path(type: "invalid")
       expect(response).to have_http_status(:bad_request)

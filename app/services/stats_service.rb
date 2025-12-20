@@ -183,6 +183,38 @@ class StatsService
     }
   end
 
+  # 時間帯別散歩回数 (円グラフ用)
+  # 返り値: { labels: [...], data: [...] }
+  def walks_count_by_time_of_day
+    # 時間帯ごとにグループ化してカウント
+    # キーはDBに保存されている値(Integer)になる
+    raw_data = user.walks.group(:time_of_day).count
+
+    # 表示順序とラベルの定義 (Walkモデルのenum定義に準拠)
+    # 0:early_morning, 1:day, 2:evening, 3:night
+    time_slots = [
+      { id: 0, key: "early_morning", label: "早朝 (4-9時)" },
+      { id: 1, key: "day", label: "日中 (9-16時)" },
+      { id: 2, key: "evening", label: "夕方 (16-19時)" },
+      { id: 3, key: "night", label: "夜間 (19-4時)" }
+    ]
+
+    labels = []
+    data = []
+
+    time_slots.each do |slot|
+      labels << slot[:label]
+      # raw_dataは環境によって Integerキー または Stringキー(enum名) で返る可能性があるため両対応
+      count = raw_data[slot[:id]] || raw_data[slot[:key]] || 0
+      data << count
+    end
+
+    {
+      labels: labels,
+      data: data
+    }
+  end
+
   # ===== パフォーマンス分析用データ =====
 
   # 平均ペース (分/km)

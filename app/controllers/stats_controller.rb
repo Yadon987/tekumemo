@@ -24,7 +24,7 @@ class StatsController < ApplicationController
     chart_type = params[:type]
 
     # パラメータのホワイトリスト検証
-    allowed_types = %w[daily weekly monthly weekday pace calories]
+    allowed_types = %w[daily weekly monthly weekday pace calories time_of_day]
     unless allowed_types.include?(chart_type)
       render json: { error: "Invalid chart type. Allowed types: #{allowed_types.join(', ')}" }, status: :bad_request
       return
@@ -43,6 +43,8 @@ class StatsController < ApplicationController
       stats_service.pace_trend_last_30_days
     when "calories"
       stats_service.calories_trend_last_30_days
+    when "time_of_day"
+      stats_service.walks_count_by_time_of_day
     end
 
     render json: data
