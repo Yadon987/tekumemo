@@ -59,7 +59,7 @@ RSpec.describe 'SNS機能', type: :system, js: true do
     it '投稿に「いいね」できること' do
       visit posts_path
       # 投稿内のリアクションエリアを特定
-      within first('.group.relative') do
+      within "#post_#{other_post.id}" do
         # 「＋」ボタン（リアクション追加）をクリックしてポップオーバーを開く
         find('button[title="リアクションを追加"]').click
 
@@ -74,7 +74,7 @@ RSpec.describe 'SNS機能', type: :system, js: true do
         # 「いいね」ボタン（thumbs_up）をクリック
         # id="picker-btn-{post.id}-thumbs_up" だが、post.idが不明なので部分一致などで探す
         # または絵文字で探す
-        find('button', text: '👍').click
+        find('button', text: '👍').trigger('click')
 
         # カウントが1になることを確認
         expect(page).to have_content '1'

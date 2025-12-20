@@ -6,20 +6,15 @@
 /* Material Symbols アイコンフォント設定 */
 /* アイコンの見た目を統一するための設定 */
 .material-symbols-outlined {
-  font-variation-settings:
-    'FILL' 0,
-    /* アイコンを塗りつぶす（1 = 塗りつぶし、0 = 線のみ） */
-    'wght' 400,
-    /* 太さ（100〜700の範囲） */
-    'GRAD' 0,
-    /* グラデーション効果（-25〜200の範囲） */
-    'opsz' 24;
+  font-variation-settings: "FILL" 0,
+    /* アイコンを塗りつぶす（1 = 塗りつぶし、0 = 線のみ） */ "wght" 400,
+    /* 太さ（100〜700の範囲） */ "GRAD" 0,
+    /* グラデーション効果（-25〜200の範囲） */ "opsz" 24;
   /* 光学サイズ（20〜48の範囲） */
 }
 
 /* ===== カスタムコンポーネント ===== */
 @layer components {
-
   /* ボタンのカーソルスタイル */
   button[type="submit"],
   input[type="submit"],
@@ -37,20 +32,22 @@
 
   /* Base Card Style */
   .crystal-card {
-    @apply relative overflow-hidden rounded-[2.5rem] p-6 transition-transform duration-200 hover:scale-105 border-2;
+    @apply relative overflow-hidden !rounded-[3.75rem] p-6 transition-transform duration-200 hover:scale-105 border-2;
 
     /* CSS Variables for customization */
     --crystal-bg-end: #f3f4f6;
-    --crystal-shadow-color: rgba(0,0,0,0.05);
-    --crystal-inset-shadow: rgba(0,0,0,0.05);
-    --crystal-border-color: rgba(255,255,255,0.6);
+    --crystal-shadow-color: rgba(0, 0, 0, 0.05);
+    --crystal-inset-shadow: rgba(0, 0, 0, 0.05);
+    --crystal-border-color: rgba(255, 255, 255, 0.6);
 
     /* Light Mode Styles */
-    background: radial-gradient(ellipse 120% 120% at 35% 35%, #ffffff 30%, var(--crystal-bg-end) 90%);
-    box-shadow:
-      20px 20px 60px var(--crystal-shadow-color),
-      -20px -20px 60px #ffffff,
-      inset -5px -5px 15px var(--crystal-inset-shadow),
+    background: radial-gradient(
+      ellipse 120% 120% at 35% 35%,
+      #ffffff 30%,
+      var(--crystal-bg-end) 90%
+    );
+    box-shadow: 20px 20px 60px var(--crystal-shadow-color),
+      -20px -20px 60px #ffffff, inset -5px -5px 15px var(--crystal-inset-shadow),
       inset 5px 5px 15px rgba(255, 255, 255, 0.7);
     border-color: var(--crystal-border-color);
   }
@@ -109,7 +106,6 @@
 
 /* ===== カスタムユーティリティ ===== */
 @layer utilities {
-
   /* グラデーションテキスト用 */
   .bg-clip-text {
     -webkit-background-clip: text;

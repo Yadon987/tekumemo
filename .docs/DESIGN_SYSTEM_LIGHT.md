@@ -106,5 +106,42 @@ AI にデザインを依頼する際は、以下の指示を含めてくださ�
 > 1. **カラーシャドウ:** `box-shadow` の影色には黒を使わず、要素のテーマカラー（青、オレンジ等）の半透明色 (`rgba(..., 0.2)`) を使用して透明感を出す。
 > 2. **ぷっくり感:** `radial-gradient` で中央を明るくし、`inset` シャドウで縁の丸みを強調する。
 > 3. **輪郭:** ボーダーには `rgba(255, 255, 255, 0.6)` を使用し、背景との境界を適度にはっきりさせる。
-> 4. **形状:** 角丸は `rounded-[2.5rem]` や `rounded-full` で大きく取る。
+> 4. **形状:** 角丸は `rounded-[2.5rem]` (40px) を基本とし、特別なカードには `rounded-[3.75rem]` (60px) を使用する。
 > 5. **アイコン:** 鮮やかな色 (`text-blue-500` 等) を使用し、黒くしない。」
+
+---
+
+## 📊 統計・分析ページ (Stats) 特別ガイドライン
+
+統計ページなどの「データを見せる」画面では、通常の Crystal Claymorphism をさらに発展させた**「Premium Crystal」**スタイルを適用します。
+
+### 1. 形状 (Premium Shape)
+
+- **極端なカプセル形状:** `rounded-[3.75rem]` (60px) を基本とします。
+  - これにより、通常のカード (`rounded-[2.5rem]`) よりもさらに未来的で特別な印象を与えます。
+
+### 2. 質感 (Glass & Soft Shadow)
+
+- **Glass Cover (光沢):**
+  - カードの上部に薄い光沢を追加し、ガラスのような質感を表現します。
+  - `before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent`
+- **Soft Shadow (浮遊感):**
+  - 影は「濃く」するのではなく「薄く、広く」拡散させます。
+  - `shadow-clay-card` (opacity 0.1~0.3) を使用。
+
+### 3. タイポグラフィと視認性
+
+- **見出し (Title):**
+  - ライトモードでは**視認性を最優先**し、`text-slate-800` などの濃い色を使用します。
+  - **重要:** ダークモードのネオン表現 (`text-transparent bg-clip-text ...`) と共存させるため、必ず以下のように記述します。
+  - `class="text-slate-800 dark:text-transparent dark:bg-clip-text ..."`
+- **数字 (Numbers):**
+  - データの数字はグラデーションテキスト (`bg-clip-text text-transparent`) を使用し、ポップさを演出します。
+
+### 4. ダークモードとの完全共存 (重要)
+
+- **形状の統一:** ライト/ダークで `rounded` の値を変えないこと。シルエットを一致させることで、モード切替時の違和感をなくします。
+- **影の切り替え:**
+  - ライト: `shadow-clay-card` (色付きの影)
+  - ダーク: `dark:shadow-[...]` (発光する影)
+  - これらを `class="..."` 内で併記し、完全に分離して管理します。

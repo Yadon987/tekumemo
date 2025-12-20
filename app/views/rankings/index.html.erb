@@ -43,15 +43,9 @@
     border-bottom-color: transparent !important;
   }
 </style>
-<div class="min-h-screen dark:bg-gradient-to-br dark:from-slate-900 dark:via-purple-800 dark:to-purple-900 pb-20 relative overflow-hidden">
+<div class="pb-20 relative overflow-hidden">
 
-  <!-- 背景の装飾 -->
-  <!-- ダークモード用（専用ネオン背景） -->
-  <div class="hidden dark:block absolute inset-0 overflow-hidden pointer-events-none -z-10">
-    <div class="absolute top-20 left-10 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
-    <div class="absolute top-20 right-10 w-72 h-72 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
-    <div class="absolute -bottom-8 left-20 w-72 h-72 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
-  </div>
+
 
   <!-- ヘッダーエリア（PC用のみ表示） -->
   <div class="hidden md:block relative z-10 pt-8 pb-6 px-4 text-center">
@@ -87,7 +81,7 @@
 
   <!-- 期間切り替えタブ（レスポンシブマージン） -->
   <div class="px-6 mt-6 md:mt-0 mb-6 md:mb-8 relative z-10">
-    <div class="bg-[#fdfbf7] dark:bg-slate-800/50 dark:backdrop-blur-xl p-1.5 rounded-full shadow-[inset_6px_6px_12px_rgba(166,175,195,0.2),inset_-6px_-6px_12px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(168,85,247,0.3)] border border-white/50 dark:border-purple-500/30 flex justify-between items-center max-w-md mx-auto">
+    <div class="bg-[#fdfbf7] dark:bg-slate-900/40 dark:backdrop-blur-xl p-1.5 rounded-full shadow-[inset_6px_6px_12px_rgba(166,175,195,0.2),inset_-6px_-6px_12px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(168,85,247,0.3),inset_0_0_0_1px_rgba(255,255,255,0.1)] border border-white/50 dark:border-purple-500/30 flex justify-between items-center max-w-md mx-auto relative overflow-hidden">
       <% [
         { id: 'weekly', label: t('rankings.index.tabs.weekly'), icon: '🗓️' },
         { id: 'monthly', label: t('rankings.index.tabs.monthly'), icon: '📊' },
@@ -114,9 +108,9 @@
     <% if @my_rank %>
       <div class="relative group">
         <!-- ダークモード用グロー -->
-        <div class="hidden dark:block absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-[2rem] blur-lg opacity-75 group-hover:opacity-100 transition animate-pulse"></div>
+        <div class="hidden dark:block absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-[3.75rem] blur-lg opacity-75 group-hover:opacity-100 transition animate-pulse"></div>
 
-        <div class="relative bg-white dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 rounded-[2rem] p-6 border border-gray-200 dark:border-purple-500/30 shadow-lg dark:shadow-2xl backdrop-blur-xl">
+        <div class="relative bg-white dark:bg-slate-900/40 rounded-[3.75rem] p-6 border border-gray-200 dark:border-purple-500/30 dark:border-t-white/40 shadow-lg dark:shadow-[0_0_20px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-xl overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
               <div class="relative">
@@ -199,7 +193,7 @@
       <div class="relative group">
         <div class="hidden dark:block absolute -inset-1 bg-gradient-to-r from-orange-600 to-red-600 rounded-[2rem] blur-lg opacity-50 group-hover:opacity-75 transition"></div>
 
-        <div class="relative bg-orange-50 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 rounded-[2rem] p-4 border-2 border-white dark:border-orange-500/50 shadow-lg dark:shadow-2xl">
+        <div class="relative bg-orange-50 dark:bg-slate-900/40 rounded-[3.75rem] p-4 border-2 border-white dark:border-orange-500/30 dark:border-t-white/40 shadow-lg dark:shadow-[0_0_20px_rgba(249,115,22,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
           <div class="flex items-center gap-3">
             <div class="text-3xl animate-bounce">🔥</div>
             <div class="flex-1">
@@ -327,10 +321,10 @@
       <div class="relative group transition-all duration-300 hover:-translate-y-1">
         <!-- ダークモード用グロー（自分の場合） -->
         <% if is_current_user %>
-          <div class="hidden dark:block absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-75"></div>
+          <div class="hidden dark:block absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-[2.5rem] blur opacity-75"></div>
         <% end %>
 
-        <div class="relative bg-white dark:bg-slate-800/70 dark:backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-<%= is_current_user ? 'purple-500/30' : 'purple-500/30' %> shadow-lg dark:shadow-xl hover:shadow-xl dark:hover:shadow-2xl transition-shadow flex items-center gap-4 <%= 'ring-2 ring-purple-400 ring-offset-2 ring-offset-[#fdfbf7] dark:ring-0' if is_current_user %>">
+        <div class="relative bg-white dark:bg-slate-900/40 dark:backdrop-blur-md rounded-[2.5rem] p-4 border border-gray-200 dark:border-<%= is_current_user ? 'purple-500/50' : 'purple-500/20' %> dark:border-t-white/30 shadow-lg dark:shadow-[0_0_15px_rgba(168,85,247,0.1),inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.2)] hover:shadow-xl dark:hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-shadow flex items-center gap-4 <%= 'ring-2 ring-purple-400 ring-offset-2 ring-offset-[#fdfbf7] dark:ring-0' if is_current_user %> overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[2.5rem] before:pointer-events-none">
 
           <!-- 順位バッジ -->
           <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl shadow-[inset_-2px_-2px_5px_rgba(255,255,255,0.7),inset_2px_2px_5px_rgba(0,0,0,0.1)] dark:shadow-inner <%= rank <= 10 ? 'bg-gradient-to-br from-purple-300 to-pink-300 dark:from-purple-500 dark:to-pink-500' : 'bg-slate-100 dark:bg-slate-700' %>">
@@ -378,7 +372,7 @@
       <div class="relative group">
         <div class="hidden dark:block absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-[2.5rem] blur-xl opacity-30"></div>
 
-        <div class="relative bg-white dark:bg-slate-800/70 dark:backdrop-blur-sm rounded-[2.5rem] p-12 border-2 border-white dark:border-slate-700/50 shadow-[14px_14px_28px_rgba(166,175,195,0.25),-14px_-14px_28px_rgba(255,255,255,0.9)] dark:shadow-lg text-center">
+        <div class="relative bg-white dark:bg-slate-900/40 dark:backdrop-blur-md rounded-[3.75rem] p-12 border-2 border-white dark:border-slate-700/50 dark:border-t-white/30 shadow-[14px_14px_28px_rgba(166,175,195,0.25),-14px_-14px_28px_rgba(255,255,255,0.9)] dark:shadow-[0_0_30px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] text-center overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
           <div class="text-7xl mb-6 animate-bounce">🍃</div>
           <p class="text-slate-700 dark:text-white font-black text-2xl mb-3"><%= t('rankings.index.empty.title') %></p>
           <p class="text-slate-500 dark:text-purple-300 text-sm mb-8"><%= t('rankings.index.empty.subtitle') %></p>
@@ -404,7 +398,7 @@
   <!-- OGPプレビューモーダル -->
   <% if user_signed_in? %>
     <div id="ogp-preview-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeOgpPreview(event)">
-      <div class="relative bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl transform transition-all" onclick="event.stopPropagation()">
+      <div class="relative bg-white dark:bg-slate-900/90 rounded-[3.75rem] p-8 max-w-2xl w-full shadow-2xl transform transition-all border-4 border-white dark:border-purple-500/30 dark:border-t-white/40 dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" onclick="event.stopPropagation()">
         <!-- 閉じるボタン -->
         <button onclick="closeOgpPreview()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
