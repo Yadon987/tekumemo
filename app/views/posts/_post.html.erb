@@ -7,7 +7,11 @@
 
 <div id="<%= dom_id post %>"
      class="group relative mb-8 p-6 rounded-[3.75rem] transition-all duration-300 hover:-translate-y-2
-            <%= color_theme[:bg] %> border border-white/40 dark:border-purple-500/30 dark:border-t-white/40 shadow-clay-card dark:shadow-[0_0_20px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-md hover:shadow-xl overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
+            <%= color_theme[:bg] %> <%= color_theme[:shadow] %> bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none border-2 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 backdrop-blur-md hover:shadow-xl overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
+
+  <!-- Candy Gradient Orbs (Light Mode Only) -->
+  <div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br <%= color_theme[:orb_bg] %> rounded-full blur-2xl pointer-events-none dark:hidden"></div>
+  <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-tr <%= color_theme[:orb_bg] %> rounded-full blur-2xl pointer-events-none dark:hidden"></div>
 
   <!-- ダークモード用の装飾（Synthwave Sun / Grid） -->
   <div class="absolute inset-0 rounded-[3.75rem] pointer-events-none overflow-hidden">

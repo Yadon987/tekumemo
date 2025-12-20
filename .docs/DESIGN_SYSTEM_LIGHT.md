@@ -50,44 +50,60 @@
   - ボタン: `rounded-full` (完全な円/カプセル)
 - **意図:** 鋭利な角を排除し、徹底的に「柔らかさ」を強調する。
 
-### 2. 質感と立体感 (Texture & Depth) - **ここが重要**
+### 2. 質感と立体感（Crystal Claymorphism Core）
 
-従来のクレイモーフィズム（不透明な粘土）ではなく、**「半透明のキャンディや磨りガラス」** のような質感を表現する。
+**「触りたくなるような、ぷるぷるとしたキャンディーの質感」**を以下の 4 つの要素の組み合わせで実現する。これらは**セットで適用**すること。
 
-#### A. クリスタル・シャドウ (Crystal Shadow)
+#### A. クリスタルシャドウ (3-Layer Shadow)
 
-- **影の色:** 「黒」や「グレー」を使わず、**要素のテーマカラーの半透明色**を使う。
-- **透明度:** `0.2` (20%) 程度が最適。上品な発光感を出す。
-- **効果:** 影に色をつけることで、光が透けているような透明感と、ポップな明るさを出す。
+単なる影ではなく、**「浮遊感」「ハイライト」「ぷっくり感」**を同時に表現する 3 層構造のシャドウを使用する。
 
-```css
-/* Tailwind Example (Blue Theme) */
-/* 影の色を rgba(59, 130, 246, 0.2) = Blue-500/20 に設定 */
-box-shadow: 20px 20px 60px rgba(59, 130, 246, 0.2), -20px -20px 60px #ffffff;
-```
+- **Layer 1 (Drop Shadow):** 右下にテーマカラーの半透明影 (`20px 20px 60px rgba(Color, 0.2)`)
+- **Layer 2 (Highlight Shadow):** 左上に強い白の影 (`-20px -20px 60px rgba(255, 255, 255, 0.8)`)
+- **Layer 3 (Puffy Inset):** 内側にぷっくり感を出すインセット影 (`inset -5px -5px 15px rgba(Color, 0.05), inset 5px 5px 15px rgba(255, 255, 255, 0.9)`)
 
-#### B. ぷっくり感と輪郭 (Puffy Volume & Outline)
-
-- **グラデーション:** `radial-gradient` や `linear-gradient` を使い、中央を明るくして膨らみを表現する。
-- **インセットシャドウ:** 内側に薄い影 (`inset`) を入れ、縁の丸みを強調する。
-- **ボーダー:** 半透明の白 (`rgba(255, 255, 255, 0.6)`) を使用し、背景に溶け込みすぎない適度な輪郭を持たせる。
+**Tailwind Arbitrary Value Example:**
 
 ```css
-/* Tailwind Example (Card) */
-style="background: radial-gradient(ellipse 120% 120% at 35% 35%, #ffffff 30%, #ffedd5 90%); /* 中央を白く、外側を薄いオレンジに */
-       box-shadow: ..., inset -5px -5px 15px rgba(200, 100, 50, 0.1), inset 5px 5px 15px rgba(255, 255, 255, 0.7);
-       border: 2px solid rgba(255, 255, 255, 0.6);"
+shadow-[20px_20px_60px_rgba(59,130,246,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9)]
 ```
 
-### 3. 配色 (Color Palette)
+#### B. キャンディー質感 (Candy Texture)
+
+透明感と光沢を出すために、以下の 2 つを必ず実装する。
+
+1.  **White Gradient Overlay:** 背景に白から透明へのグラデーションを重ねる。
+    - `bg-gradient-to-br from-white/80 via-white/40 to-transparent`
+    - **重要:** ダークモードでは必ず無効化する (`dark:bg-none`)。
+2.  **Blurry Gradient Orbs:** カードの隅（右上・左下）に、テーマカラーのぼかし円（オーブ）を配置し、内側から色が滲み出る表現をする。
+    - HTML: `<div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-Color/20 to-Color/20 rounded-full blur-2xl pointer-events-none dark:hidden"></div>`
+
+#### C. クリスタルリム (Crystal Rim)
+
+カードのフチは、**「白いハイライト」**と**「色の反射」**を分けて表現する。
+
+- **Border:** 白の半透明 (`border-2 border-white/60`) でハイライトを入れる。**ここに色を付けてはいけない。**
+- **Color Reflection:** 左上からの極細のインセットシャドウ (`inset 2px 2px 0px rgba(Color, 0.3)`) で、ガラスの中に色が閉じ込められているような表現をする。
+
+**Shadow Definition Update:**
+
+```css
+/* Shadow + Puffy Inset + Color Reflection */
+shadow-[..., inset_2px_2px_0px_rgba(Color,0.3)]
+```
+
+#### D. ダークモード保護 (Dark Mode Safety)
+
+Crystal Claymorphism は**ライトモード専用**のデザインである。
+
+- ライトモード用の装飾（Orbs, Gradient Overlay, Light Shadows）は、ダークモードでは**完全に非表示・無効化**すること。
+- `dark:hidden`, `dark:bg-none`, `dark:shadow-none` (or dark specific shadow) を徹底する。
+
+### 3. カラーパレット (Color Palette)
 
 - **Base (背景):** `bg-[#fdfbf7]` (Warm White) や `bg-slate-50`。
-- **Shadow (影):**
-  - 青系要素: `rgba(59, 130, 246, 0.2)`
-  - オレンジ系要素: `rgba(249, 115, 22, 0.2)`
-  - 紫系要素: `rgba(168, 85, 247, 0.2)`
-- **Icon (アイコン):**
-  - 黒ではなく、鮮やかな原色に近い色（`text-blue-500`, `text-orange-500`）を使用し、ポップさを維持する。
+- **Shadow (影):** 各要素のテーマカラーに合わせる（青なら青い影）。
+- **Icon (アイコン):** 鮮やかな原色に近い色（`text-blue-500`, `text-orange-500`）を使用し、ポップさを維持する。
 
 ### 4. インタラクション (Micro-interactions)
 

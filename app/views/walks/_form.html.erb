@@ -11,7 +11,7 @@
         <button type="button"
                 data-google-fit-target="button"
                 data-action="click->google-fit#fetch"
-                class="relative w-full bg-white dark:bg-slate-900/80 backdrop-blur-xl text-gray-800 dark:text-white font-bold py-4 px-6 rounded-[3.75rem] shadow-sm hover:shadow-md dark:shadow-[0_0_20px_rgba(34,211,238,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all flex items-center justify-between group-hover:bg-blue-50 dark:group-hover:bg-slate-800/80 border border-transparent dark:border-cyan-500/30 dark:border-t-white/40 overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none">
+                class="relative w-full bg-[radial-gradient(ellipse_120%_120%_at_35%_35%,#ffffff_30%,#e0f2fe_90%)] dark:bg-none dark:bg-slate-900/80 backdrop-blur-xl text-gray-800 dark:text-white font-bold py-4 px-6 rounded-[3.75rem] shadow-[10px_10px_20px_rgba(14,165,233,0.2),-10px_-10px_20px_#ffffff,inset_-5px_-5px_10px_rgba(14,165,233,0.1),inset_5px_5px_10px_rgba(255,255,255,0.7)] hover:shadow-[15px_15px_30px_rgba(14,165,233,0.3),-15px_-15px_30px_#ffffff] dark:shadow-[0_0_20px_rgba(34,211,238,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all flex items-center justify-between group-hover:scale-[1.02] dark:group-hover:bg-slate-800/80 border-2 border-white/60 dark:border-cyan-500/30 dark:border-t-white/40 overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
           <div class="flex items-center space-x-3 relative z-10">
             <div class="bg-blue-100 dark:bg-cyan-900/50 p-2 rounded-full text-blue-600 dark:text-cyan-400 dark:shadow-[0_0_10px_rgba(34,211,238,0.5)]">
               <span class="material-symbols-outlined">fitness_center</span>
@@ -29,7 +29,7 @@
     <% else %>
       <%= link_to user_google_oauth2_omniauth_authorize_path,
           data: { turbo: false },
-          class: "w-full bg-white dark:bg-slate-800/80 backdrop-blur-xl hover:bg-gray-50 dark:hover:bg-slate-700/80 text-gray-700 dark:text-slate-200 font-bold py-4 px-6 rounded-[3.75rem] shadow-sm hover:shadow-md dark:shadow-[0_0_20px_rgba(255,255,255,0.1),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all flex items-center justify-center space-x-3 border border-gray-200 dark:border-slate-700 dark:border-t-white/30 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" do %>
+          class: "w-full bg-[radial-gradient(ellipse_120%_120%_at_35%_35%,#ffffff_30%,#f3f4f6_90%)] dark:bg-none dark:bg-slate-800/80 backdrop-blur-xl hover:shadow-[10px_10px_20px_rgba(156,163,175,0.2),-10px_-10px_20px_#ffffff] dark:hover:bg-slate-700/80 text-gray-700 dark:text-slate-200 font-bold py-4 px-6 rounded-[3.75rem] shadow-[5px_5px_15px_rgba(156,163,175,0.1),-5px_-5px_15px_#ffffff,inset_-2px_-2px_5px_rgba(156,163,175,0.05),inset_2px_2px_5px_rgba(255,255,255,0.5)] dark:shadow-[0_0_20px_rgba(255,255,255,0.1),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all flex items-center justify-center space-x-3 border-2 border-white/60 dark:border-slate-700 dark:border-t-white/30 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" do %>
         <svg class="w-6 h-6 relative z-10" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -77,14 +77,14 @@
             id: "walk_walked_on",
             data: { google_fit_target: "date" },
             onclick: "this.showPicker()",
-            class: "block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900/50 border-2 border-gray-100 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-sm text-lg font-medium cursor-pointer" %>
+            class: "block w-full pl-12 pr-4 py-4 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-lg font-medium cursor-pointer" %>
       </div>
     </div>
 
     <!-- 時間帯選択 (Icon Select) -->
     <div class="relative" data-controller="icon-select"
-         data-icon-select-selected-class="bg-orange-50 border-orange-400 text-orange-500 dark:bg-purple-900/60 dark:border-purple-400 dark:text-purple-300 shadow-md transform scale-[1.02] dark:shadow-[0_0_15px_rgba(168,85,247,0.4)] relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none"
-         data-icon-select-unselected-class="bg-white dark:bg-slate-900/50 border-gray-100 dark:border-slate-700 text-gray-400 dark:text-slate-500 hover:bg-gray-50 dark:hover:bg-slate-800 hover:border-gray-200 dark:hover:border-slate-600">
+         data-icon-select-selected-class="bg-[radial-gradient(ellipse_120%_120%_at_35%_35%,#ffffff_30%,#ffedd5_90%)] dark:bg-none border-white/60 text-orange-600 dark:bg-purple-900/60 dark:border-purple-400 dark:text-purple-300 shadow-[5px_5px_15px_rgba(249,115,22,0.2),-5px_-5px_15px_#ffffff,inset_-2px_-2px_5px_rgba(249,115,22,0.1),inset_2px_2px_5px_rgba(255,255,255,0.7)] transform scale-[1.02] dark:shadow-[0_0_15px_rgba(168,85,247,0.4)] relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none"
+         data-icon-select-unselected-class="bg-white/50 dark:bg-slate-900/50 border-white/40 dark:border-slate-700 text-gray-400 dark:text-slate-500 hover:bg-white/80 dark:hover:bg-slate-800 hover:border-white/60 dark:hover:border-slate-600 shadow-sm">
 
       <%= form.label :time_of_day, "時間帯", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1" %>
 
@@ -126,7 +126,7 @@
         </div>
         <%= form.text_field :location,
             placeholder: "例: 代々木公園",
-            class: "block w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-900/50 border-2 border-gray-100 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-sm text-lg" %>
+            class: "block w-full pl-12 pr-4 py-4 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-lg" %>
       </div>
     </div>
 
@@ -147,7 +147,7 @@
               step: 0.01,
               data: { google_fit_target: "distance" },
               placeholder: "0.0",
-              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900/50 border-2 border-gray-100 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-emerald-500 dark:focus:shadow-[0_0_15px_rgba(16,185,129,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-sm text-xl font-bold text-right" %>
+              class: "block w-full pl-12 pr-8 py-4 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-emerald-500 dark:focus:shadow-[0_0_15px_rgba(16,185,129,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-xl font-bold text-right" %>
           <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
             <span class="text-gray-400 text-sm font-bold">km</span>
           </div>
@@ -168,7 +168,7 @@
               id: "walk_duration",
               data: { google_fit_target: "duration" },
               placeholder: "0",
-              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900/50 border-2 border-gray-100 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-500 dark:focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-sm text-xl font-bold text-right" %>
+              class: "block w-full pl-12 pr-8 py-4 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-500 dark:focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-xl font-bold text-right" %>
           <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
             <span class="text-gray-400 text-sm font-bold">分</span>
           </div>
@@ -186,7 +186,7 @@
               id: "walk_steps",
               data: { google_fit_target: "steps" },
               placeholder: "0",
-              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900/50 border-2 border-gray-100 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-sm text-xl font-bold text-right" %>
+              class: "block w-full pl-12 pr-8 py-4 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-xl font-bold text-right" %>
           <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
             <span class="text-gray-400 text-sm font-bold">歩</span>
           </div>
@@ -204,7 +204,7 @@
               id: "walk_calories_burned",
               data: { google_fit_target: "calories" },
               placeholder: "0",
-              class: "block w-full pl-12 pr-8 py-4 bg-white dark:bg-slate-900/50 border-2 border-gray-100 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-rose-500 dark:focus:shadow-[0_0_15px_rgba(244,63,94,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-sm text-xl font-bold text-right" %>
+              class: "block w-full pl-12 pr-8 py-4 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-rose-500 dark:focus:shadow-[0_0_15px_rgba(244,63,94,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-xl font-bold text-right" %>
           <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
             <span class="text-gray-400 text-sm font-bold">kcal</span>
           </div>
@@ -218,15 +218,15 @@
       <%= form.text_area :notes,
           rows: 4,
           placeholder: "今日の散歩の感想...",
-          class: "block w-full px-4 py-4 bg-white dark:bg-slate-900/50 border-2 border-gray-100 dark:border-slate-700 rounded-3xl focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-sm resize-none text-base" %>
+          class: "block w-full px-4 py-4 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-3xl focus:ring-0 focus:border-cyan-500 dark:focus:border-purple-500 dark:focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none resize-none text-base" %>
     </div>
 
     <!-- アクションボタン -->
     <div class="flex flex-col sm:flex-row gap-4 pt-6">
-      <%= form.submit "保存する", class: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 dark:from-fuchsia-600 dark:to-purple-600 dark:hover:from-fuchsia-500 dark:hover:to-purple-500 text-white font-bold py-4 px-6 rounded-[3.75rem] shadow-lg shadow-cyan-500/30 dark:shadow-[0_0_20px_rgba(192,38,211,0.5),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all transform hover:-translate-y-1 cursor-pointer text-lg border border-transparent dark:border-fuchsia-500/30 dark:border-t-white/40 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/20 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse" %>
+      <%= form.submit "保存する", class: "flex-1 bg-[radial-gradient(ellipse_120%_120%_at_35%_35%,#ffffff_30%,#e0f2fe_90%)] dark:bg-none dark:bg-gradient-to-r dark:from-fuchsia-600 dark:to-purple-600 dark:hover:from-fuchsia-500 dark:hover:to-purple-500 text-blue-600 dark:text-white font-bold py-4 px-6 rounded-[3.75rem] shadow-[10px_10px_20px_rgba(14,165,233,0.2),-10px_-10px_20px_#ffffff,inset_-5px_-5px_10px_rgba(14,165,233,0.1),inset_5px_5px_10px_rgba(255,255,255,0.7)] hover:shadow-[15px_15px_30px_rgba(14,165,233,0.3),-15px_-15px_30px_#ffffff] dark:shadow-[0_0_20px_rgba(192,38,211,0.5),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all transform hover:-translate-y-1 cursor-pointer text-lg border-2 border-white/60 dark:border-fuchsia-500/30 dark:border-t-white/40 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse" %>
 
       <%= link_to "キャンセル", walks_path,
-          class: "flex-1 text-center bg-transparent hover:bg-gray-100 dark:hover:bg-slate-800/80 text-gray-500 dark:text-slate-400 font-bold py-4 px-6 rounded-[3.75rem] transition-all border-2 border-transparent hover:border-gray-200 dark:hover:border-slate-700 dark:border-white/5 dark:border-t-white/20 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" %>
+          class: "flex-1 text-center bg-[radial-gradient(ellipse_120%_120%_at_35%_35%,#ffffff_30%,#f3f4f6_90%)] dark:bg-none dark:hover:bg-slate-800/80 text-gray-600 dark:text-slate-400 font-bold py-4 px-6 rounded-[3.75rem] shadow-[5px_5px_15px_rgba(156,163,175,0.1),-5px_-5px_15px_#ffffff,inset_-2px_-2px_5px_rgba(156,163,175,0.05),inset_2px_2px_5px_rgba(255,255,255,0.5)] hover:shadow-[10px_10px_20px_rgba(156,163,175,0.2),-10px_-10px_20px_#ffffff] transition-all border-2 border-white/60 dark:border-white/5 dark:border-t-white/20 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" %>
     </div>
 
   <% end %>

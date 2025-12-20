@@ -44,7 +44,8 @@ module PostsHelper
         border: "border-purple-100/50 dark:border-purple-500/50",
         text: "text-purple-800 dark:text-purple-200",
         inner_bg: "bg-purple-50/50 dark:bg-purple-900/30",
-        shadow: "shadow-[8px_8px_16px_rgba(168,85,247,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(168,85,247,0.4),inset_0_0_20px_rgba(168,85,247,0.1)]"
+        shadow: "shadow-[20px_20px_60px_rgba(168,85,247,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(168,85,247,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(168,85,247,0.3)] dark:shadow-[0_0_30px_rgba(168,85,247,0.4),inset_0_0_20px_rgba(168,85,247,0.1)]",
+        orb_bg: "from-purple-500/20 to-pink-500/20"
       }
     when "exhausted"
       {
@@ -52,7 +53,8 @@ module PostsHelper
         border: "border-rose-100/50 dark:border-rose-500/50",
         text: "text-rose-800 dark:text-rose-200",
         inner_bg: "bg-rose-50/50 dark:bg-rose-900/30",
-        shadow: "shadow-[8px_8px_16px_rgba(244,63,94,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(244,63,94,0.4),inset_0_0_20px_rgba(244,63,94,0.1)]"
+        shadow: "shadow-[20px_20px_60px_rgba(244,63,94,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(244,63,94,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(244,63,94,0.3)] dark:shadow-[0_0_30px_rgba(244,63,94,0.4),inset_0_0_20px_rgba(244,63,94,0.1)]",
+        orb_bg: "from-rose-500/20 to-orange-500/20"
       }
 
     # === Lv.Mid (Sunset Gradient Glow) ===
@@ -62,7 +64,8 @@ module PostsHelper
         border: "border-yellow-100/50 dark:border-yellow-500/50",
         text: "text-yellow-700 dark:text-yellow-200",
         inner_bg: "bg-yellow-50/50 dark:bg-yellow-900/30",
-        shadow: "shadow-[8px_8px_16px_rgba(234,179,8,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(234,179,8,0.3),inset_0_0_20px_rgba(234,179,8,0.1)]"
+        shadow: "shadow-[20px_20px_60px_rgba(234,179,8,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(234,179,8,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(234,179,8,0.3)] dark:shadow-[0_0_30px_rgba(234,179,8,0.3),inset_0_0_20px_rgba(234,179,8,0.1)]",
+        orb_bg: "from-yellow-400/20 to-orange-400/20"
       }
     when "snowy"
       {
@@ -70,7 +73,8 @@ module PostsHelper
         border: "border-sky-100/50 dark:border-cyan-400/50",
         text: "text-sky-700 dark:text-cyan-200",
         inner_bg: "bg-sky-50/50 dark:bg-cyan-900/30",
-        shadow: "shadow-[8px_8px_16px_rgba(14,165,233,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(34,211,238,0.4),inset_0_0_20px_rgba(34,211,238,0.1)]"
+        shadow: "shadow-[20px_20px_60px_rgba(14,165,233,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(14,165,233,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(14,165,233,0.3)] dark:shadow-[0_0_30px_rgba(34,211,238,0.4),inset_0_0_20px_rgba(34,211,238,0.1)]",
+        orb_bg: "from-sky-400/20 to-blue-400/20"
       }
     when "sunny"
       {
@@ -78,7 +82,8 @@ module PostsHelper
         border: "border-orange-100/50 dark:border-orange-500/50",
         text: "text-orange-700 dark:text-orange-200",
         inner_bg: "bg-orange-50/50 dark:bg-orange-900/30",
-        shadow: "shadow-[8px_8px_16px_rgba(249,115,22,0.15),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(249,115,22,0.4),inset_0_0_20px_rgba(249,115,22,0.1)]"
+        shadow: "shadow-[20px_20px_60px_rgba(249,115,22,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(249,115,22,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(249,115,22,0.3)] dark:shadow-[0_0_30px_rgba(249,115,22,0.4),inset_0_0_20px_rgba(249,115,22,0.1)]",
+        orb_bg: "from-orange-400/20 to-red-400/20"
       }
 
     # === Lv.Low (Midnight Blue Glow) ===
@@ -88,7 +93,8 @@ module PostsHelper
         border: "border-blue-100/50 dark:border-blue-500/50",
         text: "text-blue-600 dark:text-blue-200",
         inner_bg: "bg-blue-50/50 dark:bg-blue-900/30",
-        shadow: "shadow-[8px_8px_16px_rgba(59,130,246,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(59,130,246,0.3),inset_0_0_20px_rgba(59,130,246,0.1)]"
+        shadow: "shadow-[20px_20px_60px_rgba(59,130,246,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(59,130,246,0.3)] dark:shadow-[0_0_30px_rgba(59,130,246,0.3),inset_0_0_20px_rgba(59,130,246,0.1)]",
+        orb_bg: "from-blue-400/20 to-cyan-400/20"
       }
     when "tired"
       {
@@ -96,7 +102,8 @@ module PostsHelper
         border: "border-slate-100/50 dark:border-slate-500/50",
         text: "text-slate-600 dark:text-slate-300",
         inner_bg: "bg-slate-50/50 dark:bg-slate-800/50",
-        shadow: "shadow-[8px_8px_16px_rgba(100,116,139,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(148,163,184,0.2),inset_0_0_10px_rgba(148,163,184,0.05)]"
+        shadow: "shadow-[20px_20px_60px_rgba(100,116,139,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(100,116,139,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(100,116,139,0.3)] dark:shadow-[0_0_20px_rgba(148,163,184,0.2),inset_0_0_10px_rgba(148,163,184,0.05)]",
+        orb_bg: "from-slate-400/20 to-gray-400/20"
       }
     when "good"
       {
@@ -104,7 +111,8 @@ module PostsHelper
         border: "border-lime-100/50 dark:border-lime-500/50",
         text: "text-lime-600 dark:text-lime-200",
         inner_bg: "bg-lime-50/50 dark:bg-lime-900/30",
-        shadow: "shadow-[8px_8px_16px_rgba(132,204,22,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(132,204,22,0.3),inset_0_0_20px_rgba(132,204,22,0.1)]"
+        shadow: "shadow-[20px_20px_60px_rgba(132,204,22,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(132,204,22,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(132,204,22,0.3)] dark:shadow-[0_0_30px_rgba(132,204,22,0.3),inset_0_0_20px_rgba(132,204,22,0.1)]",
+        orb_bg: "from-lime-400/20 to-green-400/20"
       }
     when "cloudy"
       {
@@ -112,7 +120,8 @@ module PostsHelper
         border: "border-gray-100/50 dark:border-gray-600/50",
         text: "text-gray-500 dark:text-gray-300",
         inner_bg: "bg-gray-50/50 dark:bg-gray-800/50",
-        shadow: "shadow-[8px_8px_16px_rgba(107,114,128,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(156,163,175,0.2),inset_0_0_10px_rgba(156,163,175,0.05)]"
+        shadow: "shadow-[20px_20px_60px_rgba(107,114,128,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(107,114,128,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(107,114,128,0.3)] dark:shadow-[0_0_20px_rgba(156,163,175,0.2),inset_0_0_10px_rgba(156,163,175,0.05)]",
+        orb_bg: "from-gray-400/20 to-slate-400/20"
       }
 
     # === Default ===
@@ -122,7 +131,8 @@ module PostsHelper
         border: "border-stone-100/50 dark:border-stone-600/50",
         text: "text-stone-500 dark:text-stone-300",
         inner_bg: "bg-stone-50/50 dark:bg-stone-900/50",
-        shadow: "shadow-[8px_8px_16px_rgba(166,175,195,0.4),-8px_-8px_16px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(168,162,158,0.2),inset_0_0_10px_rgba(168,162,158,0.05)]"
+        shadow: "shadow-[20px_20px_60px_rgba(166,175,195,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(166,175,195,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(166,175,195,0.3)] dark:shadow-[0_0_20px_rgba(168,162,158,0.2),inset_0_0_10px_rgba(168,162,158,0.05)]",
+        orb_bg: "from-stone-400/20 to-orange-100/20"
       }
     end
   end
