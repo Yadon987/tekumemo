@@ -32,6 +32,79 @@
   button[type="button"]:disabled {
     @apply cursor-not-allowed opacity-50;
   }
+
+  /* ===== Crystal Claymorphism Components ===== */
+
+  /* Base Card Style */
+  .crystal-card {
+    @apply relative overflow-hidden rounded-[2.5rem] p-6 transition-transform duration-200 hover:scale-105 border-2;
+
+    /* CSS Variables for customization */
+    --crystal-bg-end: #f3f4f6;
+    --crystal-shadow-color: rgba(0,0,0,0.05);
+    --crystal-inset-shadow: rgba(0,0,0,0.05);
+    --crystal-border-color: rgba(255,255,255,0.6);
+
+    /* Light Mode Styles */
+    background: radial-gradient(ellipse 120% 120% at 35% 35%, #ffffff 30%, var(--crystal-bg-end) 90%);
+    box-shadow:
+      20px 20px 60px var(--crystal-shadow-color),
+      -20px -20px 60px #ffffff,
+      inset -5px -5px 15px var(--crystal-inset-shadow),
+      inset 5px 5px 15px rgba(255, 255, 255, 0.7);
+    border-color: var(--crystal-border-color);
+  }
+
+  /* Dark Mode Reset & Styles */
+  :is(.dark .crystal-card) {
+    background: none;
+    box-shadow: none;
+    border-color: transparent;
+    @apply bg-gray-800 border-gray-700 shadow-xl;
+  }
+
+  /* Color Variants */
+  .crystal-blue {
+    --crystal-bg-end: #dbeafe; /* blue-100 */
+    --crystal-shadow-color: rgba(59, 130, 246, 0.2);
+    --crystal-inset-shadow: rgba(59, 130, 246, 0.1);
+    --crystal-border-color: rgba(191, 219, 254, 0.6);
+  }
+
+  .crystal-purple {
+    --crystal-bg-end: #f3e8ff; /* purple-100 */
+    --crystal-shadow-color: rgba(168, 85, 247, 0.2);
+    --crystal-inset-shadow: rgba(168, 85, 247, 0.1);
+    --crystal-border-color: rgba(233, 213, 255, 0.6);
+  }
+
+  .crystal-emerald {
+    --crystal-bg-end: #d1fae5; /* emerald-100 */
+    --crystal-shadow-color: rgba(16, 185, 129, 0.2);
+    --crystal-inset-shadow: rgba(16, 185, 129, 0.1);
+    --crystal-border-color: rgba(167, 243, 208, 0.6);
+  }
+
+  .crystal-orange {
+    --crystal-bg-end: #ffedd5; /* orange-100 */
+    --crystal-shadow-color: rgba(249, 115, 22, 0.2);
+    --crystal-inset-shadow: rgba(249, 115, 22, 0.1);
+    --crystal-border-color: rgba(254, 215, 170, 0.6);
+  }
+
+  .crystal-pink {
+    --crystal-bg-end: #fce7f3; /* pink-100 */
+    --crystal-shadow-color: rgba(236, 72, 153, 0.2);
+    --crystal-inset-shadow: rgba(236, 72, 153, 0.1);
+    --crystal-border-color: rgba(251, 207, 232, 0.6);
+  }
+
+  .crystal-amber {
+    --crystal-bg-end: #fef3c7; /* amber-100 */
+    --crystal-shadow-color: rgba(245, 158, 11, 0.2);
+    --crystal-inset-shadow: rgba(245, 158, 11, 0.1);
+    --crystal-border-color: rgba(253, 230, 138, 0.6);
+  }
 }
 
 /* ===== カスタムユーティリティ ===== */
@@ -50,5 +123,29 @@
   /* テキストシャドウ（白文字の視認性向上用） */
   .text-shadow {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  /* カスタムスクロールバー（Webkit系） */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5); /* gray-400/50 */
+    border-radius: 20px;
+  }
+
+  /* ダークモード用スクロールバー */
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(87, 83, 78, 0.8); /* stone-600/80 */
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: rgba(41, 37, 36, 0.3); /* stone-900/30 */
   }
 }

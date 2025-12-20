@@ -59,6 +59,29 @@ export default class extends Controller {
       this.distanceTarget.value = data.distance || 0
       this.durationTarget.value = data.duration || 0
 
+      // 時間帯の自動選択
+      if (data.start_time) {
+        const startTime = new Date(data.start_time)
+        const hour = startTime.getHours()
+        let timeOfDay = "night"
+
+        if (hour >= 4 && hour <= 8) {
+          timeOfDay = "early_morning"
+        } else if (hour >= 9 && hour <= 15) {
+          timeOfDay = "day"
+        } else if (hour >= 16 && hour <= 18) {
+          timeOfDay = "evening"
+        }
+
+        // 対応するラジオボタンを選択
+        const radio = this.element.querySelector(`input[name="walk[time_of_day]"][value="${timeOfDay}"]`)
+        if (radio) {
+          radio.checked = true
+          // changeイベントを発火させてicon-selectコントローラーに通知
+          radio.dispatchEvent(new Event("change", { bubbles: true }))
+        }
+      }
+
       // 4. 成功メッセージ
       this.statusTarget.textContent = "同期完了！✨"
       this.statusTarget.classList.add("text-green-500")

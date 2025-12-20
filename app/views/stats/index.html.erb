@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-clay-bg dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4 sm:px-6 lg:px-8">
   <div class="max-w-7xl mx-auto">
     <!-- ヘッダー -->
     <div class="mb-8">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+      <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 dark:from-white dark:to-gray-300 mb-2">
         📊 統計・分析
       </h1>
       <p class="text-gray-600 dark:text-gray-400">
@@ -10,76 +10,188 @@
       </p>
     </div>
 
+    <!-- RPG Status Bar -->
+    <div class="crystal-card crystal-purple mb-8 group">
+      <!-- 背景装飾 -->
+      <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-300/20 to-pink-300/20 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+
+      <div class="relative z-10">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-4">
+          <div class="flex items-center gap-4">
+            <!-- レベルバッジ -->
+            <div class="relative">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-indigo-500 dark:to-purple-600 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                <span class="text-white font-black text-2xl italic">
+                  <span class="text-xs align-top opacity-80 mr-0.5">Lv.</span><%= @stats_service.level %>
+                </span>
+              </div>
+              <!-- キラキラエフェクト -->
+              <div class="absolute -top-1 -right-1 w-5 h-5 bg-yellow-300 rounded-full blur-sm animate-pulse"></div>
+            </div>
+
+            <!-- ランク名 -->
+            <div>
+              <div class="text-xs font-bold text-purple-500 dark:text-gray-400 uppercase tracking-wider">Current Rank</div>
+              <div class="text-2xl sm:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 dark:from-white dark:to-gray-300">
+                <%= @stats_service.rank_name %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Level Info -->
+          <div class="text-right w-full sm:w-auto">
+            <div class="text-xs font-bold text-purple-500 dark:text-gray-400">Next Level</div>
+            <div class="font-mono font-bold text-gray-700 dark:text-gray-200">
+              あと <span class="text-blue-500 dark:text-blue-400 text-2xl"><%= @stats_service.distance_to_next_level %></span> km
+            </div>
+          </div>
+        </div>
+
+        <!-- XP Progress Bar -->
+        <div class="relative w-full h-4 rounded-full overflow-hidden bg-purple-100 dark:bg-gray-700 shadow-inner">
+          <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 transition-all duration-1000 ease-out rounded-full shadow-[0_0_10px_rgba(99,102,241,0.5)]"
+               style="width: <%= @stats_service.level_progress_percentage %>%">
+            <!-- シマーエフェクト -->
+            <div class="absolute inset-0 bg-white/30 w-full h-full animate-[shimmer_2s_infinite] skew-x-12"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements (Badges) List -->
+    <div class="mb-12" data-controller="accordion" data-accordion-is-open-value="false">
+      <!-- Accordion Header -->
+      <button type="button"
+              data-action="click->accordion#toggle"
+              class="w-full flex items-center justify-between mb-4 px-6 py-4 crystal-card crystal-orange rounded-full group hover:scale-[1.02]">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-amber-500 text-3xl group-hover:scale-110 transition-transform">military_tech</span>
+          <div class="text-left">
+            <h2 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-orange-600 dark:from-white dark:to-gray-300">
+              獲得した称号
+            </h2>
+            <p class="text-xs text-orange-600 dark:text-gray-400">
+              コレクションを見る
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 dark:bg-gray-700 dark:text-gray-300 px-4 py-1.5 rounded-full shadow-md">
+            <%= @stats_service.achievements.count { |a| a[:obtained] } %> / <%= @stats_service.achievements.size %>
+          </span>
+          <span class="material-symbols-outlined text-orange-500 dark:text-gray-400 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
+        </div>
+      </button>
+
+      <!-- Accordion Content (Horizontal Scroll) -->
+      <div class="hidden transition-all duration-300 ease-in-out" data-accordion-target="content">
+        <div class="flex overflow-x-auto gap-4 pb-4 px-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+          <% @stats_service.achievements.each do |ach| %>
+            <div class="snap-center flex-shrink-0 w-32 flex flex-col items-center text-center group p-3 rounded-xl transition-colors hover:bg-white/50 dark:hover:bg-gray-800/50">
+              <!-- Badge Icon -->
+              <div class="w-20 h-20 rounded-full flex items-center justify-center mb-3 shadow-md transition-all duration-300 relative overflow-hidden
+                          <%= ach[:obtained] ? 'bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-gray-700 dark:to-gray-600 border-2 border-yellow-400 dark:border-yellow-500/50 shadow-yellow-200 dark:shadow-yellow-900/20 transform group-hover:scale-110' : 'bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 grayscale opacity-60' %>">
+
+                <% if ach[:obtained] %>
+                  <!-- Shine Effect -->
+                  <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <% end %>
+
+                <span class="material-symbols-outlined text-4xl <%= ach[:obtained] ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-400' %>">
+                  <%= ach[:icon] %>
+                </span>
+
+                <% unless ach[:obtained] %>
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/10 dark:bg-black/30 backdrop-blur-[1px]">
+                    <span class="material-symbols-outlined text-gray-500 text-2xl">lock</span>
+                  </div>
+                <% end %>
+              </div>
+
+              <!-- Badge Name & Description -->
+              <p class="text-sm font-bold <%= ach[:obtained] ? 'text-gray-800 dark:text-gray-200' : 'text-gray-400' %> mb-0.5 line-clamp-1">
+                <%= ach[:name] %>
+              </p>
+              <p class="text-[10px] text-gray-500 dark:text-gray-400 line-clamp-2 h-8 leading-tight w-full">
+                <%= ach[:description] %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
     <!-- 基本統計カード (6つ) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
       <!-- 累計距離 -->
-      <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+      <div class="crystal-card crystal-blue dark:bg-gradient-to-br dark:from-blue-500 dark:to-blue-600">
         <div class="flex items-center justify-between mb-4">
-          <div class="text-blue-100 text-4xl">🎯</div>
+          <div class="text-5xl">🎯</div>
           <div class="text-right">
-            <p class="text-blue-100 text-sm font-medium">累計距離</p>
-            <p class="text-4xl font-bold"><%= number_with_delimiter(@total_distance) %></p>
-            <p class="text-blue-100 text-xs">km</p>
+            <p class="text-blue-500 dark:text-blue-100 text-sm font-bold">累計距離</p>
+            <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:text-white"><%= number_with_delimiter(@total_distance) %></p>
+            <p class="text-blue-500 dark:text-blue-100 text-xs font-medium">km</p>
           </div>
         </div>
       </div>
 
       <!-- 累計日数 -->
-      <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+      <div class="crystal-card crystal-emerald dark:bg-gradient-to-br dark:from-green-500 dark:to-green-600">
         <div class="flex items-center justify-between mb-4">
-          <div class="text-green-100 text-4xl">📅</div>
+          <div class="text-5xl">📅</div>
           <div class="text-right">
-            <p class="text-green-100 text-sm font-medium">累計散歩日数</p>
-            <p class="text-4xl font-bold"><%= @total_days %></p>
-            <p class="text-green-100 text-xs">日</p>
+            <p class="text-emerald-600 dark:text-green-100 text-sm font-bold">累計散歩日数</p>
+            <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-600 dark:text-white"><%= @total_days %></p>
+            <p class="text-emerald-600 dark:text-green-100 text-xs font-medium">日</p>
           </div>
         </div>
       </div>
 
       <!-- 連続記録日数 -->
-      <div class="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+      <div class="crystal-card crystal-orange dark:bg-gradient-to-br dark:from-orange-500 dark:to-red-500">
         <div class="flex items-center justify-between mb-4">
-          <div class="text-orange-100 text-4xl">🔥</div>
+          <div class="text-5xl">🔥</div>
           <div class="text-right">
-            <p class="text-orange-100 text-sm font-medium">連続記録</p>
-            <p class="text-4xl font-bold"><%= @current_streak %></p>
-            <p class="text-orange-100 text-xs">日連続</p>
+            <p class="text-orange-600 dark:text-orange-100 text-sm font-bold">連続記録</p>
+            <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:text-white"><%= @current_streak %></p>
+            <p class="text-orange-600 dark:text-orange-100 text-xs font-medium">日連続</p>
           </div>
         </div>
       </div>
 
       <!-- 平均距離 -->
-      <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+      <div class="crystal-card crystal-purple dark:bg-gradient-to-br dark:from-purple-500 dark:to-purple-600">
         <div class="flex items-center justify-between mb-4">
-          <div class="text-purple-100 text-4xl">📈</div>
+          <div class="text-5xl">📈</div>
           <div class="text-right">
-            <p class="text-purple-100 text-sm font-medium">平均距離/日</p>
-            <p class="text-4xl font-bold"><%= @average_distance %></p>
-            <p class="text-purple-100 text-xs">km</p>
+            <p class="text-purple-600 dark:text-purple-100 text-sm font-bold">平均距離/日</p>
+            <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-violet-600 dark:text-white"><%= @average_distance %></p>
+            <p class="text-purple-600 dark:text-purple-100 text-xs font-medium">km</p>
           </div>
         </div>
       </div>
 
       <!-- 最長記録 -->
-      <div class="bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+      <div class="crystal-card crystal-pink dark:bg-gradient-to-br dark:from-pink-500 dark:to-pink-600">
         <div class="flex items-center justify-between mb-4">
-          <div class="text-pink-100 text-4xl">🏆</div>
+          <div class="text-5xl">🏆</div>
           <div class="text-right">
-            <p class="text-pink-100 text-sm font-medium">最長記録</p>
-            <p class="text-4xl font-bold"><%= @max_distance %></p>
-            <p class="text-pink-100 text-xs">km</p>
+            <p class="text-pink-600 dark:text-pink-100 text-sm font-bold">最長記録</p>
+            <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-rose-600 dark:text-white"><%= @max_distance %></p>
+            <p class="text-pink-600 dark:text-pink-100 text-xs font-medium">km</p>
           </div>
         </div>
       </div>
 
       <!-- 目標達成率 -->
-      <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+      <div class="crystal-card crystal-amber dark:bg-gradient-to-br dark:from-amber-500 dark:to-amber-600">
         <div class="flex items-center justify-between mb-4">
-          <div class="text-amber-100 text-4xl">✨</div>
+          <div class="text-5xl">✨</div>
           <div class="text-right">
-            <p class="text-amber-100 text-sm font-medium">今月の目標達成率</p>
-            <p class="text-4xl font-bold"><%= @monthly_goal_rate %>%</p>
-            <p class="text-amber-100 text-xs">月間目標</p>
+            <p class="text-amber-600 dark:text-amber-100 text-sm font-bold">今月の目標達成率</p>
+            <p class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-yellow-600 dark:text-white"><%= @monthly_goal_rate %>%</p>
+            <p class="text-amber-600 dark:text-amber-100 text-xs font-medium">月間目標</p>
           </div>
         </div>
       </div>
@@ -94,32 +206,33 @@
       data-stats-chart-weekday-url-value="<%= stats_chart_data_path(type: 'weekday') %>"
       data-stats-chart-pace-url-value="<%= stats_chart_data_path(type: 'pace') %>"
       data-stats-chart-calories-url-value="<%= stats_chart_data_path(type: 'calories') %>"
+      data-stats-chart-time-of-day-url-value="<%= stats_chart_data_path(type: 'time_of_day') %>"
       class="space-y-8"
     >
       <!-- 時系列グラフ (タブ切り替え) -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+      <div class="crystal-card crystal-blue dark:bg-gray-800">
+        <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-white dark:to-gray-300 mb-6">
           📈 距離の推移
         </h2>
 
         <!-- タブナビゲーション -->
-        <div class="flex space-x-2 mb-6 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex space-x-2 mb-6 border-b-2 border-blue-200/50 dark:border-gray-700">
           <button
-            class="tab-button active px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400"
+            class="tab-button active px-4 py-2 font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 dark:text-blue-400 dark:bg-transparent rounded-t-xl border-b-2 border-blue-600 dark:border-blue-400"
             data-tab="daily-chart"
             onclick="switchTab(event, 'daily-chart')"
           >
             日別 (30日)
           </button>
           <button
-            class="tab-button px-4 py-2 font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            class="tab-button px-4 py-2 font-medium text-blue-500 dark:text-gray-400 border-b-2 border-transparent hover:text-blue-700 dark:hover:text-gray-200 rounded-t-xl"
             data-tab="weekly-chart"
             onclick="switchTab(event, 'weekly-chart')"
           >
             週別 (12週)
           </button>
           <button
-            class="tab-button px-4 py-2 font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            class="tab-button px-4 py-2 font-medium text-blue-500 dark:text-gray-400 border-b-2 border-transparent hover:text-blue-700 dark:hover:text-gray-200 rounded-t-xl"
             data-tab="monthly-chart"
             onclick="switchTab(event, 'monthly-chart')"
           >
@@ -147,27 +260,43 @@
         </div>
       </div>
 
-      <!-- 曜日別分析 -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          📊 曜日別の傾向
-        </h2>
-        <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-          どの曜日に散歩していますか?平均距離を比較してみましょう
-        </p>
-        <div class="h-80">
-          <canvas data-stats-chart-target="weekdayCanvas"></canvas>
+      <!-- 傾向分析 (曜日 & 時間帯) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- 曜日別分析 -->
+        <div class="crystal-card crystal-emerald dark:bg-gray-800">
+          <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-600 dark:from-white dark:to-gray-300 mb-6">
+            📊 曜日別の傾向
+          </h2>
+          <p class="text-emerald-700 dark:text-gray-400 mb-4 text-sm font-medium">
+            どの曜日に散歩していますか?平均距離を比較してみましょう
+          </p>
+          <div class="h-80">
+            <canvas data-stats-chart-target="weekdayCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- 時間帯別分析 -->
+        <div class="crystal-card crystal-purple dark:bg-gray-800">
+          <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 dark:from-white dark:to-gray-300 mb-6">
+            🕰️ 冒険の時間帯
+          </h2>
+          <p class="text-purple-700 dark:text-gray-400 mb-4 text-sm font-medium">
+            あなたの活動時間帯の傾向です。朝型？それとも夜型？
+          </p>
+          <div class="h-80 relative w-full">
+            <canvas data-stats-chart-target="timeOfDayCanvas"></canvas>
+          </div>
         </div>
       </div>
 
       <!-- パフォーマンス分析 -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- ペース推移 -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <div class="crystal-card crystal-amber dark:bg-gray-800">
+          <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-yellow-600 dark:from-white dark:to-gray-300 mb-6">
             ⏱️ ペースの推移
           </h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+          <p class="text-amber-700 dark:text-gray-400 mb-4 text-sm font-medium">
             過去30日間の平均ペース (分/km)
           </p>
           <div class="h-64">
@@ -176,11 +305,11 @@
         </div>
 
         <!-- カロリー推移 -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <div class="crystal-card crystal-orange dark:bg-gray-800">
+          <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-white dark:to-gray-300 mb-6">
             🔥 カロリー消費の推移
           </h2>
-          <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+          <p class="text-orange-700 dark:text-gray-400 mb-4 text-sm font-medium">
             過去30日間の消費カロリー
           </p>
           <div class="h-64">

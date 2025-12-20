@@ -19,8 +19,11 @@ class GoogleFitService
     end_time_millis = date.end_of_day.to_i * 1000
 
     # 各データを取得
+    steps_data = fetch_steps_with_time(start_time_millis, end_time_millis)
+
     {
-      steps: fetch_steps(start_time_millis, end_time_millis),
+      steps: steps_data[:steps],
+      start_time: steps_data[:start_time], # 主な活動時間
       distance: fetch_distance(start_time_millis, end_time_millis),
       duration: fetch_duration(start_time_millis, end_time_millis),
       calories: fetch_calories(start_time_millis, end_time_millis)
@@ -58,8 +61,8 @@ class GoogleFitService
     auth
   end
 
-  # 歩数データを取得
-  def fetch_steps(start_time, end_time)
+  # 歩数データと主な活動時間を取得
+  def fetch_steps_with_time(start_time, end_time)
     dataset_id = "#{start_time}000000-#{end_time}000000"
     data_source = "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
 
@@ -69,18 +72,30 @@ class GoogleFitService
       dataset_id
     )
 
-    # データポイントから歩数を合計
     total_steps = 0
+    max_steps_in_session = 0
+    representative_start_time = nil
+
     (dataset.point || []).each do |point|
+      steps_in_point = 0
       point.value.each do |value|
-        total_steps += value.int_val if value.int_val
+        steps_in_point += value.int_val if value.int_val
+      end
+
+      total_steps += steps_in_point
+
+      # 最も歩数が多いセッションの開始時間を記録
+      if steps_in_point > max_steps_in_session && point.start_time_nanos
+        max_steps_in_session = steps_in_point
+        # ナノ秒 -> 秒
+        representative_start_time = Time.at(point.start_time_nanos / 1_000_000_000)
       end
     end
 
-    total_steps
+    { steps: total_steps, start_time: representative_start_time }
   rescue => e
     Rails.logger.error "Steps fetch error: #{e.message}"
-    0
+    { steps: 0, start_time: nil }
   end
 
   # 距離データを取得（メートル単位をキロメートルに変換）

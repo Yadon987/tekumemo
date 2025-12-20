@@ -26,7 +26,7 @@ RSpec.describe GoogleFitService, type: :service do
     let(:int_value) { double("IntValue", int_val: 1000, fp_val: nil) }
     let(:fp_value_distance) { double("FpValueDistance", int_val: nil, fp_val: 1500.0) } # 1500m = 1.5km
 
-    let(:step_point) { double("StepPoint", value: [ int_value ]) }
+    let(:step_point) { double("StepPoint", value: [ int_value ], start_time_nanos: 1672531200000000000) }
     let(:distance_point) { double("DistancePoint", value: [ fp_value_distance ]) }
     let(:duration_point) { double("DurationPoint", value: [ int_value ]) } # 1000 mins
 

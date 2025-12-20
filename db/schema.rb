@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_17_225031) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_19_205704) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -162,6 +162,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_17_225031) do
     t.datetime "updated_at", null: false
     t.integer "steps"
     t.integer "calories_burned"
+    t.integer "time_of_day"
     t.index ["user_id", "walked_on"], name: "index_walks_on_user_id_and_walked_on"
     t.index ["user_id"], name: "index_walks_on_user_id"
     t.index ["walked_on"], name: "index_walks_on_walked_on"

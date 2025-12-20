@@ -10,7 +10,8 @@ export default class extends Controller {
     "monthlyCanvas",
     "weekdayCanvas",
     "paceCanvas",
-    "caloriesCanvas"
+    "caloriesCanvas",
+    "timeOfDayCanvas"
   ]
 
   static values = {
@@ -19,7 +20,8 @@ export default class extends Controller {
     monthlyUrl: String,
     weekdayUrl: String,
     paceUrl: String,
-    caloriesUrl: String
+    caloriesUrl: String,
+    timeOfDayUrl: String
   }
 
   // 各グラフのインスタンスを保持
@@ -69,6 +71,11 @@ export default class extends Controller {
     if (this.hasCaloriesCanvasTarget) {
       await this.loadChart("calories", this.caloriesCanvasTarget, this.caloriesUrlValue, "line")
     }
+
+    // 時間帯別円グラフ
+    if (this.hasTimeOfDayCanvasTarget) {
+      await this.loadChart("time_of_day", this.timeOfDayCanvasTarget, this.timeOfDayUrlValue, "doughnut")
+    }
   }
 
   // グラフデータを読み込んで描画
@@ -96,6 +103,15 @@ export default class extends Controller {
       // グラフの設定を構築
       const config = this.buildChartConfig(chartId, data, type)
 
+      // データが全て0の場合はメッセージを表示して終了 (円グラフのみ)
+      if (chartId === "time_of_day") {
+        const total = data.data.reduce((a, b) => a + b, 0)
+        if (total === 0) {
+          this.showErrorOnCanvas(canvas, "データがありません")
+          return
+        }
+      }
+
       // Chart.jsインスタンスを作成
       this.charts[chartId] = new Chart(canvas, config)
     } catch (error) {
@@ -122,6 +138,8 @@ export default class extends Controller {
         return Array.isArray(data.dates) && Array.isArray(data.paces)
       case "calories":
         return Array.isArray(data.dates) && Array.isArray(data.calories)
+      case "time_of_day":
+        return Array.isArray(data.labels) && Array.isArray(data.data)
       default:
         return false
     }
@@ -233,6 +251,28 @@ export default class extends Controller {
           }]
         }
 
+      case "time_of_day":
+        return {
+          labels: data.labels,
+          datasets: [{
+            data: data.data,
+            backgroundColor: [
+              "rgba(16, 185, 129, 0.7)",  // 早朝: emerald-500
+              "rgba(245, 158, 11, 0.7)",  // 日中: amber-500
+              "rgba(249, 115, 22, 0.7)",  // 夕方: orange-500 (夕焼けイメージ)
+              "rgba(30, 58, 138, 0.7)"    // 夜間: blue-900 (深夜)
+            ],
+            borderColor: [
+              "rgb(16, 185, 129)",
+              "rgb(245, 158, 11)",
+              "rgb(249, 115, 22)",
+              "rgb(30, 58, 138)"
+            ],
+            borderWidth: 1,
+            hoverOffset: 4
+          }]
+        }
+
       default:
         return {}
     }
@@ -269,6 +309,30 @@ export default class extends Controller {
           title: {
             display: true,
             text: "平均距離 (km)"
+          }
+        }
+      }
+    } else if (chartId === "time_of_day") {
+      // 円グラフの場合
+      // scales と interaction は不要なので削除
+      delete baseOptions.interaction
+
+      // ドーナツチャートのカットアウトサイズ
+      baseOptions.cutout = '60%'
+
+      // ツールチップのカスタマイズ (パーセンテージ表示など)
+      baseOptions.plugins.tooltip = {
+        callbacks: {
+          label: function(context) {
+            let label = context.label || '';
+            if (label) {
+              label += ': ';
+            }
+            const value = context.parsed;
+            const dataset = context.dataset;
+            const total = dataset.data.reduce((acc, data) => acc + data, 0);
+            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) + "%" : "0%";
+            return `${label}${value}回 (${percentage})`;
           }
         }
       }

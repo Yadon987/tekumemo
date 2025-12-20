@@ -81,6 +81,42 @@
       </div>
     </div>
 
+    <!-- 時間帯選択 (Icon Select) -->
+    <div class="relative" data-controller="icon-select"
+         data-icon-select-selected-class="bg-orange-50 border-orange-400 text-orange-500 dark:bg-purple-900/40 dark:border-purple-400 dark:text-purple-300 shadow-md transform scale-[1.02]"
+         data-icon-select-unselected-class="bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-800 text-gray-400 dark:text-slate-500 hover:bg-gray-50 dark:hover:bg-slate-800 hover:border-gray-200 dark:hover:border-slate-700">
+
+      <%= form.label :time_of_day, "時間帯", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1" %>
+
+      <div class="grid grid-cols-4 gap-2 sm:gap-4">
+        <% Walk.time_of_days.keys.each do |key| %>
+          <%
+            icon_name = case key
+                        when "early_morning" then "wb_twilight"
+                        when "day" then "sunny"
+                        when "evening" then "wb_twilight"
+                        when "night" then "dark_mode"
+                        end
+            # 翻訳キーは後で追加するが、とりあえずデフォルト値を設定
+            label_text = t("enums.walk.time_of_day.#{key}", default: key.humanize)
+          %>
+
+          <!-- 隠しラジオボタン -->
+          <%= form.radio_button :time_of_day, key, class: "hidden", data: { icon_select_target: "input" } %>
+
+          <!-- アイコンボタン -->
+          <button type="button"
+                  data-icon-select-target="button"
+                  data-action="click->icon-select#select"
+                  data-value="<%= key %>"
+                  class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all duration-200 group h-20 sm:h-24 overflow-hidden normal-case">
+            <span class="material-symbols-outlined text-2xl sm:text-3xl mb-1 transition-colors"><%= icon_name %></span>
+            <span class="text-[10px] sm:text-xs font-bold"><%= label_text %></span>
+          </button>
+        <% end %>
+      </div>
+    </div>
+
     <!-- 場所 -->
     <div class="relative">
       <%= form.label :location, "場所（任意）", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
