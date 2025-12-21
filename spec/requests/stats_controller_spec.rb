@@ -15,8 +15,8 @@ RSpec.describe "Stats", type: :request do
 
     context "データが存在する場合" do
       before do
-        create(:walk, user: user, walked_on: Date.current, distance: 5000)
-        create(:walk, user: user, walked_on: 1.day.ago, distance: 3000)
+        create(:walk, user: user, walked_on: Date.current, distance: 5.0)
+        create(:walk, user: user, walked_on: 1.day.ago, distance: 3.0)
       end
 
       it "正常に表示されること" do

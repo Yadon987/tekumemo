@@ -1,0 +1,152 @@
+FFFFFFFFF.FFF.....
+
+Failures:
+
+  1) StatsService 基本統計 累計距離を正しく計算できる
+     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
+
+  2) StatsService 基本統計 累計日数を正しく計算できる
+     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
+
+  3) StatsService 基本統計 平均距離を正しく計算できる
+     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
+
+  4) StatsService 基本統計 最長記録距離を正しく取得できる
+     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
+
+  5) StatsService 今月の統計 今月の距離を正しく計算できる
+     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:36:in `block (3 levels) in <top (required)>'
+
+  6) StatsService 時系列データ 日別距離データを正しく取得できる
+     Failure/Error:
+       create(:walk,
+         user: user,
+         walked_on: i.days.ago.to_date,
+         distance: (i + 1) * 1000,
+         duration: 30
+       )
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:52:in `block (4 levels) in <top (required)>'
+     # ./spec/services/stats_service_spec.rb:51:in `times'
+     # ./spec/services/stats_service_spec.rb:51:in `block (3 levels) in <top (required)>'
+
+  7) StatsService 時系列データ 週別距離データを正しく取得できる
+     Failure/Error:
+       create(:walk,
+         user: user,
+         walked_on: i.days.ago.to_date,
+         distance: (i + 1) * 1000,
+         duration: 30
+       )
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:52:in `block (4 levels) in <top (required)>'
+     # ./spec/services/stats_service_spec.rb:51:in `times'
+     # ./spec/services/stats_service_spec.rb:51:in `block (3 levels) in <top (required)>'
+
+  8) StatsService 時系列データ 月別距離データを正しく取得できる
+     Failure/Error:
+       create(:walk,
+         user: user,
+         walked_on: i.days.ago.to_date,
+         distance: (i + 1) * 1000,
+         duration: 30
+       )
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:52:in `block (4 levels) in <top (required)>'
+     # ./spec/services/stats_service_spec.rb:51:in `times'
+     # ./spec/services/stats_service_spec.rb:51:in `block (3 levels) in <top (required)>'
+
+  9) StatsService 曜日別分析 曜日別平均距離を正しく計算できる
+     Failure/Error: create(:walk, user: user, walked_on: monday, distance: 2000)
+
+     ActiveRecord::RecordInvalid:
+       バリデーションに失敗しました: 距離は50以下の値にしてください
+     # ./spec/services/stats_service_spec.rb:94:in `block (3 levels) in <top (required)>'
+
+  10) StatsService パフォーマンス分析 平均ペースを正しく計算できる
+      Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分
+
+      ActiveRecord::RecordInvalid:
+        バリデーションに失敗しました: 距離は50以下の値にしてください
+      # ./spec/services/stats_service_spec.rb:134:in `block (3 levels) in <top (required)>'
+
+  11) StatsService パフォーマンス分析 ペース推移データを取得できる
+      Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分
+
+      ActiveRecord::RecordInvalid:
+        バリデーションに失敗しました: 距離は50以下の値にしてください
+      # ./spec/services/stats_service_spec.rb:134:in `block (3 levels) in <top (required)>'
+
+  12) StatsService パフォーマンス分析 カロリー推移データを取得できる
+      Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分
+
+      ActiveRecord::RecordInvalid:
+        バリデーションに失敗しました: 距離は50以下の値にしてください
+      # ./spec/services/stats_service_spec.rb:134:in `block (3 levels) in <top (required)>'
+
+Top 10 slowest examples (0.35031 seconds, 84.1% of total time):
+  StatsService 基本統計 累計距離を正しく計算できる
+    0.20491 seconds ./spec/services/stats_service_spec.rb:15
+  StatsService RPG要素 #achievements 条件を満たした称号が獲得済み(obtained: true)になる
+    0.04785 seconds ./spec/services/stats_service_spec.rb:193
+  StatsService 時間帯別分析 時間帯別の散歩回数を正しく集計できる
+    0.02005 seconds ./spec/services/stats_service_spec.rb:120
+  StatsService RPG要素 #level 累計距離に応じてレベルが上昇する
+    0.0162 seconds ./spec/services/stats_service_spec.rb:165
+  StatsService RPG要素 #achievements 条件を満たしていない称号は未獲得(obtained: false)になる
+    0.01502 seconds ./spec/services/stats_service_spec.rb:221
+  StatsService RPG要素 #rank_name レベルに応じたランク名を返す
+    0.01158 seconds ./spec/services/stats_service_spec.rb:181
+  StatsService エッジケース 記録が0件の場合、エラーにならない
+    0.0092 seconds ./spec/services/stats_service_spec.rb:231
+  StatsService パフォーマンス分析 カロリー推移データを取得できる
+    0.00869 seconds ./spec/services/stats_service_spec.rb:153
+  StatsService 基本統計 平均距離を正しく計算できる
+    0.00857 seconds ./spec/services/stats_service_spec.rb:23
+  StatsService パフォーマンス分析 平均ペースを正しく計算できる
+    0.00826 seconds ./spec/services/stats_service_spec.rb:138
+
+Finished in 0.41655 seconds (files took 0.94174 seconds to load)
+18 examples, 12 failures
+
+Failed examples:
+
+rspec ./spec/services/stats_service_spec.rb:15 # StatsService 基本統計 累計距離を正しく計算できる
+rspec ./spec/services/stats_service_spec.rb:19 # StatsService 基本統計 累計日数を正しく計算できる
+rspec ./spec/services/stats_service_spec.rb:23 # StatsService 基本統計 平均距離を正しく計算できる
+rspec ./spec/services/stats_service_spec.rb:28 # StatsService 基本統計 最長記録距離を正しく取得できる
+rspec ./spec/services/stats_service_spec.rb:42 # StatsService 今月の統計 今月の距離を正しく計算できる
+rspec ./spec/services/stats_service_spec.rb:61 # StatsService 時系列データ 日別距離データを正しく取得できる
+rspec ./spec/services/stats_service_spec.rb:70 # StatsService 時系列データ 週別距離データを正しく取得できる
+rspec ./spec/services/stats_service_spec.rb:79 # StatsService 時系列データ 月別距離データを正しく取得できる
+rspec ./spec/services/stats_service_spec.rb:98 # StatsService 曜日別分析 曜日別平均距離を正しく計算できる
+rspec ./spec/services/stats_service_spec.rb:138 # StatsService パフォーマンス分析 平均ペースを正しく計算できる
+rspec ./spec/services/stats_service_spec.rb:144 # StatsService パフォーマンス分析 ペース推移データを取得できる
+rspec ./spec/services/stats_service_spec.rb:153 # StatsService パフォーマンス分析 カロリー推移データを取得できる
+

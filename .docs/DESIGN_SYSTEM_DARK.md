@@ -18,83 +18,223 @@
    - 例: 背景色を変える場合は、既存の `bg-white` を書き換えるのではなく、`bg-white dark:bg-slate-900` のように **`dark:` クラスを追加** してください。
 
 3. **ロジックと構造の保全:**
-
    - JavaScript / PHP / Ruby などのロジックコードは一切変更しないでください。
    - `id` 属性、`data-` 属性は絶対に変更・削除しないでください。
    - レイアウト構造（HTML のネスト）は、ダークモード対応のために必須である場合（例: 背景レイヤーの追加）を除き、極力維持してください。
 
-4. **オーバーライドの徹底:**
-   - ライトモードのスタイルがダークモードに干渉しないよう、必要に応じて `dark:` クラスでプロパティを上書き（リセット）してください。
-   - 例: ライトモードに強い影がある場合、ダークモードでは `dark:shadow-none` や `dark:shadow-[専用の色]` を指定して調整してください。
-   - **CSS クラス定義を使用する場合:** `.crystal-card` などのライトモード用クラスが適用されている要素には、`:is(.dark .crystal-card)` などでスタイルをリセットする CSS が定義されているか確認し、必要であれば `dark:` クラスで上書きしてください。
+---
+
+# Design System: Holographic Neon Noir / God Mode Glass
+
+## 🌌 Core Concept: "Living Interface"
+
+ただのダークモードではない。**「生きているかのように呼吸し、発光するインターフェース」**を目指す。
+LP（ランディングページ）のクオリティを絶対基準とし、全てのページでその没入感を再現する。
 
 ---
 
-# Design System: Holographic Neon Noir / God Mode Glass (Dark Mode)
+## 🎨 Foundations (基本設定)
 
-## 🎨 デザインコンセプト
+### 1. Deep Void (深淵なる背景)
 
-**「呼吸する光、分厚いガラスの質感、二重のリムライト」**
+画面全体の背景は、単なる黒ではなく、**「宇宙のような深みのあるネイビーブラック」**を使用する。
 
-- **テーマ:** 深淵な夜、呼吸するガラス、ホログラフィック・プリズム。
-- **雰囲気:** 圧倒的な没入感、高級感、静謐な生命感（Breathing Life）。
-- **キーワード:** Deep Immersion, Breathing Glow, Double Rim Light, Acrylic Depth.
+- **Base:** `dark:bg-[#020617]` (Slate-950 よりさらに深い黒)
+- **Gradient:** `dark:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] dark:from-slate-900 dark:via-[#020617] dark:to-[#020617]`
 
-## 🛠️ スタイリングルール (Tailwind CSS)
+### 2. Neon Accent (発光する魂)
 
-### 1. カラーパレット (Color Palette)
+各機能のテーマカラーは、単なる色ではなく**「光源」**として扱う。
 
-- **背景 (Base):**
-  - ページ背景: 原則として指定しない（透明）。`application.html.erb` の共通グラデーション（Deep Midnight Gradient）を継承し、サイト全体の統一感を出す。
-  - カード背景: `dark:bg-slate-950/60` (共通背景が透ける半透明の黒)。これにより、背景のグラデーションや装飾（オーブ）と調和させ、ガラスの質感を高める。
-- **アクセント (Accent):**
-  - プライマリ: `Purple-500` (#a855f7) 〜 `Blue-500` (#3b82f6)。
-  - ハイライト: `White/50` (鋭い光の反射)。
-  - 照り返し: 各要素のテーマカラー（Cyan, Pink, Purple）を底面に配置。
-- **テキスト (Text):**
-  - 見出し: `dark:text-transparent bg-clip-text` + `dark:drop-shadow` (発光するグラデーション文字)。
-  - 本文: `dark:text-purple-100` (発光感を損なわない薄い紫)。
+- **Blue (Weather/Distance):** `cyan-400` to `blue-500`
+- **Green (Health/Days):** `emerald-400` to `teal-500`
+- **Purple (Stats/Memo):** `fuchsia-400` to `violet-600`
+- **Gold (Rank/Achievement):** `amber-300` to `orange-500`
+- **Pink (Record/Action):** `pink-400` to `rose-600`
 
-### 2. コア・テクニック (Core Techniques) - **ここが重要**
+### 3. Jewel Icons (宝石のようなアイコン)
 
-以下の 3 つの技術を組み合わせて「神レベル」の質感を表現する。
+アイコンは単色ではなく、グラデーションと強いドロップシャドウで「自ら発光する宝石」のように見せる。
+**重要:** CSS の優先順位で色が上書きされないよう、`!text-transparent` と `!bg-clip-text` を使用すること。絵文字（🍎, 🏃）は禁止。
 
-#### A. ダブル・リムライト (Double Rim Light)
-
-- 1 本の枠線だけでなく、`box-shadow` を使って「内側にもう 1 本」極細の光のラインを作る。
-- これにより、分厚いガラスの「面取り」を表現する。
-- コード例: `shadow-[..., inset_0_0_0_1px_rgba(255,255,255,0.15), inset_0_1px_0_rgba(255,255,255,0.3)]`
-
-#### B. ブリージング・グロウ (Breathing Glow)
-
-- `before` 擬似要素で光沢レイヤーを作り、`animate-pulse` を適用する。
-- 光沢がゆっくりと明滅し、静止画ではなく「生きているアーティファクト」にする。
-- コード例: `before:absolute ... before:bg-gradient-to-b before:from-white/15 ... before:animate-pulse`
-
-#### C. アクリル・デプス (Acrylic Depth)
-
-- カードの底面に、テーマカラーの「照り返し光」をインセットシャドウで入れる。
-- 上端は `border-t-white/40` で鋭く光らせる。
-- コード例: `shadow-[..., inset_0_-20px_30px_-10px_rgba(THEME_COLOR, 0.3)]`
-
-### 3. UI 要素の振る舞い
-
-- **ボタン & カード:**
-  - `relative overflow-hidden` を必須とする（光沢レイヤーのため）。
-  - ホバー時は、影（Glow）を拡散させ、内側の照り返しを強くする。
-- **アイコン & テキスト:**
-  - `drop-shadow` を多用し、内側から強く発光しているように見せる（Core Luminescence）。
-
----
-
-## 📝 実装時のプロンプト例
-
-AI にデザインを依頼する際は、以下の指示を含めてください。
-
-> 「UI デザインは『Holographic Neon Noir (God Mode)』テーマを採用してください。
-> 以下のデザインルール（Tailwind CSS）を厳守し、既存の HTML 構造を維持したまま `dark:` クラスを追加・修正してください。
+```html
+<span
+  class="material-symbols-outlined text-3xl
+             text-blue-500 /* Light Mode */
+             dark:!text-transparent dark:!bg-clip-text
+             dark:bg-gradient-to-br dark:from-cyan-300 dark:to-blue-300
+             dark:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]"
 >
-> 1. **呼吸する光沢:** `animate-pulse` を使用して静謐な生命感を出す。
-> 2. **二重のリムライト:** `inset shadow` を使用して分厚いガラスの面取りを表現する。
-> 3. **アクリルデプス:** 底面からの照り返し光を表現する。
-> 4. **発光:** テキストやアイコンは内側から発光させる。」
+  distance
+</span>
+```
+
+### 4. Text Gradients (テキストグラデーション)
+
+**注意:** グラデーションは親要素の座標系で計算されるため、`inline-block` を使用しないとページ全体にかかってしまう。
+
+```html
+<!-- ✅ 正しい：テキスト内でグラデーション -->
+<p
+  class="inline-block text-4xl bg-clip-text text-transparent bg-gradient-to-r
+           dark:from-cyan-300 dark:via-blue-300 dark:to-cyan-500"
+>
+  35.26
+</p>
+```
+
+---
+
+## ✨ Core Visual Effects (実装ルール)
+
+### 1. God Mode Glass (神のガラス)
+
+カードの背景は「塗りつぶし」ではなく、**「向こう側が透ける磨りガラス」**でなければならない。
+
+- **Surface:** `dark:bg-slate-900/40` (透明度 40%が黄金比)
+- **Blur:** `dark:backdrop-blur-xl` (強力なぼかしで奥行きを作る)
+- **Border:** `dark:border-white/10` (極めて薄いエッジ)
+
+### 2. Glass Cover (Wet Texture / 濡れた質感)
+
+カードの上部 45% に「濡れたような光沢」を追加し、ゆっくりと明滅させる。
+
+**推奨設定:**
+
+- **Height:** `before:h-[45%]`
+- **Opacity:** `before:from-white/20` (20%が最適。15%は薄すぎ、25%は強すぎる)
+- **Animation:** `before:animate-pulse`
+
+```html
+<div class="relative overflow-hidden ...">
+  <!-- Glass Cover Layer -->
+  <div
+    class="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent pointer-events-none"
+  ></div>
+
+  <!-- Upper Gloss (Pseudo-element) -->
+  <div
+    class="before:absolute before:inset-x-0 before:top-0 before:h-[45%]
+              before:bg-gradient-to-b before:from-white/20 before:to-transparent
+              before:rounded-t-[2.5rem] before:pointer-events-none before:animate-pulse"
+  ></div>
+</div>
+```
+
+### 3. Double Rim Light (二重リムライト)
+
+カードの境界線は、内側から発光しているように見せる。ホバー時にはテーマカラーで強く発光させる。
+
+```html
+class="border dark:border-white/10 dark:border-t-white/40
+dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_30px_rgba(THEME_COLOR,0.15)]
+hover:dark:border-cyan-500/50
+hover:dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_0_60px_rgba(6,182,212,0.4)]"
+```
+
+### 4. Breathing Glow (呼吸する光)
+
+**最重要。** 重要なカード（Hero Card など）の背景には、**「呼吸する光のオーブ」**を配置する。
+
+```html
+<div
+  class="absolute -bottom-10 -right-10 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl animate-pulse-slow pointer-events-none"
+></div>
+```
+
+### 5. Futuristic Capsule (カプセル形状)
+
+カードの角丸は、**カードのサイズに応じて適切な値を選ぶ**。
+
+| カードの種類                               | 推奨 border-radius | Tailwind クラス      |
+| :----------------------------------------- | :----------------- | :------------------- |
+| **小さいカード**（統計カードなど）         | `60px`             | `!rounded-[3.75rem]` |
+| **大きいカード**（Hero/レベルバーなど）    | `80px`             | `!rounded-[5rem]`    |
+| **ランディングページ**（大きな機能カード） | `40px`             | `rounded-[2.5rem]`   |
+
+**注意点:**
+
+- 擬似要素 (`before:`) の角丸も親要素と一致させること。
+- 大きな角丸の場合、端に近い要素がはみ出さないよう、適度なマージン (`ml-2` 等) を設定すること。
+
+---
+
+## 🧩 Component Guidelines
+
+### Cards (General Structure)
+
+全てのカードコンポーネントは以下の構造を持つこと。
+
+1.  **Outer Glow:** 背面で呼吸する光（重要なカードのみ）。
+2.  **Glass Body:** 半透明の背景とぼかし。
+3.  **Neon Icon:** Material Symbols は `text-shadow` または `drop-shadow` で発光させる。
+
+**階層による明るさ調整:**
+
+- **主要カード:** `dark:from-cyan-600 dark:via-indigo-700 dark:to-purple-800` (明るめ)
+- **副次カード:** `dark:from-slate-900 dark:to-blue-950` (暗め)
+
+### Post Card (投稿カード)
+
+タイムラインの中心要素。
+
+- **Shape:** `rounded-[3.75rem]` (60px)
+- **Reaction Area:** `rounded-b-[3.75rem]` を適用し、カード本体と一体化させる。
+- **Glass Cover:** 全体に適用。
+
+### Modal (モーダル)
+
+浮遊感を強調する。
+
+- **Shape:** `rounded-[3.75rem]`
+- **Border:** `border-4` で太めの枠線。
+- **Shadow:** 強力なドロップシャドウ + インナーシャドウ。
+
+### Progress Bar (シマーエフェクト)
+
+プログレスバーに「光が走る」アニメーションを追加する場合のルール。
+
+**実装ルール:**
+
+1. シマーエフェクト用の `div` は、必ず**色付きバー（進捗バー）の内部**に配置する。
+2. `absolute inset-0` でバー全体を覆う。
+3. 背景色は単色ではなく、**透明〜白(30%)〜透明のグラデーション**を使用する。
+4. `animate-shimmer` と `-skew-x-12` を適用する。
+
+**正しいコード例:**
+
+```erb
+<!-- 背景バー -->
+<div class="h-3 rounded-full bg-gray-200 dark:bg-slate-800 overflow-hidden">
+  <!-- 色付きバー (進捗) -->
+  <div class="h-full bg-gradient-to-r from-blue-400 to-purple-500 relative overflow-hidden" style="width: 50%">
+    <!-- シマーエフェクト (色付きバーの内部に配置) -->
+    <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"></div>
+  </div>
+</div>
+```
+
+**禁止事項:**
+
+- ❌ シマーエフェクトを色付きバーの**外（背面や前面）**に配置しないこと。
+- ❌ `bg-white/40` のような単色半透明を使用しないこと。
+
+### Buttons & Interactions
+
+- **Hover:** `hover:scale-[1.01]` は地味すぎる。`hover:scale-105` (5%拡大) を使用する。
+- **Glow:** ホバー時はシャドウを拡大 (`0_30px` → `0_60px`) させる。
+
+### Scrollbars
+
+- **Track:** 透明または極薄い黒 (`bg-white/5`)
+- **Thumb:** 半透明の白またはテーマカラー (`bg-white/20 hover:bg-white/40`)
+- **Width:** 極細 (`w-1.5`)
+
+---
+
+## 🚫 Anti-Patterns (やってはいけないこと)
+
+- **Solid Backgrounds:** 不透明な背景色（`bg-gray-800`など）は使用禁止。必ず透けさせる。
+- **Flat Borders:** 単色のボーダー（`border-gray-700`）は禁止。光らせるか、透けさせる。
+- **Raw White Text:** 純粋な白文字（`text-white`）は避け、少し青みやグレーを含ませるか、グラデーションにする。
+- **Default Shadows:** デフォルトの影（`shadow-xl`）だけでは足りない。色付きの影（`shadow-cyan-500/20`）を重ねる。

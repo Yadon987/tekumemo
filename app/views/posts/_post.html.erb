@@ -6,11 +6,15 @@
 <% color_theme = post_color_theme(post) %>
 
 <div id="<%= dom_id post %>"
-     class="group relative mb-8 p-6 rounded-[2.5rem] transition-all duration-300 hover:-translate-y-2
-            <%= color_theme[:bg] %> border border-gray-200 dark:border-purple-500/30 shadow-lg dark:shadow-[0_0_20px_rgba(168,85,247,0.2)] backdrop-blur-md hover:shadow-xl">
+     class="group relative mb-8 p-6 rounded-[3.75rem] transition-all duration-300 hover:-translate-y-2
+            <%= color_theme[:bg] %> <%= color_theme[:shadow] %> bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none border-2 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 backdrop-blur-md hover:shadow-xl overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
+
+  <!-- Candy Gradient Orbs (Light Mode Only) -->
+  <div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br <%= color_theme[:orb_bg] %> rounded-full blur-2xl pointer-events-none dark:hidden"></div>
+  <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-tr <%= color_theme[:orb_bg] %> rounded-full blur-2xl pointer-events-none dark:hidden"></div>
 
   <!-- ダークモード用の装飾（Synthwave Sun / Grid） -->
-  <div class="absolute inset-0 rounded-[2.5rem] pointer-events-none overflow-hidden">
+  <div class="absolute inset-0 rounded-[3.75rem] pointer-events-none overflow-hidden">
     <!-- 上部の淡いグラデーション -->
     <div class="hidden dark:block absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/5 to-transparent"></div>
     <!-- 下部のグリッドライン（Synthwave風） -->
@@ -19,7 +23,7 @@
 
   <%# 自分の投稿の場合、詳細ページへのリンクを全体に配置 %>
   <% if post.user_id == current_user&.id %>
-    <%= link_to post_path(post), class: "absolute inset-0 z-0 rounded-[2.5rem] focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-purple-500/50", aria: { label: "詳細を見る" } do %>
+    <%= link_to post_path(post), class: "absolute inset-0 z-0 rounded-[3.75rem] focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-purple-500/50", aria: { label: "詳細を見る" } do %>
       <span class="sr-only">詳細を見る</span>
     <% end %>
   <% end %>
@@ -31,7 +35,7 @@
     <div class="flex justify-between items-start mb-4">
       <div class="flex items-center gap-4">
         <!-- アバター -->
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden border-4 border-white dark:border-white/10 transform group-hover:rotate-6 transition-transform duration-300 shadow-md dark:shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center overflow-hidden border-2 border-white/60 dark:border-white/10 transform group-hover:rotate-6 transition-transform duration-300 shadow-[5px_5px_10px_rgba(0,0,0,0.1),-5px_-5px_10px_rgba(255,255,255,0.8)] dark:shadow-[0_0_15px_rgba(255,255,255,0.2)] relative z-10">
           <% if post.user.avatar_url.present? && post.user.use_google_avatar %>
             <%= image_tag post.user.avatar_url, class: "w-full h-full object-cover", alt: post.user.name %>
           <% else %>
@@ -58,16 +62,8 @@
         <div class="absolute top-0 right-0">
           <%= link_to post_path(post),
               data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
-              class: "pointer-events-auto flex items-center justify-center w-12 h-12 rounded-full text-gray-400 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-95 group/btn border border-white/60 dark:border-white/10 dark:hover:border-red-500/50 dark:hover:shadow-[0_0_15px_rgba(248,113,113,0.6)]",
-              style: "background: var(--btn-bg, radial-gradient(circle at 30% 30%, #ffffff, #e2e8f0));
-                      box-shadow: var(--btn-shadow, 6px 6px 12px rgba(166,175,195,0.4), -6px -6px 12px rgba(255,255,255,0.9), inset 2px 2px 5px rgba(255,255,255,1), inset -2px -2px 5px rgba(166,175,195,0.2));",
+              class: "pointer-events-auto flex items-center justify-center w-12 h-12 rounded-full text-gray-400 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-95 group/btn border border-white/60 dark:border-white/10 dark:hover:border-red-500/50 dark:hover:shadow-[0_0_15px_rgba(248,113,113,0.6)] relative z-20 bg-gradient-to-br from-white to-slate-100 dark:from-white/5 dark:to-transparent shadow-[5px_5px_10px_rgba(166,175,195,0.4),-5px_-5px_10px_rgba(255,255,255,0.9),inset_2px_2px_5px_rgba(255,255,255,1),inset_-2px_-2px_5px_rgba(166,175,195,0.2)] dark:shadow-none",
               title: "投稿を削除" do %>
-            <style>
-              .dark .group\/btn {
-                background: rgba(255,255,255,0.05) !important;
-                box-shadow: none !important;
-              }
-            </style>
             <span class="material-symbols-outlined text-xl font-bold drop-shadow-sm group-hover/btn:text-red-500 transition-colors">delete</span>
           <% end %>
         </div>
@@ -80,13 +76,13 @@
         <!-- パターンA: 本文がある場合 -->
         <div class="flex flex-wrap gap-2 mb-3">
           <% if post.weather %>
-            <span class="inline-flex items-center justify-center h-10 gap-2 px-4 rounded-2xl bg-white/70 dark:bg-white/5 text-sky-600 dark:text-cyan-300 text-sm font-bold shadow-sm dark:shadow-[0_0_10px_rgba(34,211,238,0.2)] border border-white/50 dark:border-white/10 hover:scale-105 transition-transform cursor-default">
+            <span class="inline-flex items-center justify-center h-10 gap-2 px-4 rounded-full bg-white/70 dark:bg-white/5 text-sky-600 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-cyan-300 dark:to-blue-300 text-sm font-bold shadow-[inset_2px_2px_5px_rgba(255,255,255,0.8),inset_-2px_-2px_5px_rgba(0,0,0,0.05)] dark:shadow-[0_0_10px_rgba(34,211,238,0.2)] border border-white/50 dark:border-white/10 hover:scale-105 transition-transform cursor-default relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-full before:pointer-events-none">
               <span class="text-xl leading-none"><%= post.weather_emoji %></span>
               <span><%= post.weather_label %></span>
             </span>
           <% end %>
           <% if post.feeling %>
-            <span class="inline-flex items-center justify-center h-10 gap-2 px-4 rounded-2xl bg-white/70 dark:bg-white/5 <%= color_theme[:text] %> text-sm font-bold shadow-sm dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] border border-white/50 dark:border-white/10 hover:scale-105 transition-transform cursor-default">
+            <span class="inline-flex items-center justify-center h-10 gap-2 px-4 rounded-full bg-white/70 dark:bg-white/5 <%= color_theme[:text] %> text-sm font-bold shadow-[inset_2px_2px_5px_rgba(255,255,255,0.8),inset_-2px_-2px_5px_rgba(0,0,0,0.05)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] border border-white/50 dark:border-white/10 hover:scale-105 transition-transform cursor-default relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-full before:pointer-events-none">
               <span class="text-xl leading-none"><%= post.feeling_emoji %></span>
               <span><%= post.feeling_label %></span>
             </span>
@@ -94,7 +90,7 @@
         </div>
 
         <!-- 本文 -->
-        <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-200 leading-relaxed font-medium text-base p-5 rounded-3xl <%= color_theme[:inner_bg] %> shadow-inner dark:shadow-none border border-black/5 dark:border-white/5">
+        <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-200 leading-relaxed font-medium text-base p-5 rounded-3xl <%= color_theme[:inner_bg] %> shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none border border-black/5 dark:border-white/5 relative z-10">
           <%= simple_format(post.body) %>
         </div>
 
@@ -119,7 +115,7 @@
     </div>
 
     <!-- リアクションエリア -->
-    <div class="mt-0 pt-2 pb-1 bg-white/30 dark:bg-black/20 backdrop-blur-sm -mx-6 px-6 rounded-b-[2.5rem] pointer-events-auto">
+    <div class="mt-0 pt-2 pb-1 bg-white/30 dark:bg-black/20 backdrop-blur-sm -mx-6 px-6 rounded-b-[3.75rem] pointer-events-auto relative z-20">
       <%= render "posts/reactions", post: post %>
     </div>
   </div>

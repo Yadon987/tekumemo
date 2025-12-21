@@ -27,7 +27,7 @@
     </div>
     <div class="relative">
       <%= f.text_area :body, rows: 4,
-          class: "w-full rounded-3xl border-none bg-gray-100 dark:bg-[#2e1a47] text-gray-700 dark:text-purple-100 placeholder-gray-400 dark:placeholder-purple-400/50 focus:ring-2 focus:ring-blue-400/50 dark:focus:ring-purple-500/50 focus:bg-white dark:focus:bg-[#1a0b2e] p-5 shadow-inner dark:shadow-none dark:border dark:border-solid dark:border-purple-400/50 dark:focus:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all resize-none",
+          class: "w-full rounded-3xl border-2 border-transparent focus:border-blue-300/50 bg-white/50 dark:bg-[#2e1a47] text-gray-700 dark:text-purple-100 placeholder-gray-400 dark:placeholder-purple-400/50 focus:ring-0 focus:bg-white dark:focus:bg-[#1a0b2e] p-5 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none dark:border-solid dark:border-purple-400/50 dark:focus:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all resize-none backdrop-blur-sm",
           placeholder: "今日の散歩はどうでしたか？",
           "data-character-counter-target": "input",
           "data-action": "input->character-counter#update" %>
@@ -47,7 +47,7 @@
           <% temp_post = Post.new(weather: weather_key) %>
           <label class="cursor-pointer group relative">
             <%= f.radio_button :weather, weather_key, class: "peer sr-only", data: { radio_toggle_target: "input", action: "click->radio-toggle#toggle" } %>
-            <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-[#2e1a47] shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-blue-50 dark:peer-checked:bg-cyan-900/40 peer-checked:border-blue-200 dark:peer-checked:border-cyan-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+            <div class="flex flex-col items-center justify-center aspect-square rounded-[2rem] bg-[#fdfbf7] dark:bg-[#2e1a47] shadow-[5px_5px_10px_rgba(0,0,0,0.05),-5px_-5px_10px_rgba(255,255,255,0.8)] dark:shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-[8px_8px_15px_rgba(0,0,0,0.08),-8px_-8px_15px_rgba(255,255,255,0.9)] transition-all duration-200 peer-checked:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] peer-checked:bg-blue-50 dark:peer-checked:bg-cyan-900/40 peer-checked:border-blue-200/50 dark:peer-checked:border-cyan-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(34,211,238,0.3)]">
               <span class="text-2xl md:text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"><%= temp_post.weather_emoji %></span>
               <span class="text-[8px] md:text-[10px] font-bold text-gray-400 dark:text-gray-400 peer-checked:text-blue-600 dark:peer-checked:text-cyan-300"><%= temp_post.weather_label %></span>
             </div>
@@ -68,7 +68,7 @@
           <% temp_post = Post.new(feeling: feeling_key) %>
           <label class="cursor-pointer group relative">
             <%= f.radio_button :feeling, feeling_key, class: "peer sr-only", data: { radio_toggle_target: "input", action: "click->radio-toggle#toggle" } %>
-            <div class="flex flex-col items-center justify-center aspect-square rounded-2xl bg-white dark:bg-[#2e1a47] shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-md transition-all duration-200 peer-checked:shadow-inner peer-checked:bg-green-50 dark:peer-checked:bg-fuchsia-900/40 peer-checked:border-green-200 dark:peer-checked:border-fuchsia-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(232,121,249,0.3)]">
+            <div class="flex flex-col items-center justify-center aspect-square rounded-[2rem] bg-[#fdfbf7] dark:bg-[#2e1a47] shadow-[5px_5px_10px_rgba(0,0,0,0.05),-5px_-5px_10px_rgba(255,255,255,0.8)] dark:shadow-sm border-2 border-transparent hover:-translate-y-1 hover:shadow-[8px_8px_15px_rgba(0,0,0,0.08),-8px_-8px_15px_rgba(255,255,255,0.9)] transition-all duration-200 peer-checked:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] peer-checked:bg-green-50 dark:peer-checked:bg-fuchsia-900/40 peer-checked:border-green-200/50 dark:peer-checked:border-fuchsia-400/50 peer-checked:translate-y-0 dark:peer-checked:shadow-[0_0_10px_rgba(232,121,249,0.3)]">
               <span class="text-2xl md:text-3xl mb-1 group-hover:scale-110 transition-transform filter drop-shadow-sm dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]"><%= temp_post.feeling_emoji %></span>
               <span class="text-[8px] md:text-[10px] font-bold text-gray-400 dark:text-gray-400 peer-checked:text-green-600 dark:peer-checked:text-fuchsia-300"><%= temp_post.feeling_label %></span>
             </div>
@@ -85,7 +85,7 @@
   </div>
 
   <div class="pt-6 mt-auto flex-shrink-0">
-    <%= f.button type: :submit, class: "w-full bg-gradient-to-r from-blue-500 to-cyan-400 dark:from-purple-600 dark:to-pink-600 hover:from-blue-600 hover:to-cyan-500 dark:hover:from-purple-500 dark:hover:to-pink-500 text-white font-bold text-lg py-4 px-6 rounded-full shadow-lg shadow-blue-500/30 dark:shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-blue-500/50 dark:hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3 group" do %>
+    <%= f.button type: :submit, class: "w-full rounded-full border-2 border-white/30 bg-gradient-to-r from-blue-500 to-cyan-400 dark:from-indigo-600 dark:to-violet-600 hover:from-blue-600 hover:to-cyan-500 dark:hover:from-indigo-500 dark:hover:to-violet-500 text-white font-bold text-lg py-4 px-6 shadow-[0_10px_25px_rgba(59,130,246,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[0_0_25px_rgba(124,58,237,0.4),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-2px_5px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_35px_rgba(59,130,246,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:hover:shadow-[0_0_35px_rgba(124,58,237,0.6),inset_0_1px_0_rgba(255,255,255,0.4)] transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3 group" do %>
       <span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">send</span>
       投稿する
     <% end %>

@@ -86,8 +86,8 @@ RSpec.describe "Home", type: :system, js: true do
 
         # 距離が0mであることを確認（data-counter-target-value="0"）
         # カウンターアニメーションのため、テキストは "0"
-        within first(".bg-gradient-to-br.from-cyan-400") do
-          expect(page).to have_content "0"
+        within find(".bg-gradient-to-br.from-sky-400", text: "今日の散歩") do
+          expect(page).to have_selector("[data-counter-target-value='0']")
           expect(page).to have_content "m"
         end
       end

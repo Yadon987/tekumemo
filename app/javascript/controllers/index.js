@@ -58,6 +58,9 @@ application.register("radio-toggle", RadioToggleController)
 import ReactionController from "./reaction_controller"
 application.register("reaction", ReactionController)
 
+import ScrollDragController from "./scroll_drag_controller"
+application.register("scroll-drag", ScrollDragController)
+
 import ScrollHideController from "./scroll_hide_controller"
 application.register("scroll-hide", ScrollHideController)
 

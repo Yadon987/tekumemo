@@ -221,7 +221,7 @@ class StatsService
   def average_pace
     # duration(分) / distance(km) = 分/km
     total_time = user.walks.sum(:duration).to_f  # 分
-    total_dist_km = user.walks.sum(:distance).to_f / 1000.0 # kmに変換
+    total_dist_km = user.walks.sum(:distance).to_f # km
 
     return 0 if total_dist_km.zero?
 
@@ -393,21 +393,21 @@ class StatsService
         name: "三日坊主卒業",
         description: "3日連続で歩いた",
         icon: "looks_3",
-        condition: -> { current_streak >= 3 }
+        condition: -> { user.max_consecutive_walk_days >= 3 }
       },
       {
         id: :seven_day_streak,
         name: "一週間の奇跡",
         description: "7日連続で歩いた",
         icon: "looks_one",
-        condition: -> { current_streak >= 7 }
+        condition: -> { user.max_consecutive_walk_days >= 7 }
       },
       {
         id: :thirty_day_streak,
         name: "継続の達人",
         description: "30日連続で歩いた",
         icon: "calendar_month",
-        condition: -> { current_streak >= 30 }
+        condition: -> { user.max_consecutive_walk_days >= 30 }
       },
 
       # --- 天候・環境 ---

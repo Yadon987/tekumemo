@@ -26,13 +26,13 @@
 
         <!-- 距離範囲 -->
         <div class="w-32">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最小距離(m)</label>
-          <%= f.number_field :min_distance, value: params[:min_distance], placeholder: "1000", class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最小距離(km)</label>
+          <%= f.number_field :min_distance, value: params[:min_distance], placeholder: "1", class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
         </div>
 
         <div class="w-32">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最大距離(m)</label>
-          <%= f.number_field :max_distance, value: params[:max_distance], placeholder: "50000", class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最大距離(km)</label>
+          <%= f.number_field :max_distance, value: params[:max_distance], placeholder: "50", class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
         </div>
 
         <!-- 日付範囲 -->
@@ -95,13 +95,13 @@
               <%= l walk.walked_on, format: :long %>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm">
-              <% if walk.distance > 50000 %>
+              <% if walk.distance > 50 %>
                 <span class="text-red-600 dark:text-red-400 font-bold">
-                  <%= number_with_delimiter(walk.distance) %>m
+                  <%= number_with_delimiter(walk.distance) %>km
                 </span>
               <% else %>
                 <span class="text-gray-900 dark:text-white">
-                  <%= number_with_delimiter(walk.distance) %>m
+                  <%= number_with_delimiter(walk.distance) %>km
                 </span>
               <% end %>
             </td>

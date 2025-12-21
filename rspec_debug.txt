@@ -1,0 +1,40 @@
+........F
+
+Failures:
+
+  1) UI Components Crystal Claymorphism デザイン適用確認 設定画面のカードにデザインクラスが適用されていること
+     Failure/Error: expect(page).to have_css('[class*="backdrop-blur-2xl"]')
+       expected to find css "[class*=\"backdrop-blur-2xl\"]" but there were no matches
+
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_ui_components_crystal_claymorphism_-_419.png
+
+
+     # ./spec/system/ui_components_spec.rb:82:in `block (3 levels) in <top (required)>'
+
+Top 9 slowest examples (17.29 seconds, 100.0% of total time):
+  UI Components Crystal Claymorphism デザイン適用確認 設定画面のカードにデザインクラスが適用されていること
+    11.54 seconds ./spec/system/ui_components_spec.rb:77
+  UI Components ドラッグスクロール (統計ページ) ドラッグスクロールコントローラーが適用されていること
+    1.49 seconds ./spec/system/ui_components_spec.rb:47
+  UI Components ドラッグスクロール (統計ページ) 称号リストが表示されていること
+    1.29 seconds ./spec/system/ui_components_spec.rb:58
+  UI Components 共通背景アニメーション ホーム画面に背景アニメーション要素が表示されること
+    1.19 seconds ./spec/system/ui_components_spec.rb:11
+  UI Components Crystal Claymorphism デザイン適用確認 統計ページのカードにデザインクラスが適用されていること
+    0.68423 seconds ./spec/system/ui_components_spec.rb:72
+  UI Components 物理演算カルーセル (ホーム画面) カルーセルコントローラーが適用されていること
+    0.34581 seconds ./spec/system/ui_components_spec.rb:30
+  UI Components Crystal Claymorphism デザイン適用確認 ホーム画面のカードにデザインクラスが適用されていること
+    0.28463 seconds ./spec/system/ui_components_spec.rb:66
+  UI Components 物理演算カルーセル (ホーム画面) スライド要素が表示されていること
+    0.26495 seconds ./spec/system/ui_components_spec.rb:34
+  UI Components 共通背景アニメーション ログイン画面に背景アニメーション要素が表示されること
+    0.21064 seconds ./spec/system/ui_components_spec.rb:18
+
+Finished in 17.29 seconds (files took 0.9294 seconds to load)
+9 examples, 1 failure
+
+Failed examples:
+
+rspec ./spec/system/ui_components_spec.rb:77 # UI Components Crystal Claymorphism デザイン適用確認 設定画面のカードにデザインクラスが適用されていること
+
