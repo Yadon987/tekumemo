@@ -9,15 +9,23 @@
     <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">プロフィールの確認と変更ができます</p>
   </div>
 
-  <div class="bg-white/80 dark:bg-slate-950/50 backdrop-blur-xl rounded-3xl shadow-xl p-6 sm:p-8 border border-white/20 dark:border-white/10 relative overflow-hidden transition-all duration-300">
-    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"></div>
+  <div class="relative bg-[#fdfbf7] dark:bg-slate-900/40 backdrop-blur-2xl dark:backdrop-blur-xl border-2 border-white/60 dark:border-white/10 dark:border-t-white/40 shadow-[20px_20px_60px_rgba(168,85,247,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(168,85,247,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(168,85,247,0.3)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_50px_rgba(168,85,247,0.2)] rounded-[2.5rem] p-6 sm:p-10 overflow-hidden transition-all duration-300 group">
 
+    <!-- Candy Texture (Light Mode Only) -->
+    <div class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent pointer-events-none dark:hidden"></div>
+    <div class="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 dark:from-cyan-500/20 dark:to-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-blue-400/20 to-cyan-400/20 dark:from-cyan-500/20 dark:to-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Top Highlight -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent opacity-50"></div>
+
+    <div class="relative z-10">
     <div class="flex flex-col items-center mb-8 mt-2">
        <%= user_avatar(resource, classes: "w-24 h-24 text-3xl mb-4 shadow-xl ring-4 ring-gray-200 dark:ring-gray-700") %>
        <div class="text-center">
-         <p class="text-gray-500 dark:text-slate-400 text-xs font-mono bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded-md inline-block">
-           <%= resource.email %>
-         </p>
+          <p class="text-slate-700 dark:text-slate-300 text-sm font-mono bg-gray-100/90 dark:bg-slate-800/40 dark:backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/60 dark:border-white/10 inline-block shadow-[inset_3px_3px_8px_rgba(0,0,0,0.12),inset_-3px_-3px_8px_rgba(255,255,255,0.9)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] backdrop-blur-sm">
+            <%= resource.email %>
+          </p>
          <% if resource.google_uid.present? %>
            <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">※アイコンはGoogleアカウントと連携しています</p>
          <% end %>
@@ -170,8 +178,8 @@
 
         <%# ブラウザ通知許可ボタン %>
         <div class="mb-6" data-controller="push-notification" data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
-          <button type="button" data-action="click->push-notification#subscribe" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center space-x-2 border border-slate-200 dark:border-slate-700">
-            <span class="material-symbols-outlined">notifications_active</span>
+          <button type="button" data-action="click->push-notification#subscribe" class="w-full h-14 bg-gradient-to-r from-purple-500 to-pink-500 dark:from-fuchsia-400 dark:to-violet-500 text-white font-bold rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_10px_25px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_15px_35px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_0_20px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group/btn relative overflow-hidden">
+            <span class="material-symbols-outlined text-xl group-hover/btn:scale-110 transition-transform">notifications_active</span>
             <span>この端末で通知を受け取る</span>
           </button>
           <p class="text-xs text-center text-gray-400 dark:text-slate-500 mt-2">
@@ -180,7 +188,7 @@
         </div>
 
         <%# 散歩時間リマインド %>
-        <div class="notification-group mb-6 p-4 bg-purple-50/50 dark:bg-purple-900/10 rounded-xl border border-purple-100 dark:border-purple-500/20">
+        <div class="notification-group mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-purple-100 dark:border-purple-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(168,85,247,0.15)]">
           <div class="flex items-start justify-between mb-3">
             <div class="flex-1">
               <label class="flex items-center cursor-pointer">
@@ -207,7 +215,7 @@
         </div>
 
         <%# 非アクティブリマインド %>
-        <div class="notification-group mb-6 p-4 bg-orange-50/50 dark:bg-orange-900/10 rounded-xl border border-orange-100 dark:border-orange-500/20">
+        <div class="notification-group mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-orange-100 dark:border-orange-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(251,146,60,0.15)]">
           <div class="flex items-start justify-between mb-3">
             <div class="flex-1">
               <label class="flex items-center cursor-pointer">
@@ -236,7 +244,7 @@
         </div>
 
         <%# リアクションまとめ通知 %>
-        <div class="mb-4 p-4 bg-pink-50/50 dark:bg-pink-900/10 rounded-xl border border-pink-100 dark:border-pink-500/20">
+        <div class="mb-4 p-4 bg-pink-50 dark:bg-pink-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-pink-100 dark:border-pink-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(236,72,153,0.15)]">
           <label class="flex items-center cursor-pointer">
             <%= f.check_box :reaction_summary_enabled, class: "sr-only peer" %>
             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600 relative"></div>
@@ -302,8 +310,8 @@
       </div>
 
       <div class="pt-2">
-        <%= f.button class: "w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-cyan-500/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2" do %>
-          <span class="material-symbols-outlined">save</span>
+        <%= f.button class: "w-full h-14 bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-400 dark:to-blue-500 text-white font-bold rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_10px_25px_rgba(59,130,246,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_15px_35px_rgba(59,130,246,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_0_20px_rgba(34,211,238,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_40px_rgba(34,211,238,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group/btn relative overflow-hidden" do %>
+          <span class="material-symbols-outlined text-xl group-hover/btn:scale-110 transition-transform">save</span>
           <span>変更を保存する</span>
         <% end %>
       </div>
@@ -312,7 +320,7 @@
     <!-- アカウント削除セクション（メインカード内に統合） -->
     <div class="mt-10 pt-8 border-t border-gray-100 dark:border-white/10">
       <h3 class="text-xs font-bold text-gray-400 dark:text-slate-500 mb-4 px-1 uppercase tracking-wider">アカウント管理</h3>
-      <div class="bg-red-50/50 dark:bg-red-900/10 backdrop-blur-sm rounded-2xl p-6 border border-red-100 dark:border-red-500/20">
+      <div class="bg-red-50 dark:bg-red-900/20 dark:backdrop-blur-sm backdrop-blur-sm rounded-3xl p-6 border-2 border-red-100 dark:border-red-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(239,68,68,0.15)]">
         <div class="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h4 class="text-red-800 dark:text-red-300 font-bold flex items-center">
@@ -333,7 +341,8 @@
         </div>
       </div>
     </div>
-
+    </div>
+  </div>
   <div class="mt-8 pt-6 border-t border-gray-100 dark:border-white/10 flex flex-col items-center space-y-4">
     <%= link_to root_path, class: "flex items-center text-gray-500 dark:text-slate-400 text-sm hover:text-gray-900 dark:hover:text-slate-200 transition-colors" do %>
       <span class="material-symbols-outlined text-lg mr-1">home</span>
