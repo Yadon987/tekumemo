@@ -74,6 +74,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
     let(:user) { FactoryBot.create(:user, name: "既存ユーザー", email: "user@example.com", password: "password123", target_distance: 5000) }
 
     before do
+      OmniAuth.config.test_mode = true
       login_as(user, scope: :user)
       visit edit_user_registration_path
     end
@@ -163,11 +164,10 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
         credentials: { token: "token", expires_at: Time.now.to_i + 3600 }
       })
 
-      # 連携ボタンをクリック
+      # 連携ボタンをクリック（モーダルが開く）
       click_button "連携する"
 
-      # モーダルが表示されるのを確認し、連携に進む
-      expect(page).to have_content("連携前の確認")
+      # モーダル内の連携リンクをクリック
       click_link "連携に進む"
 
       expect(page).to have_content("Googleアカウントと連携しました")

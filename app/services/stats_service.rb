@@ -221,7 +221,7 @@ class StatsService
   def average_pace
     # duration(分) / distance(km) = 分/km
     total_time = user.walks.sum(:duration).to_f  # 分
-    total_dist_km = user.walks.sum(:distance).to_f / 1000.0 # kmに変換
+    total_dist_km = user.walks.sum(:distance).to_f # km
 
     return 0 if total_dist_km.zero?
 

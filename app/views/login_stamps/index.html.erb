@@ -15,36 +15,77 @@
   <!-- 統計情報 -->
   <div class="grid grid-cols-2 gap-3 sm:gap-4">
     <!-- 今月の散歩日数 -->
-    <div class="bg-gradient-to-br from-cyan-400 to-blue-500 dark:from-slate-900/90 dark:to-cyan-950/90 backdrop-blur-xl p-3 sm:p-5 rounded-2xl shadow-lg dark:shadow-[0_0_15px_rgba(6,182,212,0.2)] text-white relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300 border border-transparent dark:border-cyan-500/30 flex flex-col justify-between h-full">
-      <div class="absolute top-0 right-0 -mr-4 -mt-4 w-20 h-20 bg-white/20 dark:bg-cyan-500/10 rounded-full blur-xl pointer-events-none"></div>
-      <div class="flex items-center space-x-1 sm:space-x-2 mb-1 sm:mb-2 relative z-10">
-        <span class="material-symbols-outlined text-white dark:text-cyan-400 drop-shadow-md text-xl sm:text-2xl">event_available</span>
-        <h3 class="font-bold text-shadow dark:text-cyan-100 text-xs sm:text-base whitespace-nowrap">てくてく日数</h3>
+    <!-- 今月の散歩日数 -->
+    <div class="relative overflow-hidden rounded-[2.5rem] p-5 flex flex-col justify-between h-full transition-transform duration-300 hover:scale-[1.02] group
+                bg-[#fdfbf7] dark:bg-slate-900/90
+                shadow-[20px_20px_60px_rgba(6,182,212,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(6,182,212,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(6,182,212,0.3)]
+                dark:shadow-[0_0_15px_rgba(6,182,212,0.2)] dark:border dark:border-cyan-500/30">
+
+      <!-- Candy Texture (Light Mode) -->
+      <div class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent pointer-events-none dark:hidden"></div>
+      <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-cyan-400/20 to-blue-400/20 rounded-full blur-2xl pointer-events-none dark:hidden"></div>
+
+      <!-- Dark Mode Decoration -->
+      <div class="absolute top-0 right-0 -mr-4 -mt-4 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl pointer-events-none hidden dark:block"></div>
+
+      <!-- Month Badge (Responsive Position) -->
+      <div class="absolute top-3 right-3 z-20">
+        <span class="text-[10px] sm:text-xs font-bold text-cyan-600 dark:text-cyan-300 bg-white/60 dark:bg-cyan-900/40 px-2 py-0.5 rounded-full backdrop-blur-sm border border-cyan-100 dark:border-cyan-500/30 shadow-sm">
+          <%= @start_date.month %>月
+        </span>
       </div>
-      <p class="text-2xl sm:text-3xl font-bold text-shadow dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] relative z-10"><%= @monthly_walk_count %><span class="text-xs sm:text-base ml-1 font-normal dark:text-cyan-400">日</span></p>
+
+      <div class="flex items-center space-x-1 sm:space-x-2 mb-1 sm:mb-2 relative z-10 mt-1">
+        <span class="material-symbols-outlined text-cyan-500 dark:text-cyan-400 drop-shadow-sm text-xl sm:text-2xl">event_available</span>
+        <h3 class="font-bold text-slate-700 dark:text-cyan-100 text-xs sm:text-base whitespace-nowrap">てくてく日数</h3>
+      </div>
+      <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 dark:text-cyan-300 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)] relative z-10">
+        <%= @monthly_walk_count %><span class="text-base ml-1 font-bold text-slate-400 dark:text-cyan-400">日</span>
+      </p>
     </div>
 
     <!-- 連続日数 -->
-    <div class="bg-gradient-to-br from-orange-400 to-pink-500 dark:from-slate-900/90 dark:to-fuchsia-950/90 backdrop-blur-xl p-3 sm:p-5 rounded-2xl shadow-lg dark:shadow-[0_0_15px_rgba(192,38,211,0.2)] text-white relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300 border border-transparent dark:border-fuchsia-500/30 flex flex-col justify-between h-full">
-      <div class="absolute top-0 right-0 -mr-4 -mt-4 w-20 h-20 bg-white/20 dark:bg-fuchsia-500/10 rounded-full blur-xl pointer-events-none"></div>
-      <div class="flex items-center space-x-1 sm:space-x-2 mb-1 sm:mb-2 relative z-10">
-        <span class="material-symbols-outlined text-white dark:text-fuchsia-400 drop-shadow-md text-xl sm:text-2xl">local_fire_department</span>
-        <h3 class="font-bold text-shadow dark:text-fuchsia-100 text-xs sm:text-base whitespace-nowrap">連続</h3>
+    <!-- 連続日数 -->
+    <div class="relative overflow-hidden rounded-[2.5rem] p-5 flex flex-col justify-between h-full transition-transform duration-300 hover:scale-[1.02] group
+                bg-[#fdfbf7] dark:bg-slate-900/90
+                shadow-[20px_20px_60px_rgba(244,63,94,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(244,63,94,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(244,63,94,0.3)]
+                dark:shadow-[0_0_15px_rgba(192,38,211,0.2)] dark:border dark:border-fuchsia-500/30">
+
+      <!-- Candy Texture (Light Mode) -->
+      <div class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent pointer-events-none dark:hidden"></div>
+      <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-pink-400/20 rounded-full blur-2xl pointer-events-none dark:hidden"></div>
+
+      <!-- Dark Mode Decoration -->
+      <div class="absolute top-0 right-0 -mr-4 -mt-4 w-20 h-20 bg-fuchsia-500/10 rounded-full blur-xl pointer-events-none hidden dark:block"></div>
+
+      <div class="flex items-center space-x-2 mb-2 relative z-10">
+        <span class="material-symbols-outlined text-rose-500 dark:text-fuchsia-400 drop-shadow-sm text-2xl">local_fire_department</span>
+        <h3 class="font-bold text-slate-700 dark:text-fuchsia-100 text-base whitespace-nowrap">連続</h3>
       </div>
-      <p class="text-2xl sm:text-3xl font-bold text-shadow dark:text-fuchsia-300 dark:drop-shadow-[0_0_5px_rgba(232,121,249,0.5)] relative z-10"><%= @consecutive_days %><span class="text-xs sm:text-base ml-1 font-normal dark:text-fuchsia-400">日</span></p>
+      <p class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500 dark:text-fuchsia-300 dark:drop-shadow-[0_0_5px_rgba(232,121,249,0.5)] relative z-10">
+        <%= @consecutive_days %><span class="text-base ml-1 font-bold text-slate-400 dark:text-fuchsia-400">日</span>
+      </p>
     </div>
   </div>
 
   <!-- カレンダー -->
-  <div class="bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-3xl shadow-xl dark:shadow-[0_0_20px_rgba(6,182,212,0.15)] p-6 transition-colors relative overflow-hidden border border-white/20 dark:border-cyan-500/20">
-    <!-- 装飾用背景 -->
-    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 dark:from-cyan-500 dark:via-blue-500 dark:to-purple-500 dark:shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+  <div class="relative bg-[#fdfbf7] dark:bg-slate-950/80 backdrop-blur-xl rounded-[3.75rem] p-8 transition-colors overflow-hidden border-2 border-white/60 dark:border-cyan-500/20
+              shadow-[20px_20px_60px_rgba(168,85,247,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(168,85,247,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9),inset_2px_2px_0px_rgba(168,85,247,0.3)]
+              dark:shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+
+    <!-- Candy Texture & Orbs (Light Mode) -->
+    <div class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent pointer-events-none dark:hidden"></div>
+    <div class="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl pointer-events-none dark:hidden"></div>
+    <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl pointer-events-none dark:hidden"></div>
+
+    <!-- 装飾用背景 (Dark Mode) -->
+    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 dark:from-cyan-500 dark:via-blue-500 dark:to-purple-500 dark:shadow-[0_0_10px_rgba(34,211,238,0.5)] hidden dark:block"></div>
 
     <!-- 月ナビゲーション -->
     <div class="flex justify-center items-center space-x-6 mb-6 mt-2">
       <!-- 前月ボタン -->
       <%= link_to login_stamps_path(start_date: @start_date - 1.month),
-          class: "flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 dark:bg-slate-800/50 hover:bg-blue-50 dark:hover:bg-cyan-900/30 text-gray-600 dark:text-cyan-400 hover:text-blue-600 dark:hover:text-cyan-300 transition-all duration-200 shadow-sm hover:shadow border border-gray-200 dark:border-cyan-500/20" do %>
+          class: "flex items-center justify-center w-10 h-10 rounded-full bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-cyan-900/30 text-gray-600 dark:text-cyan-400 hover:text-blue-600 dark:hover:text-cyan-300 transition-all duration-200 shadow-[inset_2px_2px_5px_rgba(255,255,255,0.8),inset_-2px_-2px_5px_rgba(0,0,0,0.05)] hover:shadow-md dark:shadow-sm dark:border dark:border-cyan-500/20 relative z-10" do %>
         <span class="material-symbols-outlined">chevron_left</span>
       <% end %>
 
@@ -55,13 +96,13 @@
 
       <!-- 次月ボタン -->
       <%= link_to login_stamps_path(start_date: @start_date + 1.month),
-          class: "flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 dark:bg-slate-800/50 hover:bg-blue-50 dark:hover:bg-cyan-900/30 text-gray-600 dark:text-cyan-400 hover:text-blue-600 dark:hover:text-cyan-300 transition-all duration-200 shadow-sm hover:shadow border border-gray-200 dark:border-cyan-500/20 flex-shrink-0" do %>
+          class: "flex items-center justify-center w-10 h-10 rounded-full bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-cyan-900/30 text-gray-600 dark:text-cyan-400 hover:text-blue-600 dark:hover:text-cyan-300 transition-all duration-200 shadow-[inset_2px_2px_5px_rgba(255,255,255,0.8),inset_-2px_-2px_5px_rgba(0,0,0,0.05)] hover:shadow-md dark:shadow-sm dark:border dark:border-cyan-500/20 flex-shrink-0 relative z-10" do %>
         <span class="material-symbols-outlined">chevron_right</span>
       <% end %>
     </div>
 
     <!-- カレンダー本体 -->
-    <div class="calendar-container">
+    <div class="calendar-container relative z-10">
       <%= month_calendar(attribute: :walked_on, start_date: @start_date, events: @walks, week_start: :sunday) do |date, walks| %>
         <%
           has_stamp = @walks_by_date[date].present?
@@ -82,7 +123,7 @@
           <!-- スタンプアイコン（スタンプがある場合のみ、中央に大きく） -->
           <% if has_stamp %>
             <div class="stamp-icon absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-              <span class="material-symbols-outlined text-4xl sm:text-5xl transform rotate-12 select-none transition-all duration-300 animate-pulse">pets</span>
+              <span class="material-symbols-outlined text-4xl sm:text-5xl transform rotate-12 scale-110 select-none transition-all duration-300 animate-pulse">pets</span>
             </div>
           <% elsif is_today %>
             <!-- 今日でスタンプがない場合、「今日」と表示 -->
@@ -182,12 +223,14 @@
     width: 100%;
     height: 100%;
     display: block; /* flexからblockに変更（絶対配置を使うため） */
-    border-radius: 1rem;
-    background-color: #F9FAFB;
+    border-radius: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.5);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05), inset -2px -2px 5px rgba(255,255,255,0.8);
+    backdrop-filter: blur(4px);
   }
 
   .dark .calendar-day {
@@ -197,10 +240,10 @@
 
   /* ホバーエフェクト */
   .calendar-day:not(.other-month):hover {
-    background-color: #F3F4F6;
+    background-color: rgba(255, 255, 255, 0.8);
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border-color: #E5E7EB;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.05), -5px -5px 10px rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.5);
   }
 
   .dark .calendar-day:not(.other-month):hover {
@@ -210,9 +253,11 @@
   }
 
   /* スタンプがある日（背景は控えめに、スタンプを目立たせる） */
+  /* スタンプがある日（背景は控えめに、スタンプを目立たせる） */
   .calendar-day.has-stamp {
-    background-color: #FFF7ED; /* Orange-50 */
-    border: 1px solid #FFEDD5; /* Orange-100 */
+    background-color: #fff7ed; /* Orange-50 */
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 5px 5px 10px rgba(249,115,22,0.15), -5px -5px 10px rgba(255,255,255,0.9);
   }
 
   .dark .calendar-day.has-stamp {
@@ -227,8 +272,8 @@
     background: linear-gradient(135deg, #FB923C, #EC4899); /* Orange-400 to Pink-500 */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(236, 72, 153, 0.3));
-    opacity: 0.9;
+    filter: drop-shadow(2px 4px 6px rgba(236, 72, 153, 0.4));
+    opacity: 1;
   }
 
   .dark .stamp-icon .material-symbols-outlined {

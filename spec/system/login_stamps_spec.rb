@@ -47,7 +47,8 @@ RSpec.describe "LoginStamps", type: :system, js: true do
       it "「てくてく日数」が1日と表示されること" do
         # 今月の散歩日数の表示確認
         # 「てくてく日数」というテキストを含む要素を特定
-        target_card = find(".bg-gradient-to-br.from-cyan-400", text: "てくてく日数")
+        # デザイン変更に伴い、背景色クラスではなくテキストで親要素を探す
+        target_card = find(:xpath, "//div[contains(., 'てくてく日数')][contains(@class, 'rounded-[2.5rem]')]")
 
         within target_card do
           expect(page).to have_content "1"
@@ -82,8 +83,10 @@ RSpec.describe "LoginStamps", type: :system, js: true do
 
       it "連続日数が「2日」と表示されること" do
         # 連続日数のカード内の数字を確認
-        # カードの特徴的なクラスで特定
-        within first(".bg-gradient-to-br.from-orange-400") do
+        # デザイン変更に伴い、背景色クラスではなくテキストで親要素を探す
+        target_card = find(:xpath, "//div[contains(., '連続')][contains(@class, 'rounded-[2.5rem]')]")
+
+        within target_card do
           expect(page).to have_content "2"
         end
       end

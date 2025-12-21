@@ -7,13 +7,13 @@ RSpec.describe StatsService do
   describe '基本統計' do
     before do
       # テストデータを作成
-      create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
-      create(:walk, user: user, walked_on: 1.day.ago, distance: 3000, duration: 30, steps: 4000, calories_burned: 150)
-      create(:walk, user: user, walked_on: 2.days.ago, distance: 4000, duration: 45, steps: 5000, calories_burned: 200)
+      create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000, calories_burned: 250)
+      create(:walk, user: user, walked_on: 1.day.ago, distance: 3.0, duration: 30, steps: 4000, calories_burned: 150)
+      create(:walk, user: user, walked_on: 2.days.ago, distance: 4.0, duration: 45, steps: 5000, calories_burned: 200)
     end
 
     it '累計距離を正しく計算できる' do
-      expect(service.total_distance).to eq(12000.0)
+      expect(service.total_distance).to eq(12.0)
     end
 
     it '累計日数を正しく計算できる' do
@@ -21,27 +21,27 @@ RSpec.describe StatsService do
     end
 
     it '平均距離を正しく計算できる' do
-      # 12000 / 3 = 4000
-      expect(service.average_distance_per_day).to eq(4000.0)
+      # 12.0 / 3 = 4.0
+      expect(service.average_distance_per_day).to eq(4.0)
     end
 
     it '最長記録距離を正しく取得できる' do
-      expect(service.max_distance).to eq(5000.0)
+      expect(service.max_distance).to eq(5.0)
     end
   end
 
   describe '今月の統計' do
     before do
       # 今月のデータ
-      create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+      create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000, calories_burned: 250)
       # 先月のデータ
-      create(:walk, user: user, walked_on: Date.current.prev_month, distance: 3000, duration: 30, steps: 4000, calories_burned: 150)
-      create(:walk, user: user, walked_on: Date.current.prev_month - 1.day, distance: 4000, duration: 45, steps: 5000, calories_burned: 200)
+      create(:walk, user: user, walked_on: Date.current.prev_month, distance: 3.0, duration: 30, steps: 4000, calories_burned: 150)
+      create(:walk, user: user, walked_on: Date.current.prev_month - 1.day, distance: 4.0, duration: 45, steps: 5000, calories_burned: 200)
     end
 
     it '今月の距離を正しく計算できる' do
-      # 今月のデータ（5000m）のみが対象
-      expect(service.current_month_distance).to eq(5000.0)
+      # 今月のデータ（5.0km）のみが対象
+      expect(service.current_month_distance).to eq(5.0)
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe StatsService do
         create(:walk,
           user: user,
           walked_on: i.days.ago.to_date,
-          distance: (i + 1) * 1000,
+          distance: (i + 1).to_f,
           duration: 30
         )
       end
@@ -91,8 +91,8 @@ RSpec.describe StatsService do
       # 各曜日に記録を作成
       # 月曜日に2000m、火曜日に3000m
       monday = Date.current.beginning_of_week  # 月曜日
-      create(:walk, user: user, walked_on: monday, distance: 2000)
-      create(:walk, user: user, walked_on: monday + 1.day, distance: 3000)  # 火曜日
+      create(:walk, user: user, walked_on: monday, distance: 2.0)
+      create(:walk, user: user, walked_on: monday + 1.day, distance: 3.0)  # 火曜日
     end
 
     it '曜日別平均距離を正しく計算できる' do
@@ -131,8 +131,8 @@ RSpec.describe StatsService do
 
   describe 'パフォーマンス分析' do
     before do
-      create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分
-      create(:walk, user: user, walked_on: 1.day.ago, distance: 3000, duration: 30)     # 3km、30分
+      create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 50)  # 5km、50分
+      create(:walk, user: user, walked_on: 1.day.ago, distance: 3.0, duration: 30)     # 3km、30分
     end
 
     it '平均ペースを正しく計算できる' do

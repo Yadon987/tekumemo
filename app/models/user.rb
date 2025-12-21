@@ -170,14 +170,14 @@ class User < ApplicationRecord
         current_streak += 1
       else
         # 連続が途切れた場合、最大値を更新してリセット
-        max_streak = [max_streak, current_streak].max
+        max_streak = [ max_streak, current_streak ].max
         current_streak = 1
       end
       prev_date = date
     end
 
     # 最後のストリークも含めて最大値を返す
-    [max_streak, current_streak].max
+    [ max_streak, current_streak ].max
   end
 
   # ランキング集計

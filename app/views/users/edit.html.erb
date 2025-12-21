@@ -1,5 +1,265 @@
 <% content_for :title, "アカウント設定 - てくメモ" %>
 
+<div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto relative">
+  <!-- 背景装飾（アニメーション付きオーブ） -->
+  <div class="hidden dark:block absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
+  <div class="hidden dark:block absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style="animation-delay: 1s;"></div>
+
+  <div class="mb-8 text-center relative z-10">
+    <h1 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight flex items-center justify-center gap-3">
+      <div class="p-2 rounded-2xl bg-gradient-to-br from-blue-400 to-purple-400 text-white shadow-lg">
+        <span class="material-symbols-outlined text-3xl">manage_accounts</span>
+      </div>
+      <span>アカウント設定</span>
+    </h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-3 font-medium">プロフィールの確認と変更ができます</p>
+  </div>
+
+  <div class="bg-[radial-gradient(120%_120%_at_50%_50%,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.6)_100%)] dark:bg-none dark:bg-slate-950/60 backdrop-blur-2xl border border-white/60 dark:border-white/10 shadow-[20px_20px_60px_rgba(59,130,246,0.15),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-20px_30px_-10px_rgba(59,130,246,0.15)] rounded-[2.5rem] p-6 sm:p-10 relative overflow-hidden transition-all duration-300 group">
+
+    <!-- カード上部の光沢エフェクト -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent opacity-50"></div>
+
+    <div class="flex flex-col items-center mb-10 mt-2">
+       <div class="relative group/avatar">
+         <div class="absolute -inset-4 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-xl opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-500"></div>
+         <%= user_avatar(@user, classes: "w-28 h-28 text-4xl mb-4 shadow-[0_10px_20px_rgba(0,0,0,0.1)] dark:shadow-none ring-4 ring-white/80 dark:ring-slate-800 relative z-10") %>
+       </div>
+
+       <div class="text-center relative z-10">
+         <p class="text-slate-500 dark:text-slate-400 text-xs font-mono bg-white/50 dark:bg-slate-800/50 px-3 py-1.5 rounded-full border border-white/60 dark:border-white/10 inline-block shadow-sm backdrop-blur-sm">
+           <%= @user.email %>
+         </p>
+         <% if @user.google_uid.present? %>
+           <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2 flex items-center justify-center gap-1">
+             <span class="material-symbols-outlined text-sm">sync</span>
+             <span>アイコンはGoogleアカウントと連携しています</span>
+           </p>
+         <% end %>
+       </div>
+
+       <%# アバター切り替えスイッチ（Google連携済みの場合のみ表示） %>
+       <% if @user.google_uid.present? %>
+         <div class="mt-6 flex items-center justify-center">
+           <%= form_with(model: @user, local: true, class: "flex items-center space-x-2") do |f| %>
+             <label class="relative inline-flex items-center cursor-pointer group/toggle">
+               <%= f.check_box :use_google_avatar, class: "sr-only peer", onchange: "this.form.submit()" %>
+               <div class="w-14 h-8 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300/30 dark:peer-focus:ring-blue-800/30 rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-gradient-to-r peer-checked:from-blue-500 peer-checked:to-cyan-400 shadow-inner"></div>
+               <span class="ml-3 text-sm font-bold text-slate-600 dark:text-slate-300 group-hover/toggle:text-blue-500 transition-colors">Googleアイコンを使用</span>
+             </label>
+           <% end %>
+         </div>
+       <% end %>
+    </div>
+
+    <!-- Google連携セクション -->
+    <div class="mb-10 p-1 bg-gradient-to-br from-white/50 to-white/20 dark:from-slate-800/50 dark:to-slate-900/50 rounded-3xl shadow-inner border border-white/40 dark:border-white/5">
+      <div class="bg-blue-50/30 dark:bg-slate-800/30 rounded-[1.3rem] p-5 backdrop-blur-sm">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center space-x-4">
+            <div class="bg-white dark:bg-slate-700 p-3 rounded-2xl shadow-sm border border-white/60 dark:border-white/10">
+              <svg class="w-6 h-6" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 dark:text-white">Google連携</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Google Fitデータを使用可能</p>
+            </div>
+          </div>
+
+          <% if @user.google_uid.present? %>
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-center sm:justify-end">
+              <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-xs bg-green-50/50 dark:bg-green-900/20 px-4 py-2 rounded-full border border-green-200/50 dark:border-green-800/30 shadow-sm">
+                <span class="material-symbols-outlined text-base mr-1.5">check_circle</span>
+                <span>連携済み</span>
+              </div>
+
+              <%= button_to disconnect_google_user_path(@user), method: :delete, data: { turbo_confirm: "Google連携を解除しますか？\n\n解除後はGoogle Fitのデータが取得できなくなります。\nまた、次回ログイン時はメールアドレスとパスワードが必要になります。" }, class: "w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200" do %>
+                <span class="material-symbols-outlined text-xl" title="連携を解除する">link_off</span>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="w-full sm:w-auto flex justify-center sm:justify-end">
+              <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold py-2.5 px-5 rounded-full shadow-[4px_4px_10px_rgba(0,0,0,0.1),-4px_-4px_10px_rgba(255,255,255,0.8)] dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all transform hover:scale-105 active:scale-95 text-xs flex items-center" do %>
+                <span class="material-symbols-outlined mr-1.5 text-base text-blue-500">add_link</span>
+                連携する
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%= form_with(model: @user, local: true, data: { turbo: false }, class: "space-y-8") do |f| %>
+      <% if @user.errors.any? %>
+        <div class="bg-red-50/80 dark:bg-red-900/20 text-red-600 dark:text-red-300 p-4 rounded-2xl text-sm border border-red-100 dark:border-red-800/30 shadow-sm">
+          <ul class="list-disc list-inside space-y-1">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="space-y-6">
+        <div class="group/field">
+          <%= f.label :name, "ユーザー名（表示名）", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 mb-1.5 ml-1 uppercase tracking-wider transition-colors duration-200" %>
+          <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/field:text-blue-500 transition-colors">badge</span>
+            <%= f.text_field :name,
+                placeholder: "表示名を入力",
+                class: "block w-full h-12 pl-12 pr-4 bg-white dark:bg-slate-950/50 border border-black/5 dark:border-white/10 rounded-2xl shadow-inner dark:shadow-none text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 dark:focus:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200 text-sm font-medium" %>
+          </div>
+          <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 ml-1">ランキングや投稿などで他のユーザーに表示されます</p>
+        </div>
+
+        <div class="group/field">
+          <%= f.label :target_distance, "目標距離 (m)", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 mb-1.5 ml-1 uppercase tracking-wider transition-colors duration-200" %>
+          <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within/field:text-blue-500 transition-colors">flag</span>
+            <%= f.number_field :target_distance,
+                step: 100,
+                placeholder: "例: 5000",
+                class: "block w-full h-12 pl-12 pr-4 bg-white dark:bg-slate-950/50 border border-black/5 dark:border-white/10 rounded-2xl shadow-inner dark:shadow-none text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 dark:focus:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200 text-sm font-medium" %>
+          </div>
+          <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 ml-1">1日の目標距離をメートル単位で設定します（デフォルト: 5000）</p>
+        </div>
+      </div>
+
+      <%# セキュリティ設定エリア（メール・パスワード） %>
+      <div class="relative py-6">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-slate-200 dark:border-slate-700/50"></div>
+        </div>
+        <div class="relative flex justify-start">
+          <span class="pr-3 bg-[#fdfbf7] dark:bg-[#0f172a] text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">セキュリティ設定</span>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="group/field">
+          <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 mb-1.5 ml-1 uppercase tracking-wider transition-colors duration-200" %>
+
+          <% if @user.google_uid.present? %>
+            <div class="relative">
+              <%= f.email_field :email,
+                  disabled: true,
+                  class: "block w-full h-12 pl-4 pr-4 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-white/5 rounded-2xl text-slate-500 dark:text-slate-500 cursor-not-allowed select-none shadow-inner text-sm font-medium" %>
+              <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 ml-1 flex items-center">
+                <span class="material-symbols-outlined text-sm mr-1">info</span>
+                Googleアカウントで管理されています
+              </p>
+            </div>
+          <% else %>
+            <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+              <%= f.email_field :email,
+                  class: "block w-full h-12 pl-4 pr-4 bg-white dark:bg-slate-950/50 border border-black/5 dark:border-white/10 rounded-2xl shadow-inner dark:shadow-none text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 dark:focus:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200 text-sm font-medium" %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="group/field">
+          <%= f.label :password, "新しいパスワード（変更する場合のみ）", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 mb-1.5 ml-1 uppercase tracking-wider transition-colors duration-200" %>
+          <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+            <%= f.password_field :password,
+                placeholder: "6文字以上",
+                class: "block w-full h-12 pl-4 pr-4 bg-white dark:bg-slate-950/50 border border-black/5 dark:border-white/10 rounded-2xl shadow-inner dark:shadow-none text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 dark:focus:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200 text-sm font-medium" %>
+          </div>
+        </div>
+
+        <div class="group/field">
+          <%= f.label :password_confirmation, "パスワード確認", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 mb-1.5 ml-1 uppercase tracking-wider transition-colors duration-200" %>
+          <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+            <%= f.password_field :password_confirmation,
+                class: "block w-full h-12 pl-4 pr-4 bg-white dark:bg-slate-950/50 border border-black/5 dark:border-white/10 rounded-2xl shadow-inner dark:shadow-none text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 dark:focus:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200 text-sm font-medium" %>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-white/5">
+          <!-- 情報ボックス -->
+          <div class="bg-blue-50/50 dark:bg-blue-900/10 backdrop-blur-sm rounded-2xl p-4 mb-6 border border-blue-100 dark:border-blue-800/30 flex items-start gap-3">
+            <span class="material-symbols-outlined text-blue-500 dark:text-blue-400 mt-0.5">info</span>
+            <p class="text-xs text-blue-700 dark:text-blue-300 leading-relaxed pt-0.5">
+              メールアドレスまたはパスワードを変更する場合のみ、現在のパスワードの入力が必要です。
+            </p>
+          </div>
+
+          <div class="group/field">
+            <%= f.label :current_password, "現在のパスワード", class: "block text-xs font-bold text-slate-500 dark:text-slate-400 group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 mb-1.5 ml-1 uppercase tracking-wider transition-colors duration-200" %>
+            <div class="relative transition-all duration-300 transform group-focus-within/field:scale-[1.01]">
+              <%= f.password_field :current_password,
+                  autocomplete: "current-password",
+                  placeholder: "セキュリティ変更時のみ入力",
+                  class: "block w-full h-12 pl-4 pr-4 bg-white dark:bg-slate-950/50 border border-black/5 dark:border-white/10 rounded-2xl shadow-inner dark:shadow-none text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 dark:focus:shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-200 text-sm font-medium" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <%= f.button class: "w-full h-14 bg-[radial-gradient(ellipse_110%_110%_at_30%_30%,#60a5fa_15%,#3b82f6_90%)] dark:bg-gradient-to-r dark:from-blue-600 dark:to-cyan-500 hover:scale-[1.02] active:scale-95 text-white font-bold rounded-full shadow-[8px_8px_16px_rgba(59,130,246,0.4),-8px_-8px_16px_rgba(255,255,255,1),inset_-2px_-2px_5px_rgba(30,64,175,0.4),inset_2px_2px_5px_rgba(147,197,253,0.5)] dark:shadow-[0_0_20px_rgba(59,130,246,0.5),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-2px_5px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_0_30px_rgba(59,130,246,0.7),inset_0_1px_0_rgba(255,255,255,0.6)] transform transition-all duration-200 flex items-center justify-center gap-2 group/btn relative overflow-hidden" do %>
+          <span class="material-symbols-outlined text-xl group-hover/btn:scale-110 transition-transform">save</span>
+          <span>変更を保存する</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-12">
+    <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-4 px-2 uppercase tracking-wider text-center">Danger Zone</h3>
+    <div class="bg-red-50/50 dark:bg-red-900/10 backdrop-blur-sm rounded-[2rem] p-6 border border-red-100 dark:border-red-500/20 hover:bg-red-50/80 dark:hover:bg-red-900/20 transition-colors duration-300">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="text-center sm:text-left">
+          <h4 class="text-red-800 dark:text-red-300 font-bold flex items-center justify-center sm:justify-start gap-2">
+            <span class="material-symbols-outlined text-xl">warning</span>
+            アカウントの削除
+          </h4>
+          <p class="text-red-600/70 dark:text-red-400/70 text-xs mt-2 leading-relaxed">
+            一度削除すると、散歩記録などのデータは復元できません。<br class="hidden sm:block">
+            この操作は取り消すことができません。
+          </p>
+        </div>
+
+        <%= button_to user_registration_path,
+            method: :delete,
+            data: { turbo_confirm: "本当にアカウントを削除しますか？\n\nこの操作は取り消せません。\nすべての散歩記録が削除されます。" },
+            class: "whitespace-nowrap bg-white dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 font-bold py-3 px-6 rounded-full text-sm hover:bg-red-50 dark:hover:bg-red-900/50 transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95" do %>
+          削除する
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 pt-8 border-t border-slate-200 dark:border-white/10 flex flex-col items-center space-y-6">
+    <%= link_to root_path, class: "group flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-bold hover:text-slate-800 dark:hover:text-slate-200 transition-colors" do %>
+      <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined text-lg">home</span>
+      </div>
+      ホームに戻る
+    <% end %>
+
+    <%= button_to destroy_user_session_path, method: :delete, class: "text-xs text-red-400 hover:text-red-600 dark:text-red-500/70 dark:hover:text-red-400 transition-colors flex items-center gap-1.5 py-2 px-4 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20" do %>
+      <span class="material-symbols-outlined text-sm">logout</span>
+      ログアウト
+    <% end %>
+  </div>
+</div>
+
+<style>
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+</style>
+
+
 <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto">
   <div class="mb-8 text-center">
     <h1 class="text-2xl font-bold text-gray-900 dark:text-slate-50 flex items-center justify-center space-x-2">

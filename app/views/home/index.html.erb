@@ -1,7 +1,7 @@
 <% content_for :title, "てくメモ - ホーム" %>
 
 <% if user_signed_in? %>
-  <div class="w-full transition-colors duration-300 -mt-12 sm:-mt-20 pt-12 sm:pt-20 relative overflow-hidden dark:bg-slate-900">
+  <div class="w-full transition-colors duration-300 -mt-12 sm:-mt-20 pt-12 sm:pt-20 relative overflow-hidden">
     <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4 relative z-10">
 
     <!-- 今日の散歩ダッシュボード -->
@@ -37,7 +37,7 @@
       <div class="relative z-10 w-full bg-white/50 dark:bg-white/20 rounded-full h-2.5 my-4 overflow-hidden">
         <div class="relative bg-gradient-to-r from-lime-300 to-green-400 dark:from-cyan-400 dark:to-blue-500 h-2.5 rounded-full shadow-md overflow-hidden" style="width: <%= (((@today_walk&.distance || 0).to_f * 1000) / current_user.target_distance.to_f * 100).clamp(0, 100) %>%">
           <!-- シマーエフェクト -->
-          <div class="absolute inset-0 bg-white/40 w-full h-full animate-shimmer skew-x-12"></div>
+          <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"></div>
         </div>
       </div>
 
@@ -195,14 +195,17 @@
                   <%
                      # 円周 = 2 * π * 45 ≈ 282.7
                      circumference = 283
-                     # 1位なら0%、最下位なら100%になるよう調整
-                     # (順位 - 1) / (総人数 - 1) で計算
-                     adjusted_percentile = if @ranking_total_users > 1
-                                             ((@my_rank - 1).to_f / (@ranking_total_users - 1)) * 100
-                                           else
-                                             0 # 参加者が1人だけの場合は満タン
-                                           end
-                     offset = circumference * (adjusted_percentile / 100.0)
+
+                     if @ranking_total_users <= 1 || @my_rank == 1
+                       offset = 0
+                     else
+                       # 2位以下は最低でも5%の隙間を空けることで、1位との差を視覚的に明確にする
+                       min_gap = 0.05
+                       raw_ratio = (@my_rank - 1).to_f / (@ranking_total_users - 1)
+                       # 0%〜100%の範囲を、5%〜100%の範囲にマッピング
+                       adjusted_ratio = raw_ratio * (1.0 - min_gap) + min_gap
+                       offset = circumference * adjusted_ratio
+                     end
                   %>
                   <circle cx="50" cy="50" r="45" stroke="url(#gold-gradient)" stroke-width="8" fill="transparent"
                           stroke-dasharray="<%= circumference %>"
