@@ -49,7 +49,23 @@
           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ユーザー</th>
           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">メールアドレス</th>
           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">権限</th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">最終ログイン</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+            <div class="flex items-center gap-2">
+              <span>最終ログイン</span>
+              <div class="flex gap-1">
+                <%= link_to admin_users_path(q: params[:q], role: params[:role], sort: "last_login_desc"),
+                    class: "hover:bg-gray-200 dark:hover:bg-gray-600 rounded p-0.5 transition-colors #{params[:sort] == 'last_login_desc' ? 'bg-blue-200 dark:bg-blue-700' : ''}",
+                    title: "降順（新しい順）" do %>
+                  <span class="material-symbols-outlined text-base">arrow_downward</span>
+                <% end %>
+                <%= link_to admin_users_path(q: params[:q], role: params[:role], sort: "last_login_asc"),
+                    class: "hover:bg-gray-200 dark:hover:bg-gray-600 rounded p-0.5 transition-colors #{params[:sort] == 'last_login_asc' ? 'bg-blue-200 dark:bg-blue-700' : ''}",
+                    title: "昇順（古い順）" do %>
+                  <span class="material-symbols-outlined text-base">arrow_upward</span>
+                <% end %>
+              </div>
+            </div>
+          </th>
           <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">操作</th>
         </tr>
       </thead>

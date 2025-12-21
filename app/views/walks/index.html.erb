@@ -22,7 +22,11 @@
     </div>
 
     <!-- スマホ用: 小さな記録ボタン（右上）-->
-    <div class="md:hidden">
+    <div class="md:hidden flex items-center gap-2">
+      <%= link_to import_google_fit_walks_path, data: { turbo_method: :post, turbo_confirm: "直近30日分のデータをGoogle Fitから取り込みますか？" }, class: "flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 text-white shadow-sm hover:shadow-md transition-all active:scale-95" do %>
+        <%= image_tag "google_fit_logo.png", class: "w-5 h-5 object-contain rounded-full bg-white p-0.5 shadow-sm", alt: "Google Fit" %>
+      <% end %>
+
       <%= link_to new_walk_path, class: "flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 dark:from-purple-600 dark:to-pink-600 text-white text-xs font-bold shadow-sm hover:shadow-md transition-all active:scale-95" do %>
         <span class="material-symbols-outlined text-sm">add</span>
         <span>記録</span>
@@ -32,11 +36,20 @@
 
   <!-- 新規作成ボタン（PCのみ） -->
   <div class="mb-10 hidden md:block">
-    <%= link_to new_walk_path,
-        class: "group relative w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-700 dark:via-fuchsia-800 dark:to-pink-800 hover:from-purple-400 hover:to-pink-400 dark:hover:from-purple-600 dark:hover:via-fuchsia-700 dark:hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full border-2 border-white/30 dark:border-purple-400/30 shadow-[0_10px_25px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[0_0_25px_rgba(168,85,247,0.5),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] hover:shadow-[0_15px_35px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.7),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95 overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/30 before:to-transparent before:rounded-t-full before:pointer-events-none" do %>
-      <span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300 relative z-10 drop-shadow-md">add</span>
-      <span class="text-lg relative z-10 drop-shadow-sm">新しい散歩を記録する</span>
-    <% end %>
+    <div class="flex items-center gap-4">
+      <%= link_to new_walk_path,
+          class: "group relative w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-700 dark:via-fuchsia-800 dark:to-pink-800 hover:from-purple-400 hover:to-pink-400 dark:hover:from-purple-600 dark:hover:via-fuchsia-700 dark:hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full border-2 border-white/30 dark:border-purple-400/30 shadow-[0_10px_25px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[0_0_25px_rgba(168,85,247,0.5),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] hover:shadow-[0_15px_35px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.7),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95 overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/30 before:to-transparent before:rounded-t-full before:pointer-events-none" do %>
+        <span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300 relative z-10 drop-shadow-md">add</span>
+        <span class="text-lg relative z-10 drop-shadow-sm">新しい散歩を記録する</span>
+      <% end %>
+
+      <%= link_to import_google_fit_walks_path,
+          data: { turbo_method: :post, turbo_confirm: "直近30日分のデータをGoogle Fitから取り込みますか？\n（既存のデータより数値が大きい場合のみ更新されます）" },
+          class: "group relative w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 dark:from-green-700 dark:via-green-800 dark:to-green-900 hover:from-green-400 hover:to-green-500 dark:hover:from-green-600 dark:hover:via-green-700 dark:hover:to-green-800 text-white font-bold py-4 px-6 rounded-full border-2 border-white/30 dark:border-green-400/30 shadow-[0_10px_25px_rgba(34,197,94,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[0_0_25px_rgba(34,197,94,0.5),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] hover:shadow-[0_15px_35px_rgba(34,197,94,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:hover:shadow-[0_0_40px_rgba(34,197,94,0.7),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95 overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/30 before:to-transparent before:rounded-t-full before:pointer-events-none" do %>
+        <%= image_tag "google_fit_logo.png", class: "w-8 h-8 object-contain rounded-full bg-white p-1 shadow-sm relative z-10", alt: "Google Fit" %>
+        <span class="text-lg relative z-10 drop-shadow-sm">Fit一括取込</span>
+      <% end %>
+    </div>
   </div>
 
   <!-- ページネーション（上部） -->

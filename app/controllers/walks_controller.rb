@@ -73,6 +73,67 @@ class WalksController < ApplicationController
     redirect_to walks_path, notice: t("flash.walks.destroy.notice")
   end
 
+  # Google Fitからデータをインポート（POST /walks/import_google_fit）
+  def import_google_fit
+    # Google連携していない場合はエラー
+    unless current_user.google_token_valid?
+      redirect_to walks_path, alert: "Google Fitと連携してください。"
+      return
+    end
+
+    service = GoogleFitService.new(current_user)
+    # 直近30日分（今日を含む）
+    end_date = Date.current
+    start_date = end_date - 29.days
+
+    activities = service.fetch_activities(start_date, end_date)
+
+    created_count = 0
+    updated_count = 0
+
+    activities.each do |date, data|
+      # 距離が0以下の場合はスキップ（DBを汚さない）
+      next if data[:distance] <= 0
+
+      walk = current_user.walks.find_or_initialize_by(walked_on: date)
+
+      # 更新判定: 新規作成 または 既存データよりGoogle Fitのデータ（距離）が大きい場合
+      # ※ 既存データがあり、かつGoogle Fitの方が小さい（または同じ）場合は何もしない
+      if walk.new_record? || walk.distance < data[:distance]
+        walk.distance = data[:distance]
+        walk.steps = data[:steps]
+        walk.calories_burned = data[:calories]
+
+        # 時間の計算（時速4kmと仮定）: 距離(km) / 4(km/h) * 60(min)
+        estimated_duration = (data[:distance] / 4.0 * 60).round
+        walk.duration = estimated_duration
+
+        # 時間帯のデフォルト設定（新規の場合のみ、または未設定の場合）
+        if walk.time_of_day.blank?
+          walk.time_of_day = :day # デフォルトは日中
+        end
+
+        if walk.save
+          if walk.previously_new_record?
+            created_count += 1
+          else
+            updated_count += 1
+          end
+        else
+          Rails.logger.error "Failed to save walk for #{date}: #{walk.errors.full_messages.join(', ')}"
+        end
+      end
+    end
+
+    if created_count > 0 || updated_count > 0
+      flash[:notice] = "#{created_count}件の記録を作成、#{updated_count}件の記録を更新しました。"
+    else
+      flash[:info] = "新しいデータはありませんでした（または既存データの方が最新でした）。"
+    end
+
+    redirect_to walks_path
+  end
+
   private
 
   # 対象の散歩記録を取得するメソッド

@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   # ===== アプリケーション機能 =====
   # 散歩記録のCRUD機能（作成・閲覧・更新・削除）
   # ログインしているユーザーのみアクセス可能
-  resources :walks
+  resources :walks do
+    collection do
+      post :import_google_fit
+    end
+  end
 
   # ログインスタンプカレンダー
   # 散歩記録をカレンダー形式で表示
@@ -33,7 +37,6 @@ Rails.application.routes.draw do
 
   # Google Fit連携
   # ログインユーザーのGoogle Fitデータを取得する
-  get "google_fit/daily_data", to: "google_fit#daily_data"
   get "google_fit/status", to: "google_fit#status"
 
   # SNS機能
