@@ -35,17 +35,13 @@ class GoogleFitController < ApplicationController
     data = activities[date]
 
     if data
-      # 時間の概算（時速4kmと仮定）: 距離(km) / 4(km/h) * 60(min)
-      # 距離が0の場合は0
-      duration = data[:distance] > 0 ? (data[:distance] / 4.0 * 60).round : 0
-
       render json: {
         date: date.to_s,
         steps: data[:steps],
         distance: data[:distance],
         calories: data[:calories],
-        duration: duration,
-        start_time: date.to_time.change(hour: 9) # デフォルトで朝9時とする（APIからは取れないため）
+        duration: data[:duration] || 0,
+        start_time: data[:start_time]&.iso8601 || date.to_time.change(hour: 9).iso8601
       }
     else
       render json: {

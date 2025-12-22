@@ -97,21 +97,11 @@ class WalksController < ApplicationController
 
       walk = current_user.walks.find_or_initialize_by(walked_on: date)
 
-      # 更新判定: 新規作成 または 既存データよりGoogle Fitのデータ（距離）が大きい場合
-      # または、距離が同じでもカロリーが異なる場合（計算ロジック変更の反映のため）
-      if walk.new_record? || walk.distance < data[:distance] || (walk.distance == data[:distance] && walk.calories_burned != data[:calories])
-        walk.distance = data[:distance]
-        walk.steps = data[:steps]
-        walk.calories_burned = data[:calories]
+      # モデルのメソッドを使ってデータをマージ
+      walk.merge_google_fit_data(data)
 
-        # 時間の計算（時速4kmと仮定）: 距離(km) / 4(km/h) * 60(min)
-        estimated_duration = (data[:distance] / 4.0 * 60).round
-        walk.duration = estimated_duration
-
-        # 時間帯のデフォルト設定（新規の場合のみ、または未設定の場合）
-        if walk.time_of_day.blank?
-          walk.time_of_day = :day # デフォルトは日中
-        end
+      # 何らかの変更があった場合のみ保存処理を続行
+      if walk.changed?
 
         if walk.save
           if walk.previously_new_record?
@@ -127,6 +117,9 @@ class WalksController < ApplicationController
 
     if created_count > 0 || updated_count > 0
       flash[:notice] = "#{created_count}件の記録を作成、#{updated_count}件の記録を更新しました。"
+
+      # データ更新があったので、ランキングOGP画像を強制再生成
+      GenerateRankingOgpImageJob.perform_later(current_user, force: true)
     else
       flash[:info] = "新しいデータはありませんでした（または既存データの方が最新でした）。"
     end

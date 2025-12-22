@@ -43,6 +43,29 @@ class Walk < ApplicationRecord
   # コールバック
   before_save :set_time_of_day_from_created_at
 
+  # Google Fitのデータをマージする
+  # 既存の値より大きい場合のみ更新する
+  def merge_google_fit_data(data)
+    if new_record?
+      self.distance = data[:distance]
+      self.steps = data[:steps]
+      self.calories_burned = data[:calories]
+      self.duration = data[:duration] if data[:duration]
+    else
+      self.distance = data[:distance] if distance.to_f < data[:distance]
+      self.steps = data[:steps] if steps.to_i < data[:steps]
+      self.calories_burned = data[:calories] if calories_burned.to_i < data[:calories]
+      self.duration = data[:duration] if data[:duration] && duration.to_i < data[:duration].to_i
+    end
+
+    # 時間帯の設定（未設定の場合のみ）
+    if time_of_day.blank? && data[:start_time]
+      set_time_of_day_from_hour(data[:start_time].hour)
+    elsif time_of_day.blank?
+      self.time_of_day = :day # デフォルト
+    end
+  end
+
   private
 
   def set_time_of_day_from_created_at
@@ -58,5 +81,18 @@ class Walk < ApplicationRecord
     when 16..18 then :evening
     else :night
     end
+  end
+
+
+
+  private
+
+  def set_time_of_day_from_hour(hour)
+    self.time_of_day = case hour
+                       when 4..8 then :early_morning
+                       when 9..15 then :day
+                       when 16..18 then :evening
+                       else :night
+                       end
   end
 end

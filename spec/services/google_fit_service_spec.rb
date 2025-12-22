@@ -38,6 +38,8 @@ RSpec.describe GoogleFitService, type: :service do
 
     let(:bucket) { double(
       start_time_millis: start_date.beginning_of_day.to_i * 1000,
+      end_time_millis: start_date.beginning_of_day.to_i * 1000 + 3600000,
+      activity: 7, # Walking
       dataset: [ step_dataset, distance_dataset, calorie_dataset ]
     )}
     let(:response) { double(bucket: [ bucket ]) }

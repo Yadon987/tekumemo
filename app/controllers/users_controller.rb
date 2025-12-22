@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   def disconnect_google
     # パスワード検証
     unless current_user.valid_password?(params[:user][:current_password])
-      redirect_to edit_user_path(current_user), alert: "パスワードが正しくありません"
+      redirect_to edit_user_registration_path, alert: "パスワードが正しくありません"
       return
     end
 
@@ -50,9 +50,9 @@ class UsersController < ApplicationController
       google_expires_at: nil,
       use_google_avatar: false # 強制的にイニシャル表示に戻す
     )
-      redirect_to edit_user_path(current_user), notice: "Google連携を解除しました"
+      redirect_to edit_user_registration_path, notice: "Google連携を解除しました"
     else
-      redirect_to edit_user_path(current_user), alert: "連携解除に失敗しました。"
+      redirect_to edit_user_registration_path, alert: "連携解除に失敗しました。"
     end
   end
 

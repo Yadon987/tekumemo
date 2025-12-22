@@ -168,7 +168,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       click_button "連携する"
 
       # モーダル内の連携リンクをクリック
-      click_link "連携に進む"
+      click_button "連携に進む"
 
       expect(page).to have_content("Googleアカウントと連携しました")
       expect(page).to have_content("連携済み")
