@@ -212,16 +212,16 @@ class User < ApplicationRecord
     end_date = Date.current.end_of_week
 
     # 週間データ集計
-    weekly_walks = walks.where(walked_on: start_date..end_date)
+    weekly_walks = walks.reload.where(walked_on: start_date..end_date)
     total_distance = weekly_walks.sum(:distance)
     total_steps = weekly_walks.sum(:steps)
 
     # 順位計算
-    # 自分より歩数が多いユーザーの数をカウント + 1 = 順位
+    # 自分より距離が長いユーザーの数をカウント + 1 = 順位
     higher_rank_users_count = User.joins(:walks)
                                   .where(walks: { walked_on: start_date..end_date })
                                   .group("users.id")
-                                  .having("SUM(walks.steps) > ?", total_steps)
+                                  .having("SUM(walks.distance) > ?", total_distance)
                                   .pluck("users.id")
                                   .count
 

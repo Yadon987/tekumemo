@@ -38,14 +38,22 @@ class StatsService
   end
 
   # 今月の目標達成率 (%)
-  # 今月の目標達成率 (%)
+  # 目標距離を達成した日数の割合（習慣化達成率）
   def monthly_goal_achievement_rate
-    monthly_distance_km = current_month_distance  # km単位
-    target_m = user.target_distance * days_in_current_month  # m単位
-    target_km = target_m / 1000.0 # km単位に変換
+    # 目標距離 (km)
+    target_km = user.target_distance / 1000.0
 
-    return 0 if target_km.zero?
-    ((monthly_distance_km / target_km) * 100).round(1)
+    # 今月の記録のうち、目標を達成した日数をカウント
+    achieved_days = user.walks
+                        .where(walked_on: Date.current.beginning_of_month..Date.current)
+                        .where("distance >= ?", target_km)
+                        .count
+
+    # 今日までの経過日数
+    days_elapsed = Date.current.day
+
+    return 0 if days_elapsed.zero?
+    ((achieved_days.to_f / days_elapsed) * 100).round(1)
   end
 
   # 今月の歩いた距離（km単位）

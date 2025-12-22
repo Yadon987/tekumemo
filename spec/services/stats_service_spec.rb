@@ -31,17 +31,34 @@ RSpec.describe StatsService do
   end
 
   describe '今月の統計' do
-    before do
-      # 今月のデータ
-      create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000, calories_burned: 250)
-      # 先月のデータ
-      create(:walk, user: user, walked_on: Date.current.prev_month, distance: 3.0, duration: 30, steps: 4000, calories_burned: 150)
-      create(:walk, user: user, walked_on: Date.current.prev_month - 1.day, distance: 4.0, duration: 45, steps: 5000, calories_burned: 200)
+    context 'データが既に存在する場合' do
+      before do
+        # 今月のデータ
+        create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000, calories_burned: 250)
+        # 先月のデータ
+        create(:walk, user: user, walked_on: Date.current.prev_month, distance: 3.0, duration: 30, steps: 4000, calories_burned: 150)
+        create(:walk, user: user, walked_on: Date.current.prev_month - 1.day, distance: 4.0, duration: 45, steps: 5000, calories_burned: 200)
+      end
+
+      it '今月の距離を正しく計算できる' do
+        # 今月のデータ（5.0km）のみが対象
+        expect(service.current_month_distance).to eq(5.0)
+      end
     end
 
-    it '今月の距離を正しく計算できる' do
-      # 今月のデータ（5.0km）のみが対象
-      expect(service.current_month_distance).to eq(5.0)
+    context '目標達成率の計算' do
+      it '今月の目標達成率を正しく計算できる（習慣化達成率）' do
+        # 毎月1日に固定
+        travel_to Date.current.beginning_of_month do
+          # このテストケース専用のデータを作成
+          # 目標: 3000m (3.0km)
+          # 実績: 5.0km -> 達成
+          # 達成率: 1日中1日達成 -> 100.0%
+          create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000, calories_burned: 250)
+
+          expect(service.monthly_goal_achievement_rate).to eq(100.0)
+        end
+      end
     end
   end
 
