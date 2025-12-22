@@ -98,8 +98,8 @@ class WalksController < ApplicationController
       walk = current_user.walks.find_or_initialize_by(walked_on: date)
 
       # 更新判定: 新規作成 または 既存データよりGoogle Fitのデータ（距離）が大きい場合
-      # ※ 既存データがあり、かつGoogle Fitの方が小さい（または同じ）場合は何もしない
-      if walk.new_record? || walk.distance < data[:distance]
+      # または、距離が同じでもカロリーが異なる場合（計算ロジック変更の反映のため）
+      if walk.new_record? || walk.distance < data[:distance] || (walk.distance == data[:distance] && walk.calories_burned != data[:calories])
         walk.distance = data[:distance]
         walk.steps = data[:steps]
         walk.calories_burned = data[:calories]

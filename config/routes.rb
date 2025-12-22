@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   # Google Fit連携
   # ログインユーザーのGoogle Fitデータを取得する
   get "google_fit/status", to: "google_fit#status"
+  get "google_fit/daily_data", to: "google_fit#daily_data"
 
   # SNS機能
   resources :posts, only: [ :index, :show, :create, :destroy ] do

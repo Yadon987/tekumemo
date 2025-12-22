@@ -36,4 +36,17 @@
   .animate-bounce-slow {
     animation: bounce-slow 3s infinite;
   }
+
+  @keyframes sheen {
+    0% {
+      transform: translate(-100%, -100%) rotate(0deg);
+    }
+    100% {
+      transform: translate(100%, 100%) rotate(0deg);
+    }
+  }
+
+  .animate-sheen {
+    animation: sheen 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
 }

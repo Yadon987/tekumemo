@@ -71,8 +71,8 @@ class GoogleFitService
                 steps += value.int_val if value.int_val
               when 1 # 距離 (fp_val)
                 distance += value.fp_val if value.fp_val
-              when 2 # カロリー (fp_val)
-                calories += value.fp_val if value.fp_val
+                # when 2 # カロリー (fp_val)
+                #   calories += value.fp_val if value.fp_val
               end
             end
           end
@@ -81,11 +81,15 @@ class GoogleFitService
         # 距離をメートルからキロメートルに変換
         distance_km = (distance / 1000.0).round(2)
 
+        # カロリー計算 (Google Fitの値は基礎代謝込みで大きすぎるため、距離ベースの概算値を使用)
+        # 体重60kgと仮定: 距離(km) * 60 = 消費カロリー(kcal)
+        calories = (distance_km * 60).to_i
+
         # データが存在する場合のみ結果に含める（0歩かつ0kmの場合はスキップでも良いが、呼び出し元で判断させるため一旦返す）
         result[bucket_start_time] = {
           steps: steps,
           distance: distance_km,
-          calories: calories.to_i
+          calories: calories
         }
       end
 
