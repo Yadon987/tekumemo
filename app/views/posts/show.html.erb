@@ -34,7 +34,14 @@
 
     <div class="mb-8 relative group">
       <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-      <img src="<%= post_ogp_image_url(@post, format: :jpg) %>" alt="Adventure Log" class="relative w-full rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-none transform transition duration-500 hover:scale-[1.02] border-4 border-white/50 dark:border-transparent">
+      <img id="main-ogp-image" src="<%= post_ogp_image_url(@post, format: :jpg) %>" alt="Adventure Log" class="relative w-full rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-none transform transition duration-500 hover:scale-[1.02] border-4 border-white/50 dark:border-transparent">
+    </div>
+
+    <!-- シェア画像プレビューリンク（小） -->
+    <div class="mt-[-20px] mb-8 text-center relative z-10">
+      <button onclick="toggleOgpPreview()" class="text-xs text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-fuchsia-300 underline transition">
+        📷 シェア画像を確認・更新
+      </button>
     </div>
 
     <% if @post.body.present? %>
@@ -83,3 +90,155 @@
     </div> <!-- End of relative z-10 wrapper -->
   </div>
 </div>
+
+<!-- OGPプレビューモーダル -->
+<div id="ogp-preview-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeOgpPreview(event)">
+  <div class="relative bg-white dark:bg-slate-900/90 rounded-[3.75rem] p-8 max-w-2xl w-full shadow-2xl transform transition-all border-4 border-white dark:border-white/10 dark:border-t-white/40 dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" onclick="event.stopPropagation()">
+    <!-- 閉じるボタン -->
+    <button onclick="closeOgpPreview()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white transition relative z-20">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <!-- タイトル -->
+    <h3 class="text-lg font-bold text-slate-700 dark:text-white mb-2 flex items-center gap-2 relative z-10">
+      <span>🖼️</span> シェア画像プレビュー
+    </h3>
+    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed relative z-10">
+      X(Twitter)などでシェアされた時に表示される画像です。<br>
+      <span class="text-orange-500 dark:text-amber-400">※画像が古い場合は「画像を最新にする」を押してください。</span>
+    </p>
+
+    <!-- プレビュー画像 -->
+    <div class="relative aspect-[1.91/1] w-full rounded-xl overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-800 z-10">
+      <!-- ローディング表示 -->
+      <div id="ogp-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-800">
+        <div class="animate-spin rounded-full h-16 w-16 border-4 border-slate-300 dark:border-slate-600 border-t-purple-600 dark:border-t-fuchsia-500"></div>
+        <p class="mt-4 text-sm font-bold text-slate-600 dark:text-slate-300">画像を読み込み中...</p>
+        <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">生成に数秒かかる場合があります</p>
+      </div>
+
+      <!-- OGP画像 -->
+      <%= image_tag post_ogp_image_path(@post, format: :jpg, v: Time.current.to_i),
+          id: "ogp-preview-image",
+          class: "w-full h-full object-cover opacity-0 transition-opacity duration-500",
+          alt: "Post OGP Preview",
+          onerror: "handleOgpImageError(this)",
+          onload: "handleOgpImageLoad()" %>
+    </div>
+
+    <!-- アクションボタン -->
+    <div class="mt-4 flex justify-end relative z-10">
+      <button onclick="refreshOgpImage()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-colors text-sm font-bold border border-transparent dark:border-white/10">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        画像を最新にする
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let retryCount = 0;
+  const MAX_RETRIES = 5;
+
+  // モーダルを開く
+  function toggleOgpPreview() {
+    const modal = document.getElementById('ogp-preview-modal');
+    modal.classList.remove('hidden');
+    // フェードインアニメーション
+    setTimeout(() => {
+      modal.style.opacity = '1';
+    }, 10);
+
+    // モーダルを開いたときにリトライカウントをリセット
+    retryCount = 0;
+  }
+
+  // モーダルを閉じる
+  function closeOgpPreview(event) {
+    const modal = document.getElementById('ogp-preview-modal');
+    // フェードアウト
+    modal.style.opacity = '0';
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 200);
+  }
+
+  // 画像を強制リフレッシュ
+  function refreshOgpImage() {
+    const img = document.getElementById('ogp-preview-image');
+    const loading = document.getElementById('ogp-loading');
+
+    // ローディング表示
+    loading.style.display = 'flex';
+    img.classList.remove('opacity-100');
+    img.classList.add('opacity-0');
+
+    // 現在のsrcを取得し、refreshパラメータを付与
+    const currentSrc = new URL(img.src);
+    currentSrc.searchParams.set('refresh', 'true');
+    currentSrc.searchParams.set('v', new Date().getTime()); // キャッシュバスター
+
+    // 画像を再読み込み
+    img.src = currentSrc.toString();
+  }
+
+  // 画像の読み込み成功
+  function handleOgpImageLoad() {
+    const loading = document.getElementById('ogp-loading');
+    const image = document.getElementById('ogp-preview-image');
+    const mainImg = document.getElementById('main-ogp-image');
+
+    // ローディングを非表示、画像を表示
+    loading.style.display = 'none';
+    image.classList.remove('opacity-0');
+    image.classList.add('opacity-100');
+
+    // メイン画像も更新
+    if (mainImg) {
+      const currentSrc = new URL(mainImg.src);
+      currentSrc.searchParams.set('v', new Date().getTime());
+      mainImg.src = currentSrc.toString();
+    }
+  }
+
+  // 画像の読み込み失敗（生成中の可能性）
+  function handleOgpImageError(img) {
+    const loading = document.getElementById('ogp-loading');
+
+    // まだリトライ回数が残っている場合
+    if (retryCount < MAX_RETRIES) {
+      retryCount++;
+
+      // ローディングメッセージを更新
+      const loadingText = loading.querySelector('p.font-bold');
+      loadingText.textContent = `画像を生成中... (${retryCount}/${MAX_RETRIES})`;
+
+      // 2秒後にリトライ
+      setTimeout(() => {
+        // タイムスタンプを更新してキャッシュバスティング
+        const currentSrc = img.src;
+        img.src = currentSrc.replace(/v=\d+/, `v=${Date.now()}`);
+      }, 2000);
+    } else {
+      // リトライ上限に達した場合
+      loading.innerHTML = `
+        <div class="text-center">
+          <span class="text-4xl">⚠️</span>
+          <p class="mt-4 text-sm font-bold text-slate-600 dark:text-purple-300">画像の読み込みに失敗しました</p>
+          <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">ページをリロードしてください</p>
+        </div>
+      `;
+    }
+  }
+
+  // ESCキーでモーダルを閉じる
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeOgpPreview();
+    }
+  });
+</script>

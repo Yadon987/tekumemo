@@ -1,0 +1,89 @@
+<!-- アプリ設定セクション（PWAインストール） -->
+<div class="mb-8 p-6 bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl rounded-3xl border-l-4 border-t-4 border-l-white border-t-white border-r border-b border-r-purple-100 border-b-purple-100 dark:border-white/10 shadow-[8px_8px_20px_rgba(168,85,247,0.1),-8px_-8px_20px_rgba(255,255,255,0.8)] dark:shadow-[0_0_30px_rgba(168,85,247,0.15),inset_0_1px_0_rgba(255,255,255,0.1)] relative overflow-hidden group" data-controller="pwa-settings">
+
+  <!-- Decorative Elements -->
+  <div class="absolute top-0 right-0 w-32 h-32 bg-purple-400/10 dark:bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-400/10 dark:bg-blue-500/10 rounded-full blur-2xl -ml-8 -mb-8 pointer-events-none"></div>
+
+  <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center space-x-4 w-full sm:w-auto">
+      <div class="relative">
+        <div class="absolute inset-0 bg-purple-400 blur-md opacity-20 dark:opacity-40 rounded-full"></div>
+        <div class="relative bg-gradient-to-br from-white to-purple-50 dark:from-slate-800 dark:to-slate-700 p-3 rounded-2xl shadow-sm border border-white/50 dark:border-white/10">
+          <span class="material-symbols-outlined text-2xl text-transparent bg-clip-text bg-gradient-to-br from-purple-500 to-pink-500 dark:from-purple-400 dark:to-pink-400">install_mobile</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-gray-800 dark:text-white flex items-center gap-2">
+          アプリをインストール
+          <span class="px-2 py-0.5 text-[10px] font-bold text-purple-600 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/50 rounded-full border border-purple-200 dark:border-purple-700/50">推奨</span>
+        </h3>
+        <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5">ホーム画面に追加して、より快適に利用できます</p>
+      </div>
+    </div>
+
+    <div class="w-full sm:w-auto flex justify-center sm:justify-end">
+      <button type="button" data-pwa-settings-target="installButton" data-action="click->pwa-settings#install" class="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2.5 px-6 rounded-full shadow-[0_4px_15px_rgba(168,85,247,0.4)] hover:shadow-[0_6px_20px_rgba(168,85,247,0.6)] hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-sm flex items-center justify-center group/btn">
+        <span class="material-symbols-outlined mr-1.5 text-lg group-hover/btn:animate-bounce">download</span>
+        インストール
+      </button>
+    </div>
+  </div>
+
+  <!-- iOS用インストールガイドモーダル -->
+  <div data-pwa-settings-target="iosGuideModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center px-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity" data-action="click->pwa-settings#closeIOSGuide"></div>
+    <div class="modal-content bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-[2rem] p-8 w-full max-w-sm relative z-10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/50 dark:border-white/10 transform transition-all duration-300 scale-95 opacity-0 ring-1 ring-white/20">
+      <button type="button" data-action="click->pwa-settings#closeIOSGuide" class="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <div class="text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-50 dark:bg-purple-900/30 mb-6 relative">
+          <div class="absolute inset-0 bg-purple-400 blur-xl opacity-20 rounded-full"></div>
+          <span class="material-symbols-outlined text-3xl text-purple-500 dark:text-purple-400 relative z-10">add_to_home_screen</span>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">ホーム画面に追加</h3>
+        <p class="text-sm text-gray-600 dark:text-slate-300 mb-8 leading-relaxed">
+          Safariのメニューから<br>
+          <span class="font-bold text-gray-800 dark:text-white">「ホーム画面に追加」</span>を選択してください。
+        </p>
+
+        <div class="flex flex-col gap-3 text-sm text-left">
+          <div class="flex items-center gap-4 p-4 bg-gray-50/80 dark:bg-slate-800/50 rounded-2xl border border-gray-100 dark:border-white/5">
+            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-600 dark:text-blue-400 font-bold">1</div>
+            <div class="flex-1">
+              <p class="text-xs text-gray-500 dark:text-slate-400 mb-0.5">画面下部の</p>
+              <div class="flex items-center font-bold text-gray-700 dark:text-slate-200">
+                <span class="material-symbols-outlined text-blue-500 mr-1">ios_share</span>
+                共有ボタン
+                <span class="text-xs font-normal text-gray-500 ml-1">をタップ</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center">
+            <span class="material-symbols-outlined text-gray-300 dark:text-slate-600">arrow_downward</span>
+          </div>
+
+          <div class="flex items-center gap-4 p-4 bg-gray-50/80 dark:bg-slate-800/50 rounded-2xl border border-gray-100 dark:border-white/5">
+            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gray-200 dark:bg-slate-700 rounded-full text-gray-600 dark:text-slate-300 font-bold">2</div>
+            <div class="flex-1">
+              <p class="text-xs text-gray-500 dark:text-slate-400 mb-0.5">メニュー内の</p>
+              <div class="flex items-center font-bold text-gray-700 dark:text-slate-200">
+                <span class="material-symbols-outlined text-gray-600 dark:text-gray-300 mr-1">add_box</span>
+                ホーム画面に追加
+                <span class="text-xs font-normal text-gray-500 ml-1">を選択</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" data-action="click->pwa-settings#closeIOSGuide" class="mt-8 w-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold py-3.5 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

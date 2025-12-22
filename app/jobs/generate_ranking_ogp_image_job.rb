@@ -1,7 +1,7 @@
 class GenerateRankingOgpImageJob < ApplicationJob
   queue_as :default
 
-  def perform(user)
+  def perform(user, force: false)
     return unless user
 
     # 期間設定 (今週)
@@ -9,8 +9,9 @@ class GenerateRankingOgpImageJob < ApplicationJob
     end_date = Date.current.end_of_week
     period_key = "#{start_date.strftime('%Y%m%d')}_#{end_date.strftime('%Y%m%d')}"
 
-    # 既に画像があり、期間キーが一致し、作成から12時間以内ならスキップ
-    if user.ranking_ogp_image.attached? &&
+    # 既に画像があり、期間キーが一致し、作成から24時間以内ならスキップ（強制フラグがない場合）
+    if !force &&
+       user.ranking_ogp_image.attached? &&
        user.ranking_ogp_image.filename.to_s.include?(period_key) &&
        user.ranking_ogp_image.blob.created_at > 24.hours.ago
       return

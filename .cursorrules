@@ -55,6 +55,9 @@ config/tailwind.config.jsを作成することを禁止します。Rails7から�
 2. **Styling:** TailwindCSSを使用する。
 3. **Framework:** Rails 7 (Hotwire) を基本とする。
 
+## 開発ルール
+- **Stimulusコントローラー:** `app/javascript/controllers/` 配下に新しいコントローラーファイルを作成した場合は、**必ず**直後に `bin/rails stimulus:manifest:update` コマンドを実行して `index.js` を更新すること。これを忘れるとコントローラーが動作しない。
+
 ## デザイン・UI/UX
 **詳細は `.docs/` 以下のデザイン定義ファイルを必ず参照し、厳密に準拠すること。**
 

@@ -1,201 +1,160 @@
-# Google Fit APIからデータを取得するサービスクラス
-# ユーザーの散歩データ（歩数、距離、時間、カロリー）を取得する
-class GoogleFitService
-  require "google/apis/fitness_v1"
+require "google/apis/fitness_v1"
+require "signet/oauth_2/client"
 
-  # 初期化: ユーザー情報を受け取り、Google Fit APIクライアントをセットアップする
+class GoogleFitService
+  # Google Fit Activity Types
+  ACTIVITY_TYPE_BIKING = 1
+  ACTIVITY_TYPE_WALKING = 7
+  ACTIVITY_TYPE_RUNNING = 8
+  TARGET_ACTIVITY_TYPES = [ ACTIVITY_TYPE_BIKING, ACTIVITY_TYPE_WALKING, ACTIVITY_TYPE_RUNNING ].freeze
+
   def initialize(user)
     @user = user
-    @service = Google::Apis::FitnessV1::FitnessService.new
-    @service.authorization = authorize_user
+    @client = Google::Apis::FitnessV1::FitnessService.new
+    auth = Signet::OAuth2::Client.new(access_token: user.google_token)
+    @client.authorization = auth
   end
 
-  # 指定した日付の散歩データを取得する
-  # @param date [Date] 取得したい日付
-  # @return [Hash] 歩数、距離、時間、カロリーのデータ
-  def fetch_daily_data(date)
-    # 指定日の開始時刻と終了時刻をミリ秒単位で取得
-    start_time_millis = date.beginning_of_day.to_i * 1000
-    end_time_millis = date.end_of_day.to_i * 1000
+  # 指定期間の歩数と距離データを日別で取得する
+  # @param start_date [Date] 開始日
+  # @param end_date [Date] 終了日
+  # @return [Hash] 日付(Date)をキー、データ(Hash)を値とするハッシュ
+  #   例: { Date.new(2025, 12, 20) => { steps: 5000, distance: 3.5, calories: 150 } }
+  def fetch_activities(start_date, end_date)
+    # タイムゾーンを考慮して、開始日の00:00:00から終了日の23:59:59までのミリ秒を取得
+    start_time_millis = start_date.beginning_of_day.to_i * 1000
+    end_time_millis = end_date.end_of_day.to_i * 1000
 
-    # 各データを取得
-    steps_data = fetch_steps_with_time(start_time_millis, end_time_millis)
+    # 集計リクエストの作成
+    aggregate_request = Google::Apis::FitnessV1::AggregateRequest.new(
+      aggregate_by: [
+        # 歩数
+        Google::Apis::FitnessV1::AggregateBy.new(
+          data_type_name: "com.google.step_count.delta"
+        ),
+        # 距離
+        Google::Apis::FitnessV1::AggregateBy.new(
+          data_type_name: "com.google.distance.delta"
+        ),
+        # カロリー（アクティビティ別に取得）
+        Google::Apis::FitnessV1::AggregateBy.new(
+          data_type_name: "com.google.calories.expended"
+        )
+      ],
+      # アクティビティセグメントごとに集計（徒歩、自転車などを区別するため）
+      bucket_by_activity_segment: Google::Apis::FitnessV1::BucketByActivity.new(
+        min_duration_millis: 0 # 短いアクティビティも含める
+      ),
+      start_time_millis: start_time_millis,
+      end_time_millis: end_time_millis
+    )
 
-    {
-      steps: steps_data[:steps],
-      start_time: steps_data[:start_time], # 主な活動時間
-      distance: fetch_distance(start_time_millis, end_time_millis),
-      duration: fetch_duration(start_time_millis, end_time_millis),
-      calories: fetch_calories(start_time_millis, end_time_millis)
-    }
-  rescue Google::Apis::Error => e
-    # APIエラーが発生した場合は、エラーメッセージをログに記録してnilを返す
-    Rails.logger.error "Google Fit API error: #{e.message}"
-    nil
+    begin
+      # APIリクエスト実行
+      response = @client.aggregate_dataset("me", aggregate_request)
+
+      # 日別集計用ハッシュ (初期値0)
+      daily_stats = Hash.new { |h, k| h[k] = { steps: 0, distance_m: 0.0, duration_min: 0, calories: 0, max_calories: 0, start_time: nil } }
+
+      response.bucket.each do |bucket|
+        # アクティビティタイプを取得 (int)
+        activity_type = bucket.activity
+
+        # 対象のアクティビティ以外はスキップ
+        next unless TARGET_ACTIVITY_TYPES.include?(activity_type)
+
+        # バケットの開始時間を取得して日付に変換（JSTで扱う）
+        bucket_time = Time.at(bucket.start_time_millis / 1000).in_time_zone
+        bucket_date = bucket_time.to_date
+
+        # セグメントの継続時間を計算（ミリ秒 → 分）
+        duration_millis = bucket.end_time_millis - bucket.start_time_millis
+        duration_min = (duration_millis / 1000.0 / 60.0).round
+
+        # データセットから値を抽出
+        steps, distance, calories = extract_data_from_bucket(bucket)
+
+        # サイクリングの換算処理などを適用
+        steps, distance, duration_min = apply_activity_conversion(activity_type, steps, distance, duration_min)
+
+        # 日別ハッシュに加算
+        daily_stats[bucket_date][:steps] += steps
+        daily_stats[bucket_date][:distance_m] += distance
+        daily_stats[bucket_date][:duration_min] += duration_min
+        daily_stats[bucket_date][:calories] += calories
+
+        # このセグメントのカロリーが最大なら、開始時刻を記録（時間帯判定用）
+        if calories > daily_stats[bucket_date][:max_calories]
+          daily_stats[bucket_date][:max_calories] = calories
+          daily_stats[bucket_date][:start_time] = bucket_time
+        end
+      end
+
+      # 結果の整形（メートル→キロメートル）
+      result = {}
+      daily_stats.each do |date, stats|
+        distance_km = (stats[:distance_m] / 1000.0).round(2)
+
+        result[date] = {
+          steps: stats[:steps],
+          distance: distance_km,
+          calories: stats[:calories],
+          duration: stats[:duration_min],
+          start_time: stats[:start_time]
+        }
+      end
+
+      result
+
+    rescue Google::Apis::ClientError, Google::Apis::ServerError => e
+      Rails.logger.error "Google Fit API Error: #{e.message}"
+      # エラー時は空ハッシュを返す
+      {}
+    end
   end
 
   private
 
-  # ユーザーの認証情報を使ってGoogle APIを認証する
-  def authorize_user
-    return nil unless @user.google_token_valid?
+  # バケットから歩数、距離、カロリーを抽出
+  def extract_data_from_bucket(bucket)
+    steps = 0
+    distance = 0.0
+    calories = 0
 
-    # Signetsegを使ってアクセストークンを設定
-    auth = Signet::OAuth2::Client.new(
-      token_credential_uri: "https://oauth2.googleapis.com/token",
-      client_id: ENV.fetch("GOOGLE_CLIENT_ID", nil),
-      client_secret: ENV.fetch("GOOGLE_CLIENT_SECRET", nil),
-      refresh_token: @user.google_refresh_token,
-      access_token: @user.google_token
-    )
-
-    # トークンが期限切れの場合は更新
-    if @user.google_expires_at < Time.current
-      auth.refresh!
-      @user.update(
-        google_token: auth.access_token,
-        google_expires_at: Time.at(auth.expires_at)
-      )
-    end
-
-    auth
-  end
-
-  # 歩数データと主な活動時間を取得
-  def fetch_steps_with_time(start_time, end_time)
-    dataset_id = "#{start_time}000000-#{end_time}000000"
-    data_source = "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
-
-    dataset = @service.get_user_data_source_dataset(
-      "me",
-      data_source,
-      dataset_id
-    )
-
-    total_steps = 0
-    max_steps_in_session = 0
-    representative_start_time = nil
-
-    (dataset.point || []).each do |point|
-      steps_in_point = 0
-      point.value.each do |value|
-        steps_in_point += value.int_val if value.int_val
-      end
-
-      total_steps += steps_in_point
-
-      # 最も歩数が多いセッションの開始時間を記録
-      if steps_in_point > max_steps_in_session && point.start_time_nanos
-        max_steps_in_session = steps_in_point
-        # ナノ秒 -> 秒
-        representative_start_time = Time.at(point.start_time_nanos / 1_000_000_000)
-      end
-    end
-
-    { steps: total_steps, start_time: representative_start_time }
-  rescue => e
-    Rails.logger.error "Steps fetch error: #{e.message}"
-    { steps: 0, start_time: nil }
-  end
-
-  # 距離データを取得（メートル単位をキロメートルに変換）
-  def fetch_distance(start_time, end_time)
-    dataset_id = "#{start_time}000000-#{end_time}000000"
-    data_source = "derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta"
-
-    dataset = @service.get_user_data_source_dataset(
-      "me",
-      data_source,
-      dataset_id
-    )
-
-    # データポイントから距離を合計（メートル → キロメートル）
-    total_distance = 0.0
-    (dataset.point || []).each do |point|
-      point.value.each do |value|
-        total_distance += value.fp_val if value.fp_val
-      end
-    end
-
-    (total_distance / 1000.0).round(2) # メートルをキロメートルに変換
-  rescue => e
-    Rails.logger.error "Distance fetch error: #{e.message}"
-    0.0
-  end
-
-  # 活動時間を取得（ミリ秒単位を分に変換）
-  def fetch_duration(start_time, end_time)
-    dataset_id = "#{start_time}000000-#{end_time}000000"
-    data_source = "derived:com.google.active_minutes:com.google.android.gms:merge_active_minutes"
-
-    dataset = @service.get_user_data_source_dataset(
-      "me",
-      data_source,
-      dataset_id
-    )
-
-    # データポイントから時間を合計（分）
-    total_minutes = 0
-    dataset.point.each do |point|
-      point.value.each do |value|
-        total_minutes += value.int_val if value.int_val
-      end
-    end
-
-    total_minutes
-  rescue => e
-    Rails.logger.error "Duration fetch error: #{e.message}"
-    0
-  end
-
-  # 消費カロリーを取得（運動によるもののみ抽出）
-  def fetch_calories(start_time, end_time)
-    # アクティビティ別に集計するリクエストを作成
-    aggregate_request = Google::Apis::FitnessV1::AggregateRequest.new(
-      aggregate_by: [
-        Google::Apis::FitnessV1::AggregateBy.new(
-          data_type_name: "com.google.calories.expended",
-          data_source_id: "derived:com.google.calories.expended:com.google.android.gms:merge_calories_expended"
-        )
-      ],
-      bucket_by_activity_type: Google::Apis::FitnessV1::BucketByActivity.new(
-        min_duration_millis: 0
-      ),
-      start_time_millis: start_time,
-      end_time_millis: end_time
-    )
-
-    # APIをコールして集計データを取得
-    response = @service.aggregate_dataset("me", aggregate_request)
-
-    total_calories = 0.0
-
-    # 除外するアクティビティID（基礎代謝や非運動）
-    # 0: In Vehicle (車)
-    # 3: Still (静止)
-    # 4: Unknown (不明 - 多くの場合、何もしていない時間)
-    # 5: Tilting (端末の傾き - 通常は無視)
-    # 72: Sleep (睡眠)
-    excluded_activities = [ 0, 3, 4, 5, 72 ]
-
-    response.bucket.each do |bucket|
-      activity_id = bucket.activity
-
-      # 除外対象のアクティビティでなければ加算
-      unless excluded_activities.include?(activity_id)
-        bucket.dataset.each do |dataset|
-          dataset.point.each do |point|
-            point.value.each do |value|
-              total_calories += value.fp_val if value.fp_val
-            end
+    bucket.dataset.each_with_index do |dataset, index|
+      dataset.point.each do |point|
+        point.value.each do |value|
+          case index
+          when 0 # 歩数
+            steps += value.int_val if value.int_val
+          when 1 # 距離
+            distance += value.fp_val if value.fp_val
+          when 2 # カロリー
+            calories += value.fp_val.to_i if value.fp_val
           end
         end
       end
     end
 
-    total_calories.round(0)
-  rescue => e
-    Rails.logger.error "Calories fetch error: #{e.message}"
-    0
+    [ steps, distance, calories ]
+  end
+
+  # アクティビティタイプに応じた換算処理
+  def apply_activity_conversion(activity_type, steps, distance, duration_min)
+    # 自転車の場合、距離データが空なら時間から推定
+    # 街乗り自転車の平均速度 15km/h と仮定
+    if activity_type == ACTIVITY_TYPE_BIKING && distance == 0.0
+      distance = (duration_min / 60.0) * 15 * 1000 # メートル単位
+    end
+
+    # 自転車の場合は距離・時間を換算し、歩数を距離から逆算
+    if activity_type == ACTIVITY_TYPE_BIKING
+      distance = distance / 4.0  # 距離は1/4に換算
+      duration_min = (duration_min / 2.0).round  # 時間は1/2に換算（METs基準）
+      # 歩数を距離から逆算 (1km = 約1300歩)
+      steps = ((distance / 1000.0) * 1300).round
+    end
+
+    [ steps, distance, duration_min ]
   end
 end

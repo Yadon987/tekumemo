@@ -1,19 +1,15 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // PWAインストールプロンプトを管理するコントローラー
 export default class extends Controller {
-  static targets = ["banner"]
+  static targets = ["banner"];
 
   connect() {
-    // デバッグ用：コメントアウトを外すとバナーを強制表示
-    // this.showBanner()
-    // return
+    console.log("[PWA Install] Controller connected")
 
-    // ユーザーが以前に閉じたかチェック
-    const dismissed = localStorage.getItem('pwa-install-dismissed')
-    if (dismissed) {
-      console.log('[PWA Install] Banner was dismissed previously')
-      return
+    // グローバルに保存されたイベントがあれば復元
+    if (window.pwaInstallPrompt) {
+      this.deferredPrompt = window.pwaInstallPrompt
     }
 
     // 既にインストール済みかチェック
@@ -33,67 +29,74 @@ export default class extends Controller {
 
       // 後で使えるようにイベントを保存
       this.deferredPrompt = e
+      window.pwaInstallPrompt = e // グローバルにも保存（設定画面などで使うため）
 
-      // バナーを表示
-      this.showBanner()
+      // 以前に閉じていなければバナーを表示
+      const dismissed = localStorage.getItem('pwa-install-dismissed')
+      if (!dismissed) {
+        this.showBanner()
+      } else {
+        console.log('[PWA Install] Banner suppressed because it was dismissed previously')
+      }
     })
 
     // インストール完了時にバナーを非表示
     window.addEventListener('appinstalled', () => {
       this.hideBanner()
+      window.pwaInstallPrompt = null
     })
   }
 
   // バナーを表示
   showBanner() {
     if (this.hasBannerTarget) {
-      this.bannerTarget.classList.remove('hidden')
+      this.bannerTarget.classList.remove("hidden");
       // アニメーション用
       setTimeout(() => {
-        this.bannerTarget.classList.add('translate-y-0', 'opacity-100')
-        this.bannerTarget.classList.remove('translate-y-4', 'opacity-0')
-      }, 100)
+        this.bannerTarget.classList.add("translate-y-0", "opacity-100");
+        this.bannerTarget.classList.remove("translate-y-4", "opacity-0");
+      }, 100);
     }
   }
 
   // バナーを非表示
   hideBanner() {
     if (this.hasBannerTarget) {
-      this.bannerTarget.classList.add('translate-y-4', 'opacity-0')
-      this.bannerTarget.classList.remove('translate-y-0', 'opacity-100')
+      this.bannerTarget.classList.add("translate-y-4", "opacity-0");
+      this.bannerTarget.classList.remove("translate-y-0", "opacity-100");
       setTimeout(() => {
-        this.bannerTarget.classList.add('hidden')
-      }, 300)
+        this.bannerTarget.classList.add("hidden");
+      }, 300);
     }
   }
 
   // インストールボタンをクリック
   async install() {
     if (!this.deferredPrompt) {
-      return
+      return;
     }
 
     // インストールプロンプトを表示
-    this.deferredPrompt.prompt()
+    this.deferredPrompt.prompt();
 
     // ユーザーの選択を待つ
-    const { outcome } = await this.deferredPrompt.userChoice
+    const { outcome } = await this.deferredPrompt.userChoice;
 
-    console.log(`User response to the install prompt: ${outcome}`)
+    console.log(`User response to the install prompt: ${outcome}`);
 
     // プロンプトを使い切ったのでクリア
-    this.deferredPrompt = null
+    this.deferredPrompt = null;
 
     // バナーを非表示
-    this.hideBanner()
+    this.hideBanner();
   }
 
   // ×ボタンをクリック
   dismiss() {
     // ローカルストレージに記録（次回から表示しない）
-    localStorage.setItem('pwa-install-dismissed', 'true')
+    localStorage.setItem("pwa-install-dismissed", "true");
 
     // バナーを非表示
-    this.hideBanner()
+    this.hideBanner();
   }
 }

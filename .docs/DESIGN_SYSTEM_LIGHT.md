@@ -103,6 +103,22 @@ shadow-[20px_20px_60px_rgba(59,130,246,0.2),-20px_-20px_60px_rgba(255,255,255,0.
 
 - `before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent`
 
+### 5. Card Depth & Rim Light (立体表現)
+
+アクションの性質に応じて、カードの立体感を使い分ける。
+
+1.  **Convex (凸 / 浮き出し):**
+
+    - **用途:** ポジティブなアクション（追加、作成、インストールなど）。
+    - **表現:** 通常のドロップシャドウを使用。
+    - **Strong Rim Light:** 左と上のフチを太く (`border-l-4 border-t-4 border-white`) し、右と下を影色 (`border-r-purple-100` 等) にすることで、強い光の反射と立体感を強調する。
+      - ※**White-on-White**（白背景に白カード）の場合の視認性向上テクニックとして推奨。背景色が濃い場合は通常の `border-2` で十分。
+
+2.  **Concave (凹 / へこみ):**
+    - **用途:** ネガティブなアクション（削除、警告）や、情報の埋め込み。
+    - **表現:** `shadow-inner` や `inset` シャドウを使用し、背景に沈み込ませる。
+    - **Rim:** フチは細く控えめにし、内側の影を強調する。
+
 ---
 
 ## 🧩 Component Guidelines

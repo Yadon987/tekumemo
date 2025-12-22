@@ -73,6 +73,60 @@ class WalksController < ApplicationController
     redirect_to walks_path, notice: t("flash.walks.destroy.notice")
   end
 
+  # Google Fitからデータをインポート（POST /walks/import_google_fit）
+  def import_google_fit
+    # Google連携していない場合はエラー
+    unless current_user.google_token_valid?
+      redirect_to walks_path, alert: "Google Fitと連携してください。"
+      return
+    end
+
+    service = GoogleFitService.new(current_user)
+    # 直近30日分（今日を含む）
+    end_date = Date.current
+    start_date = end_date - 29.days
+
+    activities = service.fetch_activities(start_date, end_date)
+
+    created_count = 0
+    updated_count = 0
+
+    activities.each do |date, data|
+      # 距離が0以下の場合はスキップ（DBを汚さない）
+      next if data[:distance] <= 0
+
+      walk = current_user.walks.find_or_initialize_by(walked_on: date)
+
+      # モデルのメソッドを使ってデータをマージ
+      walk.merge_google_fit_data(data)
+
+      # 何らかの変更があった場合のみ保存処理を続行
+      if walk.changed?
+
+        if walk.save
+          if walk.previously_new_record?
+            created_count += 1
+          else
+            updated_count += 1
+          end
+        else
+          Rails.logger.error "Failed to save walk for #{date}: #{walk.errors.full_messages.join(', ')}"
+        end
+      end
+    end
+
+    if created_count > 0 || updated_count > 0
+      flash[:notice] = "#{created_count}件の記録を作成、#{updated_count}件の記録を更新しました。"
+
+      # データ更新があったので、ランキングOGP画像を強制再生成
+      GenerateRankingOgpImageJob.perform_later(current_user, force: true)
+    else
+      flash[:info] = "新しいデータはありませんでした（または既存データの方が最新でした）。"
+    end
+
+    redirect_to walks_path
+  end
+
   private
 
   # 対象の散歩記録を取得するメソッド

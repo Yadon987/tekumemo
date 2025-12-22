@@ -3,9 +3,6 @@ module Rankings
     skip_before_action :authenticate_user!, only: [ :show ]
 
     def show
-      # キャッシュ設定: 日々の変動を反映するため24時間に設定
-      expires_in 24.hours, public: true
-
       @user = User.find(params[:id])
 
       # 期間設定 (今週)
@@ -14,9 +11,16 @@ module Rankings
       period_key = "#{start_date.strftime("%Y%m%d")}_#{end_date.strftime("%Y%m%d")}"
 
       # 強制リフレッシュ: ?refresh=true があれば既存の画像を削除
-      if params[:refresh] == "true" && @user.ranking_ogp_image.attached?
-        Rails.logger.info "[Ranking OGP] Force refreshing image for user #{@user.id}"
-        @user.ranking_ogp_image.purge
+      if params[:refresh] == "true"
+        expires_now # キャッシュを無効化
+        if @user.ranking_ogp_image.attached?
+          Rails.logger.info "[Ranking OGP] Force refreshing image for user #{@user.id}"
+          @user.ranking_ogp_image.purge
+          @user.reload # アタッチメント情報を更新
+        end
+      else
+        # キャッシュ設定: 日々の変動を反映するため24時間に設定
+        expires_in 24.hours, public: true
       end
 
       # 既存の画像があり、ファイル名が今週のもので、かつ作成から12時間以内であれば返す
@@ -36,7 +40,7 @@ module Rankings
       image_data = RpgCardGeneratorService.new(
         user: @user,
         title: "RANKING CHAMPION",
-        message: "今週のランキング結果！\n目指せトップランカー！",
+        message: "今週のランキング結果です！\n目指せトップランカー！",
         stats: stats,
         theme: :ranking
       ).generate

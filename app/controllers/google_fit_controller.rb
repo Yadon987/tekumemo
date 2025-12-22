@@ -2,52 +2,7 @@ class GoogleFitController < ApplicationController
   # ログインしていないユーザーはアクセスできないようにする
   before_action :authenticate_user!
 
-  # 指定した日付のGoogle Fitデータを取得する
-  # GET /google_fit/daily_data?date=2025-01-15
-  def daily_data
-    # リクエストパラメータから日付を取得（デフォルトは今日）
-    date = params[:date] ? Date.parse(params[:date]) : Date.current
 
-    # ユーザーがGoogle認証済みかチェック
-    unless current_user.google_token_valid?
-      render json: {
-        error: "Google Fitと連携されていません。連携してください。"
-      }, status: :unauthorized
-      return
-    end
-
-    # Google Fit APIからデータを取得
-    service = GoogleFitService.new(current_user)
-    data = service.fetch_daily_data(date)
-
-    if data
-      # 取得成功: データをJSON形式で返す
-      render json: {
-        date: date,
-        steps: data[:steps],
-        distance: data[:distance],
-        duration: data[:duration],
-        calories: data[:calories],
-        start_time: data[:start_time]
-      }
-    else
-      # 取得失敗: エラーメッセージを返す
-      render json: {
-        error: "Google Fitからデータを取得できませんでした。"
-      }, status: :unprocessable_entity
-    end
-  rescue Date::Error
-    # 日付のパースに失敗した場合
-    render json: {
-      error: "無効な日付形式です。"
-    }, status: :bad_request
-  rescue StandardError => e
-    # Google Fit API呼び出しやトークン期限切れなどのエラー
-    Rails.logger.error "Google Fit API Error: #{e.class} - #{e.message}"
-    render json: {
-      error: "Google Fitとの連携が切れています。設定画面から再度連携してください。"
-    }, status: :unauthorized
-  end
 
   # Google Fitとの連携状態を確認する
   # GET /google_fit/status
@@ -62,5 +17,43 @@ class GoogleFitController < ApplicationController
         connected: false
       }
     end
+  end
+
+  # 指定した日のGoogle Fitデータを取得する
+  # GET /google_fit/daily_data?date=YYYY-MM-DD
+  def daily_data
+    unless current_user.google_token_valid?
+      render json: { error: "Google Fit not connected" }, status: :unauthorized
+      return
+    end
+
+    date = params[:date].present? ? Date.parse(params[:date]) : Date.current
+    service = GoogleFitService.new(current_user)
+
+    # 指定日のデータを取得
+    activities = service.fetch_activities(date, date)
+    data = activities[date]
+
+    if data
+      render json: {
+        date: date.to_s,
+        steps: data[:steps],
+        distance: data[:distance],
+        calories: data[:calories],
+        duration: data[:duration] || 0,
+        start_time: data[:start_time]&.iso8601 || date.to_time.change(hour: 9).iso8601
+      }
+    else
+      render json: {
+        date: date.to_s,
+        steps: 0,
+        distance: 0.0,
+        calories: 0,
+        duration: 0
+      }
+    end
+  rescue => e
+    Rails.logger.error "Google Fit API Error: #{e.message}"
+    render json: { error: e.message }, status: :internal_server_error
   end
 end

@@ -52,6 +52,9 @@ application.register("push-notification", PushNotificationController)
 import PwaInstallController from "./pwa_install_controller"
 application.register("pwa-install", PwaInstallController)
 
+import PwaSettingsController from "./pwa_settings_controller"
+application.register("pwa-settings", PwaSettingsController)
+
 import RadioToggleController from "./radio_toggle_controller"
 application.register("radio-toggle", RadioToggleController)
 

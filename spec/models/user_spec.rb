@@ -135,6 +135,13 @@ RSpec.describe User, type: :model do
     end
 
     context "期間: weekly (今週)" do
+      around do |example|
+        # 2025-12-24 (水) に固定してテスト実行
+        travel_to(Time.zone.parse("2025-12-24 12:00:00")) do
+          example.run
+        end
+      end
+
       it "今週の記録が集計され、距離順に並ぶこと" do
         # User A: 今日 5km + 昨日 3km = 8km
         # User B: 今日 10km

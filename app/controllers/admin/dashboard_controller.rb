@@ -4,6 +4,10 @@ class Admin::DashboardController < Admin::BaseController
     @total_users = User.count
     @users_this_month = User.where(created_at: Time.current.beginning_of_month..Time.current).count
     @active_users_today = User.where("current_sign_in_at >= ?", Time.current.beginning_of_day).count
+    @active_users_today_list = User.where("current_sign_in_at >= ?", Time.current.beginning_of_day)
+                                    .order(current_sign_in_at: :desc)
+                                    .limit(3)
+                                    .pluck(:name)
     @active_users_this_week = User.where("current_sign_in_at >= ?", Time.current.beginning_of_week).count
     @active_users_this_month = User.where("current_sign_in_at >= ?", Time.current.beginning_of_month).count
 

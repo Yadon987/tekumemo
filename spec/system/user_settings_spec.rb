@@ -87,13 +87,13 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       end
 
       it "目標距離に不正な値（0以下）を入力すると更新できないこと" do
-        fill_in "目標距離 (m)", with: "0"
+        fill_in "1日の目標(月間) [m]", with: "0"
         click_button "変更を保存する"
         expect(page).to have_content("目標距離は0より大きい値にしてください")
       end
 
       it "目標距離に不正な値（上限超え）を入力すると更新できないこと" do
-        fill_in "目標距離 (m)", with: "100001"
+        fill_in "1日の目標(月間) [m]", with: "100001"
         click_button "変更を保存する"
 
         # HTML5バリデーションが機能している場合、フォーム送信自体がブロックされるため、
@@ -109,7 +109,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
 
     it "プロフィール（名前・目標距離）を更新できること" do
       fill_in "ユーザー名（表示名）", with: "更新後のユーザー"
-      fill_in "目標距離 (m)", with: "8000"
+      fill_in "1日の目標(月間) [m]", with: "8000"
       click_button "変更を保存する"
 
       expect(page).to have_content("アカウント情報を変更しました。")
@@ -168,7 +168,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       click_button "連携する"
 
       # モーダル内の連携リンクをクリック
-      click_link "連携に進む"
+      click_button "連携に進む"
 
       expect(page).to have_content("Googleアカウントと連携しました")
       expect(page).to have_content("連携済み")
