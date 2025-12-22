@@ -3,17 +3,17 @@ require "mini_magick"
 class RpgCardGeneratorService
   # レイアウト定数
   IMAGE_SIZE = "1200x630".freeze
-  AVATAR_SIZE = 360
-  AVATAR_POS = "50,120".freeze
+  AVATAR_SIZE = 340
+  AVATAR_POS = "60,120".freeze
 
   # ヘッダー
   HEADER_TITLE_POS = "+85+35".freeze
   HEADER_DATE_POS = "+50+45".freeze
 
   # 左カラム
-  PLAYER_LABEL_POS = "+65+490".freeze
-  USER_NAME_BASE_Y = 530
-  LV_BADGE_POS = "+340+453".freeze
+  PLAYER_LABEL_POS = "+65+465".freeze
+  USER_NAME_BASE_Y = 500
+  LV_BADGE_POS = "+330+433".freeze
 
   # 右カラム
   MESSAGE_POS = "+480+160".freeze
@@ -89,13 +89,13 @@ class RpgCardGeneratorService
         c.fill "none"
         c.stroke colors[:border]
         c.strokewidth 4
-        c.draw "rectangle 50,120 410,480" # アバター枠
+        c.draw "rectangle 50,120 410,460" # アバター枠 (高さ340)
 
         # ユーザー名プレート
         c.fill colors[:panel_bg]
         c.stroke colors[:border]
         c.strokewidth 2
-        c.draw "rectangle 50,480 410,600"
+        c.draw "rectangle 50,460 410,560" # 高さ100 (下端560)
 
         # ラベル "PLAYER"
         c.stroke "none"
@@ -111,7 +111,7 @@ class RpgCardGeneratorService
         # Lvバッジ
         if @stats[:level].present?
           c.fill colors[:accent]
-          c.draw "rectangle 330,450 410,480"
+          c.draw "rectangle 320,430 400,460"
           c.fill "#000000"
           c.pointsize 22
           c.annotate LV_BADGE_POS, "Lv.#{@stats[:level]}"
@@ -270,13 +270,13 @@ class RpgCardGeneratorService
     user_name = clean_name.truncate(20)
 
     font_size = if user_name.length <= 6
-                  50
+                  40 # 45 -> 40
     elsif user_name.length <= 10
-                  35
+                  30 # 32 -> 30
     elsif user_name.length <= 15
-                  24
+                  20 # 22 -> 20
     else
-                  18
+                  16
     end
 
     c.pointsize font_size
@@ -287,9 +287,15 @@ class RpgCardGeneratorService
 
   def draw_message_body(c, message)
     if message.present?
-      clean_text = strip_emoji(message).gsub(/\R/, " ").squeeze(" ")
-      body_text = clean_text.truncate(65)
-      wrapped_body = wrap_text(body_text, 19)
+      if @theme == :ranking
+        # ランキングの場合は改行を維持して表示
+        wrapped_body = strip_emoji(message)
+      else
+        # 通常（投稿）の場合は改行をスペースに置換して自動折り返し
+        clean_text = strip_emoji(message).gsub(/\R/, " ").squeeze(" ")
+        body_text = clean_text.truncate(65)
+        wrapped_body = wrap_text(body_text, 19)
+      end
     else
       wrapped_body = "冒険の記録が更新されました！\n明日もまた、新たな旅へ出かけよう。"
     end
@@ -297,6 +303,9 @@ class RpgCardGeneratorService
   end
 
   def draw_status_bar(c, colors)
+    # 描画基準を左上に固定（前の設定を引き継がないように明示）
+    c.gravity "NorthWest"
+
     # 枠組み (3分割)
     c.fill "none"
     c.stroke colors[:border]
@@ -320,7 +329,10 @@ class RpgCardGeneratorService
     c.annotate "+#{STATUS_COL1_X}+#{STATUS_LABEL_Y}", label1
     c.fill colors[:accent]
     c.pointsize 40
-    c.annotate "+#{STATUS_COL1_X + 20}+#{STATUS_VALUE_Y}", value1.to_s
+
+    # DISTANCEの場合は左寄せ（元の位置）、RANKの場合は中央寄せ
+    offset_x = label1 == "DISTANCE" ? 20 : 50
+    c.annotate "+#{STATUS_COL1_X + offset_x}+#{STATUS_VALUE_Y}", value1.to_s
 
     # Item 2 (Steps)
     c.fill colors[:text_secondary]
@@ -339,8 +351,40 @@ class RpgCardGeneratorService
     value3 = @stats[:value3] || "TekuMemo"
     c.annotate "+#{STATUS_COL3_X}+#{STATUS_LABEL_Y}", label3
     c.fill colors[:text_primary]
-    c.pointsize 36
-    c.annotate "+#{STATUS_COL3_X + 10}+#{STATUS_VALUE_Y + 5}", strip_emoji(value3).truncate(10)
+
+    clean_value3 = strip_emoji(value3)
+    text_length = clean_value3.length
+
+    # フォントサイズと表示テキストの調整
+    font_size = 40 # デフォルトを40にアップ
+    display_text = clean_value3
+
+    if clean_value3.ascii_only?
+      # 半角のみ（距離や期間など）は大きく表示
+      # ただし "TekuMemo" (デフォルト値) は幅を取るため少し小さくする
+      if clean_value3 == "TekuMemo"
+        font_size = 26 # 32 -> 26 に縮小して確実にはみ出し防止
+      else
+        font_size = 40
+      end
+    else
+      # 全角含む（場所など）は文字数で調整
+      if text_length <= 5
+        font_size = 36
+      elsif text_length <= 8
+        font_size = 24 # 縮小して収める
+      else
+        font_size = 24
+        # 9文字以上の場合、強制的に「7文字 + ...」にする
+        display_text = "#{clean_value3[0...7]}..."
+      end
+    end
+
+    c.pointsize font_size
+    # フォントサイズが小さい場合は少し下にずらす
+    y_offset = font_size < 36 ? 8 : 5
+
+    c.annotate "+#{STATUS_COL3_X + 10}+#{STATUS_VALUE_Y + y_offset}", display_text
   end
 
   def wrap_text(text, max_width)

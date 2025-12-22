@@ -65,7 +65,7 @@ Rails.application.routes.draw do
   resources :web_push_subscriptions, only: [ :create ]
 
   # ユーザープロフィール編集
-  resources :users, only: [ :edit, :update ] do
+  resources :users, only: [] do
     member do
       delete :disconnect_google
     end

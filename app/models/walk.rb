@@ -89,10 +89,10 @@ class Walk < ApplicationRecord
 
   def set_time_of_day_from_hour(hour)
     self.time_of_day = case hour
-                       when 4..8 then :early_morning
-                       when 9..15 then :day
-                       when 16..18 then :evening
-                       else :night
-                       end
+    when 4..8 then :early_morning
+    when 9..15 then :day
+    when 16..18 then :evening
+    else :night
+    end
   end
 end

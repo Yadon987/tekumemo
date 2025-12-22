@@ -2,11 +2,21 @@ class Posts::OgpImagesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :show ]
 
   def show
-    # OGP画像は投稿作成後不変なので、1ヶ月キャッシュしてサーバー負荷を削減
-    expires_in 1.month, public: true
-
     @post = Post.find(params[:post_id])
     Rails.logger.info "Generating OGP image for Post ID: #{@post.id}"
+
+    # 強制リフレッシュ: ?refresh=true があれば既存の画像を削除
+    if params[:refresh] == "true"
+      expires_now
+      if @post.ogp_image.attached?
+        Rails.logger.info "Force refreshing OGP image for Post ID: #{@post.id}"
+        @post.ogp_image.purge
+        @post.reload
+      end
+    else
+      # OGP画像は投稿作成後不変なので、1ヶ月キャッシュしてサーバー負荷を削減
+      expires_in 1.month, public: true
+    end
 
     begin
       # 既存の画像があればそれを返す（Active Storage経由でCloudinaryから配信）
@@ -19,20 +29,8 @@ class Posts::OgpImagesController < ApplicationController
       user = @post.user
       walk = @post.walk || user.walks.find_by(walked_on: @post.created_at.to_date)
 
-      # レベル計算 (StatsServiceと同じロジック: 累計距離ベース)
-      lifetime_distance = user.walks.sum(:distance)
-      level = case lifetime_distance
-      when 0...10 then 1
-      when 10...30 then 2
-      when 30...60 then 3
-      when 60...100 then 4
-      when 100...150 then 5
-      when 150...220 then 6
-      when 220...300 then 7
-      when 300...400 then 8
-      when 400...550 then 9
-      else 10 + ((lifetime_distance - 550) / 200).to_i
-      end
+      # レベル計算
+      level = StatsService.new(user).level
 
       # 統計情報
       stats = {

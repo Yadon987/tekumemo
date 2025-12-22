@@ -11,8 +11,7 @@ class GeneratePostOgpImageJob < ApplicationJob
       walk = post.walk || user.walks.find_by(walked_on: post.created_at.to_date)
 
       # レベル計算
-      total_steps = user.walks.sum(:steps)
-      level = (total_steps / 5000) + 1
+      level = StatsService.new(user).level
 
       # 統計情報
       stats = {

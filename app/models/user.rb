@@ -240,21 +240,8 @@ class User < ApplicationRecord
     end
     rank_with_ordinal = "#{rank}#{suffix}"
 
-    # レベル計算（StatsServiceと同じロジック: 累計距離ベース）
-    # Lv1: 0-9km, Lv2: 10-29km, Lv3: 30-59km, Lv4: 60-99km...
-    lifetime_distance = walks.sum(:distance)
-    level = case lifetime_distance
-    when 0...10 then 1
-    when 10...30 then 2
-    when 30...60 then 3
-    when 60...100 then 4
-    when 100...150 then 5
-    when 150...220 then 6
-    when 220...300 then 7
-    when 300...400 then 8
-    when 400...550 then 9
-    else 10 + ((lifetime_distance - 550) / 200).to_i
-    end
+    # レベル計算
+    level = StatsService.new(self).level
 
     {
       level: level,

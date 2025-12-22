@@ -136,7 +136,7 @@ class GoogleFitService
       end
     end
 
-    [steps, distance, calories]
+    [ steps, distance, calories ]
   end
 
   # アクティビティタイプに応じた換算処理
@@ -155,6 +155,6 @@ class GoogleFitService
       steps = ((distance / 1000.0) * 1300).round
     end
 
-    [steps, distance, duration_min]
+    [ steps, distance, duration_min ]
   end
 end
