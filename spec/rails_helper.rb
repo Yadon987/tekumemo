@@ -46,15 +46,26 @@ WebMock.disable_net_connect!(allow_localhost: true)
 Capybara.default_max_wait_time = 10
 
 RSpec.configure do |config|
+  # システムテストの設定
   config.before(:each, type: :system) do
+    driven_by(:rack_test)
+  end
+
+  config.before(:each, type: :system, js: true) do
     driven_by(:cuprite, screen_size: [ 1400, 1400 ], options: {
       window_size: [ 1400, 1400 ],
       browser_options: { 'no-sandbox' => nil },
-      process_timeout: 60,
-      timeout: 30,
+      process_timeout: 30, # タイムアウトを少し緩和
+      timeout: 30,         # タイムアウトを少し緩和
       inspector: true,
       headless: true,
-      url_blacklist: [ /fonts\.googleapis\.com/, /fonts\.gstatic\.com/ ]
+      # 高速化のために不要なリソースをブロック
+      url_blacklist: [
+        /fonts\.googleapis\.com/,
+        /fonts\.gstatic\.com/,
+        /analytics\.google\.com/,
+        /www\.googletagmanager\.com/
+      ]
     })
   end
 end

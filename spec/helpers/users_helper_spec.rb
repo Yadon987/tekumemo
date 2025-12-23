@@ -6,7 +6,7 @@ RSpec.describe UsersHelper, type: :helper do
 
     context "Googleアバターを使用する場合" do
       before do
-        user.update(avatar_url: "http://example.com/avatar.jpg", use_google_avatar: true)
+        user.update(avatar_url: "http://example.com/avatar.jpg", avatar_type: :google)
       end
 
       it "画像タグが表示されること" do
@@ -17,7 +17,7 @@ RSpec.describe UsersHelper, type: :helper do
 
     context "Googleアバターを使用しない場合" do
       before do
-        user.update(use_google_avatar: false)
+        user.update(avatar_type: :default)
       end
 
       it "イニシャルが表示されること" do

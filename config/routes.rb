@@ -96,6 +96,8 @@ Rails.application.routes.draw do
     get "users/confirm_email_change", to: "users/omniauth_callbacks#confirm_email_change", as: :confirm_email_change_users
     # メールアドレス更新＆連携実行
     post "users/update_email_and_connect", to: "users/omniauth_callbacks#update_email_and_connect", as: :update_email_and_connect_users
+    # アップロード画像の削除
+    delete "users/uploaded_avatar", to: "users/registrations#delete_uploaded_avatar", as: :delete_user_uploaded_avatar
   end
 
   # ===== 静的ページ =====

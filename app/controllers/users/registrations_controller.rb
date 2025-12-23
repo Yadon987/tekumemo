@@ -38,7 +38,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       google_token: nil,
       google_refresh_token: nil,
       google_expires_at: nil,
-      use_google_avatar: false
+      avatar_type: :default
     )
       redirect_to edit_user_registration_path, notice: "Google連携を解除しました。次回からはパスワードでログインしてください。"
     else
@@ -46,11 +46,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # アップロード画像の削除
+  def delete_uploaded_avatar
+    if current_user.uploaded_avatar.attached?
+      current_user.uploaded_avatar.purge
+      current_user.update(avatar_type: :default)
+      redirect_to edit_user_registration_path, notice: "アップロード画像を削除しました"
+    else
+      redirect_to edit_user_registration_path, alert: "削除する画像がありません"
+    end
+  end
+
   protected
 
   # アカウント更新時に許可するストロングパラメータの設定
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :target_distance, :use_google_avatar ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :target_distance, :avatar_type, :uploaded_avatar ])
   end
 
   # 更新後のリダイレクト先
@@ -60,6 +71,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # パスワードなしで更新する場合の対応
   def update_resource(resource, params)
+    # 画像がアップロードされた場合、アバタータイプを自動的にuploadedにする
+    if params[:uploaded_avatar].present?
+      params[:avatar_type] = "uploaded"
+    end
+
     # パスワード入力がある、またはメールアドレス変更時はパスワード必須
     if params[:password].present? || (params[:email].present? && params[:email] != resource.email)
       resource.update_with_password(params)

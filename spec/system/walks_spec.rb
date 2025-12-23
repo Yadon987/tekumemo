@@ -47,9 +47,9 @@ RSpec.describe "Walks", type: :system, js: true do
       visit edit_walk_path(walk)
 
 
-      expect(page).to have_field("場所（任意）", with: "編集前の場所")
+      expect(page).to have_field("場所", with: "編集前の場所")
 
-      fill_in "場所（任意）", with: "編集後の場所"
+      fill_in "場所", with: "編集後の場所"
       fill_in "距離", with: "10.0"
       fill_in "時間", with: "45"
 

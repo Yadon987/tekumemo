@@ -37,7 +37,7 @@ RSpec.describe "Admin::Users", type: :system do
       visit admin_users_path
     end
 
-    it "一般ユーザーを削除できる" do
+    it "一般ユーザーを削除できる", js: true do
       expect(page).to have_content general_user.name
 
       # 削除ボタンをクリック（確認ダイアログはTurboで処理されるため、accept_confirm等は不要な場合が多いが、ドライバによる）
@@ -45,8 +45,12 @@ RSpec.describe "Admin::Users", type: :system do
       # ここでは単純にボタンクリックを試みる
 
       # 注: 自分のアカウントには削除ボタンが表示されない仕様
+      # TurboのconfirmダイアログはCupriteでは自動的にOKされる場合があるが、
+      # accept_confirmブロックで囲むのが確実。ただし、タイミングによっては失敗することも。
+      # ここではシンプルにクリックし、ダイアログが出ることを期待する。
+
       within all('tr').find { |row| row.text.include?(general_user.name) } do
-        accept_confirm do
+        page.accept_confirm do
           click_button "削除"
         end
       end

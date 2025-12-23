@@ -35,14 +35,8 @@
     <div class="flex justify-between items-start mb-4">
       <div class="flex items-center gap-4">
         <!-- アバター -->
-        <div class="w-14 h-14 rounded-full flex items-center justify-center overflow-hidden border-2 border-white/60 dark:border-white/10 transform group-hover:rotate-6 transition-transform duration-300 shadow-[5px_5px_10px_rgba(0,0,0,0.1),-5px_-5px_10px_rgba(255,255,255,0.8)] dark:shadow-[0_0_15px_rgba(255,255,255,0.2)] relative z-10">
-          <% if post.user.avatar_url.present? && post.user.use_google_avatar %>
-            <%= image_tag post.user.avatar_url, class: "w-full h-full object-cover", alt: post.user.name %>
-          <% else %>
-            <span class="text-xl font-black text-gray-400 dark:text-gray-400">
-              <%= post.user.name[0].upcase %>
-            </span>
-          <% end %>
+        <div class="transform group-hover:rotate-6 transition-transform duration-300 relative z-10">
+          <%= user_avatar(post.user, classes: "w-14 h-14 text-xl border-2 border-white/60 dark:border-white/10 shadow-[5px_5px_10px_rgba(0,0,0,0.1),-5px_-5px_10px_rgba(255,255,255,0.8)] dark:shadow-[0_0_15px_rgba(255,255,255,0.2)]") %>
         </div>
 
         <div>

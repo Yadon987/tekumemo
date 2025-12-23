@@ -10,6 +10,9 @@ application.register("accordion", AccordionController)
 import AnomalyController from "./anomaly_controller"
 application.register("anomaly", AnomalyController)
 
+import AvatarUploadController from "./avatar_upload_controller"
+application.register("avatar-upload", AvatarUploadController)
+
 import CarouselController from "./carousel_controller"
 application.register("carousel", CarouselController)
 
@@ -42,6 +45,9 @@ application.register("icon-select", IconSelectController)
 
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
+
+import OgpPreviewController from "./ogp_preview_controller"
+application.register("ogp-preview", OgpPreviewController)
 
 import PopoverController from "./popover_controller"
 application.register("popover", PopoverController)

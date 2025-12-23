@@ -203,4 +203,34 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#display_avatar_url" do
+    let(:user) { FactoryBot.create(:user) }
+
+    context "avatar_type: default" do
+      before { user.update(avatar_type: :default) }
+      it "nilを返すこと" do
+        expect(user.display_avatar_url).to be_nil
+      end
+    end
+
+    context "avatar_type: google" do
+      before do
+        user.update(avatar_type: :google, avatar_url: "https://example.com/google.jpg")
+      end
+      it "googleのURLを返すこと" do
+        expect(user.display_avatar_url).to eq "https://example.com/google.jpg"
+      end
+    end
+
+    context "avatar_type: uploaded" do
+      before do
+        user.update(avatar_type: :uploaded)
+        user.uploaded_avatar.attach(io: File.open(Rails.root.join("spec/fixtures/files/avatar.jpg")), filename: "avatar.jpg", content_type: "image/jpeg")
+      end
+      it "アップロードされた画像を返すこと" do
+        expect(user.display_avatar_url).to be_attached
+      end
+    end
+  end
 end
