@@ -19,14 +19,14 @@ module Rankings
           @user.reload # アタッチメント情報を更新
         end
       else
-        # キャッシュ設定: 日々の変動を反映するため24時間に設定
-        expires_in 24.hours, public: true
+        # キャッシュ設定: 手動更新機能があるため、1週間に設定してサーバー負荷を軽減
+        expires_in 1.week, public: true
       end
 
-      # 既存の画像があり、ファイル名が今週のもので、かつ作成から12時間以内であれば返す
+      # 既存の画像があり、ファイル名が今週のもので、かつ作成から1週間以内であれば返す
       if @user.ranking_ogp_image.attached? &&
          @user.ranking_ogp_image.filename.to_s.include?(period_key) &&
-         @user.ranking_ogp_image.blob.created_at > 24.hours.ago
+         @user.ranking_ogp_image.blob.created_at > 1.week.ago
          send_data @user.ranking_ogp_image.download, type: "image/jpeg", disposition: "inline"
         return
       end
