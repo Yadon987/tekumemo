@@ -1,152 +1,54 @@
-FFFFFFFFF.FFF.....
+........FF....
 
 Failures:
 
-  1) StatsService 基本統計 累計距離を正しく計算できる
-     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+  1) ユーザー設定 設定画面の操作 Google連携を行い、その後解除できること
+     Failure/Error: click_link "連携に進む"
 
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
+     Capybara::ElementNotFound:
+       Unable to find link "連携に進む"
 
-  2) StatsService 基本統計 累計日数を正しく計算できる
-     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_nested_nested_2_google-_620.png
 
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
 
-  3) StatsService 基本統計 平均距離を正しく計算できる
-     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+     # ./spec/system/user_settings_spec.rb:171:in `block (3 levels) in <top (required)>'
 
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
+  2) ユーザー設定 設定画面の操作 Google連携解除時にパスワードを間違えると解除できないこと
+     Failure/Error: expect(page).to have_content("パスワードが正しくありません")
+       expected to find text "パスワードが正しくありません" in "footprint\ndark_mode\nlight_mode\nてくメモ\n既存ユ\nmanage_accounts\nアカウント設定\nプロフィールの確認と変更ができます\n既存ユ\nuser@example.com\n※アイコンはGoogleアカウントと連携しています\nGoogleアイコンを使用\nGoogle連携\nGoogle Fitデータを使用可能\ncheck_circle\n連携済み\nlink_off\nengineering\nGoogle Fit連携は現在プレビュー版です\nBETA\n連携ボタンを押した際に「アクセスがブロックされました」と表示される場合は、管理者の承認待ちです。\n承認まで半日ほどお待ちいただき、再度お試しください。\nwarning\n「このアプリはGoogleで確認されていません」と表示される場合\nexpand_more\nユーザー名（表示名）\nbadge\nランキングや投稿などで他のユーザーに表示されます\n目標距離 (m)\nflag\n1日の目標距離をメートル単位で設定します（デフォルト: 3000）\nnotifications\n通知設定\nnotifications_active\nこの端末で通知を受け取る\n※ボタンを押すとブラウザの通知許可ダイアログが表示されます\n散歩時間のリマインド\n指定した時刻に散歩を促す通知を送信します\n非アクティブ時のリマインド\n一定期間散歩していない場合に通知を送信します\nevent_busy\n日間散歩していない場合に通知\nリアクションのまとめ通知\n1日1回、受け取ったリアクションをまとめて通知します\nセキュリティ設定\nメールアドレス\ninfo\nGoogleアカウントで管理されています\n新しいパスワード（変更する場合のみ）\nパスワード確認\n現在のパスワード\ninfo メールアドレス・パスワード変更時は入力必須です\nパスワードを忘れた場合 ※MVPでは未実装です\nsave\n変更を保存する\nアカウント管理\ninstall_mobile\nアプリをインストール\n推奨\nホーム画面に追加して、より快適に利用できます\ndownload\nインストール\nwarning\nアカウントの削除\n一度削除すると、散歩記録などのデータは復元できません。\n削除する\nhome\nホームに戻る\nlogout\nログアウト\nGoogle連携の解除\n連携を解除すると、Google Fitのデータが取得できなくなります。\n解除するには、現在のパスワードを入力してください。\n現在のパスワード\nキャンセル\nlink_off\n解除する\nadd\nhome\nfootprint\ngroups\nincomplete_circle\nemoji_events"
 
-  4) StatsService 基本統計 最長記録距離を正しく取得できる
-     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+     [Screenshot Image]: /home/nukon999/workspace/tekumemo/tmp/capybara/failures_r_spec_example_groups_nested_nested_2_google-_427.png
 
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:10:in `block (3 levels) in <top (required)>'
 
-  5) StatsService 今月の統計 今月の距離を正しく計算できる
-     Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 60, steps: 6000, calories_burned: 250)
+     # ./spec/system/user_settings_spec.rb:220:in `block (3 levels) in <top (required)>'
 
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:36:in `block (3 levels) in <top (required)>'
+Top 10 slowest examples (27.9 seconds, 93.4% of total time):
+  ユーザー設定 設定画面の操作 Google連携解除時にパスワードを間違えると解除できないこと
+    12.1 seconds ./spec/system/user_settings_spec.rb:202
+  ユーザー設定 設定画面の操作 Google連携を行い、その後解除できること
+    9.94 seconds ./spec/system/user_settings_spec.rb:148
+  ユーザー設定 新規登録とログイン メールアドレスで新規登録し、ログインできること
+    1.23 seconds ./spec/system/user_settings_spec.rb:15
+  ユーザー設定 設定画面の操作 アカウントを削除できること
+    1.07 seconds ./spec/system/user_settings_spec.rb:227
+  ユーザー設定 設定画面の操作 パスワードを変更できること（現在のパスワード必須）
+    0.60714 seconds ./spec/system/user_settings_spec.rb:120
+  ユーザー設定 設定画面の操作 確認用パスワードが一致しないと更新できないこと
+    0.60546 seconds ./spec/system/user_settings_spec.rb:139
+  ユーザー設定 設定画面の操作 プロフィール更新（異常系） 目標距離に不正な値（上限超え）を入力すると更新できないこと
+    0.59458 seconds ./spec/system/user_settings_spec.rb:95
+  ユーザー設定 設定画面の操作 プロフィール（名前・目標距離）を更新できること
+    0.59388 seconds ./spec/system/user_settings_spec.rb:110
+  ユーザー設定 設定画面の操作 現在のパスワードが間違っていると更新できないこと
+    0.59157 seconds ./spec/system/user_settings_spec.rb:130
+  ユーザー設定 設定画面の操作 プロフィール更新（異常系） 名前を空にすると更新できないこと
+    0.56387 seconds ./spec/system/user_settings_spec.rb:83
 
-  6) StatsService 時系列データ 日別距離データを正しく取得できる
-     Failure/Error:
-       create(:walk,
-         user: user,
-         walked_on: i.days.ago.to_date,
-         distance: (i + 1) * 1000,
-         duration: 30
-       )
-
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:52:in `block (4 levels) in <top (required)>'
-     # ./spec/services/stats_service_spec.rb:51:in `times'
-     # ./spec/services/stats_service_spec.rb:51:in `block (3 levels) in <top (required)>'
-
-  7) StatsService 時系列データ 週別距離データを正しく取得できる
-     Failure/Error:
-       create(:walk,
-         user: user,
-         walked_on: i.days.ago.to_date,
-         distance: (i + 1) * 1000,
-         duration: 30
-       )
-
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:52:in `block (4 levels) in <top (required)>'
-     # ./spec/services/stats_service_spec.rb:51:in `times'
-     # ./spec/services/stats_service_spec.rb:51:in `block (3 levels) in <top (required)>'
-
-  8) StatsService 時系列データ 月別距離データを正しく取得できる
-     Failure/Error:
-       create(:walk,
-         user: user,
-         walked_on: i.days.ago.to_date,
-         distance: (i + 1) * 1000,
-         duration: 30
-       )
-
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:52:in `block (4 levels) in <top (required)>'
-     # ./spec/services/stats_service_spec.rb:51:in `times'
-     # ./spec/services/stats_service_spec.rb:51:in `block (3 levels) in <top (required)>'
-
-  9) StatsService 曜日別分析 曜日別平均距離を正しく計算できる
-     Failure/Error: create(:walk, user: user, walked_on: monday, distance: 2000)
-
-     ActiveRecord::RecordInvalid:
-       バリデーションに失敗しました: 距離は50以下の値にしてください
-     # ./spec/services/stats_service_spec.rb:94:in `block (3 levels) in <top (required)>'
-
-  10) StatsService パフォーマンス分析 平均ペースを正しく計算できる
-      Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分
-
-      ActiveRecord::RecordInvalid:
-        バリデーションに失敗しました: 距離は50以下の値にしてください
-      # ./spec/services/stats_service_spec.rb:134:in `block (3 levels) in <top (required)>'
-
-  11) StatsService パフォーマンス分析 ペース推移データを取得できる
-      Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分
-
-      ActiveRecord::RecordInvalid:
-        バリデーションに失敗しました: 距離は50以下の値にしてください
-      # ./spec/services/stats_service_spec.rb:134:in `block (3 levels) in <top (required)>'
-
-  12) StatsService パフォーマンス分析 カロリー推移データを取得できる
-      Failure/Error: create(:walk, user: user, walked_on: Date.current, distance: 5000, duration: 50)  # 5km、50分
-
-      ActiveRecord::RecordInvalid:
-        バリデーションに失敗しました: 距離は50以下の値にしてください
-      # ./spec/services/stats_service_spec.rb:134:in `block (3 levels) in <top (required)>'
-
-Top 10 slowest examples (0.35031 seconds, 84.1% of total time):
-  StatsService 基本統計 累計距離を正しく計算できる
-    0.20491 seconds ./spec/services/stats_service_spec.rb:15
-  StatsService RPG要素 #achievements 条件を満たした称号が獲得済み(obtained: true)になる
-    0.04785 seconds ./spec/services/stats_service_spec.rb:193
-  StatsService 時間帯別分析 時間帯別の散歩回数を正しく集計できる
-    0.02005 seconds ./spec/services/stats_service_spec.rb:120
-  StatsService RPG要素 #level 累計距離に応じてレベルが上昇する
-    0.0162 seconds ./spec/services/stats_service_spec.rb:165
-  StatsService RPG要素 #achievements 条件を満たしていない称号は未獲得(obtained: false)になる
-    0.01502 seconds ./spec/services/stats_service_spec.rb:221
-  StatsService RPG要素 #rank_name レベルに応じたランク名を返す
-    0.01158 seconds ./spec/services/stats_service_spec.rb:181
-  StatsService エッジケース 記録が0件の場合、エラーにならない
-    0.0092 seconds ./spec/services/stats_service_spec.rb:231
-  StatsService パフォーマンス分析 カロリー推移データを取得できる
-    0.00869 seconds ./spec/services/stats_service_spec.rb:153
-  StatsService 基本統計 平均距離を正しく計算できる
-    0.00857 seconds ./spec/services/stats_service_spec.rb:23
-  StatsService パフォーマンス分析 平均ペースを正しく計算できる
-    0.00826 seconds ./spec/services/stats_service_spec.rb:138
-
-Finished in 0.41655 seconds (files took 0.94174 seconds to load)
-18 examples, 12 failures
+Finished in 29.87 seconds (files took 0.94847 seconds to load)
+14 examples, 2 failures
 
 Failed examples:
 
-rspec ./spec/services/stats_service_spec.rb:15 # StatsService 基本統計 累計距離を正しく計算できる
-rspec ./spec/services/stats_service_spec.rb:19 # StatsService 基本統計 累計日数を正しく計算できる
-rspec ./spec/services/stats_service_spec.rb:23 # StatsService 基本統計 平均距離を正しく計算できる
-rspec ./spec/services/stats_service_spec.rb:28 # StatsService 基本統計 最長記録距離を正しく取得できる
-rspec ./spec/services/stats_service_spec.rb:42 # StatsService 今月の統計 今月の距離を正しく計算できる
-rspec ./spec/services/stats_service_spec.rb:61 # StatsService 時系列データ 日別距離データを正しく取得できる
-rspec ./spec/services/stats_service_spec.rb:70 # StatsService 時系列データ 週別距離データを正しく取得できる
-rspec ./spec/services/stats_service_spec.rb:79 # StatsService 時系列データ 月別距離データを正しく取得できる
-rspec ./spec/services/stats_service_spec.rb:98 # StatsService 曜日別分析 曜日別平均距離を正しく計算できる
-rspec ./spec/services/stats_service_spec.rb:138 # StatsService パフォーマンス分析 平均ペースを正しく計算できる
-rspec ./spec/services/stats_service_spec.rb:144 # StatsService パフォーマンス分析 ペース推移データを取得できる
-rspec ./spec/services/stats_service_spec.rb:153 # StatsService パフォーマンス分析 カロリー推移データを取得できる
+rspec ./spec/system/user_settings_spec.rb:148 # ユーザー設定 設定画面の操作 Google連携を行い、その後解除できること
+rspec ./spec/system/user_settings_spec.rb:202 # ユーザー設定 設定画面の操作 Google連携解除時にパスワードを間違えると解除できないこと
 
