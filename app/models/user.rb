@@ -25,6 +25,11 @@ class User < ApplicationRecord
   # Active Storage: Googleアバター画像のキャッシュ（OGP生成高速化のため）
   has_one_attached :cached_avatar
 
+  # Active Storage: ユーザーアップロードのアバター画像
+  has_one_attached :uploaded_avatar
+
+  # アバターの種類（0: デフォルト, 1: Google画像, 2: アップロード画像）
+  enum :avatar_type, { default: 0, google: 1, uploaded: 2 }
 
   # ユーザー名のバリデーション
   validates :name, presence: true
@@ -38,6 +43,40 @@ class User < ApplicationRecord
   # 通知設定のバリデーション
   validates :inactive_days_threshold, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 30 }
   validates :walk_reminder_time, presence: true, if: :walk_reminder_enabled?
+
+  # アバター画像のバリデーション
+  validate :validate_uploaded_avatar
+
+  private
+
+  def validate_uploaded_avatar
+    return unless uploaded_avatar.attached?
+
+    # ファイルサイズ制限 (5MB)
+    if uploaded_avatar.blob.byte_size > 5.megabytes
+      errors.add(:uploaded_avatar, "は5MB以下にしてください")
+    end
+
+    # ファイル形式制限
+    unless uploaded_avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
+      errors.add(:uploaded_avatar, "は画像ファイル（JPG, PNG, GIF, WEBP）のみアップロード可能です")
+    end
+  end
+
+  public
+
+  # 表示するアバターURLを決定するメソッド
+  # 優先順位: uploaded > google > default
+  # ただし、avatar_typeの設定に従って返す
+  def display_avatar_url
+    if uploaded?
+      uploaded_avatar if uploaded_avatar.attached?
+    elsif google?
+      avatar_url if avatar_url.present?
+    else
+      nil # デフォルト（イニシャル画像など）を表示
+    end
+  end
 
   # Google OAuth2認証のコールバック処理
   # OmniAuthから返されたデータを使って、ユーザー情報とトークンを保存する
@@ -53,7 +92,8 @@ class User < ApplicationRecord
         google_token: auth.credentials.token,
         google_refresh_token: auth.credentials.refresh_token,
         google_expires_at: Time.at(auth.credentials.expires_at),
-        avatar_url: auth.info.image # アバター画像を更新
+        avatar_url: auth.info.image, # アバター画像を更新
+        avatar_type: :google # アバター種別をGoogleに設定
       )
     end
 

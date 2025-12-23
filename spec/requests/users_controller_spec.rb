@@ -15,7 +15,7 @@ RSpec.describe "Users", type: :request do
         google_token: "token",
         google_refresh_token: "refresh_token",
         google_expires_at: 1.hour.from_now,
-        use_google_avatar: true
+        avatar_type: :google
       )
     end
 
@@ -26,7 +26,7 @@ RSpec.describe "Users", type: :request do
       expect(user.google_token).to be_nil
       expect(user.google_refresh_token).to be_nil
       expect(user.google_expires_at).to be_nil
-      expect(user.use_google_avatar).to be false
+      expect(user.default?).to be true
       expect(response).to redirect_to(edit_user_registration_path)
       expect(flash[:notice]).to include("Google連携を解除しました")
     end

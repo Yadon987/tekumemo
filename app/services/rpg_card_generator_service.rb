@@ -179,8 +179,30 @@ class RpgCardGeneratorService
     avatar_path = avatar_tempfile.path
     avatar_used = false
 
-    if @user.avatar_url.present? && @user.use_google_avatar
-      # ステップ1: キャッシュされたアバターを優先使用（超高速）
+    # アバター画像の取得ロジック
+    # 優先順位: Uploaded > Google > Default
+
+    # 1. アップロード画像 (avatar_type: uploaded)
+    if @user.uploaded? && @user.uploaded_avatar.attached?
+      begin
+        File.binwrite(avatar_path, @user.uploaded_avatar.download)
+
+        avatar = ::MiniMagick::Image.new(avatar_path)
+        avatar.combine_options do |c|
+          c.resize "#{AVATAR_SIZE}x#{AVATAR_SIZE}^"
+          c.gravity "center"
+          c.extent "#{AVATAR_SIZE}x#{AVATAR_SIZE}"
+        end
+        avatar_used = true
+        Rails.logger.info "Using uploaded avatar for user #{@user.id}"
+      rescue => e
+        Rails.logger.warn "Failed to use uploaded avatar: #{e.message}"
+      end
+    end
+
+    # 2. Google画像 (avatar_type: google)
+    if !avatar_used && @user.google? && @user.avatar_url.present?
+      # ステップ2-1: キャッシュされたアバターを優先使用（超高速）
       if @user.cached_avatar.attached?
         begin
           # Active StorageからダウンロードしてTempfileに保存
@@ -195,14 +217,14 @@ class RpgCardGeneratorService
             c.extent "#{AVATAR_SIZE}x#{AVATAR_SIZE}"
           end
           avatar_used = true
-          Rails.logger.info "Using cached avatar for user #{@user.id}"
+          Rails.logger.info "Using cached google avatar for user #{@user.id}"
         rescue => e
           Rails.logger.warn "Failed to use cached avatar: #{e.message}"
           # キャッシュ使用失敗 → 次のステップへ
         end
       end
 
-      # ステップ2: キャッシュがない場合、Googleからダウンロード＆保存
+      # ステップ2-2: キャッシュがない場合、Googleからダウンロード＆保存
       unless avatar_used
         begin
           require "open-uri"
@@ -219,7 +241,7 @@ class RpgCardGeneratorService
 
           # ダウンロード成功したらキャッシュに保存（次回から高速化）
           cache_avatar_for_future_use(downloaded_file)
-          Rails.logger.info "Downloaded and cached avatar for user #{@user.id}"
+          Rails.logger.info "Downloaded and cached google avatar for user #{@user.id}"
         rescue => e
           Rails.logger.error "Failed to download avatar: #{e.message}"
         end

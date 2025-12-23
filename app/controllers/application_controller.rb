@@ -23,7 +23,9 @@ class ApplicationController < ActionController::Base
       :walk_reminder_time,
       :inactive_days_reminder_enabled,
       :inactive_days_threshold,
-      :reaction_summary_enabled
+      :reaction_summary_enabled,
+      :avatar_type,
+      :uploaded_avatar
     ])
   end
 

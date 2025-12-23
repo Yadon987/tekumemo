@@ -45,14 +45,14 @@
       <div class="relative z-10 flex justify-between text-lg">
         <!-- 歩数 -->
         <div class="flex items-center space-x-2">
-          <span class="material-symbols-outlined text-4xl text-blue-50 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-cyan-300 dark:to-blue-300 dark:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse-fast text-shadow w-9 h-9 overflow-hidden">directions_walk</span>
+          <span class="material-symbols-outlined text-4xl text-blue-50 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-emerald-300 dark:to-teal-300 dark:drop-shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse-fast text-shadow w-9 h-9 overflow-hidden">directions_walk</span>
           <div>
             <p class="font-bold text-lg text-blue-50 drop-shadow-sm"><%= number_with_delimiter(@today_walk&.steps || 0) %> <span class="text-sm font-normal text-blue-200/80">歩</span></p>
           </div>
         </div>
         <!-- 消費カロリー -->
         <div class="flex items-center space-x-2">
-          <span class="material-symbols-outlined text-4xl text-blue-50 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-300 dark:to-red-300 dark:drop-shadow-[0_0_8px_rgba(251,146,60,0.8)] animate-pulse-fast text-shadow">local_fire_department</span>
+          <span class="material-symbols-outlined text-4xl text-blue-50 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-400 dark:to-red-500 dark:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse-fast text-shadow">local_fire_department</span>
           <div>
             <p class="font-bold text-lg text-blue-50 drop-shadow-sm"><%= number_with_delimiter(@today_walk&.calories_burned || 0) %> <span class="text-sm font-normal text-blue-200/80">kcal</span></p>
           </div>
@@ -245,14 +245,8 @@
             <div class="w-full h-full flex flex-col justify-between">
               <div class="flex items-center gap-2">
                 <!-- アバター -->
-                <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden flex-shrink-0 border border-white/50">
-                  <% if @latest_post.user.avatar_url.present? && @latest_post.user.use_google_avatar %>
-                    <%= image_tag @latest_post.user.avatar_url, class: "w-full h-full object-cover" %>
-                  <% else %>
-                    <div class="flex items-center justify-center w-full h-full text-xs font-bold text-gray-500">
-                      <%= @latest_post.user.name[0].upcase %>
-                    </div>
-                  <% end %>
+                <div class="flex-shrink-0">
+                  <%= user_avatar(@latest_post.user, classes: "w-8 h-8 text-xs border border-white/50") %>
                 </div>
                 <span class="text-xs font-bold text-gray-700 dark:text-gray-200 truncate flex-1"><%= @latest_post.user.name %></span>
                 <span class="text-xs text-gray-400 whitespace-nowrap"><%= time_ago_in_words(@latest_post.created_at) %>前</span>

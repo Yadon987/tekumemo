@@ -51,7 +51,7 @@ class RankingsController < ApplicationController
     latest_update = User.maximum(:updated_at).to_i
     cache_key = "rankings_#{period}_#{Time.current.strftime('%Y%m%d%H')}_#{latest_update}"
 
-    cached_data = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+    cached_data = Rails.cache.fetch(cache_key, expires_in: 30.minutes) do
       {
         updated_at: Time.current,
         rankings: User.ranking(period: period).to_a
@@ -60,8 +60,8 @@ class RankingsController < ApplicationController
 
     @rankings = cached_data[:rankings]
     @last_data_updated_at = cached_data[:updated_at]
-    # 次回キャッシュ更新時刻 = データ取得時刻の1時間後
-    @next_cache_update_at = @last_data_updated_at + 1.hour
+    # 次回キャッシュ更新時刻 = データ取得時刻の30分後
+    @next_cache_update_at = @last_data_updated_at + 30.minutes
   end
 
   def find_my_rank

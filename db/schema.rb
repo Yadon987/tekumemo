@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_19_205704) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_23_060248) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -133,7 +133,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_19_205704) do
     t.string "avatar_url"
     t.string "name"
     t.integer "target_distance", default: 3000, null: false
-    t.boolean "use_google_avatar", default: true
     t.boolean "is_admin", default: false, null: false
     t.boolean "walk_reminder_enabled", default: false, null: false, comment: "散歩時間リマインド通知の有効/無効"
     t.time "walk_reminder_time", default: "2000-01-01 19:00:00", comment: "散歩リマインド通知の時刻"
@@ -146,6 +145,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_19_205704) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.integer "avatar_type", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["is_admin"], name: "index_users_on_is_admin"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -47,7 +47,7 @@
 <!-- Deep Void Background (Dark Mode Only) -->
 <div class="fixed inset-0 -z-10 hidden dark:block bg-[#020617] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a0b2e] via-[#020617] to-[#000000]"></div>
 
-<div class="pb-20 relative overflow-hidden">
+<div class="pb-20 relative overflow-hidden" data-controller="ogp-preview">
 
   <!-- ヘッダーエリア（PC用のみ表示） -->
   <div class="hidden md:block relative z-10 pt-8 pb-6 px-4 text-center">
@@ -197,7 +197,7 @@
 
           <!-- シェア画像プレビューリンク（小） -->
           <div class="mt-3 text-center relative z-10">
-            <button onclick="toggleOgpPreview()" class="text-xs text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-fuchsia-300 underline transition">
+            <button data-action="click->ogp-preview#open" class="text-xs text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-fuchsia-300 underline transition">
               📷 シェア画像を確認
             </button>
           </div>
@@ -243,13 +243,9 @@
         <div class="flex-1 min-w-0 text-center transform hover:scale-105 transition-transform duration-300 <%= 'opacity-0' unless @rankings[1] %>">
           <% if second = @rankings[1] %>
             <div class="relative inline-block mb-2">
-              <% if second.avatar_url.present? && second.use_google_avatar %>
-                <%= image_tag second.avatar_url, class: "relative w-10 h-10 md:w-16 md:h-16 rounded-full border-2 md:border-4 border-slate-200/80 dark:border-slate-200 shadow-[4px_4px_8px_rgba(148,163,184,0.4),-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(226,232,240,0.5)] object-cover z-10" %>
-              <% else %>
-                <div class="relative w-10 h-10 md:w-16 md:h-16 rounded-full border-2 md:border-4 border-slate-200/80 dark:border-slate-200 bg-gradient-to-br from-slate-400 to-slate-500 flex items-center justify-center text-white font-bold text-lg md:text-2xl shadow-[4px_4px_8px_rgba(148,163,184,0.4),-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(226,232,240,0.5)] z-10">
-                  <%= second.name.to_s[0, 1]&.upcase || "?" %>
-                </div>
-              <% end %>
+              <%= user_avatar(second,
+                  classes: "relative w-10 h-10 md:w-16 md:h-16 border-2 md:border-4 border-slate-200/80 dark:border-slate-200 shadow-[4px_4px_8px_rgba(148,163,184,0.4),-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(226,232,240,0.5)] z-10 text-lg md:text-2xl",
+                  default_color_classes: "bg-gradient-to-br from-slate-400 to-slate-500 text-white") %>
               <div class="absolute -bottom-2 -right-2 text-xl md:text-3xl drop-shadow-md z-20">🥈</div>
             </div>
             <p class="text-slate-700 dark:text-slate-100 font-bold text-[10px] md:text-sm truncate px-1 dark:drop-shadow-[0_0_5px_rgba(0,0,0,0.8)]"><%= second.name.presence || "No Name" %></p>
@@ -269,13 +265,9 @@
         <div class="flex-1 min-w-0 text-center transform hover:scale-110 transition-transform duration-300 <%= 'opacity-0' unless @rankings[0] %>">
           <% if first = @rankings[0] %>
             <div class="relative inline-block mb-2">
-              <% if first.avatar_url.present? && first.use_google_avatar %>
-                <%= image_tag first.avatar_url, class: "relative w-14 h-14 md:w-20 md:h-20 rounded-full border-4 border-yellow-300/80 dark:border-yellow-200 shadow-[6px_6px_12px_rgba(250,204,21,0.4),-6px_-6px_12px_rgba(255,255,255,0.9)] dark:shadow-[0_0_40px_rgba(251,191,36,0.6)] object-cover z-10" %>
-              <% else %>
-                <div class="relative w-14 h-14 md:w-20 md:h-20 rounded-full border-4 border-yellow-300/80 dark:border-yellow-200 bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-xl md:text-3xl shadow-[6px_6px_12px_rgba(250,204,21,0.4),-6px_-6px_12px_rgba(255,255,255,0.9)] dark:shadow-[0_0_40px_rgba(251,191,36,0.6)] z-10">
-                  <%= first.name.to_s[0, 1]&.upcase || "?" %>
-                </div>
-              <% end %>
+              <%= user_avatar(first,
+                  classes: "relative w-14 h-14 md:w-20 md:h-20 border-4 border-yellow-300/80 dark:border-yellow-200 shadow-[6px_6px_12px_rgba(250,204,21,0.4),-6px_-6px_12px_rgba(255,255,255,0.9)] dark:shadow-[0_0_40px_rgba(251,191,36,0.6)] z-10 text-xl md:text-3xl",
+                  default_color_classes: "bg-gradient-to-br from-yellow-400 to-orange-500 text-white") %>
               <div class="absolute -top-3 left-1/2 -translate-x-1/2 text-2xl md:text-4xl animate-bounce drop-shadow-lg z-20">👑</div>
               <div class="absolute -bottom-2 -right-2 text-2xl md:text-4xl drop-shadow-lg z-20">🥇</div>
             </div>
@@ -296,13 +288,9 @@
         <div class="flex-1 min-w-0 text-center transform hover:scale-105 transition-transform duration-300 <%= 'opacity-0' unless @rankings[2] %>">
           <% if third = @rankings[2] %>
             <div class="relative inline-block mb-2">
-              <% if third.avatar_url.present? && third.use_google_avatar %>
-                <%= image_tag third.avatar_url, class: "relative w-10 h-10 md:w-16 md:h-16 rounded-full border-2 md:border-4 border-orange-200/80 dark:border-orange-200 shadow-[4px_4px_8px_rgba(251,146,60,0.4),-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(251,146,60,0.5)] object-cover z-10" %>
-              <% else %>
-                <div class="relative w-10 h-10 md:w-16 md:h-16 rounded-full border-2 md:border-4 border-orange-200/80 dark:border-orange-200 bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center text-white font-bold text-lg md:text-2xl shadow-[4px_4px_8px_rgba(251,146,60,0.4),-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(251,146,60,0.5)] z-10">
-                  <%= third.name.to_s[0, 1]&.upcase || "?" %>
-                </div>
-              <% end %>
+              <%= user_avatar(third,
+                  classes: "relative w-10 h-10 md:w-16 md:h-16 border-2 md:border-4 border-orange-200/80 dark:border-orange-200 shadow-[4px_4px_8px_rgba(251,146,60,0.4),-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[0_0_20px_rgba(251,146,60,0.5)] z-10 text-lg md:text-2xl",
+                  default_color_classes: "bg-gradient-to-br from-orange-400 to-red-400 text-white") %>
               <div class="absolute -bottom-2 -right-2 text-xl md:text-3xl drop-shadow-md z-20">🥉</div>
             </div>
             <p class="text-slate-700 dark:text-orange-100 font-bold text-[10px] md:text-sm truncate px-1 dark:drop-shadow-[0_0_5px_rgba(0,0,0,0.8)]"><%= third.name.presence || "No Name" %></p>
@@ -371,12 +359,12 @@
 
             <!-- ユーザー情報 -->
           <div class="flex-1 min-w-0 flex items-center gap-3 relative z-10">
-            <% if user.avatar_url.present? && user.use_google_avatar %>
-              <%= image_tag user.avatar_url, class: "w-10 h-10 rounded-full border-2 border-white dark:border-white/20 shadow-md object-cover" %>
+            <% if user.avatar_url.present? && user.google? %>
+              <%= user_avatar(user, classes: "w-10 h-10 border-2 border-white dark:border-white/20 shadow-md text-sm") %>
             <% else %>
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 border-2 border-white dark:border-blue-400 shadow-md flex items-center justify-center text-white font-bold text-sm">
-                <%= user.name.to_s[0, 1]&.upcase || "?" %>
-              </div>
+              <%= user_avatar(user,
+                  classes: "w-10 h-10 border-2 border-white shadow-md text-sm",
+                  default_color_classes: "bg-gradient-to-br from-blue-400 to-blue-500 dark:border-blue-400 text-white") %>
             <% end %>
 
             <div class="flex-1 min-w-0">
@@ -435,10 +423,16 @@
 
   <!-- OGPプレビューモーダル -->
   <% if user_signed_in? %>
-    <div id="ogp-preview-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="closeOgpPreview(event)">
-      <div class="relative bg-white dark:bg-slate-900/90 rounded-[3.75rem] p-8 max-w-2xl w-full shadow-2xl transform transition-all border-4 border-white dark:border-white/10 dark:border-t-white/40 dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" onclick="event.stopPropagation()">
+    <div id="ogp-preview-modal"
+         data-ogp-preview-target="modal"
+         class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-200 opacity-0"
+         data-action="click->ogp-preview#close">
+
+      <div data-ogp-preview-target="container"
+           class="relative bg-white dark:bg-slate-900/90 rounded-[3.75rem] p-8 max-w-2xl w-full shadow-2xl transform transition-all border-4 border-white dark:border-white/10 dark:border-t-white/40 dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none">
+
         <!-- 閉じるボタン -->
-        <button onclick="closeOgpPreview()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white transition relative z-20">
+        <button data-action="click->ogp-preview#close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white transition relative z-20">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
@@ -456,7 +450,7 @@
         <!-- プレビュー画像 -->
         <div class="relative aspect-[1.91/1] w-full rounded-xl overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-800 z-10">
           <!-- ローディング表示 -->
-          <div id="ogp-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-800">
+          <div data-ogp-preview-target="loading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-800">
             <div class="animate-spin rounded-full h-16 w-16 border-4 border-slate-300 dark:border-slate-600 border-t-purple-600 dark:border-t-fuchsia-500"></div>
             <p class="mt-4 text-sm font-bold text-slate-600 dark:text-slate-300">画像を読み込み中...</p>
             <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">生成に数秒かかる場合があります</p>
@@ -464,16 +458,17 @@
 
           <!-- OGP画像 -->
           <%= image_tag ogp_image_rankings_user_path(current_user, format: :jpg, v: Time.current.to_i),
-              id: "ogp-preview-image",
+              data: {
+                ogp_preview_target: "image",
+                action: "error->ogp-preview#handleError load->ogp-preview#handleLoad"
+              },
               class: "w-full h-full object-cover opacity-0 transition-opacity duration-500",
-              alt: "Ranking OGP Preview",
-              onerror: "handleOgpImageError(this)",
-              onload: "handleOgpImageLoad()" %>
+              alt: "Ranking OGP Preview" %>
         </div>
 
         <!-- アクションボタン -->
         <div class="mt-4 flex justify-end relative z-10">
-          <button onclick="refreshOgpImage()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-colors text-sm font-bold border border-transparent dark:border-white/10">
+          <button data-action="click->ogp-preview#refresh" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-colors text-sm font-bold border border-transparent dark:border-white/10">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
@@ -483,99 +478,7 @@
       </div>
     </div>
 
-    <script>
-      let retryCount = 0;
-      const MAX_RETRIES = 5;
-
-      // モーダルを開く
-      function toggleOgpPreview() {
-        const modal = document.getElementById('ogp-preview-modal');
-        modal.classList.remove('hidden');
-        // フェードインアニメーション
-        setTimeout(() => {
-          modal.style.opacity = '1';
-        }, 10);
-
-        // モーダルを開いたときにリトライカウントをリセット
-        retryCount = 0;
-      }
-
-      // モーダルを閉じる
-      function closeOgpPreview(event) {
-        const modal = document.getElementById('ogp-preview-modal');
-        // フェードアウト
-        modal.style.opacity = '0';
-        setTimeout(() => {
-          modal.classList.add('hidden');
-        }, 200);
-      }
-
-      // 画像を強制リフレッシュ
-      function refreshOgpImage() {
-        const img = document.getElementById('ogp-preview-image');
-        const loading = document.getElementById('ogp-loading');
-
-        // ローディング表示
-        loading.style.display = 'flex';
-        img.classList.remove('opacity-100');
-        img.classList.add('opacity-0');
-
-        // 現在のsrcを取得し、refreshパラメータを付与
-        const currentSrc = new URL(img.src);
-        currentSrc.searchParams.set('refresh', 'true');
-        currentSrc.searchParams.set('v', new Date().getTime()); // キャッシュバスター
-
-        // 画像を再読み込み
-        img.src = currentSrc.toString();
-      }
-
-      // 画像の読み込み成功
-      function handleOgpImageLoad() {
-        const loading = document.getElementById('ogp-loading');
-        const image = document.getElementById('ogp-preview-image');
-
-        // ローディングを非表示、画像を表示
-        loading.style.display = 'none';
-        image.classList.remove('opacity-0');
-        image.classList.add('opacity-100');
-      }
-
-      // 画像の読み込み失敗（生成中の可能性）
-      function handleOgpImageError(img) {
-        const loading = document.getElementById('ogp-loading');
-
-        // まだリトライ回数が残っている場合
-        if (retryCount < MAX_RETRIES) {
-          retryCount++;
-
-          // ローディングメッセージを更新
-          const loadingText = loading.querySelector('p.font-bold');
-          loadingText.textContent = `画像を生成中... (${retryCount}/${MAX_RETRIES})`;
-
-          // 2秒後にリトライ
-          setTimeout(() => {
-            // タイムスタンプを更新してキャッシュバスティング
-            const currentSrc = img.src;
-            img.src = currentSrc.replace(/v=\d+/, `v=${Date.now()}`);
-          }, 2000);
-        } else {
-          // リトライ上限に達した場合
-          loading.innerHTML = `
-            <div class="text-center">
-              <span class="text-4xl">⚠️</span>
-              <p class="mt-4 text-sm font-bold text-slate-600 dark:text-purple-300">画像の読み込みに失敗しました</p>
-              <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">ページをリロードしてください</p>
-            </div>
-          `;
-        }
-      }
-
-      // ESCキーでモーダルを閉じる
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          closeOgpPreview();
-        }
-      });
-    </script>
+    <!-- OGP Preview Controller is now handled by Stimulus -->
   <% end %>
 </div>
+

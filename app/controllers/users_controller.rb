@@ -13,7 +13,7 @@ class UsersController < ApplicationController
       google_token: nil,
       google_refresh_token: nil,
       google_expires_at: nil,
-      use_google_avatar: false # 強制的にイニシャル表示に戻す
+      avatar_type: :default # アバター種別をデフォルトに戻す
     )
       redirect_to edit_user_registration_path, notice: "Google連携を解除しました"
     else

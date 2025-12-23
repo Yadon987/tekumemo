@@ -145,6 +145,8 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       expect(page).to have_content("パスワード（確認）とパスワードの入力が一致しません")
     end
 
+
+
     it "Google連携を行い、その後解除できること", js: true do
       # アバター画像のダウンロードをスタブ
       stub_request(:get, "http://example.com/avatar.jpg").
@@ -175,6 +177,8 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       expect(user.reload.google_uid).to eq("linked_uid")
 
       # 連携解除ボタン（モーダルを開く）をクリック
+      # 連携済み状態になるまで少し待つ
+      expect(page).to have_content("連携済み")
       find("button span[title='連携を解除する']").click
 
       # モーダルが表示されるのを確認
@@ -222,6 +226,62 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       # 連携が解除されていないことを確認
       expect(page).to have_content("連携済み")
       expect(user.reload.google_uid).to eq("linked_uid")
+    end
+
+    context "アバター設定" do
+      before do
+        # Google連携済みの状態にする
+        user.update!(
+          google_uid: "linked_uid",
+          google_token: "token",
+          google_expires_at: Time.now + 1.hour,
+          avatar_url: "http://example.com/avatar.jpg"
+        )
+        visit edit_user_registration_path
+      end
+
+      it "Google画像とアップロード画像を切り替えられること", js: true do
+        # 1. Google画像を選択
+        find("button[title='アバターを変更']").click
+        expect(page).to have_selector("dialog[open]")
+        sleep 0.5 # アニメーション待ち
+        execute_script("document.getElementById('user_avatar_type_google').click()")
+        within("dialog[open]") { click_button "変更を保存する" }
+        expect(page).to have_content("アカウント情報を変更しました。")
+        expect(user.reload.avatar_type).to eq("google")
+
+        # 2. 画像をアップロード（自動的にuploadedになるはず）
+        find("button[title='アバターを変更']").click
+        expect(page).to have_selector("dialog[open]")
+        sleep 0.5 # アニメーション待ち
+
+        # input要素を可視化してファイル添付
+        execute_script("document.getElementById('user_uploaded_avatar').classList.remove('hidden')")
+        attach_file "user_uploaded_avatar", Rails.root.join("spec/fixtures/files/avatar.jpg")
+
+        within("dialog[open]") { click_button "変更を保存する" }
+        expect(page).to have_content("アカウント情報を変更しました。")
+        expect(user.reload.avatar_type).to eq("uploaded")
+        expect(user.uploaded_avatar).to be_attached
+
+        # 3. 再度Google画像を選択
+        find("button[title='アバターを変更']").click
+        expect(page).to have_selector("dialog[open]")
+        sleep 0.5 # アニメーション待ち
+        execute_script("document.getElementById('user_avatar_type_google').click()")
+        within("dialog[open]") { click_button "変更を保存する" }
+        expect(page).to have_content("アカウント情報を変更しました。")
+        expect(user.reload.avatar_type).to eq("google")
+
+        # 4. 再度アップロード画像を選択
+        find("button[title='アバターを変更']").click
+        expect(page).to have_selector("dialog[open]")
+        sleep 0.5 # アニメーション待ち
+        execute_script("document.getElementById('user_avatar_type_uploaded').click()")
+        within("dialog[open]") { click_button "変更を保存する" }
+        expect(page).to have_content("アカウント情報を変更しました。")
+        expect(user.reload.avatar_type).to eq("uploaded")
+      end
     end
 
     it "アカウントを削除できること" do
