@@ -1,25 +1,170 @@
-<div id="user_avatar_section" class="flex flex-col items-center mb-8 mt-2">
-  <%= user_avatar(user, classes: "w-24 h-24 text-3xl mb-4 shadow-xl ring-4 ring-white dark:ring-slate-800") %>
-  <div class="text-center">
+<div id="user_avatar_section" class="flex flex-col items-center mb-8 mt-2" data-controller="avatar-upload">
+  <!-- 現在のアバター表示 (メイン) -->
+  <div class="relative mb-6 group">
+    <div class="w-24 h-24 rounded-full overflow-hidden shadow-xl ring-4 ring-white dark:ring-slate-800 relative z-10">
+      <%# プレビュー用のターゲットを設定 %>
+      <% if user.uploaded? && user.uploaded_avatar.attached? %>
+        <%= image_tag user.uploaded_avatar, class: "w-full h-full object-cover", data: { avatar_upload_target: "preview" } %>
+      <% elsif user.google? && user.avatar_url.present? %>
+        <%= image_tag user.avatar_url, class: "w-full h-full object-cover", data: { avatar_upload_target: "preview" } %>
+      <% else %>
+        <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold text-3xl">
+          <%= user.name.to_s.strip.slice(0, 3).upcase %>
+        </div>
+        <img data-avatar-upload-target="preview" class="w-full h-full object-cover absolute inset-0 opacity-0" />
+      <% end %>
+    </div>
+
+    <!-- 編集ボタン（カメラアイコン） -->
+    <button type="button"
+            data-action="click->avatar-upload#openModal"
+            class="absolute bottom-0 right-0 z-20 w-8 h-8 bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-300 rounded-full shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-slate-600 transition-all hover:scale-110"
+            title="アバターを変更">
+      <span class="material-symbols-outlined text-sm">photo_camera</span>
+    </button>
+
+    <!-- 装飾的な背景 -->
+    <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
+  </div>
+
+  <div class="text-center mb-6">
     <p class="text-gray-500 dark:text-slate-400 text-xs font-mono bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded-md inline-block">
       <%= user.email %>
     </p>
-    <% if user.google_uid.present? %>
-      <p class="text-xs text-gray-400 dark:text-slate-500 mt-1">※アイコンはGoogleアカウントと連携しています</p>
-    <% end %>
   </div>
 
-  <%# アバター切り替えスイッチ（Google連携済みの場合のみ表示） %>
-  <% if user.google_uid.present? %>
-    <div class="mt-4 flex items-center justify-center">
-      <%# local: true を削除して Turbo送信を有効化 %>
-      <%= form_with(model: user, url: user_path(user), method: :patch, class: "flex items-center space-x-2") do |f| %>
-        <label class="relative inline-flex items-center cursor-pointer">
-          <%= f.check_box :use_google_avatar, class: "sr-only peer", onchange: "this.form.requestSubmit()" %>
-          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          <span class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">Googleアイコンを使用</span>
-        </label>
+  <!-- アバター編集モーダル (dialog要素を使用) -->
+  <dialog data-avatar-upload-target="modal"
+          data-action="click->avatar-upload#clickOutside"
+          class="rounded-2xl bg-white dark:bg-slate-900 text-left shadow-xl border border-gray-100 dark:border-slate-800 p-0 backdrop:bg-gray-500/75 backdrop:backdrop-blur-sm w-full max-w-lg open:animate-fade-in">
+
+    <!-- モーダルヘッダー -->
+    <div class="bg-gray-50 dark:bg-slate-800/50 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-100 dark:border-slate-800">
+      <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white" id="modal-title">アバターを変更</h3>
+      <button type="button" data-action="click->avatar-upload#closeModal" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- モーダルボディ -->
+    <div class="px-4 py-5 sm:p-6">
+      <%= form_with(model: user, url: user_registration_path, method: :put, class: "w-full", data: { turbo: false }) do |f| %>
+        <div class="grid grid-cols-3 gap-3 mb-6">
+
+          <!-- 1. デフォルト -->
+          <label class="cursor-pointer group relative" data-avatar-upload-target="optionCard" data-value="default">
+            <%= f.radio_button :avatar_type, :default, class: "sr-only", data: { avatar_upload_target: "radio", action: "change->avatar-upload#updateUI" } %>
+            <div class="h-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all flex flex-col items-center justify-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                <%= user.name.to_s.slice(0, 1).upcase %>
+              </div>
+              <span class="text-xs font-bold text-gray-600 dark:text-gray-300">デフォルト</span>
+            </div>
+          </label>
+
+          <!-- 2. Google (連携済みの場合のみ有効) -->
+          <% google_linked = user.google_uid.present? %>
+          <label class="cursor-pointer group relative <%= 'opacity-50 cursor-not-allowed' unless google_linked %>" data-avatar-upload-target="optionCard" data-value="google">
+            <%= f.radio_button :avatar_type, :google, class: "sr-only", disabled: !google_linked, data: { avatar_upload_target: "radio", action: "change->avatar-upload#updateUI" } %>
+            <div class="h-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all flex flex-col items-center justify-center gap-2">
+              <% if google_linked && user.avatar_url.present? %>
+                <%= image_tag user.avatar_url, class: "w-8 h-8 rounded-full object-cover shadow-sm" %>
+              <% else %>
+                <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+                  <span class="material-symbols-outlined text-lg">account_circle</span>
+                </div>
+              <% end %>
+              <span class="text-xs font-bold text-gray-600 dark:text-gray-300">Google</span>
+            </div>
+            <% unless google_linked %>
+              <div class="absolute inset-0 z-10" title="Google連携が必要です"></div>
+            <% end %>
+          </label>
+
+          <!-- 3. アップロード -->
+          <label class="cursor-pointer group relative" data-avatar-upload-target="optionCard" data-value="uploaded">
+            <%= f.radio_button :avatar_type, :uploaded, class: "sr-only", data: { avatar_upload_target: "radio", action: "change->avatar-upload#updateUI" } %>
+            <div class="h-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all flex flex-col items-center justify-center gap-2">
+              <div data-avatar-upload-target="uploadIconContainer">
+                <% if user.uploaded_avatar.attached? %>
+                  <%= image_tag user.uploaded_avatar, class: "w-8 h-8 rounded-full object-cover shadow-sm" %>
+                <% else %>
+                  <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400">
+                    <span class="material-symbols-outlined text-lg">cloud_upload</span>
+                  </div>
+                <% end %>
+              </div>
+              <span class="text-xs font-bold text-gray-600 dark:text-gray-300">アップロード</span>
+            </div>
+
+            <!-- 削除ボタン（アップロード済みの場合のみ表示） -->
+            <% if user.uploaded_avatar.attached? %>
+              <button type="button"
+                      data-action="click->avatar-upload#showDeleteModal"
+                      class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 z-10"
+                      title="アップロード画像を削除">
+                <span class="material-symbols-outlined text-xs font-bold">close</span>
+              </button>
+            <% end %>
+          </label>
+        </div>
+
+        <!-- エラーメッセージ表示エリア -->
+        <div data-avatar-upload-target="errorMessage" class="hidden mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs font-bold rounded-lg border border-red-200 dark:border-red-800/30 flex items-center animate-pulse">
+          <span class="material-symbols-outlined mr-1 text-base">error</span>
+          <span></span>
+        </div>
+
+        <!-- ファイルアップロードエリア -->
+        <div class="relative group mb-6">
+          <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl cursor-pointer bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 transition-all duration-200"
+                 data-avatar-upload-target="dropZone"
+                 data-action="dragover->avatar-upload#dragOver dragenter->avatar-upload#dragOver dragleave->avatar-upload#dragLeave drop->avatar-upload#drop">
+            <div class="flex flex-col items-center justify-center pt-5 pb-6 pointer-events-none">
+              <span class="material-symbols-outlined text-3xl text-gray-400 mb-2 group-hover:text-blue-500 transition-colors">add_photo_alternate</span>
+              <p class="mb-1 text-sm text-gray-500 dark:text-gray-400"><span class="font-bold">クリックまたは画像をドロップ</span></p>
+              <p class="text-xs text-gray-400 dark:text-gray-500">PNG, JPG, GIF (最大 5MB)</p>
+            </div>
+            <%= f.file_field :uploaded_avatar, class: "hidden", accept: "image/*", data: { avatar_upload_target: "input", action: "change->avatar-upload#previewImage" } %>
+          </label>
+        </div>
+
+        <!-- 保存ボタン -->
+        <div>
+          <%= f.button class: "w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2" do %>
+            <span class="material-symbols-outlined">save</span>
+            変更を保存する
+          <% end %>
+        </div>
       <% end %>
     </div>
-  <% end %>
+
+    <!-- アバター削除確認オーバーレイ -->
+    <div id="avatar_delete_modal" class="hidden absolute inset-0 bg-white/90 dark:bg-slate-900/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm rounded-2xl">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-gray-100 dark:border-gray-700 transform scale-100 animate-fade-in-up">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+          <span class="material-symbols-outlined text-red-500 mr-2">warning</span>
+          画像の削除
+        </h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+          アップロードした画像を削除しますか？<br>
+          この操作は取り消せません。
+        </p>
+
+        <div class="flex justify-end space-x-3">
+          <button type="button"
+                  data-action="click->avatar-upload#hideDeleteModal"
+                  class="px-4 py-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors">
+            キャンセル
+          </button>
+          <%= button_to delete_user_uploaded_avatar_path,
+              method: :delete,
+              class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors text-sm flex items-center" do %>
+            <span class="material-symbols-outlined text-lg mr-1">delete</span>
+            削除する
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </dialog>
 </div>
