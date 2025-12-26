@@ -37,7 +37,8 @@ module ShareHelper
     end
 
     # メッセージ（投稿本文があれば優先、なければランダム）
-    message = post.body.present? ? "「#{post.body.truncate(30)}」" : get_flavor_text(distance_km)
+    # 改行をスペースに置換して1行にする（Xでの表示崩れ防止と文字数節約のため）
+    message = post.body.present? ? "「#{post.body.gsub(/\R/, ' ').truncate(30)}」" : get_flavor_text(distance_km)
 
     # 投稿詳細ページのURLを含める（OGP画像表示のため）
     post_url = post_url(post, host: request.host, protocol: request.protocol)
@@ -103,7 +104,7 @@ module ShareHelper
 
         💬 #{message}
         ━━━━━━━━━━━━
-        一緒に歩いて強くなろう🛡️
+        ━━━━━━━━━━━━
       TEXT
     else
       <<~TEXT
@@ -115,7 +116,6 @@ module ShareHelper
         ⚔️ 獲得経験値... #{exp} exp
         💬 #{message}
         ━━━━━━━━━━━━
-        一緒に歩いて強くなろう🛡️
         👇
       TEXT
     end
