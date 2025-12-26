@@ -212,19 +212,46 @@
     <!-- ヘッダー分のpadding-topを追加（モバイル：小、PC：大） -->
     <main class="flex-1 w-full pt-12 sm:pt-20">
       <!-- Flashメッセージ -->
-      <div id="flash_messages">
+      <!-- Flashメッセージ (Dynamic Island Style - God Mode Neon) -->
+      <div id="flash_messages" class="fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col items-center gap-3 w-full max-w-lg pointer-events-none px-4">
         <% if notice.present? %>
-          <div data-controller="flash" class="mx-auto max-w-2xl px-4 py-2">
-            <div class="bg-blue-100 dark:bg-blue-900/30 border border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-300 px-4 py-3 rounded-xl relative" role="alert">
-              <span class="block sm:inline"><%= notice %></span>
+          <div data-controller="flash" class="pointer-events-auto transform transition-all duration-500 ease-out origin-top">
+            <!-- Success: 強力な青い発光影 -->
+            <div class="flex items-center gap-3 py-3 px-5 pr-3 rounded-full backdrop-blur-xl bg-slate-900/95 border border-slate-700/50 dark:border-sky-500/50 ring-1 ring-black/20 shadow-2xl dark:shadow-[0_0_35px_rgba(14,165,233,0.6)]">
+              <!-- Icon -->
+              <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-sky-500/20 text-sky-400">
+                <span class="material-symbols-outlined text-xl">check_circle</span>
+              </div>
+              <!-- Text -->
+              <div class="flex-1 min-w-0 px-2 text-center sm:text-left">
+                <p class="text-sm font-bold text-white hidden sm:block">Success</p>
+                <p class="text-sm text-slate-200 truncate max-w-[200px] sm:max-w-xs"><%= notice %></p>
+              </div>
+              <!-- Close Button -->
+              <button type="button" data-action="click->flash#dismiss" class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors ml-1">
+                <span class="material-symbols-outlined text-lg">close</span>
+              </button>
             </div>
           </div>
         <% end %>
 
         <% if alert.present? %>
-          <div data-controller="flash" class="mx-auto max-w-2xl px-4 py-2">
-            <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-xl relative" role="alert">
-              <span class="block sm:inline"><%= alert %></span>
+          <div data-controller="flash" class="pointer-events-auto transform transition-all duration-500 ease-out origin-top">
+            <!-- Alert: 強力な赤い発光影 -->
+            <div class="flex items-center gap-3 py-3 px-5 pr-3 rounded-full backdrop-blur-xl bg-slate-900/95 border border-slate-700/50 dark:border-rose-500/50 ring-1 ring-black/20 shadow-2xl dark:shadow-[0_0_35px_rgba(244,63,94,0.6)]">
+              <!-- Icon -->
+              <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-rose-500/20 text-rose-400">
+                <span class="material-symbols-outlined text-xl">error</span>
+              </div>
+              <!-- Text -->
+              <div class="flex-1 min-w-0 px-2 text-center sm:text-left">
+                <p class="text-sm font-bold text-white hidden sm:block">Alert</p>
+                <p class="text-sm text-slate-200 truncate max-w-[200px] sm:max-w-xs"><%= alert %></p>
+              </div>
+              <!-- Close Button -->
+              <button type="button" data-action="click->flash#dismiss" class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors ml-1">
+                <span class="material-symbols-outlined text-lg">close</span>
+              </button>
             </div>
           </div>
         <% end %>
