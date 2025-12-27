@@ -316,7 +316,7 @@ class RpgCardGeneratorService
         # 通常（投稿）の場合は改行をスペースに置換して自動折り返し
         clean_text = strip_emoji(message).gsub(/\R/, " ").squeeze(" ")
         body_text = clean_text.truncate(65)
-        wrapped_body = wrap_text(body_text, 19)
+        wrapped_body = wrap_text(body_text, 17)
       end
     else
       wrapped_body = "冒険の記録が更新されました！\n明日もまた、新たな旅へ出かけよう。"
