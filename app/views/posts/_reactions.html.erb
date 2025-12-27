@@ -31,7 +31,7 @@
 
     <!-- ピッカー（吹き出し） -->
     <div data-popover-target="content"
-         class="hidden absolute bottom-full left-0 mb-2 p-4 bg-white/80 dark:bg-slate-800/90 backdrop-blur-md rounded-[2rem] shadow-[10px_10px_30px_rgba(0,0,0,0.1),-10px_-10px_30px_rgba(255,255,255,0.8)] dark:shadow-xl border border-white/60 dark:border-gray-700 w-64 z-30 animate-fade-in-up origin-bottom-left">
+         class="hidden absolute bottom-full left-0 mb-2 p-4 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-[2rem] shadow-[10px_10px_30px_rgba(0,0,0,0.1),-10px_-10px_30px_rgba(255,255,255,0.8)] dark:shadow-xl border border-white/60 dark:border-gray-700 w-64 z-30 animate-fade-in-up origin-bottom-left">
       <div class="grid grid-cols-4 gap-2">
         <% Reaction.all_kinds.each do |reaction_info| %>
           <% kind = reaction_info[:kind] %>
@@ -54,7 +54,7 @@
   <!-- ========================================
        右側：スタンプ一覧（横スクロール）
        ======================================== -->
-  <div class="flex overflow-x-auto gap-1.5 scrollbar-hide [&::-webkit-scrollbar]:hidden items-center py-1 pr-4 mask-image-linear-gradient">
+  <div data-controller="scroll-drag" class="flex overflow-x-auto gap-1.5 scrollbar-hide [&::-webkit-scrollbar]:hidden items-center py-1 pr-4 mask-image-linear-gradient">
     <% Reaction.all_kinds.each do |reaction_info| %>
       <% kind = reaction_info[:kind] %>
       <% count = reaction_counts[kind] || 0 %>

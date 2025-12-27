@@ -79,7 +79,7 @@ RSpec.describe "Walks", type: :system, js: true do
         click_link "削除"
       end
 
-      sleep 1 # 削除処理と画面遷移を待つ
+
 
       expect(page).to have_current_path(walks_path)
       # 削除完了メッセージを待つ（文言が不明なため、Flashメッセージのコンテナが表示されることを待つ）

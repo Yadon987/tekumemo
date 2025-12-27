@@ -29,10 +29,10 @@ if [ $? -ne 0 ]; then
 fi
 
 
-# 3. RSpecの実行（並列実行）
-# -n 4: 4プロセスで実行（CPUコア数に合わせて調整）
-echo "--- 3/3: RSpec実行 (並列: 4プロセス) ---"
-bundle exec parallel_rspec -n 4 spec/
+# 3. RSpecの実行（標準実行）
+# 並列実行は環境依存のエラーが出やすいため、安定した通常のRSpecを使用
+echo "--- 3/3: RSpec実行 ---"
+bundle exec rspec spec/
 
 # 並列テストの結果確認
 if [ $? -ne 0 ]; then

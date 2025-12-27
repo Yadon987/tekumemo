@@ -80,6 +80,13 @@ module.exports = {
         "sparkle-scale": "sparkleScale 4.5s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         "gradient-xy": "gradient-xy 15s ease infinite",
+        // LPミニチュアUI用アニメーション
+        dash: "dash 1.5s ease-out forwards",
+        "grow-h-12": "growH12 1s ease-out forwards",
+        "grow-h-16": "growH16 1s ease-out forwards",
+        "grow-h-24": "growH24 1s ease-out forwards",
+        "pop-in": "pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both",
+        "float-up": "float-up 2s ease-out infinite both",
       },
       keyframes: {
         shimmer: {
@@ -127,6 +134,33 @@ module.exports = {
             "background-size": "400% 400%",
             "background-position": "100% 100%",
           },
+        },
+        // LPミニチュアUI用キーフレーム
+        dash: {
+          "0%": { "stroke-dashoffset": "283" },
+          "100%": { "stroke-dashoffset": "70" }, // 75%くらいの位置
+        },
+        growH12: {
+          "0%": { height: "0" },
+          "100%": { height: "3rem" }, // h-12
+        },
+        growH16: {
+          "0%": { height: "0" },
+          "100%": { height: "4rem" }, // h-16
+        },
+        growH24: {
+          "0%": { height: "0" },
+          "100%": { height: "6rem" }, // h-24
+        },
+        "pop-in": {
+          "0%": { opacity: "0", transform: "translate(-50%, 20px) scale(0.5)" },
+          "100%": { opacity: "1", transform: "translate(-50%, 0) scale(1)" },
+        },
+        "float-up": {
+          "0%": { opacity: "0", transform: "translateY(10px) scale(0.5)" },
+          "20%": { opacity: "1", transform: "translateY(0) scale(1)" },
+          "80%": { opacity: "1", transform: "translateY(-20px) scale(1)" },
+          "100%": { opacity: "0", transform: "translateY(-30px) scale(0.5)" },
         },
       },
     },

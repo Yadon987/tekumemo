@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   # ログインスタンプカレンダー
   # 散歩記録をカレンダー形式で表示
   resources :login_stamps, only: [ :index ]
+  resources :achievements, only: [ :index ]
   resources :rankings, only: [ :index ]
   namespace :rankings do
     resources :users, only: [] do

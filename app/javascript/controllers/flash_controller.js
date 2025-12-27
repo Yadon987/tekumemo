@@ -1,32 +1,51 @@
 import { Controller } from "@hotwired/stimulus";
 
-// フラッシュメッセージを一定時間後に自動的に消去するコントローラー
+// フラッシュメッセージを高度に制御するコントローラー
+// - 自動消滅 (標準5秒)
+// - ドロップダウンアニメーション (Dynamic Island風)
+// - クリックで即時削除
 export default class extends Controller {
   connect() {
-    // 5秒後にフェードアウトを開始
+    // 表示初期状態: 上に隠して少し小さくしておく
+    // transition-all duration-500 cubic-bezier(0.34, 1.56, 0.64, 1) <- 弾むような動き
+    this.element.classList.add(
+      "transition-all",
+      "duration-500",
+      "ease-out", // またはカスタムcubic-bezierで弾ませるのもあり
+      "transform",
+      "-translate-y-full",
+      "scale-90",
+      "opacity-0"
+    );
+
+    // ビューのレンダリング後にアニメーション開始（降りてくる）
+    requestAnimationFrame(() => {
+      this.element.classList.remove("-translate-y-full", "scale-90", "opacity-0");
+    });
+
+    // 5秒後に自動消滅開始
     this.timeout = setTimeout(() => {
       this.dismiss();
     }, 5000);
   }
 
   disconnect() {
-    // コントローラーが外れたらタイマーをクリア
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
   }
 
+  // メッセージを閉じるアクション
   dismiss() {
-    // フェードアウトのアニメーションクラスを追加
-    this.element.classList.add(
-      "transition-opacity",
-      "duration-1000",
-      "opacity-0"
-    );
+    if (this.element.dataset.dismissing) return;
+    this.element.dataset.dismissing = "true";
 
-    // アニメーション完了後（1秒後）に要素をDOMから削除
+    // 上へ退場
+    this.element.classList.add("-translate-y-full", "scale-90", "opacity-0");
+
+    // アニメーション完了後にDOMから削除
     setTimeout(() => {
       this.element.remove();
-    }, 1000);
+    }, 500);
   }
 }

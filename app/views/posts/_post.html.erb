@@ -7,17 +7,19 @@
 
 <div id="<%= dom_id post %>"
      class="group relative mb-8 p-6 rounded-[3.75rem] transition-all duration-300 hover:-translate-y-2
-            <%= color_theme[:bg] %> <%= color_theme[:shadow] %> bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none border-2 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 backdrop-blur-md hover:shadow-xl overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse">
+            <%= color_theme[:bg] %> <%= color_theme[:shadow] %> bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none border-2 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 backdrop-blur-md hover:shadow-xl">
 
-  <!-- Candy Gradient Orbs (Light Mode Only) -->
-  <div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br <%= color_theme[:orb_bg] %> rounded-full blur-2xl pointer-events-none dark:hidden"></div>
-  <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-tr <%= color_theme[:orb_bg] %> rounded-full blur-2xl pointer-events-none dark:hidden"></div>
-
-  <!-- ダークモード用の装飾（Synthwave Sun / Grid） -->
+  <!-- 背景・装飾用コンテナ（ここでoverflow-hiddenして中身を切り抜く） -->
   <div class="absolute inset-0 rounded-[3.75rem] pointer-events-none overflow-hidden">
-    <!-- 上部の淡いグラデーション -->
+    <!-- Light Mode: Top Gradient Pulse -->
+    <div class="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/15 to-transparent rounded-t-[3.75rem] animate-pulse dark:hidden"></div>
+
+    <!-- Candy Gradient Orbs (Light Mode Only) -->
+    <div class="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br <%= color_theme[:orb_bg] %> rounded-full blur-2xl dark:hidden"></div>
+    <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-tr <%= color_theme[:orb_bg] %> rounded-full blur-2xl dark:hidden"></div>
+
+    <!-- Dark Mode Decor (Synthwave Sun / Grid) -->
     <div class="hidden dark:block absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/5 to-transparent"></div>
-    <!-- 下部のグリッドライン（Synthwave風） -->
     <div class="hidden dark:block absolute bottom-0 left-0 w-full h-1/4 bg-[linear-gradient(to_top,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:100%_10px]"></div>
   </div>
 
@@ -84,7 +86,7 @@
         </div>
 
         <!-- 本文 -->
-        <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-200 leading-relaxed font-medium text-base p-5 rounded-3xl <%= color_theme[:inner_bg] %> shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none border border-black/5 dark:border-white/5 relative z-10">
+        <div class="prose dark:prose-invert max-w-none break-words text-gray-700 dark:text-gray-200 leading-relaxed font-medium text-base p-5 rounded-3xl <%= color_theme[:inner_bg] %> shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none border border-black/5 dark:border-white/5 relative z-10">
           <%= simple_format(post.body) %>
         </div>
 

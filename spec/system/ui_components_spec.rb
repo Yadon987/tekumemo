@@ -50,14 +50,11 @@ RSpec.describe "UI Components", type: :system, js: true do
       find('button[data-action="click->accordion#toggle"]').click
 
       # アニメーション待ち
-      sleep 0.5
-
-      expect(page).to have_selector('[data-controller="scroll-drag"]')
+      expect(page).to have_selector('[data-controller="scroll-drag"]', visible: true)
     end
 
     it "称号リストが表示されていること" do
       find('button[data-action="click->accordion#toggle"]').click
-      sleep 0.5
       expect(page).to have_content("冒険の始まり") # 最初の散歩で獲得できる称号
     end
   end
