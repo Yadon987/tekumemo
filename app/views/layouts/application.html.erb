@@ -261,6 +261,19 @@
       <%= yield :modals %>
     </main>
 
+    <!-- ===== フッター ===== -->
+    <footer class="w-full py-8 pb-24 sm:pb-8 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm border-t border-slate-200 dark:border-slate-800">
+      <div class="max-w-2xl mx-auto px-4 text-center">
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
+          <%= link_to "利用規約 & プライバシーポリシー", privacy_path, class: "text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 text-xs sm:text-sm font-medium transition-colors" %>
+          <!-- 必要に応じて他リンクを追加 -->
+        </div>
+        <p class="text-[10px] sm:text-xs text-slate-400 dark:text-slate-600">
+          &copy; <%= Time.current.year %> TekuMemo. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
     <!-- ===== Expandable FAB（展開可能なFloating Action Button）（ログイン時のみ） ===== -->
     <% if user_signed_in? %>
       <div data-controller="expandable-fab">
@@ -290,16 +303,7 @@
                 <% end %>
               <% end %>
 
-              <!-- プライバシー＆利用規約 -->
-              <%= link_to privacy_path,
-                  data: { expandable_fab_target: "actionButton" },
-                  class: "hidden opacity-0 absolute bottom-64 right-0 flex items-center space-x-3 transition-all duration-200 transform translate-y-5",
-                  style: "transform: translateY(20px);" do %>
-                <span class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl shadow-md text-sm font-medium whitespace-nowrap">プライバシー＆利用規約</span>
-                <div class="bg-blue-500 dark:bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition-colors">
-                  <span class="material-symbols-outlined text-xl">privacy_tip</span>
-                </div>
-              <% end %>
+
 
               <!-- ログインスタンプ -->
               <%= link_to login_stamps_path,
