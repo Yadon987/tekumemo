@@ -47,13 +47,15 @@ export default class extends Controller {
     this.retryCountValue = 0
   }
 
-  // モーダルを閉じる
+  // 背景クリック時のみ閉じる（中身のクリックは無視）
+  closeBackground(e) {
+    if (e && this.containerTarget.contains(e.target)) return
+    this.close(e)
+  }
+
+  // モーダルを閉じる（強制）
   close(e) {
-    if (e) {
-      // モーダルの中身をクリックした場合は閉じない
-      if (this.containerTarget.contains(e.target)) return
-      e.preventDefault()
-    }
+    if (e) e.preventDefault()
 
     this.modalTarget.style.opacity = "0"
     setTimeout(() => {
