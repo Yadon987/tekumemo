@@ -54,7 +54,7 @@
   <!-- ========================================
        右側：スタンプ一覧（横スクロール）
        ======================================== -->
-  <div data-controller="horizontal-scroll" class="flex overflow-x-auto gap-1.5 scrollbar-hide [&::-webkit-scrollbar]:hidden items-center py-1 pr-4 mask-image-linear-gradient">
+  <div data-controller="scroll-drag" class="flex overflow-x-auto gap-1.5 scrollbar-hide [&::-webkit-scrollbar]:hidden items-center py-1 pr-4 mask-image-linear-gradient">
     <% Reaction.all_kinds.each do |reaction_info| %>
       <% kind = reaction_info[:kind] %>
       <% count = reaction_counts[kind] || 0 %>
