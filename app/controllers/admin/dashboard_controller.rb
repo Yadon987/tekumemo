@@ -72,11 +72,12 @@ class Admin::DashboardController < Admin::BaseController
                                         .limit(10)
 
     # 4. 非アクティブアカウント（投稿・散歩0件で登録から30日以上経過）
-    @anomalies[:inactive_accounts] = User.left_joins(:posts, :walks)
-                                         .where("users.created_at < ?", 30.days.ago)
-                                         .group("users.id")
-                                         .having("COUNT(DISTINCT posts.id) = 0 AND COUNT(DISTINCT walks.id) = 0")
-                                         .limit(10)
+    # ※ユーザーの離脱は正常な挙動のため、異常検出から除外
+    # @anomalies[:inactive_accounts] = User.left_joins(:posts, :walks)
+    #                                      .where("users.created_at < ?", 30.days.ago)
+    #                                      .group("users.id")
+    #                                      .having("COUNT(DISTINCT posts.id) = 0 AND COUNT(DISTINCT walks.id) = 0")
+    #                                      .limit(10)
 
     # 異常の総数を計算（配列に変換してからサイズを取得）
     @total_anomalies = @anomalies.values.sum { |v| v.to_a.size }
