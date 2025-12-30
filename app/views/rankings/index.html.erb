@@ -148,7 +148,7 @@
 
             <div class="text-right">
               <p class="text-xs text-purple-400 dark:text-fuchsia-300 font-bold uppercase tracking-wider mb-1"><%= t('rankings.index.your_rank.distance') %></p>
-              <p class="text-3xl font-black text-slate-700 dark:text-white dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
+              <p class="text-2xl sm:text-3xl font-black text-slate-700 dark:text-white dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
                 <%= number_with_precision(@my_distance, precision: 1) %>
               </p>
               <p class="text-xs text-slate-500 dark:text-slate-400"><%= t('rankings.index.your_rank.unit') %></p>
@@ -238,7 +238,7 @@
         <span>🏆</span> <%= t('rankings.index.podium') %> <span>🏆</span>
       </h2>
 
-      <div class="flex items-end justify-center gap-4 sm:gap-6 md:gap-12 mb-8 w-full max-w-lg mx-auto">
+      <div class="flex items-end justify-center gap-2 sm:gap-6 md:gap-12 mb-8 w-full max-w-lg mx-auto">
         <!-- 2位 (Silver) -->
         <div class="flex-1 min-w-0 text-center transform hover:scale-105 transition-transform duration-300 <%= 'opacity-0' unless @rankings[1] %>">
           <% if second = @rankings[1] %>
