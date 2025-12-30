@@ -241,28 +241,35 @@
         </div>
       </div>
 
-      <%# セキュリティ設定エリア（メール・パスワード） %>
-      <div class="border-t border-gray-100 dark:border-white/10 pt-6 mt-6">
-        <h3 class="text-sm font-bold text-gray-700 dark:text-slate-300 mb-4">セキュリティ設定</h3>
+      <%# セキュリティ設定セクション（アコーディオン） %>
+      <div class="border-t border-gray-200 dark:border-white/20 pt-4 mt-6" data-controller="accordion" data-accordion-is-open-value="false">
+        <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between group focus:outline-none py-2">
+          <h3 class="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+            <span class="material-symbols-outlined text-cyan-500 mr-2">lock</span>
+            セキュリティ設定
+          </h3>
+          <span class="material-symbols-outlined text-gray-400 group-hover:text-cyan-500 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
+        </button>
 
-        <div class="mb-4">
-          <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
+        <div class="hidden mt-6" data-accordion-target="content">
+          <div class="mb-4">
+            <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
 
-          <% if resource.google_uid.present? %>
-            <div class="relative">
+            <% if resource.google_uid.present? %>
+              <div class="relative">
+                <%= f.email_field :email,
+                    disabled: true,
+                    class: "w-full pl-4 pr-4 py-2 bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-500 dark:text-slate-500 cursor-not-allowed select-none shadow-inner" %>
+                <p class="text-xs text-gray-400 dark:text-slate-500 mt-1 flex items-center">
+                  <span class="material-symbols-outlined text-sm mr-1">info</span>
+                  Googleアカウントで管理されています
+                </p>
+              </div>
+            <% else %>
               <%= f.email_field :email,
-                  disabled: true,
-                  class: "w-full pl-4 pr-4 py-2 bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-500 dark:text-slate-500 cursor-not-allowed select-none shadow-inner" %>
-              <p class="text-xs text-gray-400 dark:text-slate-500 mt-1 flex items-center">
-                <span class="material-symbols-outlined text-sm mr-1">info</span>
-                Googleアカウントで管理されています
-              </p>
-            </div>
-          <% else %>
-            <%= f.email_field :email,
-                class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-          <% end %>
-        </div>
+                  class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+            <% end %>
+          </div>
 
           <div class="mb-4">
             <%= f.label :password, "新しいパスワード（変更する場合のみ）", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
@@ -292,6 +299,7 @@
               <span class="text-xs text-red-500 dark:text-red-400 ml-1">※MVPでは未実装です</span>
             </div>
           </div>
+        </div>
       </div>
 
       <div class="pt-2">
