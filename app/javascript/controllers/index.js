@@ -43,6 +43,9 @@ application.register("hello", HelloController)
 import IconSelectController from "./icon_select_controller"
 application.register("icon-select", IconSelectController)
 
+import LandingModalController from "./landing_modal_controller"
+application.register("landing-modal", LandingModalController)
+
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 
