@@ -1,7 +1,7 @@
 <% content_for :title, "てくメモ - ホーム" %>
 
 <% if user_signed_in? %>
-  <div class="w-full transition-colors duration-300 -mt-12 sm:-mt-20 pt-12 sm:pt-20 relative overflow-hidden">
+  <div class="w-full transition-colors duration-300 -mt-12 sm:-mt-20 pt-12 sm:pt-20 relative overflow-hidden" data-controller="coach-mark">
     <div class="flex-1 p-4 pb-24 w-full max-w-2xl mx-auto space-y-4 relative z-10">
 
     <!-- 今日の散歩ダッシュボード -->
@@ -370,8 +370,7 @@
         <% end %>
       </div>
     <% end %>
-  </div>
-  </div>
 
-  <%= render 'welcome_modal' %>
+  </div>
+  </div>
 <% end %>

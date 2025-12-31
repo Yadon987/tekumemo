@@ -79,5 +79,6 @@ application.register("scroll-hide", ScrollHideController)
 import StatsChartController from "./stats_chart_controller"
 application.register("stats-chart", StatsChartController)
 
-import WelcomeController from "./welcome_controller"
-application.register("welcome", WelcomeController)
+import CoachMarkController from "./coach_mark_controller"
+application.register("coach-mark", CoachMarkController)
+
