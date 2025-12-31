@@ -42,6 +42,7 @@
 
       <img id="main-ogp-image"
            data-ogp-preview-target="image"
+           data-action="load->ogp-preview#handleLoad error->ogp-preview#handleError"
            src="<%= post_ogp_image_url(@post, format: :jpg) %>"
            alt="Adventure Log"
            class="relative w-full rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.1)] dark:shadow-none transform transition duration-500 hover:scale-[1.02] border-4 border-white/50 dark:border-transparent">
@@ -55,7 +56,7 @@
     </div>
 
     <% if @post.body.present? %>
-      <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 text-center font-medium leading-relaxed">
+      <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 text-center font-medium leading-relaxed break-words">
         "<%= @post.body %>"
       </p>
     <% end %>
@@ -106,23 +107,23 @@
      data-controller="ogp-preview"
      data-ogp-preview-target="modal"
      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-200 opacity-0"
-     data-action="click->ogp-preview#close">
+     data-action="click->ogp-preview#closeBackground">
 
   <div data-ogp-preview-target="container"
        class="relative bg-white dark:bg-slate-900/90 rounded-[3.75rem] p-8 max-w-2xl w-full shadow-2xl transform transition-all border-4 border-white dark:border-white/10 dark:border-t-white/40 dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none">
 
     <!-- 閉じるボタン -->
-    <button data-action="click->ogp-preview#close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white transition relative z-20">
+    <button data-action="click->ogp-preview#close" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-300 dark:hover:text-white transition-all duration-200 z-50 shadow-md hover:shadow-lg hover:scale-110 active:scale-95">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
       </svg>
     </button>
 
     <!-- タイトル -->
-    <h3 class="text-lg font-bold text-slate-700 dark:text-white mb-2 flex items-center gap-2 relative z-10">
+    <h3 class="text-lg font-bold text-slate-700 dark:text-white mb-2 flex items-center gap-2 relative z-10 pr-12">
       <span>🖼️</span> シェア画像プレビュー
     </h3>
-    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed relative z-10">
+    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed relative z-10 pr-12">
       X(Twitter)などでシェアされた時に表示される画像です。<br>
       <span class="text-orange-500 dark:text-amber-400">※画像が古い場合は「画像を最新にする」を押してください。</span>
     </p>

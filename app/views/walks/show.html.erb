@@ -26,15 +26,15 @@
       <div class="relative z-10 pl-2">
         <div class="flex items-center space-x-1 mb-2 opacity-90">
           <span class="material-symbols-outlined dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-emerald-300 dark:to-green-300 dark:drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]">straighten</span>
-          <span class="text-xs font-bold dark:text-emerald-200">距離</span>
+          <span class="text-[10px] sm:text-xs font-bold dark:text-emerald-200">距離</span>
         </div>
         <div class="flex items-baseline">
-          <span class="inline-block text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-green-400 to-emerald-600 dark:from-emerald-300 dark:via-green-300 dark:to-emerald-500 dark:drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]"
+          <span class="inline-block text-xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-green-400 to-emerald-600 dark:from-emerald-300 dark:via-green-300 dark:to-emerald-500 dark:drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]"
                 data-controller="counter"
                 data-counter-target-value="<%= @walk.distance %>">
             0
           </span>
-          <span class="text-sm font-bold ml-1 opacity-90 dark:text-emerald-400">km</span>
+          <span class="text-xs sm:text-sm font-bold ml-1 opacity-90 dark:text-emerald-400">km</span>
         </div>
       </div>
     </div>
@@ -45,15 +45,15 @@
       <div class="relative z-10 pl-2">
         <div class="flex items-center space-x-1 mb-2 opacity-90">
           <span class="material-symbols-outlined dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-cyan-300 dark:to-blue-300 dark:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">schedule</span>
-          <span class="text-xs font-bold dark:text-cyan-200">時間</span>
+          <span class="text-[10px] sm:text-xs font-bold dark:text-cyan-200">時間</span>
         </div>
         <div class="flex items-baseline">
-          <span class="inline-block text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-sky-400 to-blue-600 dark:from-cyan-300 dark:via-blue-300 dark:to-cyan-500 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]"
+          <span class="inline-block text-xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-sky-400 to-blue-600 dark:from-cyan-300 dark:via-blue-300 dark:to-cyan-500 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]"
                 data-controller="counter"
                 data-counter-target-value="<%= @walk.duration %>">
             0
           </span>
-          <span class="text-sm font-bold ml-1 opacity-90 dark:text-cyan-400">分</span>
+          <span class="text-xs sm:text-sm font-bold ml-1 opacity-90 dark:text-cyan-400">分</span>
         </div>
       </div>
     </div>
@@ -64,15 +64,15 @@
       <div class="relative z-10 pl-2">
         <div class="flex items-center space-x-1 mb-2 opacity-90">
           <span class="material-symbols-outlined dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-purple-300 dark:to-fuchsia-300 dark:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">directions_walk</span>
-          <span class="text-xs font-bold dark:text-purple-200">歩数</span>
+          <span class="text-[10px] sm:text-xs font-bold dark:text-purple-200">歩数</span>
         </div>
         <div class="flex items-baseline">
-          <span class="inline-block text-3xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-purple-400 to-indigo-600 dark:from-purple-300 dark:via-fuchsia-300 dark:to-purple-500 dark:drop-shadow-[0_0_5px_rgba(168,85,247,0.5)]"
+          <span class="inline-block text-xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-purple-400 to-indigo-600 dark:from-purple-300 dark:via-fuchsia-300 dark:to-purple-500 dark:drop-shadow-[0_0_5px_rgba(168,85,247,0.5)]"
                 data-controller="counter"
                 data-counter-target-value="<%= @walk.steps || 0 %>">
             0
           </span>
-          <span class="text-sm font-bold ml-1 opacity-90 dark:text-purple-400">歩</span>
+          <span class="text-xs sm:text-sm font-bold ml-1 opacity-90 dark:text-purple-400">歩</span>
         </div>
       </div>
     </div>
@@ -83,15 +83,15 @@
       <div class="relative z-10 pl-2">
         <div class="flex items-center space-x-1 mb-2 opacity-90">
           <span class="material-symbols-outlined dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-300 dark:to-red-300 dark:drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]">local_fire_department</span>
-          <span class="text-xs font-bold dark:text-rose-200">消費カロリー</span>
+          <span class="text-[10px] sm:text-xs font-bold dark:text-rose-200">消費カロリー</span>
         </div>
         <div class="flex items-baseline">
-          <span class="inline-block text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-orange-400 to-red-600 dark:from-orange-300 dark:via-red-300 dark:to-orange-500 dark:drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]"
+          <span class="inline-block text-xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-orange-400 to-red-600 dark:from-orange-300 dark:via-red-300 dark:to-orange-500 dark:drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]"
                 data-controller="counter"
                 data-counter-target-value="<%= @walk.calories_burned || 0 %>">
             0
           </span>
-          <span class="text-sm font-bold ml-1 opacity-90 dark:text-rose-400">kcal</span>
+          <span class="text-xs sm:text-sm font-bold ml-1 opacity-90 dark:text-rose-400">kcal</span>
         </div>
       </div>
     </div>

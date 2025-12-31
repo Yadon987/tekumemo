@@ -244,7 +244,9 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
         # 1. Google画像を選択
         find("button[title='アバターを変更']").click
         expect(page).to have_selector("dialog[open]")
-        sleep 0.5 # アニメーション待ち
+        # アニメーション完了を待つために明示的な待機が必要な場合があるが、
+        # have_selector("dialog[open]") で十分なはずなのでsleepは削除
+
         execute_script("document.getElementById('user_avatar_type_google').click()")
         within("dialog[open]") { click_button "変更を保存する" }
         expect(page).to have_content("アカウント情報を変更しました。")
@@ -253,7 +255,9 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
         # 2. 画像をアップロード（自動的にuploadedになるはず）
         find("button[title='アバターを変更']").click
         expect(page).to have_selector("dialog[open]")
-        sleep 0.5 # アニメーション待ち
+        # アニメーション完了を待つために明示的な待機が必要な場合があるが、
+        # have_selector("dialog[open]") で十分なはずなのでsleepは削除
+
 
         # input要素を可視化してファイル添付
         execute_script("document.getElementById('user_uploaded_avatar').classList.remove('hidden')")
@@ -267,7 +271,9 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
         # 3. 再度Google画像を選択
         find("button[title='アバターを変更']").click
         expect(page).to have_selector("dialog[open]")
-        sleep 0.5 # アニメーション待ち
+        # アニメーション完了を待つために明示的な待機が必要な場合があるが、
+        # have_selector("dialog[open]") で十分なはずなのでsleepは削除
+
         execute_script("document.getElementById('user_avatar_type_google').click()")
         within("dialog[open]") { click_button "変更を保存する" }
         expect(page).to have_content("アカウント情報を変更しました。")
@@ -276,7 +282,9 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
         # 4. 再度アップロード画像を選択
         find("button[title='アバターを変更']").click
         expect(page).to have_selector("dialog[open]")
-        sleep 0.5 # アニメーション待ち
+        # アニメーション完了を待つために明示的な待機が必要な場合があるが、
+        # have_selector("dialog[open]") で十分なはずなのでsleepは削除
+
         execute_script("document.getElementById('user_avatar_type_uploaded').click()")
         within("dialog[open]") { click_button "変更を保存する" }
         expect(page).to have_content("アカウント情報を変更しました。")

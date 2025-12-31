@@ -148,7 +148,7 @@
 
             <div class="text-right">
               <p class="text-xs text-purple-400 dark:text-fuchsia-300 font-bold uppercase tracking-wider mb-1"><%= t('rankings.index.your_rank.distance') %></p>
-              <p class="text-3xl font-black text-slate-700 dark:text-white dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
+              <p class="text-2xl sm:text-3xl font-black text-slate-700 dark:text-white dark:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
                 <%= number_with_precision(@my_distance, precision: 1) %>
               </p>
               <p class="text-xs text-slate-500 dark:text-slate-400"><%= t('rankings.index.your_rank.unit') %></p>
@@ -238,7 +238,7 @@
         <span>🏆</span> <%= t('rankings.index.podium') %> <span>🏆</span>
       </h2>
 
-      <div class="flex items-end justify-center gap-4 sm:gap-6 md:gap-12 mb-8 w-full max-w-lg mx-auto">
+      <div class="flex items-end justify-center gap-2 sm:gap-6 md:gap-12 mb-8 w-full max-w-lg mx-auto">
         <!-- 2位 (Silver) -->
         <div class="flex-1 min-w-0 text-center transform hover:scale-105 transition-transform duration-300 <%= 'opacity-0' unless @rankings[1] %>">
           <% if second = @rankings[1] %>
@@ -426,23 +426,23 @@
     <div id="ogp-preview-modal"
          data-ogp-preview-target="modal"
          class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-200 opacity-0"
-         data-action="click->ogp-preview#close">
+         data-action="click->ogp-preview#closeBackground">
 
       <div data-ogp-preview-target="container"
            class="relative bg-white dark:bg-slate-900/90 rounded-[3.75rem] p-8 max-w-2xl w-full shadow-2xl transform transition-all border-4 border-white dark:border-white/10 dark:border-t-white/40 dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none">
 
         <!-- 閉じるボタン -->
-        <button data-action="click->ogp-preview#close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white transition relative z-20">
+        <button data-action="click->ogp-preview#close" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-300 dark:hover:text-white transition-all duration-200 z-50 shadow-md hover:shadow-lg hover:scale-110 active:scale-95">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
 
         <!-- タイトル -->
-        <h3 class="text-lg font-bold text-slate-700 dark:text-white mb-2 flex items-center gap-2 relative z-10">
+        <h3 class="text-lg font-bold text-slate-700 dark:text-white mb-2 flex items-center gap-2 relative z-10 pr-12">
           <span>🖼️</span> シェア画像プレビュー
         </h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed relative z-10">
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed relative z-10 pr-12">
           X(Twitter)などでシェアされた時に表示される画像です。<br>
           <span class="text-orange-500 dark:text-amber-400">※画像がアイコンのままの場合は、生成中です。数秒待ってからリロードしてください。</span>
         </p>

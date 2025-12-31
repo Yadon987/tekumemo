@@ -1,5 +1,28 @@
 # db/seeds.rb
 
+# 0. 実績マスターデータ作成
+puts "Creating achievements..."
+achievements_data = [
+  { name: "初めの一歩", description: "初めて歩数を記録した", condition_type: :total_steps, condition_value: 1, icon_name: "footprint" },
+  { name: "ウォーキングビギナー", description: "累計10,000歩を達成した", condition_type: :total_steps, condition_value: 10000, icon_name: "directions_walk" },
+  { name: "ウォーキングマスター", description: "累計100,000歩を達成した", condition_type: :total_steps, condition_value: 100000, icon_name: "hiking" },
+  { name: "マラソンランナー", description: "累計42kmを達成した", condition_type: :total_distance, condition_value: 42, icon_name: "sports_score" },
+  { name: "地球一周", description: "累計40,000kmを達成した", condition_type: :total_distance, condition_value: 40000, icon_name: "public" },
+  { name: "三日坊主卒業", description: "3日連続でログインした", condition_type: :login_streak, condition_value: 3, icon_name: "history" },
+  { name: "習慣化の達人", description: "30日連続でログインした", condition_type: :login_streak, condition_value: 30, icon_name: "calendar_month" },
+  { name: "初めての投稿", description: "初めて日記を投稿した", condition_type: :post_count, condition_value: 1, icon_name: "edit_note" },
+  { name: "日記職人", description: "日記を10回投稿した", condition_type: :post_count, condition_value: 10, icon_name: "library_books" }
+]
+
+achievements_data.each do |data|
+  Achievement.find_or_create_by!(name: data[:name]) do |a|
+    a.description = data[:description]
+    a.condition_type = data[:condition_type]
+    a.condition_value = data[:condition_value]
+    a.icon_name = data[:icon_name]
+  end
+end
+
 # 1. キャラクター設定（20人）
 CHARACTERS = [
   { name: "竈門炭治郎", email: "user1@example.com", quotes: [ "頑張れ炭治郎頑張れ！", "俺は長男だから我慢できたけど次男だったら我慢できなかった。", "心を燃やせ！" ] },
@@ -166,6 +189,39 @@ users.each_with_index do |user, index|
       created_at: walk_time,
       updated_at: walk_time
     )
+  end
+end
+
+
+# 実績付与のシミュレーション
+puts "Assigning achievements..."
+all_achievements = Achievement.all
+users.each do |user|
+  # 累計歩数
+  total_steps = user.walks.sum(:steps)
+  # 累計距離
+  total_distance = user.walks.sum(:distance)
+  # 投稿数
+  post_count = user.posts.count
+
+  all_achievements.each do |achievement|
+    earned = case achievement.condition_type.to_sym
+    when :total_steps
+      total_steps >= achievement.condition_value
+    when :total_distance
+      total_distance >= achievement.condition_value
+    when :post_count
+      post_count >= achievement.condition_value
+    when :login_streak
+      # シードデータではログイン履歴を厳密に作っていないのでランダムで付与
+      rand < 0.5
+    else
+      false
+    end
+
+    if earned
+      UserAchievement.find_or_create_by!(user: user, achievement: achievement)
+    end
   end
 end
 

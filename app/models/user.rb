@@ -19,6 +19,10 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_many :web_push_subscriptions, dependent: :destroy
 
+  # 実績機能の関連付け
+  has_many :user_achievements, dependent: :destroy
+  has_many :achievements, through: :user_achievements
+
   # Active Storage: ランキングOGP画像の添付
   has_one_attached :ranking_ogp_image
 
