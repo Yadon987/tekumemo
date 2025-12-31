@@ -78,3 +78,6 @@ application.register("scroll-hide", ScrollHideController)
 
 import StatsChartController from "./stats_chart_controller"
 application.register("stats-chart", StatsChartController)
+
+import WelcomeController from "./welcome_controller"
+application.register("welcome", WelcomeController)
