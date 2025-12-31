@@ -150,13 +150,13 @@
       </div>
 
       <%# 通知設定セクション（アコーディオン） %>
-      <div class="border-y-2 border-gray-200 dark:border-white/20 py-4 my-6" data-controller="accordion" data-accordion-is-open-value="false">
-        <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between group focus:outline-none">
-          <h3 class="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+      <div class="py-4 my-6" data-controller="accordion" data-accordion-is-open-value="false">
+        <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between focus:outline-none">
+          <h3 class="text-base font-bold text-gray-700 dark:text-slate-300 flex items-center hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
             <span class="material-symbols-outlined text-purple-500 mr-2">notifications</span>
             通知設定
           </h3>
-          <span class="material-symbols-outlined text-gray-400 group-hover:text-purple-500 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
+          <span class="material-symbols-outlined text-gray-400 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
         </button>
 
         <div class="hidden space-y-6 mt-6" data-accordion-target="content">
@@ -173,22 +173,20 @@
 
           <%# 散歩時間リマインド %>
           <div class="notification-group p-4 bg-purple-50 dark:bg-purple-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-purple-100 dark:border-purple-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(168,85,247,0.15)]">
-            <div class="flex items-start justify-between mb-3">
-              <div class="flex-1">
-                <label class="flex items-center cursor-pointer">
-                  <%= f.check_box :walk_reminder_enabled,
-                      class: "sr-only peer",
-                      onchange: "this.closest('.notification-group').querySelector('.time-input-container').classList.toggle('hidden', !this.checked)" %>
-                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600 relative"></div>
-                  <div class="ml-3">
-                    <span class="text-sm font-bold text-gray-700 dark:text-gray-300">散歩時間のリマインド</span>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">指定した時刻に散歩を促す通知を送信します</p>
-                  </div>
-                </label>
-              </div>
+            <div class="relative">
+              <label class="cursor-pointer block pr-16">
+                <%= f.check_box :walk_reminder_enabled,
+                    class: "sr-only peer",
+                    onchange: "this.closest('.notification-group').querySelector('.time-input-container').classList.toggle('hidden', !this.checked)" %>
+                <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                <div>
+                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">散歩時間のリマインド</span>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">指定した時刻に散歩を促す通知を送信します</p>
+                </div>
+              </label>
             </div>
 
-            <div class="time-input-container <%= 'hidden' unless resource.walk_reminder_enabled %> ml-14 mt-2">
+            <div class="time-input-container <%= 'hidden' unless resource.walk_reminder_enabled %> mt-4">
               <div class="flex items-center space-x-2">
                 <span class="material-symbols-outlined text-gray-400 text-lg">schedule</span>
                 <%= f.time_field :walk_reminder_time,
@@ -200,22 +198,20 @@
 
           <%# 非アクティブリマインド %>
           <div class="notification-group p-4 bg-orange-50 dark:bg-orange-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-orange-100 dark:border-orange-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(251,146,60,0.15)]">
-            <div class="flex items-start justify-between mb-3">
-              <div class="flex-1">
-                <label class="flex items-center cursor-pointer">
-                  <%= f.check_box :inactive_days_reminder_enabled,
-                      class: "sr-only peer",
-                      onchange: "this.closest('.notification-group').querySelector('.threshold-input-container').classList.toggle('hidden', !this.checked)" %>
-                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600 relative"></div>
-                  <div class="ml-3">
-                    <span class="text-sm font-bold text-gray-700 dark:text-gray-300">非アクティブ時のリマインド</span>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">一定期間散歩していない場合に通知を送信します</p>
-                  </div>
-                </label>
-              </div>
+            <div class="relative">
+              <label class="cursor-pointer block pr-16">
+                <%= f.check_box :inactive_days_reminder_enabled,
+                    class: "sr-only peer",
+                    onchange: "this.closest('.notification-group').querySelector('.threshold-input-container').classList.toggle('hidden', !this.checked)" %>
+                <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+                <div>
+                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">非アクティブ時のリマインド</span>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">一定期間散歩していない場合に通知を送信します</p>
+                </div>
+              </label>
             </div>
 
-            <div class="threshold-input-container <%= 'hidden' unless resource.inactive_days_reminder_enabled %> ml-14 mt-2">
+            <div class="threshold-input-container <%= 'hidden' unless resource.inactive_days_reminder_enabled %> mt-4">
               <div class="flex items-center space-x-2">
                 <span class="material-symbols-outlined text-gray-400 text-lg">event_busy</span>
                 <%= f.number_field :inactive_days_threshold,
@@ -229,26 +225,28 @@
 
           <%# リアクションまとめ通知 %>
           <div class="p-4 bg-pink-50 dark:bg-pink-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-pink-100 dark:border-pink-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(236,72,153,0.15)]">
-            <label class="flex items-center cursor-pointer">
-              <%= f.check_box :reaction_summary_enabled, class: "sr-only peer" %>
-              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600 relative"></div>
-              <div class="ml-3">
-                <span class="text-sm font-bold text-gray-700 dark:text-gray-300">リアクションのまとめ通知</span>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">1日1回、受け取ったリアクションをまとめて通知します</p>
-              </div>
-            </label>
+            <div class="relative">
+              <label class="cursor-pointer block pr-16">
+                <%= f.check_box :reaction_summary_enabled, class: "sr-only peer" %>
+                <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600"></div>
+                <div>
+                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">リアクションのまとめ通知</span>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">1日1回、受け取ったリアクションをまとめて通知します</p>
+                </div>
+              </label>
+            </div>
           </div>
         </div>
       </div>
 
       <%# セキュリティ設定セクション（アコーディオン） %>
-      <div class="border-t border-gray-200 dark:border-white/20 pt-4 mt-6" data-controller="accordion" data-accordion-is-open-value="false">
-        <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between group focus:outline-none py-2">
-          <h3 class="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+      <div class="py-4 my-6" data-controller="accordion" data-accordion-is-open-value="false">
+        <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between focus:outline-none py-2">
+          <h3 class="text-base font-bold text-gray-700 dark:text-slate-300 flex items-center hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
             <span class="material-symbols-outlined text-cyan-500 mr-2">lock</span>
             セキュリティ設定
           </h3>
-          <span class="material-symbols-outlined text-gray-400 group-hover:text-cyan-500 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
+          <span class="material-symbols-outlined text-gray-400 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
         </button>
 
         <div class="hidden mt-6" data-accordion-target="content">

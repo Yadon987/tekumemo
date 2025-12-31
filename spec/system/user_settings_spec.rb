@@ -118,6 +118,9 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
     end
 
     it "パスワードを変更できること（現在のパスワード必須）" do
+      # セキュリティ設定のアコーディオンを開く
+      find("h3", text: "セキュリティ設定").click
+
       fill_in "新しいパスワード（変更する場合のみ）", with: "newpassword"
       fill_in "パスワード確認", with: "newpassword"
       fill_in "現在のパスワード", with: "password123"
@@ -128,6 +131,9 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
     end
 
     it "現在のパスワードが間違っていると更新できないこと" do
+      # セキュリティ設定のアコーディオンを開く
+      find("h3", text: "セキュリティ設定").click
+
       fill_in "新しいパスワード（変更する場合のみ）", with: "newpassword"
       fill_in "パスワード確認", with: "newpassword"
       fill_in "現在のパスワード", with: "wrongpassword"
@@ -137,6 +143,9 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
     end
 
     it "確認用パスワードが一致しないと更新できないこと" do
+      # セキュリティ設定のアコーディオンを開く
+      find("h3", text: "セキュリティ設定").click
+
       fill_in "新しいパスワード（変更する場合のみ）", with: "newpassword"
       fill_in "パスワード確認", with: "mismatch"
       fill_in "現在のパスワード", with: "password123"
