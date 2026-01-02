@@ -127,14 +127,14 @@ class GoogleFitService
       # 土日は少し多めに
       base_steps = date.saturday? || date.sunday? ? 8000 : 5000
       steps = base_steps + rand(-1000..3000)
-      
+
       # 距離 (歩数 * 0.7m 概算)
       distance_m = steps * 0.7
       distance_km = (distance_m / 1000.0).round(2)
-      
+
       # カロリー (歩数 * 0.04kcal 概算)
       calories = (steps * 0.04).round
-      
+
       # 時間 (歩数 / 100歩/分 概算)
       duration = (steps / 100.0).round
 
@@ -192,4 +192,3 @@ class GoogleFitService
     [ steps, distance, duration_min ]
   end
 end
-

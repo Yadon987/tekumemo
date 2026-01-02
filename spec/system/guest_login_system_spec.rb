@@ -4,7 +4,7 @@ RSpec.describe 'Guest Login', type: :system do
   # Cloudinaryの削除コールをモック
   before do
     allow(Cloudinary::Uploader).to receive(:destroy).and_return({ "result" => "ok" })
-    
+
     # DBクリーンアップ
     Reaction.delete_all
     Notification.delete_all
@@ -26,7 +26,7 @@ RSpec.describe 'Guest Login', type: :system do
     it 'logs in as guest and deletes account on logout' do
       # 1. ログイン画面へアクセス
       visit new_user_session_path
-      
+
       # 2. ゲストログイン実行
       expect {
         click_button 'ゲストログイン'
@@ -47,7 +47,7 @@ RSpec.describe 'Guest Login', type: :system do
       expect {
         # ドロップダウンを開く
         find('button[data-action="click->dropdown#toggle"]').click
-        click_link 'ログアウト' 
+        click_link 'ログアウト'
       }.to change(User, :count).by(-1) # ゲストユーザーが削除される
 
       expect(page).to have_content 'ログアウトしました。'
@@ -58,11 +58,11 @@ RSpec.describe 'Guest Login', type: :system do
     it 'creates a fallback guest and logs in' do
       visit new_user_session_path
       click_button 'ゲストログイン'
-      
-      expect(page).to have_content 'ポートフォリオ閲覧モードとしてログインしました。'
+
+      expect(page).to have_content 'ゲストモードとしてログインしました。'
       expect(User.last.role).to eq "guest"
       expect(User.last.walks.count).to eq 0
-      
+
       # Logout
       find('button[data-action="click->dropdown#toggle"]').click
       click_link 'ログアウト'

@@ -31,7 +31,7 @@ class PostsController < ApplicationController
   def create
     # ゲストユーザーは投稿不可
     if current_user.guest?
-      redirect_to posts_path, alert: "ポートフォリオ閲覧モードでは投稿機能は利用できません。"
+      redirect_to posts_path, alert: "ゲストモードでは投稿機能は利用できません。"
       return
     end
 

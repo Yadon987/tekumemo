@@ -7,33 +7,33 @@ class Admin::DashboardController < Admin::BaseController
     @total_users = User.count
     @users_this_month = User.where(created_at: Time.current.beginning_of_month..Time.current).count
     @active_users_today = User.where("current_sign_in_at >= ?", Time.current.beginning_of_day).count
-    
+
     if current_user.guest?
       # ゲスト用ダミーデータ
       # アクティブユーザーリストもダミーにする
       @active_users_today_list = ["ユーザーA", "ユーザーB", "ユーザーC"]
-      
+
       # 統計情報の非表示やダミー化が必要ならここで行うが、
       # グローバル統計は見せても良い方針なのでそのまま
-      
+
       @active_users_this_week = 1234 # User.where(...).count
       @active_users_this_month = 5678
-      
+
       # 投稿統計
       @total_posts = 9876
       @posts_today = 123
       @posts_this_month = 456
-      
+
       # 散歩統計
       @total_walks = 5432
       @total_distance = 12345.6
       @distance_this_month = 789.0
-      
+
       # === リスト系のダミー化（ぼかし表示の下に置くためそれっぽいデータ） ===
       @popular_posts = create_dummy_posts(5)
       @recent_posts = create_dummy_posts(5)
       @recent_users = create_dummy_users(5)
-      
+
       # === 異常検知（ダミー） ===
       generate_dummy_anomalies
     else
@@ -44,12 +44,12 @@ class Admin::DashboardController < Admin::BaseController
                                       .pluck(:name)
       @active_users_this_week = User.where("current_sign_in_at >= ?", Time.current.beginning_of_week).count
       @active_users_this_month = User.where("current_sign_in_at >= ?", Time.current.beginning_of_month).count
-  
+
       # 投稿統計
       @total_posts = Post.count
       @posts_today = Post.where(created_at: Time.current.beginning_of_day..Time.current).count
       @posts_this_month = Post.where(created_at: Time.current.beginning_of_month..Time.current).count
-  
+
       # 散歩統計
       @total_walks = Walk.count
       @total_distance = Walk.sum(:distance) || 0
@@ -62,13 +62,13 @@ class Admin::DashboardController < Admin::BaseController
                            .order("reactions_count DESC")
                            .limit(5)
                            .includes(:user)
-  
+
       # 最近の投稿
       @recent_posts = Post.order(created_at: :desc).limit(5).includes(:user)
-  
+
       # 最近のユーザー
       @recent_users = User.order(created_at: :desc).limit(5)
-  
+
       # 異常検知
       detect_anomalies
     end
@@ -109,7 +109,7 @@ class Admin::DashboardController < Admin::BaseController
 
   def generate_dummy_anomalies
     @anomalies = {}
-    
+
     # 1. スパム疑い
     @anomalies[:spam_users] = [
       OpenStruct.new(id: 1, name: "SpamBot01", email: "bot1@example.com", post_count: 25, created_at: 1.day.ago, current_sign_in_at: Time.current, display_avatar_url: nil),
@@ -138,7 +138,7 @@ class Admin::DashboardController < Admin::BaseController
   def detect_anomalies
     @anomalies = {}
     # ... (元のロジック)
-    
+
     # 1. スパム疑いユーザー
     spam_users = User.joins(:posts)
                      .where("posts.created_at >= ?", 24.hours.ago)

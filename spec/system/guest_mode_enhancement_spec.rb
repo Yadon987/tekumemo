@@ -42,7 +42,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
       visit posts_path
 
       expect(page).to have_content('みんな')
-      expect(page).to have_content('ポートフォリオ閲覧モード中は投稿できません')
+      expect(page).to have_content('ゲストモード中は投稿できません')
       expect(page).not_to have_selector('div[data-modal-dialog-id-value="new_post_modal"]') # モーダルトリガーの正規ID
     end
 

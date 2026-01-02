@@ -114,12 +114,12 @@ class User < ApplicationRecord
     # コピー元となるユーザーを取得
     # 1. 散歩記録が多い管理者を優先（リッチなデータをコピーするため）
     # 2. いなければ管理者の最初
-    admin_user = User.admin.joins(:walks).group('users.id').order('COUNT(walks.id) DESC').first || User.admin.first
-    
+    admin_user = User.admin.joins(:walks).group("users.id").order("COUNT(walks.id) DESC").first || User.admin.first
+
     # 互換性のため、ID:2が存在し、かつデータがあるならそれを使う手もあるが、動的なデータ量を優先する
-    
+
     Rails.logger.info "Guest Mode: Selected admin user candidate ID: #{admin_user&.id}"
-    
+
     # 万が一管理者がいない場合は、最低限のゲストを作成して返す
     unless admin_user
       return create_fallback_guest
@@ -140,15 +140,15 @@ class User < ApplicationRecord
       )
 
       # === データコピー処理 (直近3ヶ月分) ===
-      
+
       # 1. 散歩記録（Walks）のコピー
       # コピー対象期間
       range = 3.months.ago.to_date..Date.current
-      
+
       source_walks = admin_user.walks.where(walked_on: range)
       Rails.logger.info "Guest Mode: Cloning data from Admin ID: #{admin_user.id}"
       Rails.logger.info "Guest Mode: Copying #{source_walks.count} walks..."
-      
+
       # insert_allのためのハッシュ配列を作成
       walks_data = source_walks.map do |walk|
         walk.attributes.except("id", "user_id", "created_at", "updated_at").merge(
@@ -157,26 +157,26 @@ class User < ApplicationRecord
           "updated_at" => Time.current
         )
       end
-      
+
       # 一括挿入（バリデーションスキップ・高速化）
       Walk.insert_all(walks_data) if walks_data.present?
 
       # 2. 投稿（Posts）のコピー
       # タイムスタンプも維持したいので、created_atもコピーする
       source_posts = admin_user.posts.where(created_at: 3.months.ago..Time.current)
-      
+
       posts_data = source_posts.map do |post|
         post.attributes.except("id", "user_id").merge(
           "user_id" => guest.id
         )
       end
-      
+
       Post.insert_all(posts_data) if posts_data.present?
 
       # 3. 実績（Achievements）のコピー
       # 中間テーブル UserAchievement をコピー
       source_achievements = admin_user.user_achievements
-      
+
       achievements_data = source_achievements.map do |ua|
         ua.attributes.except("id", "user_id", "created_at", "updated_at").merge(
           "user_id" => guest.id,
@@ -184,7 +184,7 @@ class User < ApplicationRecord
           "updated_at" => Time.current
         )
       end
-      
+
       UserAchievement.insert_all(achievements_data) if achievements_data.present?
 
       # 作成したゲストユーザーを返す
@@ -338,21 +338,21 @@ class User < ApplicationRecord
   def self.ranking(period: "weekly", limit: 100)
     # 期間に応じた日付範囲を取得
     start_date = case period
-                 when "weekly"
+    when "weekly"
                    Date.current.beginning_of_week
-                 when "monthly"
+    when "monthly"
                    Date.current.beginning_of_month
-                 when "yearly"
+    when "yearly"
                    Date.current.beginning_of_year
-                 when "all_time"
+    when "all_time"
                    nil # 全期間
-                 else
+    else
                    Date.current.beginning_of_week
     end
 
     # 実際に歩いた距離を集計
     relation = joins(:walks)
-    
+
     relation = relation.where(walks: { walked_on: start_date..Date.current }) if start_date
 
     relation
