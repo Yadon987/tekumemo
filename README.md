@@ -126,6 +126,47 @@ Coming soon……
     *   OpenWeatherMap API
     *   Windy.com (Embed)
 
+## 🐳 開発環境
+
+### **前提条件**
+* **Docker Engine** (WSL2上で動作)
+* **docker-compose**
+
+### **環境構築**
+```bash
+# コンテナの起動
+docker compose up -d
+
+# 初回のみ: データベース作成とマイグレーション
+docker exec tekumemo-web bash -c "bundle exec rails db:create db:migrate"
+```
+
+### **テスト実行**
+⚠️ **重要: このプロジェトではDocker環境でのテスト実行が必須です**
+
+```bash
+# 全テストを実行（推奨）
+./bin/test_all.sh
+
+# 個別にテストを実行する場合
+docker exec tekumemo-web bash -c "RAILS_ENV=test bundle exec rspec spec/models/user_spec.rb"
+
+# システムテストのみ実行
+docker exec tekumemo-web bash -c "RAILS_ENV=test bundle exec rspec spec/system/"
+```
+
+**テストスクリプトが実行すること:**
+1. Dockerコンテナの起動確認
+2. テストデータベースの準備
+3. RuboCopによるコードスタイルチェック
+4. RSpecによる全テスト実行（306項目）
+
+**初回のみ実行権限付与:**
+```bash
+chmod +x bin/test_all.sh
+```
+
+
 ## 画面遷移図(暫定版)
 ### PC版
 Figma：(https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)

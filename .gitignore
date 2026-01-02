@@ -49,3 +49,6 @@ node_modules/
 vendor/bundle
 *.sqlite3
 /backups/
+
+# テスト結果の一時ファイル
+rspec_*.txt

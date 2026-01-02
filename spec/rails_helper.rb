@@ -54,7 +54,11 @@ RSpec.configure do |config|
   config.before(:each, type: :system, js: true) do
     driven_by(:cuprite, screen_size: [ 1400, 1400 ], options: {
       window_size: [ 1400, 1400 ],
-      browser_options: { 'no-sandbox' => nil },
+      browser_options: {
+        'no-sandbox' => nil,
+        'disable-dev-shm-usage' => nil,
+        'disable-gpu' => nil
+      },
       process_timeout: 30, # タイムアウトを少し緩和
       timeout: 30,         # タイムアウトを少し緩和
       inspector: true,
@@ -85,6 +89,7 @@ RSpec.configure do |config|
   # メール送信を高速化（メモリ内で完結）
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
+    stub_request(:any, /cloudinary\.com/).to_return(status: 200, body: "", headers: {})
   end
 
   config.include FactoryBot::Syntax::Methods

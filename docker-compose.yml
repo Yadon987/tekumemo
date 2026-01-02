@@ -27,13 +27,17 @@ services:
       dockerfile: Dockerfile.dev
     shm_size: "2gb"
     # ./bin/devでwatcherが起動するため、事前ビルドは不要
-    command: bash -c "bundle install && yarn install && rm -f tmp/pids/server.pid && ./bin/dev"
+    command: bash -c "mkdir -p tmp/pids tmp/cache log && chmod -R 777 tmp log && rm -f tmp/pids/server.pid && ./bin/dev"
     tty: true
     stdin_open: true
+    restart: always
     volumes:
       - .:/rails
       - bundle_data:/usr/local/bundle
-      - node_modules:/rails/node_modules
+      - /rails/tmp
+      - /rails/log
+      - /rails/app/assets/builds
+      - /rails/public/assets
     ports:
       - "3000:3000"
     depends_on:
@@ -48,4 +52,3 @@ services:
 volumes:
   postgres_data:
   bundle_data:
-  node_modules:

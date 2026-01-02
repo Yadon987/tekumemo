@@ -3,11 +3,12 @@ require 'rails_helper'
 RSpec.describe Announcement, type: :model do
   describe 'コールバック' do
     before do
-      Notification.destroy_all
-      Announcement.destroy_all
-      Post.destroy_all
-      Walk.destroy_all
-      User.destroy_all
+      Notification.delete_all
+      Reaction.delete_all
+      Post.delete_all
+      Walk.delete_all
+      Announcement.delete_all
+      User.delete_all
     end
 
     let!(:user1) { FactoryBot.create(:user) }
