@@ -41,7 +41,7 @@ RSpec.describe "Admin::Users", type: :system do
     # 注意: このテストは非常に重く、Docker環境では150秒以上かかることがあります
     # リソース不足の環境ではタイムアウトする可能性があるため、一時的にpending
     # TODO: CI環境またはリソースに余裕のある環境でのみ実行するように修正する
-    it "一般ユーザーを削除できる", pending: "Docker環境で不安定なため別途調査が必要", js: true do
+    it "一般ユーザーを削除できる", js: true do
       # ページにユーザーが表示されていることを確認（メールアドレスで特定）
       expect(page).to have_content general_user.email
 

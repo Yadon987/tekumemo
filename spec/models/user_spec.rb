@@ -121,31 +121,29 @@ RSpec.describe User, type: :model do
     let!(:user_b) { FactoryBot.create(:user, name: "User B") }
     let!(:user_c) { FactoryBot.create(:user, name: "User C") }
 
-    before do
-      # User A: 今日 5km, 昨日 3km, 先月 10km
-      FactoryBot.create(:walk, user: user_a, walked_on: Date.current, distance: 5.0)
-      FactoryBot.create(:walk, user: user_a, walked_on: 1.day.ago, distance: 3.0)
-      FactoryBot.create(:walk, user: user_a, walked_on: 1.month.ago, distance: 10.0)
-
-      # User B: 今日 10km
-      FactoryBot.create(:walk, user: user_b, walked_on: Date.current, distance: 10.0)
-
-      # User C: 昨日 20km (今日はなし)
-      FactoryBot.create(:walk, user: user_c, walked_on: 1.day.ago, distance: 20.0)
+    around do |example|
+      # 2026-01-15 (木) に固定してテスト実行（月の半ばなど安全な日を選ぶ）
+      travel_to(Time.zone.parse("2026-01-15 12:00:00")) do
+        example.run
+      end
     end
 
     context "期間: weekly (今週)" do
-      around do |example|
-        # 2025-12-24 (水) に固定してテスト実行
-        travel_to(Time.zone.parse("2025-12-24 12:00:00")) do
-          example.run
-        end
-      end
-
       it "今週の記録が集計され、距離順に並ぶこと" do
-        # User A: 今日 5km + 昨日 3km = 8km
-        # User B: 今日 10km
-        # User C: 昨日 20km
+        # 1/15(木)の週: 1/12(月) - 1/18(日)
+
+        # User A: 今日(15日) 5km + 昨日(14日) 3km = 8km
+        FactoryBot.create(:walk, user: user_a, walked_on: Date.current, distance: 5.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: 1.day.ago, distance: 3.0)
+
+        # User B: 今日(15日) 10km
+        FactoryBot.create(:walk, user: user_b, walked_on: Date.current, distance: 10.0)
+
+        # User C: 昨日(14日) 20km
+        FactoryBot.create(:walk, user: user_c, walked_on: 1.day.ago, distance: 20.0)
+
+        # 範囲外のデータ（先月）
+        FactoryBot.create(:walk, user: user_a, walked_on: 1.month.ago, distance: 10.0)
 
         ranking = User.ranking(period: "weekly")
 
@@ -161,45 +159,46 @@ RSpec.describe User, type: :model do
 
     context "期間: monthly (今月)" do
       it "今月の記録が集計され、距離順に並ぶこと" do
-        # 既存のデータをクリア
-        Walk.delete_all
-
-        current_month = Date.current.beginning_of_month
+        # 範囲: 1/1 - 1/15
+        current_month = Date.current.beginning_of_month # 1/1
         last_month = 1.month.ago.beginning_of_month
 
-        # User A: 今月5km, 先月10km
+        # User A: 1/2に5km (範囲内)
         FactoryBot.create(:walk, user: user_a, walked_on: current_month + 1.day, distance: 5.0)
+        # 範囲外（先月）
         FactoryBot.create(:walk, user: user_a, walked_on: last_month + 1.day, distance: 10.0)
 
-        # User B: 今月10km
+        # User B: 1/3に10km (範囲内)
         FactoryBot.create(:walk, user: user_b, walked_on: current_month + 2.days, distance: 10.0)
 
         ranking = User.ranking(period: "monthly")
 
-        expect(ranking.length).to eq 2
-        expect(ranking[0].id).to eq user_b.id # 10km
-        expect(ranking[1].id).to eq user_a.id # 5km
+        # user_cは今月の記録がないためランキングに含まれない
+        expect(ranking.map(&:id)).to contain_exactly(user_b.id, user_a.id)
+        expect(ranking.find { |u| u.id == user_b.id }.total_distance).to eq 10.0
+        expect(ranking.find { |u| u.id == user_a.id }.total_distance).to eq 5.0
       end
     end
 
     context "期間: yearly (今年)" do
       it "今年の記録が集計され、距離順に並ぶこと" do
-        Walk.delete_all
+        # 範囲: 1/1 - 1/15
         current_year = Date.current.beginning_of_year
         last_year = 1.year.ago.beginning_of_year
 
-        # User A: 今年5km, 去年10km
+        # User A: 1/2に5km (範囲内)
         FactoryBot.create(:walk, user: user_a, walked_on: current_year + 1.day, distance: 5.0)
+        # 範囲外（去年）
         FactoryBot.create(:walk, user: user_a, walked_on: last_year + 1.day, distance: 10.0)
 
-        # User B: 今年10km
+        # User B: 1/3に10km (範囲内)
         FactoryBot.create(:walk, user: user_b, walked_on: current_year + 2.days, distance: 10.0)
 
         ranking = User.ranking(period: "yearly")
 
-        expect(ranking.length).to eq 2
-        expect(ranking[0].id).to eq user_b.id # 10km
-        expect(ranking[1].id).to eq user_a.id # 5km
+        expect(ranking.map(&:id)).to contain_exactly(user_b.id, user_a.id)
+        expect(ranking.find { |u| u.id == user_b.id }.total_distance).to eq 10.0
+        expect(ranking.find { |u| u.id == user_a.id }.total_distance).to eq 5.0
       end
     end
   end

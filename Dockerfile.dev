@@ -5,18 +5,30 @@ ENV TZ Asia/Tokyo
 
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
  && apt update -qq \
- && apt install -y build-essential postgresql-client nodejs wget gnupg \
+ && apt install -y build-essential postgresql-client nodejs wget gnupg sudo \
  && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
  && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
  && apt update -qq \
  && apt install -y google-chrome-stable \
  && npm install --global yarn
 
-WORKDIR $APP
+# ユーザー作成 (UID=1000)
+RUN groupadd -g 1000 rails && \
+    useradd -u 1000 -g rails -m rails && \
+    echo "rails ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-COPY Gemfile Gemfile.lock ./
+WORKDIR $APP
+RUN chown rails:rails $APP
+
+USER rails
+
+COPY --chown=rails:rails Gemfile Gemfile.lock ./
 RUN bundle install
 
-COPY . .
+COPY --chown=rails:rails package.json yarn.lock ./
+RUN yarn install
+VOLUME ["/rails/node_modules"]
+
+COPY --chown=rails:rails . .
 
 CMD ["rails", "server", "-b", "0.0.0.0"]

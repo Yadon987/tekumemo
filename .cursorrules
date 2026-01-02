@@ -60,6 +60,7 @@
 ---
 
 # テスト・エラー対応
+- **Docker環境必須:** このプロジェクトでは、**必ずDocker環境内でテストを実行**してください。`./bin/test_all.sh`を使用するか、`docker exec tekumemo-web bash -c "RAILS_ENV=test bundle exec rspec ..."`の形式で実行すること。
 - **RSpec:** `describe` や `context` は日本語で構造化し、テストデータ作成（FactoryBot）や検証（expect）には何を確認しているかコメントを添えてください。
 - **エラー解説:** メッセージを噛み砕いて翻訳し、原因を説明。「次はどこを見れば自力で解決できるか」のヒントを添えてください。
 
