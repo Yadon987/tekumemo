@@ -11,6 +11,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # PUT /resource
   # 更新処理
   def update
+    # ゲストユーザーは更新不可
+    if current_user.guest?
+      redirect_to edit_user_registration_path, alert: "ゲストユーザーは設定を変更できません。"
+      return
+    end
+
     # Google連携済みなどでパスワードなしで更新したい場合のロジック
     # Devise標準の update_resource をオーバーライドしてもいいが、
     # ここでは super を呼ぶ前にパラメータを調整したり、
