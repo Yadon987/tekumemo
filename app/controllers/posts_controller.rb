@@ -29,6 +29,12 @@ class PostsController < ApplicationController
   # POST /posts
   # 新規投稿を作成
   def create
+    # ゲストユーザーは投稿不可
+    if current_user.guest?
+      redirect_to posts_path, alert: "ポートフォリオ閲覧モードでは投稿機能は利用できません。"
+      return
+    end
+
     # ログインユーザーの投稿として作成
     @post = current_user.posts.build(post_params)
 

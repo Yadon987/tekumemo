@@ -1,0 +1,72 @@
+require 'rails_helper'
+
+RSpec.describe 'Guest Login', type: :system do
+  # Cloudinaryの削除コールをモック
+  before do
+    allow(Cloudinary::Uploader).to receive(:destroy).and_return({ "result" => "ok" })
+    
+    # DBクリーンアップ
+    Reaction.delete_all
+    Notification.delete_all
+    WebPushSubscription.delete_all
+    UserAchievement.delete_all
+    Post.delete_all
+    Walk.delete_all
+    User.delete_all
+  end
+
+  context 'when admin user exists (data source)', js: true do
+    let!(:admin_user) { FactoryBot.create(:user, :admin, target_distance: 8000) }
+
+    before do
+       # 管理者データ作成（コピー元）
+       FactoryBot.create(:walk, user: admin_user, walked_on: 1.day.ago, distance: 5)
+    end
+
+    it 'logs in as guest and deletes account on logout' do
+      # 1. ログイン画面へアクセス
+      visit new_user_session_path
+      
+      # 2. ゲストログイン実行
+      expect {
+        click_button 'ゲストログイン'
+      }.to change(User, :count).by(1) # ゲストユーザーが1人増える
+
+      # 3. ログイン成功を確認
+      # ホーム画面（root_path）に遷移していることを確認
+      expect(page).to have_current_path(root_path)
+      # 認証が必要なコンテンツが表示されていることを確認
+      expect(page).to have_content '今日の散歩'
+
+      # 4. ゲストユーザーの特定
+      guest = User.last
+      expect(guest.role).to eq "guest"
+      expect(guest.walks.count).to eq 1 # データがコピーされていること
+
+      # 5. ログアウト実行
+      expect {
+        # ドロップダウンを開く
+        find('button[data-action="click->dropdown#toggle"]').click
+        click_link 'ログアウト' 
+      }.to change(User, :count).by(-1) # ゲストユーザーが削除される
+
+      expect(page).to have_content 'ログアウトしました。'
+    end
+  end
+
+  context 'when no admin user exists (fallback)', js: true do
+    it 'creates a fallback guest and logs in' do
+      visit new_user_session_path
+      click_button 'ゲストログイン'
+      
+      expect(page).to have_content 'ポートフォリオ閲覧モードとしてログインしました。'
+      expect(User.last.role).to eq "guest"
+      expect(User.last.walks.count).to eq 0
+      
+      # Logout
+      find('button[data-action="click->dropdown#toggle"]').click
+      click_link 'ログアウト'
+      expect(page).to have_content 'ログアウトしました。'
+    end
+  end
+end

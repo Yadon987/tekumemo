@@ -272,35 +272,46 @@
           人気の投稿 TOP5
         </h2>
       </div>
-      <div class="p-6">
-        <% if @popular_posts.any? %>
-          <div class="space-y-4">
-            <% @popular_posts.each do |post| %>
-              <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                <%= user_avatar(post.user, classes: "h-10 w-10 rounded-full flex-shrink-0") %>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                      <%= post.user.name %>
+      <div class="p-6 relative">
+        <% if current_user.guest? %>
+          <div class="absolute inset-0 z-10 flex items-center justify-center bg-white/10 dark:bg-slate-900/10 rounded-b-lg">
+            <div class="px-4 py-2 bg-slate-800/90 text-white text-sm font-bold rounded-lg shadow-lg flex items-center space-x-2 backdrop-blur-md">
+              <span class="material-symbols-outlined text-base">lock</span>
+              <span>ゲスト閲覧モード（保護中）</span>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="<%= 'blur-[3px] pointer-events-none select-none opacity-80' if current_user.guest? %>">
+          <% if @popular_posts.any? %>
+            <div class="space-y-4">
+              <% @popular_posts.each do |post| %>
+                <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                  <%= user_avatar(post.user, classes: "h-10 w-10 rounded-full flex-shrink-0") %>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                      <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        <%= post.user.name %>
+                      </p>
+                      <span class="text-xs text-gray-500 dark:text-gray-400">
+                        <%= time_ago_in_words_game_style(post.created_at) %>
+                      </span>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
+                      <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
                     </p>
-                    <span class="text-xs text-gray-500 dark:text-gray-400">
-                      <%= time_ago_in_words_game_style(post.created_at) %>
-                    </span>
-                  </div>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-                    <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
-                  </p>
-                  <div class="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    <span class="material-symbols-outlined text-sm mr-1">favorite</span>
-                    <%= post.reactions_count %> リアクション
+                    <div class="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
+                      <span class="material-symbols-outlined text-sm mr-1">favorite</span>
+                      <%= post.reactions_count %> リアクション
+                    </div>
                   </div>
                 </div>
-              </div>
-            <% end %>
-          </div>
-        <% else %>
-          <p class="text-center text-gray-500 dark:text-gray-400 py-8">投稿がありません</p>
-        <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-center text-gray-500 dark:text-gray-400 py-8">投稿がありません</p>
+          <% end %>
+        </div>
       </div>
     </div>
 
@@ -312,31 +323,42 @@
           最近の投稿
         </h2>
       </div>
-      <div class="p-6">
-        <% if @recent_posts.any? %>
-          <div class="space-y-4">
-            <% @recent_posts.each do |post| %>
-              <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
-                <%= user_avatar(post.user, classes: "h-10 w-10 rounded-full flex-shrink-0") %>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                      <%= post.user.name %>
-                    </p>
-                    <span class="text-xs text-gray-500 dark:text-gray-400">
-                      <%= time_ago_in_words_game_style(post.created_at) %>
-                    </span>
-                  </div>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-                    <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
-                  </p>
-                </div>
-              </div>
-            <% end %>
+      <div class="p-6 relative">
+        <% if current_user.guest? %>
+          <div class="absolute inset-0 z-10 flex items-center justify-center bg-white/10 dark:bg-slate-900/10 rounded-b-lg">
+            <div class="px-4 py-2 bg-slate-800/90 text-white text-sm font-bold rounded-lg shadow-lg flex items-center space-x-2 backdrop-blur-md">
+              <span class="material-symbols-outlined text-base">lock</span>
+              <span>ゲスト閲覧モード（保護中）</span>
+            </div>
           </div>
-        <% else %>
-          <p class="text-center text-gray-500 dark:text-gray-400 py-8">投稿がありません</p>
         <% end %>
+
+        <div class="<%= 'blur-[3px] pointer-events-none select-none opacity-80' if current_user.guest? %>">
+          <% if @recent_posts.any? %>
+            <div class="space-y-4">
+              <% @recent_posts.each do |post| %>
+                <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                  <%= user_avatar(post.user, classes: "h-10 w-10 rounded-full flex-shrink-0") %>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                      <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        <%= post.user.name %>
+                      </p>
+                      <span class="text-xs text-gray-500 dark:text-gray-400">
+                        <%= time_ago_in_words_game_style(post.created_at) %>
+                      </span>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
+                      <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-center text-gray-500 dark:text-gray-400 py-8">投稿がありません</p>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
@@ -349,24 +371,35 @@
         最近の登録ユーザー
       </h2>
     </div>
-    <div class="p-6">
-      <% if @recent_users.any? %>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <% @recent_users.each do |user| %>
-            <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
-              <%= user_avatar(user, classes: "h-16 w-16 rounded-full mb-2") %>
-              <p class="text-sm font-medium text-gray-900 dark:text-white text-center truncate w-full">
-                <%= user.name %>
-              </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                <%= time_ago_in_words_game_style(user.created_at) %>
-              </p>
-            </div>
-          <% end %>
+    <div class="p-6 relative">
+      <% if current_user.guest? %>
+        <div class="absolute inset-0 z-10 flex items-center justify-center bg-white/10 dark:bg-slate-900/10 rounded-b-lg">
+          <div class="px-4 py-2 bg-slate-800/90 text-white text-sm font-bold rounded-lg shadow-lg flex items-center space-x-2 backdrop-blur-md">
+            <span class="material-symbols-outlined text-base">lock</span>
+            <span>ゲスト閲覧モード（保護中）</span>
+          </div>
         </div>
-      <% else %>
-        <p class="text-center text-gray-500 dark:text-gray-400 py-8">ユーザーがいません</p>
       <% end %>
+
+      <div class="<%= 'blur-[3px] pointer-events-none select-none opacity-80' if current_user.guest? %>">
+        <% if @recent_users.any? %>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <% @recent_users.each do |user| %>
+              <div class="flex flex-col items-center p-4 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                <%= user_avatar(user, classes: "h-16 w-16 rounded-full mb-2") %>
+                <p class="text-sm font-medium text-gray-900 dark:text-white text-center truncate w-full">
+                  <%= user.name %>
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <%= time_ago_in_words_game_style(user.created_at) %>
+                </p>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-center text-gray-500 dark:text-gray-400 py-8">ユーザーがいません</p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
