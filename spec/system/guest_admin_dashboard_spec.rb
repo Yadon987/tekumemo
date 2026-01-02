@@ -19,8 +19,11 @@ RSpec.describe 'Guest Admin Dashboard', type: :system do
 
       expect(page).to have_content 'ゲストモードとしてログインしました。'
 
-      # Visit Admin Dashboard
-      visit admin_root_path
+      visit root_path
+      # FABを展開
+      find('button[data-expandable-fab-target="mainButton"]').click
+      # 管理者メニューボタンをクリック
+      click_link '管理者メニュー'
 
       # Should be allowed (no redirect to root)
       expect(page).to have_current_path(admin_root_path)
