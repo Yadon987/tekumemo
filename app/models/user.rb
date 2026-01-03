@@ -107,18 +107,30 @@ class User < ApplicationRecord
   # Google Fitのアクセストークンが有効かチェック
   # 期限切れの場合は自動的にリフレッシュを試みる
   def google_token_valid?
-    return false unless google_token.present? && google_refresh_token.present?
+    google_token_status == :valid
+  end
+
+  # Googleトークンの詳細なステータスを返す
+  # @return [Symbol] :valid, :not_connected, :expired_need_reauth, :temporary_error
+  def google_token_status
+    return :valid if admin?  # 管理者は常に有効（ダミーデータ）
+    return :not_connected unless google_token.present? && google_refresh_token.present?
 
     # トークンの有効期限をチェック
     if google_expires_at.present? && google_expires_at > Time.current
-      true
+      :valid
     else
       # 期限切れの場合、リフレッシュトークンで自動更新を試みる
-      refresh_google_token!
+      case refresh_google_token!
+      when true then :valid
+      when :reauth_required then :expired_need_reauth
+      else :temporary_error
+      end
     end
   end
 
   # リフレッシュトークンを使用してアクセストークンを更新する
+  # @return [Boolean, Symbol] true:成功, :reauth_required:再認証が必要, false:その他エラー
   def refresh_google_token!
     return false unless google_refresh_token.present?
 
@@ -152,9 +164,15 @@ class User < ApplicationRecord
         Rails.logger.info "Google token refreshed successfully for user #{id}"
         true
       else
-        # リフレッシュ失敗（リフレッシュトークンも無効）
-        Rails.logger.error "Failed to refresh Google token for user #{id}: #{data['error']}"
-        false
+        error_type = data["error"]
+        if error_type == "invalid_grant"
+          # リフレッシュトークンが無効化された（許可剥奪など）
+          Rails.logger.error "Google refresh token revoked for user #{id}"
+          :reauth_required
+        else
+          Rails.logger.error "Failed to refresh Google token for user #{id}: #{error_type}"
+          false
+        end
       end
     rescue StandardError => e
       Rails.logger.error "Error refreshing Google token for user #{id}: #{e.message}"

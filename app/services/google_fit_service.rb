@@ -10,6 +10,8 @@ class GoogleFitService
 
   def initialize(user)
     @user = user
+    return if user.admin? # 管理者はAPIクライアント初期化不要
+
     @client = Google::Apis::FitnessV1::FitnessService.new
     auth = Signet::OAuth2::Client.new(access_token: user.google_token)
     @client.authorization = auth
@@ -21,6 +23,8 @@ class GoogleFitService
   # @return [Hash] 日付(Date)をキー、データ(Hash)を値とするハッシュ
   #   例: { Date.new(2025, 12, 20) => { steps: 5000, distance: 3.5, calories: 150 } }
   def fetch_activities(start_date, end_date)
+    return { data: fetch_dummy_activities(start_date, end_date) } if @user.admin?
+
     # タイムゾーンを考慮して、開始日の00:00:00から終了日の23:59:59までのミリ秒を取得
     start_time_millis = start_date.beginning_of_day.to_i * 1000
     end_time_millis = end_date.end_of_day.to_i * 1000
@@ -104,16 +108,59 @@ class GoogleFitService
         }
       end
 
-      result
+      { data: result }
 
-    rescue Google::Apis::ClientError, Google::Apis::ServerError => e
-      Rails.logger.error "Google Fit API Error: #{e.message}"
-      # エラー時は空ハッシュを返す
-      {}
+    rescue Google::Apis::AuthorizationError => e
+      Rails.logger.error "Google Fit Authorization Error for user #{@user.id}: #{e.message}"
+      { error: :auth_expired }
+    rescue Google::Apis::ClientError => e
+      if e.status_code == 401 || e.status_code == 403
+        Rails.logger.error "Google Fit Auth Error (#{e.status_code}) for user #{@user.id}: #{e.message}"
+        { error: :auth_expired }
+      else
+        Rails.logger.error "Google Fit Client Error for user #{@user.id}: #{e.message}"
+        { error: :api_error, message: e.message }
+      end
+    rescue Google::Apis::ServerError => e
+      Rails.logger.error "Google Fit Server Error for user #{@user.id}: #{e.message}"
+      { error: :api_error, message: "Google Fitサーバーエラー" }
+    rescue StandardError => e
+      Rails.logger.error "Unexpected error in GoogleFitService for user #{@user.id}: #{e.message}"
+      { error: :api_error, message: "予期しないエラー" }
     end
   end
 
   private
+
+  # 管理者ユーザー用のダミーデータを生成する
+  def fetch_dummy_activities(start_date, end_date)
+    result = {}
+    (start_date..end_date).each do |date|
+      # ランダムな歩数など（デモ用に少し変動させる）
+      # 土日は少し多めに
+      base_steps = date.saturday? || date.sunday? ? 8000 : 5000
+      steps = base_steps + rand(-1000..3000)
+
+      # 距離 (歩数 * 0.7m 概算)
+      distance_m = steps * 0.7
+      distance_km = (distance_m / 1000.0).round(2)
+
+      # カロリー (歩数 * 0.04kcal 概算)
+      calories = (steps * 0.04).round
+
+      # 時間 (歩数 / 100歩/分 概算)
+      duration = (steps / 100.0).round
+
+      result[date] = {
+        steps: steps,
+        distance: distance_km,
+        calories: calories,
+        duration: duration,
+        start_time: date.in_time_zone.change(hour: 8, min: 0) # 毎朝8時開始とする
+      }
+    end
+    result
+  end
 
   # バケットから歩数、距離、カロリーを抽出
   def extract_data_from_bucket(bucket)
