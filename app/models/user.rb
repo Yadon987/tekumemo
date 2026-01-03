@@ -128,7 +128,7 @@ class User < ApplicationRecord
     # トランザクションで一括処理
     transaction do
       # ゲストユーザー作成
-      guest_email = "guest_#{Time.now.to_i}_#{SecureRandom.hex(4)}@example.com"
+      guest_email = "guest_#{Time.current.to_i}_#{SecureRandom.hex(4)}@example.com"
       guest = User.create!(
         email: guest_email,
         password: SecureRandom.urlsafe_base64,
@@ -194,7 +194,7 @@ class User < ApplicationRecord
 
   # 管理者がいない場合のフォールバック用ゲスト作成
   def self.create_fallback_guest
-    guest_email = "guest_#{Time.now.to_i}@example.com"
+    guest_email = "guest_#{Time.current.to_i}@example.com"
     User.create!(
       email: guest_email,
       password: SecureRandom.urlsafe_base64,

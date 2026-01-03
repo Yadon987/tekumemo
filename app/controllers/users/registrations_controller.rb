@@ -27,6 +27,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Google連携解除アクション
   # これはDevise標準にはないので、独自に追加
   def disconnect_google
+    # ゲストユーザーは操作不可
+    if current_user.guest?
+      redirect_to edit_user_registration_path, alert: "ゲストユーザーは設定を変更できません。"
+      return
+    end
+
     # パスワード入力チェック
     if params[:user].nil? || params[:user][:current_password].blank?
       redirect_to edit_user_registration_path, alert: "連携解除にはパスワードの入力が必要です。"
@@ -54,6 +60,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # アップロード画像の削除
   def delete_uploaded_avatar
+    # ゲストユーザーは操作不可
+    if current_user.guest?
+      redirect_to edit_user_registration_path, alert: "ゲストユーザーは設定を変更できません。"
+      return
+    end
+
     if current_user.uploaded_avatar.attached?
       current_user.uploaded_avatar.purge
       current_user.update(avatar_type: :default)
@@ -67,7 +79,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # アカウント更新時に許可するストロングパラメータの設定
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :target_distance, :avatar_type, :uploaded_avatar ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [
+      :name,
+      :target_distance,
+      :avatar_type,
+      :uploaded_avatar,
+      # 通知設定
+      :walk_reminder_enabled,
+      :walk_reminder_time,
+      :inactive_days_reminder_enabled,
+      :inactive_days_threshold,
+      :reaction_summary_enabled
+    ])
   end
 
   # 更新後のリダイレクト先

@@ -38,7 +38,7 @@
               ゲストモード中は投稿できません
             </p>
             <p class="text-xs text-gray-500 dark:text-gray-400">
-              投稿するには、一度ログアウトして新規登録を行ってください。
+              実際に投稿するには、Googleアカウントでログインしてください。
             </p>
           </div>
         </div>
@@ -110,7 +110,8 @@
   <dialog id="new_post_modal"
           class="p-0 rounded-[2.5rem] shadow-2xl backdrop:bg-gray-900/40 dark:backdrop:bg-[#0b0514]/80 backdrop:backdrop-blur-sm bg-transparent open:animate-zoom-in w-[95%] md:max-w-2xl"
           data-controller="modal"
-          data-modal-target="dialog">
+          data-modal-target="dialog"
+          data-modal-auto-open-param-value="open_modal">
     <div class="bg-[#f8fafc] bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none dark:bg-[#1a0b2e] w-full max-h-[85vh] flex flex-col p-8 md:p-10 rounded-[3.75rem] border-4 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 shadow-[20px_20px_60px_rgba(59,130,246,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.8),inset_2px_2px_0px_rgba(59,130,246,0.3)] dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none">
 
       <!-- Candy Gradient Orbs (Light Mode Only) -->
@@ -146,30 +147,6 @@
     to { opacity: 1; transform: scale(1); }
   }
 </style>
-
-<script>
-  // URLパラメータでopen_modal=trueが指定されている場合、モーダルを自動的に開く
-  document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('open_modal') === 'true') {
-      const modalElement = document.getElementById('new_post_modal');
-      if (modalElement) {
-        // Modal controllerを使って開く
-        const modalController = this.application?.getControllerForElementAndIdentifier(modalElement, 'modal');
-        if (modalController) {
-          modalController.open();
-        } else {
-          // fallback: 直接開く
-          modalElement.showModal();
-        }
-
-        // URLからパラメータを削除（履歴を汚さないため）
-        const newUrl = window.location.pathname;
-        window.history.replaceState({}, '', newUrl);
-      }
-    }
-  });
-</script>
 
 <!-- 投稿成功モーダル -->
 <% if session[:show_post_success_modal].present? %>

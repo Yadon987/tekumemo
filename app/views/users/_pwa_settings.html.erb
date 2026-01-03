@@ -23,10 +23,22 @@
     </div>
 
     <div class="w-full sm:w-auto flex justify-center sm:justify-end">
-      <button type="button" data-pwa-settings-target="installButton" data-action="click->pwa-settings#install" class="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2.5 px-6 rounded-full shadow-[0_4px_15px_rgba(168,85,247,0.4)] hover:shadow-[0_6px_20px_rgba(168,85,247,0.6)] hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-sm flex items-center justify-center group/btn">
-        <span class="material-symbols-outlined mr-1.5 text-lg group-hover/btn:animate-bounce">download</span>
-        インストール
-      </button>
+      <% if current_user.guest? %>
+        <!-- ゲスト用（ロック表示） -->
+        <div class="flex flex-col items-center sm:items-end">
+          <button type="button" disabled class="w-full sm:w-auto bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-500 font-bold py-2.5 px-6 rounded-full cursor-not-allowed text-sm flex items-center justify-center border border-gray-200 dark:border-white/10">
+            <span class="material-symbols-outlined mr-1.5 text-lg">lock</span>
+            正式アカウント限定機能
+          </button>
+          <span class="text-[10px] text-gray-400 dark:text-slate-500 mt-1">※データ保護のため</span>
+        </div>
+      <% else %>
+        <!-- 通常用 -->
+        <button type="button" data-pwa-settings-target="installButton" data-action="click->pwa-settings#install" class="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2.5 px-6 rounded-full shadow-[0_4px_15px_rgba(168,85,247,0.4)] hover:shadow-[0_6px_20px_rgba(168,85,247,0.6)] hover:-translate-y-0.5 active:scale-95 transition-all duration-300 text-sm flex items-center justify-center group/btn">
+          <span class="material-symbols-outlined mr-1.5 text-lg group-hover/btn:animate-bounce">download</span>
+          インストール
+        </button>
+      <% end %>
     </div>
   </div>
 
