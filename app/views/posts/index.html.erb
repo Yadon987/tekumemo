@@ -25,40 +25,58 @@
 
     <!-- インライン風投稿トリガー（改善版：ボタンらしく） -->
     <div class="mb-6">
-      <div class="bg-[#f0f4f8] bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none dark:bg-[#1a0b2e]/80 rounded-[3.75rem] p-4 cursor-pointer transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl border-2 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 shadow-[20px_20px_60px_rgba(59,130,246,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.8),inset_2px_2px_0px_rgba(59,130,246,0.3)] dark:shadow-[0_0_20px_rgba(168,85,247,0.4),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse"
-           data-controller="modal"
-           data-modal-dialog-id-value="new_post_modal"
-           data-action="click->modal#open">
+      <% if current_user.guest? %>
+        <!-- ゲスト用バナー（投稿不可メッセージ） -->
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800 dark:to-slate-800/80 rounded-[2.5rem] p-4 text-center border-2 border-white/60 dark:border-white/10 shadow-sm relative overflow-hidden group">
+          <!-- 背景装飾 -->
+          <div class="absolute -right-6 top-1/2 -translate-y-1/2 w-24 h-24 bg-blue-400/10 rounded-full blur-xl group-hover:bg-blue-400/20 transition-colors"></div>
+          <div class="absolute -left-6 top-1/2 -translate-y-1/2 w-24 h-24 bg-purple-400/10 rounded-full blur-xl group-hover:bg-purple-400/20 transition-colors"></div>
 
-        <div class="flex items-center gap-3 relative z-10">
-          <!-- 自分のアバター（浮き出し） -->
-          <!-- 自分のアバター（浮き出し） -->
-          <div class="flex-shrink-0">
-            <%= user_avatar(current_user,
-                classes: "w-10 h-10 border-2 border-white dark:border-purple-500/20 shadow-md dark:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-sm",
-                default_color_classes: "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400") %>
+          <div class="relative z-10 flex flex-col items-center justify-center gap-2 py-2">
+            <p class="text-sm font-bold text-gray-600 dark:text-gray-300">
+              <span class="mr-2 text-lg">🔒</span>
+              ゲストモード中は投稿できません
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              実際に投稿するには、Googleアカウントでログインしてください。
+            </p>
           </div>
+        </div>
+      <% else %>
+        <div class="bg-[#f0f4f8] bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none dark:bg-[#1a0b2e]/80 rounded-[3.75rem] p-4 cursor-pointer transition-all duration-300 group hover:-translate-y-1 hover:shadow-xl border-2 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 shadow-[20px_20px_60px_rgba(59,130,246,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.8),inset_2px_2px_0px_rgba(59,130,246,0.3)] dark:shadow-[0_0_20px_rgba(168,85,247,0.4),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse"
+             data-controller="modal"
+             data-modal-dialog-id-value="new_post_modal"
+             data-action="click->modal#open">
 
-          <!-- 入力風エリア（クリック可能であることを明示） -->
-          <div class="flex-1 bg-gradient-to-r from-gray-100 to-gray-50 dark:from-[#0b0514]/50 dark:to-[#2e1a47]/30 rounded-full px-3 sm:px-4 py-3 text-gray-600 dark:text-purple-200/70 text-sm group-hover:from-blue-50 group-hover:to-cyan-50 dark:group-hover:from-[#2e1a47]/50 dark:group-hover:to-purple-900/30 transition-all flex items-center justify-between shadow-inner border border-gray-200 dark:border-purple-500/20">
-            <span class="font-bold text-gray-700 dark:text-purple-100 text-xs sm:text-sm truncate">今日の気分をシェア！</span>
-            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-              <span class="material-symbols-outlined text-2xl sm:text-3xl text-blue-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-fuchsia-300 dark:to-pink-300 dark:drop-shadow-[0_0_8px_rgba(232,121,249,0.8)] group-hover:scale-125 transition-transform drop-shadow-md">add_circle</span>
-              <span class="text-xs sm:text-base font-bold text-blue-600 dark:text-fuchsia-300 whitespace-nowrap">投稿</span>
+          <div class="flex items-center gap-3 relative z-10">
+            <!-- 自分のアバター（浮き出し） -->
+            <div class="flex-shrink-0">
+              <%= user_avatar(current_user,
+                  classes: "w-10 h-10 border-2 border-white dark:border-purple-500/20 shadow-md dark:shadow-[0_0_15px_rgba(168,85,247,0.3)] text-sm",
+                  default_color_classes: "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400") %>
             </div>
-          </div>
 
-          <!-- アイコン類（飾り・Claymorphism） -->
-          <div class="hidden sm:flex gap-3 ml-2">
-            <div class="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/10 flex items-center justify-center text-orange-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-300 dark:to-yellow-300 dark:drop-shadow-[0_0_8px_rgba(251,146,60,0.8)] border border-orange-100 dark:border-orange-500/30 group-hover:scale-110 transition-transform duration-300 shadow-[3px_3px_6px_rgba(166,175,195,0.2),-3px_-3px_6px_rgba(255,255,255,0.8)] dark:shadow-[0_0_10px_rgba(249,115,22,0.2)]">
-              <span class="material-symbols-outlined text-xl">wb_sunny</span>
+            <!-- 入力風エリア（クリック可能であることを明示） -->
+            <div class="flex-1 bg-gradient-to-r from-gray-100 to-gray-50 dark:from-[#0b0514]/50 dark:to-[#2e1a47]/30 rounded-full px-3 sm:px-4 py-3 text-gray-600 dark:text-purple-200/70 text-sm group-hover:from-blue-50 group-hover:to-cyan-50 dark:group-hover:from-[#2e1a47]/50 dark:group-hover:to-purple-900/30 transition-all flex items-center justify-between shadow-inner border border-gray-200 dark:border-purple-500/20">
+              <span class="font-bold text-gray-700 dark:text-purple-100 text-xs sm:text-sm truncate">今日の気分をシェア！</span>
+              <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                <span class="material-symbols-outlined text-2xl sm:text-3xl text-blue-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-fuchsia-300 dark:to-pink-300 dark:drop-shadow-[0_0_8px_rgba(232,121,249,0.8)] group-hover:scale-125 transition-transform drop-shadow-md">add_circle</span>
+                <span class="text-xs sm:text-base font-bold text-blue-600 dark:text-fuchsia-300 whitespace-nowrap">投稿</span>
+              </div>
             </div>
-            <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/10 flex items-center justify-center text-green-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-green-300 dark:to-emerald-300 dark:drop-shadow-[0_0_8px_rgba(74,222,128,0.8)] border border-green-100 dark:border-green-500/30 group-hover:scale-110 transition-transform duration-300 delay-75 shadow-[3px_3px_6px_rgba(166,175,195,0.2),-3px_-3px_6px_rgba(255,255,255,0.8)] dark:shadow-[0_0_10px_rgba(34,197,94,0.2)]">
-              <span class="material-symbols-outlined text-xl">sentiment_satisfied</span>
+
+            <!-- アイコン類（飾り・Claymorphism） -->
+            <div class="hidden sm:flex gap-3 ml-2">
+              <div class="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/10 flex items-center justify-center text-orange-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-300 dark:to-yellow-300 dark:drop-shadow-[0_0_8px_rgba(251,146,60,0.8)] border border-orange-100 dark:border-orange-500/30 group-hover:scale-110 transition-transform duration-300 shadow-[3px_3px_6px_rgba(166,175,195,0.2),-3px_-3px_6px_rgba(255,255,255,0.8)] dark:shadow-[0_0_10px_rgba(249,115,22,0.2)]">
+                <span class="material-symbols-outlined text-xl">wb_sunny</span>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/10 flex items-center justify-center text-green-500 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-green-300 dark:to-emerald-300 dark:drop-shadow-[0_0_8px_rgba(74,222,128,0.8)] border border-green-100 dark:border-green-500/30 group-hover:scale-110 transition-transform duration-300 delay-75 shadow-[3px_3px_6px_rgba(166,175,195,0.2),-3px_-3px_6px_rgba(255,255,255,0.8)] dark:shadow-[0_0_10px_rgba(34,197,94,0.2)]">
+                <span class="material-symbols-outlined text-xl">sentiment_satisfied</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
 
     <!-- 投稿一覧エリア -->
@@ -92,7 +110,8 @@
   <dialog id="new_post_modal"
           class="p-0 rounded-[2.5rem] shadow-2xl backdrop:bg-gray-900/40 dark:backdrop:bg-[#0b0514]/80 backdrop:backdrop-blur-sm bg-transparent open:animate-zoom-in w-[95%] md:max-w-2xl"
           data-controller="modal"
-          data-modal-target="dialog">
+          data-modal-target="dialog"
+          data-modal-auto-open-param-value="open_modal">
     <div class="bg-[#f8fafc] bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:bg-none dark:bg-[#1a0b2e] w-full max-h-[85vh] flex flex-col p-8 md:p-10 rounded-[3.75rem] border-4 border-white/60 dark:border-purple-500/30 dark:border-t-white/40 shadow-[20px_20px_60px_rgba(59,130,246,0.2),-20px_-20px_60px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.8),inset_2px_2px_0px_rgba(59,130,246,0.3)] dark:shadow-[0_0_50px_rgba(168,85,247,0.2),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[20%] before:bg-gradient-to-b before:from-white/15 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none">
 
       <!-- Candy Gradient Orbs (Light Mode Only) -->
@@ -128,30 +147,6 @@
     to { opacity: 1; transform: scale(1); }
   }
 </style>
-
-<script>
-  // URLパラメータでopen_modal=trueが指定されている場合、モーダルを自動的に開く
-  document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('open_modal') === 'true') {
-      const modalElement = document.getElementById('new_post_modal');
-      if (modalElement) {
-        // Modal controllerを使って開く
-        const modalController = this.application?.getControllerForElementAndIdentifier(modalElement, 'modal');
-        if (modalController) {
-          modalController.open();
-        } else {
-          // fallback: 直接開く
-          modalElement.showModal();
-        }
-
-        // URLからパラメータを削除（履歴を汚さないため）
-        const newUrl = window.location.pathname;
-        window.history.replaceState({}, '', newUrl);
-      }
-    }
-  });
-</script>
 
 <!-- 投稿成功モーダル -->
 <% if session[:show_post_success_modal].present? %>

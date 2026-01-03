@@ -23,55 +23,56 @@
        <%= render "users/avatar_section", user: resource %>
     </div>
 
-    <!-- Google連携セクション -->
-    <div class="mb-8 p-4 bg-blue-50/50 dark:bg-slate-800/50 rounded-2xl border border-blue-100 dark:border-slate-700">
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex items-center space-x-3">
-          <div class="bg-white dark:bg-slate-700 p-2 rounded-full shadow-sm">
-            <svg class="w-6 h-6" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
+    <!-- Google連携セクション（ゲストユーザーには非表示） -->
+    <% unless current_user.guest? %>
+      <div class="mb-8 p-4 bg-blue-50/50 dark:bg-slate-800/50 rounded-2xl border border-blue-100 dark:border-slate-700">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <div class="bg-white dark:bg-slate-700 p-2 rounded-full shadow-sm">
+              <svg class="w-6 h-6" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-gray-800 dark:text-white">Google連携</h3>
+              <p class="text-xs text-gray-500 dark:text-slate-400">Google Fitデータを使用可能</p>
+            </div>
           </div>
-          <div>
-            <h3 class="text-sm font-bold text-gray-800 dark:text-white">Google連携</h3>
-            <p class="text-xs text-gray-500 dark:text-slate-400">Google Fitデータを使用可能</p>
-          </div>
+
+          <% if resource.google_uid.present? %>
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-center sm:justify-end">
+              <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-xs bg-white dark:bg-slate-900 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-900 shadow-sm">
+                <span class="material-symbols-outlined text-base mr-1">check_circle</span>
+                <span>連携済み</span>
+              </div>
+
+              <!-- 連携解除ボタン（モーダルを開く） -->
+              <button type="button" onclick="document.getElementById('disconnect_modal').classList.remove('hidden')" class="text-gray-400 hover:text-red-500 transition-colors">
+                <span class="material-symbols-outlined text-xl" title="連携を解除する">link_off</span>
+              </button>
+
+
+            </div>
+          <% else %>
+            <div class="w-full sm:w-auto flex justify-center sm:justify-end">
+              <button type="button" onclick="document.getElementById('connect_warning_modal').classList.remove('hidden')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 text-xs flex items-center">
+                <span class="material-symbols-outlined mr-1 text-base">add_link</span>
+                連携する
+              </button>
+            </div>
+          <% end %>
         </div>
 
-        <% if resource.google_uid.present? %>
-          <div class="flex items-center space-x-3 w-full sm:w-auto justify-center sm:justify-end">
-            <div class="flex items-center text-green-600 dark:text-green-400 font-bold text-xs bg-white dark:bg-slate-900 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-900 shadow-sm">
-              <span class="material-symbols-outlined text-base mr-1">check_circle</span>
-              <span>連携済み</span>
-            </div>
+        <!-- Google Fit連携の注意書き（プレビュー版） -->
+        <%= render "shared/google_fit_notice" %>
 
-            <!-- 連携解除ボタン（モーダルを開く） -->
-            <button type="button" onclick="document.getElementById('disconnect_modal').classList.remove('hidden')" class="text-gray-400 hover:text-red-500 transition-colors">
-              <span class="material-symbols-outlined text-xl" title="連携を解除する">link_off</span>
-            </button>
-
-
-          </div>
-        <% else %>
-          <div class="w-full sm:w-auto flex justify-center sm:justify-end">
-            <button type="button" onclick="document.getElementById('connect_warning_modal').classList.remove('hidden')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 text-xs flex items-center">
-              <span class="material-symbols-outlined mr-1 text-base">add_link</span>
-              連携する
-            </button>
-          </div>
-        <% end %>
+        <!-- Google認証警告ガイド -->
+        <%= render "shared/google_auth_guide" %>
       </div>
-
-      <!-- Google Fit連携の注意書き（プレビュー版） -->
-      <%= render "shared/google_fit_notice" %>
-
-      <!-- Google認証警告ガイド -->
-      <%= render "shared/google_auth_guide" %>
-    </div>
-
+    <% end %>
 
 
     <!-- アカウント削除セクション（メインカード内に統合） -->
@@ -115,197 +116,253 @@
       <% end %>
     <% end %>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, data: { turbo: false }, class: "space-y-6" }) do |f| %>
-      <% if resource.errors.any? %>
-        <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 p-4 rounded-xl text-sm border border-red-100 dark:border-red-800/30">
-          <ul class="list-disc list-inside">
-            <% resource.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
+    <% if current_user.guest? %>
+      <!-- ゲストユーザー向けメッセージ -->
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800/80 dark:to-slate-800/60 rounded-[2.5rem] p-8 text-center border-2 border-white/60 dark:border-white/10 shadow-md relative overflow-hidden">
+        <!-- 背景装飾 -->
+        <div class="absolute -right-10 top-1/2 -translate-y-1/2 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl"></div>
+        <div class="absolute -left-10 top-1/2 -translate-y-1/2 w-32 h-32 bg-purple-400/10 rounded-full blur-2xl"></div>
+
+        <div class="relative z-10">
+          <div class="text-5xl mb-4">🔒</div>
+          <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">
+            ゲストモード中です
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+            ゲストモードでは設定の変更はできません。<br>
+            実際に設定を変更するには、Googleアカウントでログインしてください。
+          </p>
+
+          <!-- 現在の設定（読み取り専用表示） -->
+          <div class="bg-white/50 dark:bg-slate-900/30 rounded-2xl p-6 max-w-md mx-auto mb-6 text-left">
+            <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4 flex items-center">
+              <span class="material-symbols-outlined text-lg mr-2">info</span>
+              現在の設定
+            </h4>
+            <dl class="space-y-3 text-sm">
+              <div class="flex justify-between items-center">
+                <dt class="text-gray-500 dark:text-gray-400">ユーザー名</dt>
+                <dd class="font-bold text-gray-800 dark:text-gray-200"><%= current_user.name %></dd>
+              </div>
+              <div class="flex justify-between items-center">
+                <dt class="text-gray-500 dark:text-gray-400">目標距離</dt>
+                <dd class="font-bold text-gray-800 dark:text-gray-200"><%= current_user.target_distance %> m</dd>
+              </div>
+              <div class="flex justify-between items-center">
+                <dt class="text-gray-500 dark:text-gray-400">通知機能</dt>
+                <dd class="font-bold text-gray-500 dark:text-gray-400">ゲスト（変更不可）</dd>
+              </div>
+              <div class="flex justify-between items-center">
+                <dt class="text-gray-500 dark:text-gray-400">セキュリティ設定</dt>
+                <dd class="font-bold text-gray-500 dark:text-gray-400">ゲスト（変更不可）</dd>
+              </div>
+              <div class="flex justify-between items-center">
+                <dt class="text-gray-500 dark:text-gray-400">権限</dt>
+                <dd class="font-bold text-purple-600 dark:text-purple-400">ゲスト（閲覧のみ）</dd>
+              </div>
+            </dl>
+          </div>
+
+          <%= button_to destroy_user_session_path, method: :delete, form: { data: { turbo: false } }, class: "inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5" do %>
+            <span class="material-symbols-outlined">logout</span>
+            ログアウトして正式登録する
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <!-- 通常ユーザー向けフォーム -->
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, data: { turbo: false }, class: "space-y-6" }) do |f| %>
+        <% if resource.errors.any? %>
+          <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 p-4 rounded-xl text-sm border border-red-100 dark:border-red-800/30">
+            <ul class="list-disc list-inside">
+              <% resource.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div>
+          <%= f.label :name, "ユーザー名（表示名）", class: "block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2" %>
+          <div class="relative group">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 transition-colors">badge</span>
+            <%= f.text_field :name,
+                placeholder: "表示名を入力",
+                class: "w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all outline-none text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-slate-500 mt-1 ml-1">ランキングや投稿などで他のユーザーに表示されます</p>
+        </div>
+
+        <div>
+          <%= f.label :target_distance, "1日の目標(月間) [m]", class: "block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2" %>
+          <div class="relative group">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 transition-colors">flag</span>
+            <%= f.number_field :target_distance,
+                step: 100,
+                placeholder: "例: 3000",
+                class: "w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all outline-none text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-slate-500 mt-1 ml-1">1日の目標距離をメートル単位で設定します（デフォルト: 3000）</p>
+        </div>
+
+        <%# 通知設定セクション（アコーディオン） %>
+        <div class="py-4 my-6" data-controller="accordion" data-accordion-is-open-value="false">
+          <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between focus:outline-none">
+            <h3 class="text-base font-bold text-gray-700 dark:text-slate-300 flex items-center hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+              <span class="material-symbols-outlined text-purple-500 mr-2">notifications</span>
+              通知設定
+            </h3>
+            <span class="material-symbols-outlined text-gray-400 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
+          </button>
+
+          <div class="hidden space-y-6 mt-6" data-accordion-target="content">
+            <%# ブラウザ通知許可ボタン %>
+            <div class="" data-controller="push-notification" data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
+              <button type="button" data-action="click->push-notification#subscribe" class="w-full h-14 bg-gradient-to-r from-purple-500 to-pink-500 dark:from-fuchsia-400 dark:to-violet-500 text-white font-bold rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_10px_25px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_15px_35px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_0_20px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group/btn relative overflow-hidden">
+                <span class="material-symbols-outlined text-xl group-hover/btn:scale-110 transition-transform">notifications_active</span>
+                <span>この端末で通知を受け取る</span>
+              </button>
+              <p class="text-xs text-center text-gray-400 dark:text-slate-500 mt-2">
+                ※ボタンを押すとブラウザの通知許可ダイアログが表示されます
+              </p>
+            </div>
+
+            <%# 散歩時間リマインド %>
+            <div class="notification-group p-4 bg-purple-50 dark:bg-purple-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-purple-100 dark:border-purple-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(168,85,247,0.15)]">
+              <div class="relative">
+                <label class="cursor-pointer block pr-16">
+                  <%= f.check_box :walk_reminder_enabled,
+                      class: "sr-only peer",
+                      onchange: "this.closest('.notification-group').querySelector('.time-input-container').classList.toggle('hidden', !this.checked)" %>
+                  <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                  <div>
+                    <span class="text-sm font-bold text-gray-700 dark:text-gray-300">散歩時間のリマインド</span>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">指定した時刻に散歩を促す通知を送信します</p>
+                  </div>
+                </label>
+              </div>
+
+              <div class="time-input-container <%= 'hidden' unless resource.walk_reminder_enabled %> mt-4">
+                <div class="flex items-center space-x-2">
+                  <span class="material-symbols-outlined text-gray-400 text-lg">schedule</span>
+                  <%= f.time_field :walk_reminder_time,
+                      class: "px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none dark:text-white" %>
+                  <span class="text-xs text-gray-500 dark:text-gray-400">に通知</span>
+                </div>
+              </div>
+            </div>
+
+            <%# 非アクティブリマインド %>
+            <div class="notification-group p-4 bg-orange-50 dark:bg-orange-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-orange-100 dark:border-orange-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(251,146,60,0.15)]">
+              <div class="relative">
+                <label class="cursor-pointer block pr-16">
+                  <%= f.check_box :inactive_days_reminder_enabled,
+                      class: "sr-only peer",
+                      onchange: "this.closest('.notification-group').querySelector('.threshold-input-container').classList.toggle('hidden', !this.checked)" %>
+                  <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+                  <div>
+                    <span class="text-sm font-bold text-gray-700 dark:text-gray-300">非アクティブ時のリマインド</span>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">一定期間散歩していない場合に通知を送信します</p>
+                  </div>
+                </label>
+              </div>
+
+              <div class="threshold-input-container <%= 'hidden' unless resource.inactive_days_reminder_enabled %> mt-4">
+                <div class="flex items-center space-x-2">
+                  <span class="material-symbols-outlined text-gray-400 text-lg">event_busy</span>
+                  <%= f.number_field :inactive_days_threshold,
+                      min: 1,
+                      max: 30,
+                      class: "w-20 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 outline-none dark:text-white text-center" %>
+                  <span class="text-xs text-gray-500 dark:text-gray-400">日間散歩していない場合に通知</span>
+                </div>
+              </div>
+            </div>
+
+            <%# リアクションまとめ通知 %>
+            <div class="p-4 bg-pink-50 dark:bg-pink-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-pink-100 dark:border-pink-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(236,72,153,0.15)]">
+              <div class="relative">
+                <label class="cursor-pointer block pr-16">
+                  <%= f.check_box :reaction_summary_enabled, class: "sr-only peer" %>
+                  <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600"></div>
+                  <div>
+                    <span class="text-sm font-bold text-gray-700 dark:text-gray-300">リアクションのまとめ通知</span>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">1日1回、受け取ったリアクションをまとめて通知します</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%# セキュリティ設定セクション（アコーディオン） %>
+        <div class="py-4 my-6" data-controller="accordion" data-accordion-is-open-value="false">
+          <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between focus:outline-none py-2">
+            <h3 class="text-base font-bold text-gray-700 dark:text-slate-300 flex items-center hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+              <span class="material-symbols-outlined text-cyan-500 mr-2">lock</span>
+              セキュリティ設定
+            </h3>
+            <span class="material-symbols-outlined text-gray-400 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
+          </button>
+
+          <div class="hidden mt-6" data-accordion-target="content">
+            <div class="mb-4">
+              <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
+
+              <% if resource.google_uid.present? %>
+                <div class="relative">
+                  <%= f.email_field :email,
+                      disabled: true,
+                      class: "w-full pl-4 pr-4 py-2 bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-500 dark:text-slate-500 cursor-not-allowed select-none shadow-inner" %>
+                  <p class="text-xs text-gray-400 dark:text-slate-500 mt-1 flex items-center">
+                    <span class="material-symbols-outlined text-sm mr-1">info</span>
+                    Googleアカウントで管理されています
+                  </p>
+                </div>
+              <% else %>
+                <%= f.email_field :email,
+                    class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+              <% end %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :password, "新しいパスワード（変更する場合のみ）", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
+              <%= f.password_field :password,
+                  placeholder: "6文字以上",
+                  class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+            </div>
+
+            <div class="mb-2">
+              <%= f.label :password_confirmation, "パスワード確認", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
+              <%= f.password_field :password_confirmation,
+                  class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/10">
+              <%= f.label :current_password, "現在のパスワード", class: "block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1" %>
+              <%= f.password_field :current_password,
+                  autocomplete: "current-password",
+                  placeholder: "変更時のみ入力",
+                  class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
+              <p class="text-xs text-red-600 dark:text-red-400 mt-1 font-bold">
+                <span class="material-symbols-outlined text-sm align-bottom mr-0.5">info</span>
+                メールアドレス・パスワード変更時は入力必須です
+              </p>
+              <div class="mt-2 text-right">
+                <%= link_to "パスワードを忘れた場合", new_password_path(resource_name), class: "text-xs text-cyan-600 dark:text-cyan-400 hover:underline" %>
+                <span class="text-xs text-red-500 dark:text-red-400 ml-1">※MVPでは未実装です</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <%= f.button class: "w-full h-14 bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-400 dark:to-blue-500 text-white font-bold rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_10px_25px_rgba(59,130,246,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_15px_35px_rgba(59,130,246,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_0_20px_rgba(34,211,238,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_40px_rgba(34,211,238,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group/btn relative overflow-hidden" do %>
+            <span class="material-symbols-outlined text-xl group-hover/btn:scale-110 transition-transform">save</span>
+            <span>変更を保存する</span>
+          <% end %>
         </div>
       <% end %>
-
-      <div>
-        <%= f.label :name, "ユーザー名（表示名）", class: "block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2" %>
-        <div class="relative group">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 transition-colors">badge</span>
-          <%= f.text_field :name,
-              placeholder: "表示名を入力",
-              class: "w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all outline-none text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-        </div>
-        <p class="text-xs text-gray-500 dark:text-slate-500 mt-1 ml-1">ランキングや投稿などで他のユーザーに表示されます</p>
-      </div>
-
-      <div>
-        <%= f.label :target_distance, "1日の目標(月間) [m]", class: "block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2" %>
-        <div class="relative group">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 transition-colors">flag</span>
-          <%= f.number_field :target_distance,
-              step: 100,
-              placeholder: "例: 3000",
-              class: "w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all outline-none text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-        </div>
-        <p class="text-xs text-gray-500 dark:text-slate-500 mt-1 ml-1">1日の目標距離をメートル単位で設定します（デフォルト: 3000）</p>
-      </div>
-
-      <%# 通知設定セクション（アコーディオン） %>
-      <div class="py-4 my-6" data-controller="accordion" data-accordion-is-open-value="false">
-        <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between focus:outline-none">
-          <h3 class="text-base font-bold text-gray-700 dark:text-slate-300 flex items-center hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
-            <span class="material-symbols-outlined text-purple-500 mr-2">notifications</span>
-            通知設定
-          </h3>
-          <span class="material-symbols-outlined text-gray-400 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
-        </button>
-
-        <div class="hidden space-y-6 mt-6" data-accordion-target="content">
-          <%# ブラウザ通知許可ボタン %>
-          <div class="" data-controller="push-notification" data-push-notification-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
-            <button type="button" data-action="click->push-notification#subscribe" class="w-full h-14 bg-gradient-to-r from-purple-500 to-pink-500 dark:from-fuchsia-400 dark:to-violet-500 text-white font-bold rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_10px_25px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_15px_35px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_0_20px_rgba(168,85,247,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group/btn relative overflow-hidden">
-              <span class="material-symbols-outlined text-xl group-hover/btn:scale-110 transition-transform">notifications_active</span>
-              <span>この端末で通知を受け取る</span>
-            </button>
-            <p class="text-xs text-center text-gray-400 dark:text-slate-500 mt-2">
-              ※ボタンを押すとブラウザの通知許可ダイアログが表示されます
-            </p>
-          </div>
-
-          <%# 散歩時間リマインド %>
-          <div class="notification-group p-4 bg-purple-50 dark:bg-purple-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-purple-100 dark:border-purple-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(168,85,247,0.15)]">
-            <div class="relative">
-              <label class="cursor-pointer block pr-16">
-                <%= f.check_box :walk_reminder_enabled,
-                    class: "sr-only peer",
-                    onchange: "this.closest('.notification-group').querySelector('.time-input-container').classList.toggle('hidden', !this.checked)" %>
-                <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                <div>
-                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">散歩時間のリマインド</span>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">指定した時刻に散歩を促す通知を送信します</p>
-                </div>
-              </label>
-            </div>
-
-            <div class="time-input-container <%= 'hidden' unless resource.walk_reminder_enabled %> mt-4">
-              <div class="flex items-center space-x-2">
-                <span class="material-symbols-outlined text-gray-400 text-lg">schedule</span>
-                <%= f.time_field :walk_reminder_time,
-                    class: "px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none dark:text-white" %>
-                <span class="text-xs text-gray-500 dark:text-gray-400">に通知</span>
-              </div>
-            </div>
-          </div>
-
-          <%# 非アクティブリマインド %>
-          <div class="notification-group p-4 bg-orange-50 dark:bg-orange-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-orange-100 dark:border-orange-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(251,146,60,0.15)]">
-            <div class="relative">
-              <label class="cursor-pointer block pr-16">
-                <%= f.check_box :inactive_days_reminder_enabled,
-                    class: "sr-only peer",
-                    onchange: "this.closest('.notification-group').querySelector('.threshold-input-container').classList.toggle('hidden', !this.checked)" %>
-                <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
-                <div>
-                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">非アクティブ時のリマインド</span>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">一定期間散歩していない場合に通知を送信します</p>
-                </div>
-              </label>
-            </div>
-
-            <div class="threshold-input-container <%= 'hidden' unless resource.inactive_days_reminder_enabled %> mt-4">
-              <div class="flex items-center space-x-2">
-                <span class="material-symbols-outlined text-gray-400 text-lg">event_busy</span>
-                <%= f.number_field :inactive_days_threshold,
-                    min: 1,
-                    max: 30,
-                    class: "w-20 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 outline-none dark:text-white text-center" %>
-                <span class="text-xs text-gray-500 dark:text-gray-400">日間散歩していない場合に通知</span>
-              </div>
-            </div>
-          </div>
-
-          <%# リアクションまとめ通知 %>
-          <div class="p-4 bg-pink-50 dark:bg-pink-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-pink-100 dark:border-pink-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(236,72,153,0.15)]">
-            <div class="relative">
-              <label class="cursor-pointer block pr-16">
-                <%= f.check_box :reaction_summary_enabled, class: "sr-only peer" %>
-                <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600"></div>
-                <div>
-                  <span class="text-sm font-bold text-gray-700 dark:text-gray-300">リアクションのまとめ通知</span>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">1日1回、受け取ったリアクションをまとめて通知します</p>
-                </div>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <%# セキュリティ設定セクション（アコーディオン） %>
-      <div class="py-4 my-6" data-controller="accordion" data-accordion-is-open-value="false">
-        <button type="button" data-action="click->accordion#toggle" class="w-full flex items-center justify-between focus:outline-none py-2">
-          <h3 class="text-base font-bold text-gray-700 dark:text-slate-300 flex items-center hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            <span class="material-symbols-outlined text-cyan-500 mr-2">lock</span>
-            セキュリティ設定
-          </h3>
-          <span class="material-symbols-outlined text-gray-400 transition-transform duration-300" data-accordion-target="icon">expand_more</span>
-        </button>
-
-        <div class="hidden mt-6" data-accordion-target="content">
-          <div class="mb-4">
-            <%= f.label :email, "メールアドレス", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
-
-            <% if resource.google_uid.present? %>
-              <div class="relative">
-                <%= f.email_field :email,
-                    disabled: true,
-                    class: "w-full pl-4 pr-4 py-2 bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm text-gray-500 dark:text-slate-500 cursor-not-allowed select-none shadow-inner" %>
-                <p class="text-xs text-gray-400 dark:text-slate-500 mt-1 flex items-center">
-                  <span class="material-symbols-outlined text-sm mr-1">info</span>
-                  Googleアカウントで管理されています
-                </p>
-              </div>
-            <% else %>
-              <%= f.email_field :email,
-                  class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-            <% end %>
-          </div>
-
-          <div class="mb-4">
-            <%= f.label :password, "新しいパスワード（変更する場合のみ）", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
-            <%= f.password_field :password,
-                placeholder: "6文字以上",
-                class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-          </div>
-
-          <div class="mb-2">
-            <%= f.label :password_confirmation, "パスワード確認", class: "block text-xs font-bold text-gray-500 dark:text-slate-400 mb-1" %>
-            <%= f.password_field :password_confirmation,
-                class: "w-full pl-4 pr-4 py-2 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-          </div>
-
-          <div class="mt-6 pt-4 border-t border-gray-100 dark:border-white/10">
-            <%= f.label :current_password, "現在のパスワード", class: "block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1" %>
-            <%= f.password_field :current_password,
-                autocomplete: "current-password",
-                placeholder: "変更時のみ入力",
-                class: "w-full pl-4 pr-4 py-2 bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
-            <p class="text-xs text-red-600 dark:text-red-400 mt-1 font-bold">
-              <span class="material-symbols-outlined text-sm align-bottom mr-0.5">info</span>
-              メールアドレス・パスワード変更時は入力必須です
-            </p>
-            <div class="mt-2 text-right">
-              <%= link_to "パスワードを忘れた場合", new_password_path(resource_name), class: "text-xs text-cyan-600 dark:text-cyan-400 hover:underline" %>
-              <span class="text-xs text-red-500 dark:text-red-400 ml-1">※MVPでは未実装です</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="pt-2">
-        <%= f.button class: "w-full h-14 bg-gradient-to-r from-cyan-500 to-blue-600 dark:from-cyan-400 dark:to-blue-500 text-white font-bold rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_10px_25px_rgba(59,130,246,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_15px_35px_rgba(59,130,246,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[0_0_20px_rgba(34,211,238,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_40px_rgba(34,211,238,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group/btn relative overflow-hidden" do %>
-          <span class="material-symbols-outlined text-xl group-hover/btn:scale-110 transition-transform">save</span>
-          <span>変更を保存する</span>
-        <% end %>
-      </div>
     <% end %>
 
     <!-- アカウント削除セクション（メインカード内に統合） -->
@@ -315,24 +372,40 @@
       <%= render "users/pwa_settings" %>
 
       <div class="bg-red-50 dark:bg-red-900/20 dark:backdrop-blur-sm backdrop-blur-sm rounded-3xl p-6 border-2 border-red-100 dark:border-red-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(239,68,68,0.15)]">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h4 class="text-red-800 dark:text-red-300 font-bold flex items-center">
-              <span class="material-symbols-outlined mr-1 text-lg">warning</span>
-              アカウントの削除
-            </h4>
-            <p class="text-red-600/70 dark:text-red-400/70 text-xs mt-1">
-              一度削除すると、散歩記録などのデータは復元できません。
-            </p>
+        <% if current_user.guest? %>
+          <!-- ゲストユーザー用（自動削除の案内） -->
+          <div class="flex items-center space-x-4">
+             <div class="bg-orange-100 dark:bg-orange-900/40 p-2 rounded-full">
+               <span class="material-symbols-outlined text-orange-500 dark:text-orange-400">hourglass_top</span>
+             </div>
+             <div>
+               <h4 class="text-orange-800 dark:text-orange-300 font-bold text-sm">ゲストアカウントの有効期限</h4>
+               <p class="text-orange-600/80 dark:text-orange-400/80 text-xs mt-0.5">
+                 このアカウントは作成から24時間後に<span class="font-bold">自動的に削除</span>されます。
+               </p>
+             </div>
           </div>
+        <% else %>
+          <!-- 通常ユーザー用（削除機能） -->
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h4 class="text-red-800 dark:text-red-300 font-bold flex items-center">
+                <span class="material-symbols-outlined mr-1 text-lg">warning</span>
+                アカウントの削除
+              </h4>
+              <p class="text-red-600/70 dark:text-red-400/70 text-xs mt-1">
+                一度削除すると、散歩記録などのデータは復元できません。
+              </p>
+            </div>
 
-          <%= button_to registration_path(resource_name),
-              method: :delete,
-              data: { turbo_confirm: "本当にアカウントを削除しますか？\n\nこの操作は取り消せません。\nすべての散歩記録が削除されます。" },
-              class: "bg-white dark:bg-red-950/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 font-bold py-2 px-4 rounded-lg text-sm hover:bg-red-50 dark:hover:bg-red-900/50 transition-colors shadow-sm" do %>
-            削除する
-          <% end %>
-        </div>
+            <%= button_to registration_path(resource_name),
+                method: :delete,
+                data: { turbo_confirm: "本当にアカウントを削除しますか？\n\nこの操作は取り消せません。\nすべての散歩記録が削除されます。" },
+                class: "bg-white dark:bg-red-950/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 font-bold py-2 px-4 rounded-lg text-sm hover:bg-red-50 dark:hover:bg-red-900/50 transition-colors shadow-sm" do %>
+              削除する
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
     </div>

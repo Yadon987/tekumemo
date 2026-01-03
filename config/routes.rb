@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   # =====  # Deviseの設定（コントローラーをカスタマイズ）
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
-    registrations: "users/registrations"
+    registrations: "users/registrations",
+    sessions: "users/sessions"
   }
 
   # ===== メインページ =====
@@ -99,6 +100,9 @@ Rails.application.routes.draw do
     post "users/update_email_and_connect", to: "users/omniauth_callbacks#update_email_and_connect", as: :update_email_and_connect_users
     # アップロード画像の削除
     delete "users/uploaded_avatar", to: "users/registrations#delete_uploaded_avatar", as: :delete_user_uploaded_avatar
+
+    # ゲストログイン
+    post "users/guest_sign_in", to: "users/sessions#new_guest", as: :users_guest_sign_in
   end
 
   # ===== 静的ページ =====

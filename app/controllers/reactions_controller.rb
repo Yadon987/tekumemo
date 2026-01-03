@@ -5,6 +5,16 @@ class ReactionsController < ApplicationController
   # POST /posts/:post_id/reactions
   # リアクションを追加（トグル動作）
   def create
+    # ゲストユーザーはリアクション不可
+    if current_user.guest?
+      respond_to do |format|
+        format.json { render json: { error: "ゲストユーザーはリアクションできません" }, status: :forbidden }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { flash: { alert: "ゲストユーザーはリアクションできません" } }) }
+        format.html { redirect_back(fallback_location: posts_path, alert: "ゲストユーザーはリアクションできません") }
+      end
+      return
+    end
+
     # 既に同じリアクションがあるか確認
     @reaction = @post.reactions.find_by(user: current_user, kind: reaction_params[:kind])
 
@@ -46,6 +56,15 @@ class ReactionsController < ApplicationController
   # DELETE /posts/:post_id/reactions/:id
   # リアクションを削除
   def destroy
+    # ゲストユーザーは削除不可
+    if current_user.guest?
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { flash: { alert: "ゲストユーザーは操作できません" } }) }
+        format.html { redirect_back(fallback_location: posts_path, alert: "ゲストユーザーは操作できません") }
+      end
+      return
+    end
+
     @reaction = @post.reactions.find_by(id: params[:id], user: current_user)
 
     if @reaction&.destroy
