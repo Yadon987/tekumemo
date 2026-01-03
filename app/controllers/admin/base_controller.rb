@@ -11,5 +11,11 @@ module Admin
         redirect_to root_path, alert: "管理者権限が必要です。"
       end
     end
+
+    def require_admin_or_guest
+      unless current_user.admin? || current_user.guest?
+        redirect_to root_path, alert: "管理者権限が必要です。"
+      end
+    end
   end
 end

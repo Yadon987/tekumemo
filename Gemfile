@@ -15,7 +15,7 @@ gem "puma", ">= 5.0"       # アプリケーションサーバー
 gem "bootsnap", require: false  # 起動速度の高速化
 
 # データベース
-gem "pg", "~> 1.1"         # PostgreSQL（本番環境）
+gem "pg", "~> 1.6"         # PostgreSQL（本番環境）
 
 # 認証・認可
 gem "devise"                    # ユーザー認証の基盤

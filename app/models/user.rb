@@ -4,8 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable,
          :omniauthable, omniauth_providers: [ :google_oauth2 ]
-  # ユーザー権限（0: 一般, 1: 管理者）
-  enum :role, { general: 0, admin: 1 }
+  # ユーザー権限（0: 一般, 1: 管理者, 2: ゲスト管理者）
+  # guest: 管理画面へアクセス可だが、閲覧のみ等の制限あり
+  enum :role, { general: 0, admin: 1, guest: 2 }
 
   # 散歩記録との関連付け（1人のユーザーは複数の散歩記録を持つ）
   # dependent: :destroy は、ユーザーが削除されたときに関連する散歩記録も一緒に削除する
@@ -104,8 +105,112 @@ class User < ApplicationRecord
     user
   end
 
-  # Google Fitのアクセストークンが有効かチェック
-  # 期限切れの場合は自動的にリフレッシュを試みる
+  # ポートフォリオ閲覧用ゲストユーザーを作成
+  # 管理者（Admin）のデータをコピーして、リッチな体験を提供する
+  def self.create_portfolio_guest
+    # 古いゲストユーザーをお掃除（作成から24時間以上経過）
+    cleanup_old_guests
+
+    # コピー元となるユーザーを取得
+    # 1. 散歩記録が多い管理者を優先（リッチなデータをコピーするため）
+    # 2. いなければ管理者の最初
+    admin_user = User.admin.joins(:walks).group("users.id").order("COUNT(walks.id) DESC").first || User.admin.first
+
+    # 互換性のため、ID:2が存在し、かつデータがあるならそれを使う手もあるが、動的なデータ量を優先する
+
+    Rails.logger.info "Guest Mode: Selected admin user candidate ID: #{admin_user&.id}"
+
+    # 万が一管理者がいない場合は、最低限のゲストを作成して返す
+    unless admin_user
+      return create_fallback_guest
+    end
+
+    # トランザクションで一括処理
+    transaction do
+      # ゲストユーザー作成
+      guest_email = "guest_#{Time.current.to_i}_#{SecureRandom.hex(4)}@example.com"
+      guest = User.create!(
+        email: guest_email,
+        password: SecureRandom.urlsafe_base64,
+        name: "ゲストユーザー",
+        role: :guest,
+        target_distance: admin_user.target_distance,
+        avatar_type: :default,
+        # 通知設定などはデフォルトでOK
+      )
+
+      # === データコピー処理 (直近3ヶ月分) ===
+
+      # 1. 散歩記録（Walks）のコピー
+      # コピー対象期間
+      range = 3.months.ago.to_date..Date.current
+
+      source_walks = admin_user.walks.where(walked_on: range)
+      Rails.logger.info "Guest Mode: Cloning data from Admin ID: #{admin_user.id}"
+      Rails.logger.info "Guest Mode: Copying #{source_walks.count} walks..."
+
+      # insert_allのためのハッシュ配列を作成
+      walks_data = source_walks.map do |walk|
+        walk.attributes.except("id", "user_id", "created_at", "updated_at").merge(
+          "user_id" => guest.id,
+          "created_at" => Time.current,
+          "updated_at" => Time.current
+        )
+      end
+
+      # 一括挿入（バリデーションスキップ・高速化）
+      Walk.insert_all(walks_data) if walks_data.present?
+
+      # 2. 投稿（Posts）のコピー
+      # タイムスタンプも維持したいので、created_atもコピーする
+      source_posts = admin_user.posts.where(created_at: 3.months.ago..Time.current)
+
+      posts_data = source_posts.map do |post|
+        post.attributes.except("id", "user_id").merge(
+          "user_id" => guest.id
+        )
+      end
+
+      Post.insert_all(posts_data) if posts_data.present?
+
+      # 3. 実績（Achievements）のコピー
+      # 中間テーブル UserAchievement をコピー
+      source_achievements = admin_user.user_achievements
+
+      achievements_data = source_achievements.map do |ua|
+        ua.attributes.except("id", "user_id", "created_at", "updated_at").merge(
+          "user_id" => guest.id,
+          "created_at" => Time.current,
+          "updated_at" => Time.current
+        )
+      end
+
+      UserAchievement.insert_all(achievements_data) if achievements_data.present?
+
+      # 作成したゲストユーザーを返す
+      guest
+    end
+  end
+
+  # 管理者がいない場合のフォールバック用ゲスト作成
+  def self.create_fallback_guest
+    guest_email = "guest_#{Time.current.to_i}@example.com"
+    User.create!(
+      email: guest_email,
+      password: SecureRandom.urlsafe_base64,
+      name: "ゲストユーザー",
+      role: :guest,
+      target_distance: 5000,
+      avatar_type: :default
+    )
+  end
+
+  # 古いゲストアカウントのお掃除
+  def self.cleanup_old_guests
+    # role: guest かつ 作成から24時間以上経過したユーザーを削除
+    User.where(role: :guest).where("created_at < ?", 24.hours.ago).destroy_all
+  end
+
   def google_token_valid?
     google_token_status == :valid
   end
@@ -113,7 +218,7 @@ class User < ApplicationRecord
   # Googleトークンの詳細なステータスを返す
   # @return [Symbol] :valid, :not_connected, :expired_need_reauth, :temporary_error
   def google_token_status
-    return :valid if admin?  # 管理者は常に有効（ダミーデータ）
+    return :valid if admin? || guest? # 管理者またはゲストユーザーは常に連携済み（デモ用）
     return :not_connected unless google_token.present? && google_refresh_token.present?
 
     # トークンの有効期限をチェック
@@ -242,26 +347,48 @@ class User < ApplicationRecord
     [ max_streak, current_streak ].max
   end
 
-  # ランキング集計
-  def self.ranking(period: "daily", limit: 100)
-    range = case period.to_s
+  # ランキング用クラスメソッド
+  # 期間ごとの距離を集計して降順に並べる
+  # @param period [String] 期間（weekly, monthly, all_time）
+  def self.ranking(period: "weekly", limit: 100)
+    # 期間に応じた日付範囲を取得
+    start_date = case period
     when "weekly"
-      Date.current.beginning_of_week..Date.current.end_of_week
+                   Date.current.beginning_of_week
     when "monthly"
-      Date.current.beginning_of_month..Date.current
+                   Date.current.beginning_of_month
     when "yearly"
-      Date.current.beginning_of_year..Date.current
+                   Date.current.beginning_of_year
+    when "all_time"
+                   nil # 全期間
     else
-      Date.current.beginning_of_week..Date.current.end_of_week # デフォルトもweeklyにする
+                   Date.current.beginning_of_week
     end
 
-    joins(:walks)
-      .where(walks: { walked_on: range })
-      .group("users.id")
+    # 実際に歩いた距離を集計
+    relation = joins(:walks)
+
+    relation = relation.where(walks: { walked_on: start_date..Date.current }) if start_date
+
+    relation
+      .group(:id)
       .select("users.*, SUM(walks.distance) as total_distance")
-      .order("SUM(walks.distance) DESC")
-      .limit(limit)
+      .order(Arel.sql("total_distance DESC"))
+      .limit(limit) # 制限行数
   end
+
+  # 閲覧ユーザーに応じたランキングスコープ
+  # ゲスト以外が見る場合、ゲストユーザーはランキングから除外して「汚染」を防ぐ
+  # ゲスト自身が見る場合、自分（と他のゲスト）も含めて表示し、自分の順位を確認できるようにする
+  scope :ranking_for, ->(user, period: "weekly") {
+    if user&.guest?
+      # ゲストが見る場合: 全ユーザーを対象（現在のランキングロジックそのまま）
+      ranking(period: period)
+    else
+      # 一般ユーザー/未ログインが見る場合: ゲストを除外
+      ranking(period: period).where.not(role: :guest)
+    end
+  }
 
   # 未読通知数を取得
   def unread_notifications_count

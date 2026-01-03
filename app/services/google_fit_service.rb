@@ -10,7 +10,7 @@ class GoogleFitService
 
   def initialize(user)
     @user = user
-    return if user.admin? # 管理者はAPIクライアント初期化不要
+    return if user.admin? || user.guest? # 管理者またはゲストユーザーはAPIクライアント初期化不要
 
     @client = Google::Apis::FitnessV1::FitnessService.new
     auth = Signet::OAuth2::Client.new(access_token: user.google_token)
@@ -23,7 +23,7 @@ class GoogleFitService
   # @return [Hash] 日付(Date)をキー、データ(Hash)を値とするハッシュ
   #   例: { Date.new(2025, 12, 20) => { steps: 5000, distance: 3.5, calories: 150 } }
   def fetch_activities(start_date, end_date)
-    return { data: fetch_dummy_activities(start_date, end_date) } if @user.admin?
+    return { data: fetch_dummy_activities(start_date, end_date) } if @user.admin? || @user.guest?
 
     # タイムゾーンを考慮して、開始日の00:00:00から終了日の23:59:59までのミリ秒を取得
     start_time_millis = start_date.beginning_of_day.to_i * 1000
@@ -132,7 +132,7 @@ class GoogleFitService
 
   private
 
-  # 管理者ユーザー用のダミーデータを生成する
+  # 管理者またはゲストユーザー用のダミーデータを生成する
   def fetch_dummy_activities(start_date, end_date)
     result = {}
     (start_date..end_date).each do |date|

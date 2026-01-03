@@ -41,7 +41,7 @@ fi
 if [ -n "$DATABASE_URL" ]; then
   # pg_dump実行
   # --no-owner --no-acl: リストア時の権限エラー防止
-  pg_dump "$DATABASE_URL" --no-owner --no-acl > "$TEMP_DIR/database_dump.sql"
+  docker run --rm postgres:17-alpine pg_dump "$DATABASE_URL" --no-owner --no-acl > "$TEMP_DIR/database_dump.sql"
   echo "   ✅ DBダンプ完了: database_dump.sql"
 else
   echo "   ⚠️ DATABASE_URLが見つかりません。DBバックアップをスキップします。"

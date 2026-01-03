@@ -2,11 +2,11 @@ require "rails_helper"
 
 RSpec.describe "ユーザー認証・認可", type: :system, js: true do
   describe "ログイン" do
-    let!(:user) { User.create!(name: "テストユーザー", email: "test@example.com", password: "password123", target_distance: 5000) }
+    let!(:user) { FactoryBot.create(:user, password: "password123") }
 
     it "正しいメールアドレスとパスワードでログインできること" do
       visit new_user_session_path
-      fill_in "メールアドレス", with: "test@example.com"
+      fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: "password123"
       within "#new_user" do
         click_button "ログイン"
@@ -18,7 +18,7 @@ RSpec.describe "ユーザー認証・認可", type: :system, js: true do
 
     it "誤ったパスワードではログインできないこと" do
       visit new_user_session_path
-      fill_in "メールアドレス", with: "test@example.com"
+      fill_in "メールアドレス", with: user.email
       fill_in "login-password-field", with: "wrongpassword"
       within "#new_user" do
         click_button "ログイン"
@@ -42,7 +42,7 @@ RSpec.describe "ユーザー認証・認可", type: :system, js: true do
   end
 
   describe "ログアウト" do
-    let!(:user) { User.create!(name: "テストユーザー", email: "test@example.com", password: "password123", target_distance: 5000) }
+    let!(:user) { FactoryBot.create(:user, password: "password123") }
 
     before do
       login_as(user, scope: :user)
@@ -65,7 +65,7 @@ RSpec.describe "ユーザー認証・認可", type: :system, js: true do
   end
 
   describe "アクセス制御" do
-    let!(:user) { User.create!(name: "テストユーザー", email: "test@example.com", password: "password123", target_distance: 5000) }
+    let!(:user) { FactoryBot.create(:user, password: "password123") }
 
     context "ログインしていない場合" do
       it "設定画面にアクセスするとログイン画面にリダイレクトされること" do

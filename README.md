@@ -126,6 +126,47 @@ Coming soon……
     *   OpenWeatherMap API
     *   Windy.com (Embed)
 
+## 🐳 開発環境
+
+### **前提条件**
+* **Docker Engine** (WSL2上で動作)
+* **docker-compose**
+
+### **環境構築**
+```bash
+# コンテナの起動
+docker compose up -d
+
+# 初回のみ: データベース作成とマイグレーション
+docker exec tekumemo-web bash -c "bundle exec rails db:create db:migrate"
+```
+
+### **テスト実行**
+⚠️ **重要: このプロジェトではDocker環境でのテスト実行が必須です**
+
+```bash
+# 全テストを実行（推奨）
+./bin/test_all.sh
+
+# 個別にテストを実行する場合
+docker exec tekumemo-web bash -c "RAILS_ENV=test bundle exec rspec spec/models/user_spec.rb"
+
+# システムテストのみ実行
+docker exec tekumemo-web bash -c "RAILS_ENV=test bundle exec rspec spec/system/"
+```
+
+**テストスクリプトが実行すること:**
+1. Dockerコンテナの起動確認
+2. テストデータベースの準備
+3. RuboCopによるコードスタイルチェック
+4. RSpecによる全テスト実行（306項目）
+
+**初回のみ実行権限付与:**
+```bash
+chmod +x bin/test_all.sh
+```
+
+
 ## 画面遷移図(暫定版)
 ### PC版
 Figma：(https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
@@ -152,3 +193,29 @@ Google Cloudの審査を早めに通す
 v1.3　ER図の作成と仕様変更
 v1.4　アプリ正式名称を『てくてくメモリア』に変更
 v1.5  MVPリリースのドキュメント整理
+
+## ⚠️ 重要: 環境変数の管理
+
+このプロジェクトでは、**開発環境と本番環境で異なる環境変数ファイルを使用**します：
+
+### 環境変数ファイル
+
+- **`.env`** - 開発環境用（ローカルDocker環境）
+  - `DATABASE_URL`は**設定しないでください**
+  - docker-compose.ymlとdatabase.ymlの設定を使用します
+  
+- **`.env.production`** - 本番環境用（Supabase使用）
+  - 本番デプロイ時のみ使用
+  - **開発環境では絶対に読み込まないでください**
+
+### 絶対に守ること
+
+1. `.env`に本番のDATABASE_URLを**絶対に設定しない**
+2. 開発環境で本番データベースに接続することを**完全に防止**
+3. 本番デプロイ時のみ`.env.production`を使用する
+
+### なぜこの分離が重要か
+
+過去に、開発環境で誤って本番データベースに接続し、**本番データが消失する事故**が発生しました。
+この設定により、開発中に本番環境に影響を与えることを防止します。
+

@@ -46,15 +46,15 @@ class RankingsController < ApplicationController
     # 1. 期間 (period)
     # 2. 時間 (Time.current.hour): 1時間ごとに強制更新
     # 3. ユーザー更新 (User.maximum(:updated_at)): プロフィール変更（アバター等）を即時反映させるため
-    #    注意: ユーザー数が数万規模になると maximum(:updated_at) 自体が重くなる可能性があるため、
-    #          その場合はキャッシュ戦略の見直し（IDのみキャッシュして表示時にロードするなど）が必要。
+    # 4. 閲覧ユーザーの属性 (guest or general): ゲストと一般でランキング内容を変えるため
     latest_update = User.maximum(:updated_at).to_i
-    cache_key = "rankings_#{period}_#{Time.current.strftime('%Y%m%d%H')}_#{latest_update}"
+    viewer_role = current_user&.guest? ? "guest" : "general"
+    cache_key = "rankings_#{period}_#{Time.current.strftime('%Y%m%d%H')}_#{latest_update}_#{viewer_role}"
 
     cached_data = Rails.cache.fetch(cache_key, expires_in: 30.minutes) do
       {
         updated_at: Time.current,
-        rankings: User.ranking(period: period).to_a
+        rankings: User.ranking_for(current_user, period: period).to_a
       }
     end
 
