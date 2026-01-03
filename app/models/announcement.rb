@@ -47,11 +47,12 @@ class Announcement < ApplicationRecord
 
   # 全ユーザーに通知を作成
   def create_notifications_for_users
-    # すでに通知が作成されている場合はスキップ
-    return if notifications.exists?
-
     User.find_each do |user|
-      notifications.create!(user: user)
+      notifications.find_or_create_by!(user: user)
+    rescue ActiveRecord::RecordNotUnique
+      # ユニークインデックス違反 = すでに通知が存在するためスキップ
+      Rails.logger.debug "Notification already exists for user #{user.id} and announcement #{id}"
+      next
     end
   end
 end

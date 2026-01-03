@@ -172,6 +172,7 @@ class User < ApplicationRecord
       end
 
       Post.insert_all(posts_data) if posts_data.present?
+      Rails.logger.info "Guest Mode: Copied #{posts_data.size} posts" if posts_data.present?
 
       # 3. 実績（Achievements）のコピー
       # 中間テーブル UserAchievement をコピー
@@ -186,9 +187,16 @@ class User < ApplicationRecord
       end
 
       UserAchievement.insert_all(achievements_data) if achievements_data.present?
+      Rails.logger.info "Guest Mode: Copied #{achievements_data.size} achievements" if achievements_data.present?
 
       # 作成したゲストユーザーを返す
       guest
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error "Guest creation validation failed: #{e.message}"
+      raise  # トランザクションロールバック
+    rescue => e
+      Rails.logger.error "Guest creation failed: #{e.class} - #{e.message}"
+      raise
     end
   end
 

@@ -50,7 +50,7 @@ RSpec.describe GoogleFitService, type: :service do
 
     it "正しくデータを取得して整形すること" do
       result = service.fetch_activities(start_date, end_date)
-      data = result[start_date]
+      data = result[:data][start_date]
 
       expect(data[:steps]).to eq 1000
       expect(data[:distance]).to eq 1.5 # 1500m -> 1.5km
@@ -62,9 +62,9 @@ RSpec.describe GoogleFitService, type: :service do
         allow(fitness_service).to receive(:aggregate_dataset).and_raise(Google::Apis::ClientError.new("API Error"))
       end
 
-      it "空のハッシュを返すこと" do
+      it "エラーハッシュを返すこと" do
         result = service.fetch_activities(start_date, end_date)
-        expect(result).to eq({})
+        expect(result).to include(error: :api_error)
       end
     end
   end

@@ -87,6 +87,6 @@ class Admin::AnnouncementsController < Admin::BaseController
   end
 
   def announcement_params
-    params.require(:announcement).permit(:title, :content, :announcement_type, :published_at, :expires_at, :priority)
+    params.require(:announcement).permit(:title, :content, :announcement_type, :published_at, :expires_at)
   end
 end

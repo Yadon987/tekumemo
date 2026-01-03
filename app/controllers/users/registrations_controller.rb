@@ -33,6 +33,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
       return
     end
 
+    # Googleのみで登録したユーザー（パスワード未設定）のチェック
+    # Googleログインのみで登録したユーザーは、自分のパスワードを知らない状態
+    # そのため、先にパスワードを設定してもらう必要がある
+    unless user_has_usable_password?(current_user)
+      redirect_to edit_user_registration_path,
+                  alert: "Google連携を解除する前に、セキュリティ設定で新しいパスワードを設定してください。パスワード設定後、再度連携解除を実行できます。"
+      return
+    end
+
     # パスワード入力チェック
     if params[:user].nil? || params[:user][:current_password].blank?
       redirect_to edit_user_registration_path, alert: "連携解除にはパスワードの入力が必要です。"
@@ -113,5 +122,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
       params.delete(:current_password)
       resource.update_without_password(params)
     end
+  end
+
+  # ユーザーが「使える」パスワードを持っているかを判定
+  # Googleのみで登録したユーザーはパスワードを知らない状態
+  def user_has_usable_password?(user)
+    # パスワードが暗号化されていない（空）なら論外
+    return false if user.encrypted_password.blank?
+
+    # Google未連携ならパスワード設定済みとみなす（Email登録）
+    return true if user.google_uid.blank?
+
+    # Google連携済みの場合
+    # 「Googleログインのみで作成されたユーザー」は、作成と同時に連携情報が保存されるため
+    # created_at と updated_at がほぼ同時になる。
+    # 一方、通常登録ユーザーが後からGoogle連携した場合、
+    # 連携のupdateで updated_at が更新されるので created_at と差が出る。
+
+    # したがって、created_at より updated_at が新しければ、
+    # 「後から連携した＝元々パスワードを持っていた」と判断する。
+    # (マイグレーション不要での暫定対策としてはこれが最も確実)
+    user.updated_at > user.created_at
   end
 end

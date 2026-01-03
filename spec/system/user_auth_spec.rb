@@ -103,15 +103,14 @@ RSpec.describe "ユーザー認証・認可", type: :system, js: true do
   end
 
   describe "パスワードリセット" do
-    it "パスワードリセット画面が表示されること" do
+    it "リセット機能が未実装のため、ログイン画面にリダイレクトされること" do
       visit new_user_session_path
       click_link "忘れた場合"
 
-      # パスワードリセット画面のフォームがあるか確認
-      expect(page).to have_selector("form[action*='password']")
-      expect(page).to have_field("メールアドレス")
-      # expect(page).to have_content("Soon")
-      # expect(page).to have_content("現在開発中です")
+      # ログイン画面にリダイレクトされる
+      expect(current_path).to eq new_user_session_path
+      # アラートメッセージが表示される（文言はコントローラの実装に合わせる）
+      expect(page).to have_content("準備中です")
     end
   end
 end

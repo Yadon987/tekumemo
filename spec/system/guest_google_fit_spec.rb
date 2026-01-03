@@ -37,7 +37,7 @@ RSpec.describe 'Guest Google Fit Simulation', type: :system do
       service = GoogleFitService.new(guest)
       data = service.fetch_activities(Date.today, Date.today)
       expect(data).not_to be_empty
-      expect(data[Date.today][:steps]).to be > 0
+      expect(data[:data][Date.today][:steps]).to be > 0
     end
 
     it 'api endpoint returns dummy data' do

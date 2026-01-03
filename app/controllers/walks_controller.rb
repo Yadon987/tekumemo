@@ -76,7 +76,7 @@ class WalksController < ApplicationController
   # Google Fitからデータをインポート（POST /walks/import_google_fit）
   def import_google_fit
     token_status = current_user.google_token_status
-    
+
     case token_status
     when :not_connected
       redirect_to walks_path, alert: "Google Fitと連携してください。"
@@ -98,13 +98,13 @@ class WalksController < ApplicationController
 
     if result[:error]
       flash[:alert] = case result[:error]
-                      when :auth_expired
+      when :auth_expired
                         "Google認証の期限が切れました。再度連携してください。"
-                      when :api_error
+      when :api_error
                         "Google Fit APIエラー: #{result[:message]}"
-                      else
+      else
                         "データの取得に失敗しました。"
-                      end
+      end
       redirect_to walks_path
       return
     end

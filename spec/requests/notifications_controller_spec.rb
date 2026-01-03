@@ -18,10 +18,17 @@ RSpec.describe "Notifications", type: :request do
   end
 
   describe "PATCH /notifications/:id/mark_as_read" do
+    around do |example|
+      # テスト環境でCSRF保護を無効化（明示的に設定）し、テスト後に設定を戻す
+      original_value = ActionController::Base.allow_forgery_protection
+      ActionController::Base.allow_forgery_protection = false
+      example.run
+      ActionController::Base.allow_forgery_protection = original_value
+    end
+
     it "未読通知が既読になること" do
-      expect {
-        patch mark_as_read_notification_path(notification)
-      }.to change { notification.reload.read_at }.from(nil)
+      patch mark_as_read_notification_path(notification)
+      expect(notification.reload.read_at).not_to be_nil
       expect(response).to redirect_to(notifications_path)
     end
   end
