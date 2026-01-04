@@ -44,14 +44,19 @@ class GoogleFitService
 
       all_dates.each do |date|
         steps = steps_by_date[date] || 0
-        activity = activity_data_by_date[date] || { distance_m: 0.0, calories: 0, activity_duration_min: 0, cycling_duration_min: 0, start_time: nil }
+        activity = activity_data_by_date[date] || { distance_m: 0.0, calories: 0, activity_duration_min: 0, cycling_duration_min: 0, cycling_distance_m: 0.0, start_time: nil }
+
+        # サイクリングの換算後距離から歩数を推定して加算
+        # 平均歩幅 0.7m で計算
+        cycling_steps = (activity[:cycling_distance_m] / 0.7).round
+        total_steps = steps + cycling_steps
 
         # 時間計算: 歩行時間（歩数÷100） + サイクリング時間（1/2換算後）
         walk_duration = (steps / 100.0).round
         total_duration = walk_duration + activity[:cycling_duration_min]
 
         result[date] = {
-          steps: steps,
+          steps: total_steps,
           distance: (activity[:distance_m] / 1000.0).round(2),
           calories: activity[:calories],
           duration: total_duration,
@@ -63,10 +68,27 @@ class GoogleFitService
 
     rescue Google::Apis::AuthorizationError => e
       Rails.logger.error "Google Fit Authorization Error for user #{@user.id}: #{e.message}"
+
+      # 無効なトークンをクリアして次回の再認証を促す
+      # update_columnsを使用してバリデーションとコールバックをスキップ
+      @user.update_columns(
+        google_token: nil,
+        google_expires_at: nil
+      )
+      Rails.logger.info "Cleared invalid Google tokens for user #{@user.id}"
+
       { error: :auth_expired }
     rescue Google::Apis::ClientError => e
       if e.status_code == 401 || e.status_code == 403
         Rails.logger.error "Google Fit Auth Error (#{e.status_code}) for user #{@user.id}: #{e.message}"
+
+        # 無効なトークンをクリアして次回の再認証を促す
+        @user.update_columns(
+          google_token: nil,
+          google_expires_at: nil
+        )
+        Rails.logger.info "Cleared invalid Google tokens for user #{@user.id}"
+
         { error: :auth_expired }
       else
         Rails.logger.error "Google Fit Client Error for user #{@user.id}: #{e.message}"
@@ -76,8 +98,17 @@ class GoogleFitService
       Rails.logger.error "Google Fit Server Error for user #{@user.id}: #{e.message}"
       { error: :api_error, message: "Google Fitサーバーエラー" }
     rescue StandardError => e
-      Rails.logger.error "Unexpected error in GoogleFitService for user #{@user.id}: #{e.message}"
-      { error: :api_error, message: "予期しないエラー" }
+      Rails.logger.error "Unexpected error in GoogleFitService for user #{@user.id}: #{e.class} - #{e.message}"
+
+      # 予期しないエラーでもトークンをクリアして再認証を促す
+      # 認証関連の問題の可能性があるため、安全のためクリアする
+      @user.update_columns(
+        google_token: nil,
+        google_expires_at: nil
+      )
+      Rails.logger.info "Cleared Google tokens due to unexpected error for user #{@user.id}"
+
+      { error: :auth_expired }
     end
   end
 
@@ -138,7 +169,7 @@ class GoogleFitService
     )
 
     response = @client.aggregate_dataset("me", request)
-    daily_stats = Hash.new { |h, k| h[k] = { distance_m: 0.0, calories: 0, activity_duration_min: 0, cycling_duration_min: 0, max_calories: 0, start_time: nil } }
+    daily_stats = Hash.new { |h, k| h[k] = { distance_m: 0.0, calories: 0, activity_duration_min: 0, cycling_duration_min: 0, cycling_distance_m: 0.0, max_calories: 0, start_time: nil } }
 
     response.bucket.each do |bucket|
       activity_type = bucket.activity
@@ -164,6 +195,7 @@ class GoogleFitService
         distance = distance / 4.0      # 距離1/4
         cycling_duration_min = (duration_min / 2.0).round  # 時間1/2
         daily_stats[bucket_date][:cycling_duration_min] += cycling_duration_min
+        daily_stats[bucket_date][:cycling_distance_m] += distance  # 換算後距離を記録（歩数推定用）
       else
         # 歩行・ランニングの時間はそのまま加算しない（歩数から推定するため）
       end

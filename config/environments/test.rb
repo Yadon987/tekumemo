@@ -58,8 +58,8 @@ Rails.application.configure do
   # incoming request so you'll need to provide the :host parameter yourself.
   config.action_mailer.default_url_options = { host: "www.example.com" }
 
-  # ActiveJobをインライン実行（非同期待機なし）
-  config.active_job.queue_adapter = :inline
+  # ActiveJobをテスト実行（ジョブのエンキューを検証可能に）
+  config.active_job.queue_adapter = :test
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
