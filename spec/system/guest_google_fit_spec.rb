@@ -15,7 +15,7 @@ RSpec.describe 'Guest Google Fit Simulation', type: :system do
     it 'simulates Google Fit connection and data' do
       # ゲストログイン
       visit new_user_session_path
-      click_button 'ゲストログイン'
+      click_button 'ゲストで試してみる'
       expect(page).to have_content 'ゲストモードとしてログインしました。'
 
       # 設定画面などで連携状態が「連携済み」になっているか確認したいが
@@ -43,7 +43,7 @@ RSpec.describe 'Guest Google Fit Simulation', type: :system do
     it 'api endpoint returns dummy data' do
       # ゲストログイン
       visit new_user_session_path
-      click_button 'ゲストログイン'
+      click_button 'ゲストで試してみる'
 
       # APIエンドポイントへのアクセス（System Specではpage.driver.getなどでリクエストを送れる場合もあるが）
       # ここでは visit で JSON が返るか確認（ブラウザで表示）
