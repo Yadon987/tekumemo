@@ -99,12 +99,10 @@
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-slate-950/60 backdrop-blur-xl">
       <div class="grid grid-cols-3 items-center py-2 px-3 sm:py-4 sm:px-4 w-full max-w-2xl mx-auto">
         <!-- 左側：アイコン + ダークモードトグル -->
-        <div class="flex justify-start items-center gap-3">
+        <div class="flex justify-start items-center gap-6">
           <!-- アプリアイコン（ホームリンク） -->
           <%= link_to root_path, class: "hover:opacity-80 transition-opacity" do %>
-            <div class="h-7 w-7 sm:h-10 sm:w-10 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl sm:rounded-2xl shadow-md">
-              <span class="material-symbols-outlined text-lg sm:text-2xl text-white drop-shadow-2xl text-shadow">footprint</span>
-            </div>
+            <%= image_tag "/512x512.png", class: "h-7 w-7 sm:h-10 sm:w-10 rounded-xl sm:rounded-2xl shadow-md", alt: "てくメモ" %>
           <% end %>
 
           <!-- Stimulusコントローラーでダークモード切り替えを制御 -->
