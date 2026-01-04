@@ -1,9 +1,7 @@
 <% content_for :title, "てくメモ - ログイン" %>
 
 <div class="flex flex-1 flex-col items-center justify-center p-4 relative overflow-hidden">
-  <!-- 背景装飾（アニメーション付きオーブ） -->
-  <div class="hidden dark:block absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
-  <div class="hidden dark:block absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style="animation-delay: 1s;"></div>
+
 
   <div class="w-full max-w-md relative z-10">
     <!-- メインカード -->
@@ -110,15 +108,22 @@
         <span class="text-sm font-bold text-slate-700 dark:text-slate-200 relative z-10">Googleでログイン</span>
       <% end %>
 
-      <!-- ゲストログインボタン -->
-      <div class="mt-4">
+      <!-- ゲストログインボタン（目立つオレンジデザイン） -->
+      <div class="mt-4 relative group/guest-wrapper">
+        <!-- オレンジのグロー効果 -->
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 rounded-full blur opacity-30 group-hover/guest-wrapper:opacity-60 transition duration-300"></div>
+        
         <%= button_to users_guest_sign_in_path,
             method: :post,
             data: { turbo: false },
             form: { class: "w-full" },
-            class: "w-full h-12 flex items-center justify-center bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 rounded-full shadow-[6px_6px_12px_rgba(166,175,195,0.4),-6px_-6px_12px_rgba(255,255,255,0.8),inset_-2px_-2px_4px_rgba(166,175,195,0.2),inset_2px_2px_4px_rgba(255,255,255,1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.05),inset_0_1px_0_rgba(255,255,255,0.1),inset_0_0_0_1px_rgba(255,255,255,0.05)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.2)] hover:scale-[1.02] active:scale-95 transition-all duration-200 group/guest relative overflow-hidden" do %>
-          <span class="material-symbols-outlined text-xl mr-2 text-slate-700 dark:text-slate-200">account_circle</span>
-          <span class="text-sm font-bold text-slate-700 dark:text-slate-200">ゲストログイン</span>
+            class: "relative w-full h-12 flex items-center justify-center bg-[radial-gradient(ellipse_110%_110%_at_30%_30%,#fbbf24_15%,#f59e0b_90%)] dark:bg-gradient-to-r dark:from-orange-500 dark:to-amber-500 text-white rounded-full shadow-[6px_6px_12px_rgba(245,158,11,0.4),-6px_-6px_12px_rgba(255,255,255,0.8),inset_-2px_-2px_5px_rgba(180,83,9,0.4),inset_2px_2px_5px_rgba(254,215,170,0.5)] dark:shadow-[0_0_20px_rgba(245,158,11,0.5),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_-2px_5px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_0_30px_rgba(245,158,11,0.7),inset_0_1px_0_rgba(255,255,255,0.6)] hover:scale-105 active:scale-95 transition-all duration-200 group/guest relative overflow-hidden" do %>
+          <!-- 光沢エフェクト -->
+          <div class="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover/guest:opacity-100 transition-opacity rounded-full"></div>
+          
+          <span class="material-symbols-outlined text-xl mr-2 relative z-10 group-hover/guest:scale-110 transition-transform">mood</span>
+          <span class="text-sm font-bold relative z-10">ゲストで試してみる</span>
+          <span class="material-symbols-outlined text-base ml-1 relative z-10 group-hover/guest:translate-x-1 transition-transform">arrow_forward</span>
         <% end %>
       </div>
 
@@ -148,24 +153,14 @@
     <% end %>
 
     <!-- Footer Links -->
+    <!-- Footer Links (Removed duplicate privacy policy link) -->
     <div class="mt-8 text-center">
-      <%= link_to privacy_path, class: "inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-slate-500 dark:hover:decoration-slate-400" do %>
-        <span class="material-symbols-outlined text-xs">shield</span>
-        <span>プライバシーポリシー</span>
-      <% end %>
+      <!-- 共通フッターにリンクがあるため削除 -->
     </div>
   </div>
 </div>
 
-<style>
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.05); }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 4s ease-in-out infinite;
-}
-</style>
+
 
 <script>
 function togglePasswordVisibility(fieldId, iconId) {

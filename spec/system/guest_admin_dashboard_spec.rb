@@ -15,7 +15,7 @@ RSpec.describe 'Guest Admin Dashboard', type: :system do
     it 'can access dashboard but sees restricted view' do
       # Fallback guest login (simplest)
       visit new_user_session_path
-      click_button 'ゲストログイン'
+      click_button 'ゲストで試してみる'
 
       expect(page).to have_content 'ゲストモードとしてログインしました。'
 
@@ -44,7 +44,7 @@ RSpec.describe 'Guest Admin Dashboard', type: :system do
 
     it 'cannot access other admin pages' do
       visit new_user_session_path
-      click_button 'ゲストログイン'
+      click_button 'ゲストで試してみる'
 
       visit admin_users_path
 

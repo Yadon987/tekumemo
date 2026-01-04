@@ -29,7 +29,7 @@ RSpec.describe 'Guest Login', type: :system do
 
       # 2. ゲストログイン実行
       expect {
-        click_button 'ゲストログイン'
+        click_button 'ゲストで試してみる'
       }.to change(User, :count).by(1) # ゲストユーザーが1人増える
 
       # 3. ログイン成功を確認
@@ -57,7 +57,7 @@ RSpec.describe 'Guest Login', type: :system do
   context 'when no admin user exists (fallback)', js: true do
     it 'creates a fallback guest and logs in' do
       visit new_user_session_path
-      click_button 'ゲストログイン'
+      click_button 'ゲストで試してみる'
 
       expect(page).to have_content 'ゲストモードとしてログインしました。'
       expect(User.last.role).to eq "guest"

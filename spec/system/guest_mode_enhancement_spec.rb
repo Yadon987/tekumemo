@@ -23,7 +23,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
       avatar_type: :default
     )
     # 距離データを紐付け（ランキング入りさせる）
-    Walk.create!(user: @general_user, walked_on: Date.today, distance: 10.0, steps: 10000, duration: 60)
+    Walk.create!(user: @general_user, walked_on: Time.zone.today, distance: 10.0, steps: 10000, duration: 60)
 
     # ゲストユーザー作成（ヘルパー経由だとDBロック怖いので直接作成）
     @guest_user = User.create!(
@@ -33,7 +33,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
       role: :guest,
       avatar_type: :default
     )
-    Walk.create!(user: @guest_user, walked_on: Date.today, distance: 5.0, steps: 5000, duration: 30)
+    Walk.create!(user: @guest_user, walked_on: Time.zone.today, distance: 5.0, steps: 5000, duration: 30)
   end
 
   context 'Posts Timeline' do
