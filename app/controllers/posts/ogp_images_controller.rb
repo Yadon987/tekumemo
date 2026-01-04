@@ -62,8 +62,11 @@ class Posts::OgpImagesController < ApplicationController
       # 保存した画像のURLにリダイレクト
       redirect_to rails_blob_url(@post.ogp_image, disposition: "inline"), allow_other_host: true
     rescue => e
-      Rails.logger.error "Failed to generate OGP image: #{e.message}\n#{e.backtrace.join("\n")}"
-      head :internal_server_error
+      Rails.logger.error "Failed to generate OGP image for Post ID #{@post.id}: #{e.message}\n#{e.backtrace.join("\n")}"
+
+      # デフォルトのOGP画像にフォールバック（空白画像を避ける）
+      # アプリアイコンを代替として使用
+      redirect_to ActionController::Base.helpers.image_url("icon.png"), allow_other_host: true
     end
   end
 end

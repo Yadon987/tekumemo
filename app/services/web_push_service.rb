@@ -22,7 +22,7 @@ class WebPushService
           p256dh: subscription.p256dh,
           auth: subscription.auth_key,
           vapid: {
-            subject: "cvg.fhc.66@gmail.com", # 本番環境では適切なメールアドレスに変更
+            subject: ENV["VAPID_SUBJECT"] || "mailto:admin@example.com",
             public_key: ENV["VAPID_PUBLIC_KEY"],
             private_key: ENV["VAPID_PRIVATE_KEY"]
           }

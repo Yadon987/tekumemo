@@ -35,7 +35,7 @@
 
       <!-- 距離のプログレスバー -->
       <div class="relative z-10 w-full bg-white/50 dark:bg-white/20 rounded-full h-2.5 my-4 overflow-hidden">
-        <div class="relative bg-gradient-to-r from-lime-300 to-green-400 dark:from-cyan-400 dark:to-blue-500 h-2.5 rounded-full shadow-md overflow-hidden" style="width: <%= (((@today_walk&.distance || 0).to_f * 1000) / current_user.target_distance.to_f * 100).clamp(0, 100) %>%">
+        <div class="relative bg-gradient-to-r from-lime-300 to-green-400 dark:from-cyan-400 dark:to-blue-500 h-2.5 rounded-full shadow-md overflow-hidden" style="width: <%= (((@today_walk&.distance || 0).to_f * 1000) / [current_user.target_distance.to_f, 1.0].max * 100).clamp(0, 100) %>%">
           <!-- シマーエフェクト -->
           <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"></div>
         </div>
@@ -70,7 +70,7 @@
 
         <!-- 天気予報カード -->
         <div data-carousel-target="slide" class="min-w-full sm:min-w-0 snap-center px-1 sm:px-0">
-          <%= link_to "https://www.windy.com/?#{@location[:latitude]},#{@location[:longitude]},10", target: "_blank", draggable: "false", class: "block relative rounded-[3.75rem] transform transition-all duration-300 sm:hover:scale-105 h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border-2 border-white/60 dark:border-blue-500/30 dark:border-t-white/40 shadow-[10px_10px_30px_rgba(59,130,246,0.1),-10px_-10px_30px_rgba(255,255,255,0.6),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9)] hover:shadow-xl dark:shadow-[0_0_20px_rgba(59,130,246,0.15),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] hover:dark:shadow-[0_0_40px_rgba(59,130,246,0.3),inset_0_0_0_1px_rgba(255,255,255,0.3)] before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse" do %>
+          <%= link_to "https://www.windy.com/?#{@location[:latitude]},#{@location[:longitude]},10", target: "_blank", rel: "noopener noreferrer", draggable: "false", class: "block relative rounded-[3.75rem] transform transition-all duration-300 sm:hover:scale-105 h-full overflow-hidden bg-gradient-to-br from-sky-400 to-blue-600 dark:from-slate-900 dark:to-blue-950 border-2 border-white/60 dark:border-blue-500/30 dark:border-t-white/40 shadow-[10px_10px_30px_rgba(59,130,246,0.1),-10px_-10px_30px_rgba(255,255,255,0.6),inset_-5px_-5px_15px_rgba(59,130,246,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9)] hover:shadow-xl dark:shadow-[0_0_20px_rgba(59,130,246,0.15),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] hover:dark:shadow-[0_0_40px_rgba(59,130,246,0.3),inset_0_0_0_1px_rgba(255,255,255,0.3)] before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse" do %>
             <!-- カードヘッダー -->
             <div class="px-3 py-1.5 bg-white/10 dark:bg-black/20 backdrop-blur-sm border-b border-white/20">
               <div class="flex items-center justify-center">

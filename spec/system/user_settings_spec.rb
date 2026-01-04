@@ -310,7 +310,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       expect(page).to have_content("アカウントを削除しました。")
 
       # その後でDBを確認
-      expect(User.count).to eq(0)
+      expect(User.exists?(user.id)).to be_falsey
     end
   end
 end

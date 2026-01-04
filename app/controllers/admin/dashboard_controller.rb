@@ -61,10 +61,10 @@ class Admin::DashboardController < Admin::BaseController
                            .group("posts.id")
                            .order("reactions_count DESC")
                            .limit(5)
-                           .includes(:user)
+                           .includes(user: { uploaded_avatar_attachment: :blob })
 
       # 最近の投稿
-      @recent_posts = Post.order(created_at: :desc).limit(5).includes(:user)
+      @recent_posts = Post.order(created_at: :desc).limit(5).includes(user: { uploaded_avatar_attachment: :blob })
 
       # 最近のユーザー
       @recent_users = User.order(created_at: :desc).limit(5)

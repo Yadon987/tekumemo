@@ -161,17 +161,32 @@ class User < ApplicationRecord
       # 一括挿入（バリデーションスキップ・高速化）
       Walk.insert_all(walks_data) if walks_data.present?
 
+      # 新しく挿入されたゲストのWalkを取得し、walked_onとdistanceでマッピング用のハッシュを作成
+      # キー: [walked_on, distance], 値: ゲストのWalk ID
+      guest_walks = guest.walks.reload.index_by { |w| [w.walked_on, w.distance] }
+
       # 2. 投稿（Posts）のコピー
       # タイムスタンプも維持したいので、created_atもコピーする
       source_posts = admin_user.posts.where(created_at: 3.months.ago..Time.current)
 
       posts_data = source_posts.map do |post|
-        post.attributes.except("id", "user_id").merge(
-          "user_id" => guest.id
+        # walk_idをゲストのWalkにマッピング
+        new_walk_id = if post.walk_id
+                        original_walk = Walk.find_by(id: post.walk_id)
+                        if original_walk
+                          guest_walk = guest_walks[[original_walk.walked_on, original_walk.distance]]
+                          guest_walk&.id
+                        end
+        end
+
+        post.attributes.except("id", "user_id", "walk_id").merge(
+          "user_id" => guest.id,
+          "walk_id" => new_walk_id  # ゲストのWalk IDにマッピング
         )
       end
 
       Post.insert_all(posts_data) if posts_data.present?
+      Rails.logger.info "Guest Mode: Copied #{posts_data.size} posts" if posts_data.present?
 
       # 3. 実績（Achievements）のコピー
       # 中間テーブル UserAchievement をコピー
@@ -186,9 +201,16 @@ class User < ApplicationRecord
       end
 
       UserAchievement.insert_all(achievements_data) if achievements_data.present?
+      Rails.logger.info "Guest Mode: Copied #{achievements_data.size} achievements" if achievements_data.present?
 
       # 作成したゲストユーザーを返す
       guest
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error "Guest creation validation failed: #{e.message}"
+      raise  # トランザクションロールバック
+    rescue => e
+      Rails.logger.error "Guest creation failed: #{e.class} - #{e.message}"
+      raise
     end
   end
 
@@ -211,22 +233,41 @@ class User < ApplicationRecord
     User.where(role: :guest).where("created_at < ?", 24.hours.ago).destroy_all
   end
 
-  # Google Fitのアクセストークンが有効かチェック
-  # 期限切れの場合は自動的にリフレッシュを試みる
   def google_token_valid?
-    return true if guest? # ゲストユーザーは常に連携済み（デモ用）
-    return false unless google_token.present? && google_refresh_token.present?
+    google_token_status == :valid
+  end
+
+  # Googleトークンの詳細なステータスを返す
+  # @return [Symbol] :valid, :not_connected, :expired_need_reauth, :temporary_error
+  def google_token_status
+    # ゲストユーザーは常に連携済み（ダミーデータを使用するため）
+    return :valid if guest?
+
+    # 管理者も一般ユーザーと同様にトークンチェックを行う
+    # （トークンがクリアされた場合は再連携を促す）
+
+    # トークンの存在確認を強化
+    return :not_connected unless google_token.present?
+    return :not_connected unless google_refresh_token.present?
+
+    # 有効期限が未設定の場合は再認証必要（不完全なトークン状態）
+    return :expired_need_reauth unless google_expires_at.present?
 
     # トークンの有効期限をチェック
-    if google_expires_at.present? && google_expires_at > Time.current
-      true
+    if google_expires_at > Time.current
+      :valid
     else
       # 期限切れの場合、リフレッシュトークンで自動更新を試みる
-      refresh_google_token!
+      case refresh_google_token!
+      when true then :valid
+      when :reauth_required then :expired_need_reauth
+      else :temporary_error
+      end
     end
   end
 
   # リフレッシュトークンを使用してアクセストークンを更新する
+  # @return [Boolean, Symbol] true:成功, :reauth_required:再認証が必要, false:その他エラー
   def refresh_google_token!
     return false unless google_refresh_token.present?
 
@@ -260,9 +301,15 @@ class User < ApplicationRecord
         Rails.logger.info "Google token refreshed successfully for user #{id}"
         true
       else
-        # リフレッシュ失敗（リフレッシュトークンも無効）
-        Rails.logger.error "Failed to refresh Google token for user #{id}: #{data['error']}"
-        false
+        error_type = data["error"]
+        if error_type == "invalid_grant"
+          # リフレッシュトークンが無効化された（許可剥奪など）
+          Rails.logger.error "Google refresh token revoked for user #{id}"
+          :reauth_required
+        else
+          Rails.logger.error "Failed to refresh Google token for user #{id}: #{error_type}"
+          false
+        end
       end
     rescue StandardError => e
       Rails.logger.error "Error refreshing Google token for user #{id}: #{e.message}"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_23_064232) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -86,6 +86,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_23_064232) do
     t.integer "notification_type", default: 0, null: false, comment: "通知種類: 0=お知らせ, 1=非アクティブリマインド, 2=リアクションまとめ"
     t.text "message", comment: "リマインダー通知のメッセージ"
     t.string "url", comment: "リマインダー通知のリンク先"
+    t.index ["announcement_id", "user_id"], name: "index_notifications_on_announcement_user_unique", unique: true, where: "(announcement_id IS NOT NULL)"
     t.index ["announcement_id"], name: "index_notifications_on_announcement_id"
     t.index ["notification_type"], name: "index_notifications_on_notification_type"
     t.index ["user_id"], name: "index_notifications_on_user_id"

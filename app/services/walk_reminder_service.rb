@@ -1,12 +1,11 @@
 class WalkReminderService
   def self.send_reminders
-    # 散歩リマインドが有効なユーザーを全て取得
+    # 今日の散歩記録がない、かつ散歩リマインドが有効なユーザーを取得
+    users_who_walked_today = Walk.where(walked_on: Date.current).select(:user_id)
     users = User.where(walk_reminder_enabled: true)
+                .where.not(id: users_who_walked_today)
 
     users.find_each do |user|
-      # 今日の散歩記録がある場合はスキップ
-      next if user.walks.where(walked_on: Date.current).exists?
-
       # ユーザーの設定時刻を取得（時と分のみ）
       reminder_hour = user.walk_reminder_time.hour
       reminder_min = user.walk_reminder_time.min

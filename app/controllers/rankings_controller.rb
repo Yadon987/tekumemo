@@ -51,10 +51,11 @@ class RankingsController < ApplicationController
     viewer_role = current_user&.guest? ? "guest" : "general"
     cache_key = "rankings_#{period}_#{Time.current.strftime('%Y%m%d%H')}_#{latest_update}_#{viewer_role}"
 
-    cached_data = Rails.cache.fetch(cache_key, expires_in: 30.minutes) do
+    cached_data = Rails.cache.fetch(cache_key, expires_in: 30.minutes, race_condition_ttl: 10.seconds) do
+      Rails.logger.info "Regenerating rankings cache for period: #{period}"
       {
         updated_at: Time.current,
-        rankings: User.ranking_for(current_user, period: period).to_a
+        rankings: User.ranking_for(current_user, period: period).with_attached_uploaded_avatar.to_a
       }
     end
 

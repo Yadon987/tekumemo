@@ -75,9 +75,17 @@ class WalksController < ApplicationController
 
   # Google Fitからデータをインポート（POST /walks/import_google_fit）
   def import_google_fit
-    # Google連携していない場合はエラー
-    unless current_user.google_token_valid?
+    token_status = current_user.google_token_status
+
+    case token_status
+    when :not_connected
       redirect_to walks_path, alert: "Google Fitと連携してください。"
+      return
+    when :expired_need_reauth
+      redirect_to walks_path, alert: "Google認証の有効期限が切れました。再度連携してください。"
+      return
+    when :temporary_error
+      redirect_to walks_path, alert: "Googleとの通信に一時的な問題が発生しました。しばらく経ってから再試行してください。"
       return
     end
 
@@ -86,36 +94,61 @@ class WalksController < ApplicationController
     end_date = Date.current
     start_date = end_date - 29.days
 
-    activities = service.fetch_activities(start_date, end_date)
+    result = service.fetch_activities(start_date, end_date)
 
+    if result[:error]
+      flash[:alert] = case result[:error]
+      when :auth_expired
+                        "Google認証の期限が切れました。再度連携してください。"
+      when :api_error
+                        "Google Fit APIエラー: #{result[:message]}"
+      else
+                        "データの取得に失敗しました。"
+      end
+      redirect_to walks_path
+      return
+    end
+
+    activities = result[:data]
     created_count = 0
     updated_count = 0
+    failed_dates = []
 
-    activities.each do |date, data|
-      # 距離が0以下の場合はスキップ（DBを汚さない）
-      next if data[:distance] <= 0
+    # トランザクションで囲むことでデータの一貫性を保証
+    ActiveRecord::Base.transaction do
+      activities.each do |date, data|
+        # 距離が0以下の場合はスキップ（DBを汚さない）
+        next if data[:distance] <= 0
 
-      walk = current_user.walks.find_or_initialize_by(walked_on: date)
+        walk = current_user.walks.find_or_initialize_by(walked_on: date)
 
-      # モデルのメソッドを使ってデータをマージ
-      walk.merge_google_fit_data(data)
+        # モデルのメソッドを使ってデータをマージ
+        walk.merge_google_fit_data(data)
 
-      # 何らかの変更があった場合のみ保存処理を続行
-      if walk.changed?
-
-        if walk.save
-          if walk.previously_new_record?
-            created_count += 1
+        # 何らかの変更があった場合のみ保存処理を続行
+        if walk.changed?
+          if walk.save
+            if walk.previously_new_record?
+              created_count += 1
+            else
+              updated_count += 1
+            end
           else
-            updated_count += 1
+            failed_dates << date
+            Rails.logger.error "Failed to save walk for #{date}: #{walk.errors.full_messages.join(', ')}"
           end
-        else
-          Rails.logger.error "Failed to save walk for #{date}: #{walk.errors.full_messages.join(', ')}"
         end
+      end
+
+      # 失敗があった場合はロールバック
+      if failed_dates.any?
+        raise ActiveRecord::Rollback
       end
     end
 
-    if created_count > 0 || updated_count > 0
+    if failed_dates.any?
+      flash[:alert] = "データの保存中にエラーが発生しました（日付: #{failed_dates.join(', ')}）。処理は中断されました。"
+    elsif created_count > 0 || updated_count > 0
       flash[:notice] = "#{created_count}件の記録を作成、#{updated_count}件の記録を更新しました。"
 
       # データ更新があったので、ランキングOGP画像を強制再生成

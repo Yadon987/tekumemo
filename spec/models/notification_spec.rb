@@ -17,9 +17,10 @@ RSpec.describe Notification, type: :model do
 
   describe 'スコープ' do
     let(:user) { FactoryBot.create(:user) }
-  let(:announcement) { FactoryBot.create(:announcement, is_published: false) }
-  let!(:unread_notification) { FactoryBot.create(:notification, user: user, announcement: announcement, read_at: nil) }
-    let!(:read_notification) { FactoryBot.create(:notification, user: user, announcement: announcement, read_at: 1.day.ago) }
+    let(:announcement1) { FactoryBot.create(:announcement, is_published: false) }
+    let(:announcement2) { FactoryBot.create(:announcement, is_published: false) }
+    let!(:unread_notification) { FactoryBot.create(:notification, user: user, announcement: announcement1, read_at: nil) }
+    let!(:read_notification) { FactoryBot.create(:notification, user: user, announcement: announcement2, read_at: 1.day.ago) }
 
     describe '.unread' do
       it '未読の通知のみを取得すること' do
@@ -60,6 +61,8 @@ RSpec.describe Notification, type: :model do
         notification.mark_as_read!
         expect(notification.reload.read_at).not_to be_nil
       end
+
+
 
       it '既に既読の場合は更新日時を変更しないこと' do
         read_time = 1.day.ago
