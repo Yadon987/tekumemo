@@ -42,7 +42,7 @@ RSpec.describe GoogleFitService, type: :service do
     # データセットの順序: Distance, Calories
     let(:act_distance_point) { double(value: [ distance_val_obj ]) }
     let(:act_calorie_point) { double(value: [ calorie_val_obj ]) }
-    
+
     let(:act_distance_dataset) { double(point: [ act_distance_point ]) }
     let(:act_calorie_dataset) { double(point: [ act_calorie_point ]) }
 
@@ -67,9 +67,9 @@ RSpec.describe GoogleFitService, type: :service do
       # 距離: アクティビティデータから (1500m -> 1.5km)
       # カロリー: アクティビティデータから (500)
       # 時間: 歩数(1000) / 100 = 10分 + アクティビティ時間(サイクリングなら加算だが今回はWalkingなので加算なし)
-      
+
       expect(data[:steps]).to eq 1000
-      expect(data[:distance]).to eq 1.5 
+      expect(data[:distance]).to eq 1.5
       expect(data[:calories]).to eq 500
       expect(data[:duration]).to eq 10 # 1000歩 ÷ 100歩/分
     end

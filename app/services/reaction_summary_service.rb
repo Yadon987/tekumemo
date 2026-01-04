@@ -7,7 +7,7 @@ class ReactionSummaryService
 
     # 今日作成されたリアクションを取得
     reactions = Reaction.where(created_at: start_time..end_time)
-                        .includes(:post, :user)
+                        .includes(:user, post: :user)
 
     # リアクションがない場合は処理を終了
     return if reactions.empty?

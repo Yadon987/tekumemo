@@ -1,11 +1,14 @@
 class InactiveReminderService
   def self.send_reminders
     # 非アクティブリマインドが有効なユーザーを取得
-    users = User.where(inactive_days_reminder_enabled: true)
+    User.where(inactive_days_reminder_enabled: true).find_in_batches do |batch|
+      user_ids = batch.map(&:id)
+      # 最終散歩日をまとめて取得
+      last_walk_dates = Walk.where(user_id: user_ids).group(:user_id).maximum(:walked_on)
 
-    users.find_each do |user|
-      # 最終散歩日を取得（なければ登録日）
-      last_walk_date = user.walks.maximum(:walked_on) || user.created_at.to_date
+      batch.each do |user|
+        # 最終散歩日を取得（なければ登録日）
+        last_walk_date = last_walk_dates[user.id] || user.created_at.to_date
 
       # 経過日数を計算
       days_since_last_walk = (Date.current - last_walk_date).to_i
@@ -31,6 +34,7 @@ class InactiveReminderService
         )
 
         Rails.logger.info "Sent inactive reminder to user #{user.id} (#{days_since_last_walk} days inactive)"
+      end
       end
     end
   end

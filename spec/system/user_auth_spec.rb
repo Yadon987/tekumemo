@@ -55,8 +55,7 @@ RSpec.describe "ユーザー認証・認可", type: :system, js: true do
       find("button[data-dropdown-target='button']").click
 
       # ドロップダウンが表示されるのを待ってからログアウトをクリック
-      # "ログアウト" のリンクが表示されるまで待機する
-      expect(page).to have_content("ログアウト")
+      expect(page).to have_selector("div[data-dropdown-target='menu']", visible: true)
       click_link "ログアウト"
 
       expect(page).to have_content 'ログアウトしました。'

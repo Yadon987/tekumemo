@@ -35,7 +35,8 @@ class WeatherService
         data = JSON.parse(response.body)
 
         # 今日と明日の天気情報を抽出
-        format_forecast(data)
+        # format_forecastがnilを返した場合（listキーがない等）はダミーデータにフォールバック
+        format_forecast(data) || dummy_data
       else
         # エラーが発生した場合はダミーデータを返す
         dummy_data
@@ -51,6 +52,7 @@ class WeatherService
 
   # APIレスポンスから必要な情報を抽出して整形するメソッド
   def self.format_forecast(data)
+    return nil if data["list"].blank?
     forecasts = data["list"]
 
     # 今日の日付
