@@ -71,7 +71,39 @@ class Admin::DashboardController < Admin::BaseController
 
       # 異常検知
       detect_anomalies
+
+      # ゲストデータ残骸チェック（管理者にのみ表示）
+      @orphan_counts = GuestCleanupService.count_orphans
+      @guest_user_candidates = GuestCleanupService.check_guests.count
     end
+  end
+
+  def cleanup_guests
+    # 権限チェックは before_action :require_admin で既にされているはずだが
+    # 念のためゲストユーザーが実行できないようにする
+    if current_user.guest?
+      redirect_to admin_root_path, alert: "ゲストユーザーはこの操作を実行できません。"
+      return
+    end
+
+    type = params[:type]
+    message = ""
+
+    case type
+    when "orphans"
+      deleted = GuestCleanupService.clean_orphans!
+      total = deleted.values.sum
+      message = "孤立データを削除しました（計#{total}件）"
+    when "users"
+      count = GuestCleanupService.clean_users!
+      message = "ゲストユーザーを削除しました（#{count}件）"
+    else
+      message = "無効な操作です"
+    end
+
+    redirect_to admin_root_path, notice: message
+  rescue => e
+    redirect_to admin_root_path, alert: "エラーが発生しました: #{e.message}"
   end
 
   private

@@ -80,6 +80,9 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index"
 
     resources :users, only: [ :index, :destroy ]
+    # ゲストデータ掃除
+    post "cleanup_guests", to: "dashboard#cleanup_guests"
+
     resources :posts, only: [ :index, :show, :destroy ]
     resources :walks, only: [ :index, :show, :destroy ]
     resources :announcements do

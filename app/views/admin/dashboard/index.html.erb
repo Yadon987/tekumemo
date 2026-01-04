@@ -96,7 +96,58 @@
           </div>
         </div>
       <% end %>
+
+    <!-- ゲストデータ掃除セクション（管理者のみ） -->
+    <% if current_user.admin? && (@guest_user_candidates > 0 || @orphan_counts.values.sum > 0) %>
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-6 border-l-4 border-red-500">
+      <h2 class="text-xl font-bold text-red-600 dark:text-red-400 flex items-center mb-4">
+        <span class="material-symbols-outlined mr-2">cleaning_services</span>
+        ゲストデータ・残骸の掃除
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 孤立データ -->
+        <% orphans_total = @orphan_counts.values.sum %>
+        <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+          <h3 class="font-bold text-red-800 dark:text-red-300">ユーザー不在の孤立データ（残骸）</h3>
+          <p class="text-2xl font-bold my-2"><%= orphans_total %> <span class="text-sm font-normal">件</span></p>
+          <ul class="text-xs text-gray-600 dark:text-gray-400 mb-4 list-disc list-inside">
+            <% @orphan_counts.each do |key, val| %>
+              <% if val > 0 %><li><%= key %>: <%= val %></li><% end %>
+            <% end %>
+          </ul>
+          
+          <% if orphans_total > 0 %>
+            <%= button_to "孤立データを削除する", admin_cleanup_guests_path(type: "orphans"), method: :post, class: "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors text-sm", form: { data: { turbo_confirm: "本当に削除しますか？この操作は取り消せません。" } } %>
+          <% else %>
+            <div class="text-green-600 dark:text-green-400 text-sm font-bold flex items-center">
+              <span class="material-symbols-outlined mr-1 text-sm">check</span>
+              問題ありません
+            </div>
+          <% end %>
+        </div>
+
+        <!-- ゲストユーザー -->
+        <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg">
+          <h3 class="font-bold text-orange-800 dark:text-orange-300">自動生成されたゲストユーザー</h3>
+          <p class="text-2xl font-bold my-2"><%= @guest_user_candidates %> <span class="text-sm font-normal">人</span></p>
+          <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">
+            メールアドレスが <code>guest_...</code> で始まるユーザー
+          </p>
+          
+          <% if @guest_user_candidates > 0 %>
+            <%= button_to "ゲストユーザーを削除する", admin_cleanup_guests_path(type: "users"), method: :post, class: "w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded transition-colors text-sm", form: { data: { turbo_confirm: "対象のゲストユーザーと、その全データを完全に削除しますか？" } } %>
+          <% else %>
+            <div class="text-green-600 dark:text-green-400 text-sm font-bold flex items-center">
+              <span class="material-symbols-outlined mr-1 text-sm">check</span>
+              問題ありません
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
+    <% end %>
+
   </div>
 
   <!-- 異常検知セクション -->
