@@ -35,18 +35,23 @@ LP（ランディングページ）のクオリティを絶対基準とし、全
 
 ## 🎨 Foundations (基本設定)
 
-### 1. Deep Void (深淵なる背景)
-
-画面全体の背景は、単なる黒ではなく、**「宇宙のような深みのあるネイビーブラック」**を使用する。
-
-- **Base:** `dark:bg-[#020617]` (Slate-950 よりさらに深い黒)
-- **Gradient:** `dark:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] dark:from-slate-900 dark:via-[#020617] dark:to-[#020617]`
+### 1. Deep Void (深淵なる背景 - Deep Space / Premium Tech)
+ 
+ 画面全体の背景は、「宇宙のような深みのあるネイビーブラック」を使用し、**静的ではなく動的な空間**として表現する。グリッド線は「方眼紙」のような安っぽさを避けるため廃止し、純粋な光と粒子で奥行きを表現する。
+ 
+ - **Base Gradient:** `dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950`
+ - **Living Elements:**
+     - **Stardust (Data Particles):** `data-float` アニメーションで画面下から上へゆっくりと昇る微細な粒子。左・中央・右にバランスよく配置し、初期 `opacity: 0.5` で即座に視認可能にする。
+     - **Glowing Intersections:** `cyber-pulse` アニメーションで明滅する光の粒子を背景に点在させ、空間の広がりを表現。
+ 
+ **実装ポイント:**
+ - 右側の粒子配置には `right` プロパティではなく `left: 80%` などを使い、Tailwind のクラスパージ問題を回避するため左側と同じクラス（例: `bg-white/80`）を再利用する。
+ - `animation-delay` に負の値を設定し、ページロード直後から粒子が画面全体に存在するように見せる。
 
 ### 2. Neon Accent (発光する魂)
 
 各機能のテーマカラーは、単なる色ではなく**「光源」**として扱う。
 
-- **Blue (Weather/Distance):** `cyan-400` to `blue-500`
 - **Green (Health/Days):** `emerald-400` to `teal-500`
 - **Purple (Stats/Memo):** `fuchsia-400` to `violet-600`
 - **Gold (Rank/Achievement):** `amber-300` to `orange-500`
@@ -238,3 +243,39 @@ hover:dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_0_60px_rgba(6,182,212,0
 - **Flat Borders:** 単色のボーダー（`border-gray-700`）は禁止。光らせるか、透けさせる。
 - **Raw White Text:** 純粋な白文字（`text-white`）は避け、少し青みやグレーを含ませるか、グラデーションにする。
 - **Default Shadows:** デフォルトの影（`shadow-xl`）だけでは足りない。色付きの影（`shadow-cyan-500/20`）を重ねる。
+
+---
+
+## 🎭 Animation Keyframes (アニメーション定義)
+
+`application.css` またはインライン `<style>` で定義すべきアニメーション。
+
+```css
+/* 明滅する光（交差点用） */
+@keyframes cyber-pulse {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scale(1); 
+    box-shadow: 0 0 4px 1px rgba(56, 189, 248, 0.5); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.8); 
+    box-shadow: 0 0 20px 6px rgba(56, 189, 248, 0.8); 
+  }
+}
+
+/* 浮遊する粒子（スターダスト用） */
+@keyframes data-float {
+  0% { 
+    transform: translateY(0) scale(1); 
+    opacity: 0.5; /* 即座に見えるように */
+  }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { 
+    transform: translateY(-100vh) scale(0.5); 
+    opacity: 0; 
+  }
+}
+```

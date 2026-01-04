@@ -1,3 +1,25 @@
+<!-- Inline CSS for guaranteed animation (avoids CSS build issues) -->
+<style>
+  .bg-cyber-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(56, 189, 248, 0.10) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(56, 189, 248, 0.10) 1px, transparent 1px);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 80%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 80%);
+  }
+  @keyframes cyber-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); box-shadow: 0 0 4px 1px rgba(56, 189, 248, 0.5); }
+    50% { opacity: 1; transform: scale(1.8); box-shadow: 0 0 20px 6px rgba(56, 189, 248, 0.8); }
+  }
+  @keyframes data-float {
+    0% { transform: translateY(0) scale(1); opacity: 0.5; }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.8; }
+    100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+  }
+</style>
+
 <!-- Animated Background (Light Mode Only) -->
 <div class="fixed inset-0 bg-gradient-to-br from-sky-200 via-sky-50 to-amber-50 animate-gradient-xy dark:hidden pointer-events-none overflow-hidden -z-50">
   <!-- Cloud 1: 大きめ、上部 -->
@@ -13,4 +35,38 @@
   <div class="cloud w-56 h-24 top-[15%] opacity-70 animate-cloud-2" style="animation-duration: 50s; animation-delay: -40s;"></div>
   <!-- Cloud 6: 左下に追加 -->
   <div class="cloud w-40 h-20 top-[90%] opacity-60 animate-cloud-3" style="animation-duration: 90s; animation-delay: -20s;"></div>
+</div>
+
+<!-- Dark Mode: Cyber Grid & Stardust -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none z-0 hidden dark:block">
+  
+
+
+
+  <!-- Layer 2: Glowing Intersections (光の交差点) -->
+  <div class="absolute w-2 h-2 rounded-full bg-sky-400" style="left: 15%; top: 20%; animation: cyber-pulse 4s ease-in-out infinite;"></div>
+  <div class="absolute w-1.5 h-1.5 rounded-full bg-cyan-300" style="left: 45%; top: 35%; animation: cyber-pulse 6s ease-in-out infinite 1s;"></div>
+  <div class="absolute w-2 h-2 rounded-full bg-indigo-400" style="left: 75%; top: 55%; animation: cyber-pulse 5s ease-in-out infinite 2.5s;"></div>
+  <div class="absolute w-1.5 h-1.5 rounded-full bg-sky-300" style="left: 25%; top: 70%; animation: cyber-pulse 7s ease-in-out infinite 0.5s;"></div>
+  <div class="absolute w-1.5 h-1.5 rounded-full bg-blue-400" style="left: 85%; top: 15%; animation: cyber-pulse 5.5s ease-in-out infinite 3s;"></div>
+  <div class="absolute w-2 h-2 rounded-full bg-violet-400" style="left: 60%; top: 45%; animation: cyber-pulse 6.5s ease-in-out infinite 1.8s;"></div>
+
+  <!-- Layer 3: Stardust / Data Particles (スターダスト) - 画面全体に分散 (12個) -->
+  <!-- 左側 (5%-30%) -->
+  <div class="absolute w-1 h-1 rounded-full bg-white/80" style="left: 5%; bottom: 0; animation: data-float 18s linear infinite -2s;"></div>
+  <div class="absolute w-1.5 h-1.5 rounded-full bg-sky-200/60" style="left: 12%; bottom: 0; animation: data-float 22s linear infinite -8s;"></div>
+  <div class="absolute w-1 h-1 rounded-full bg-white/70" style="left: 20%; bottom: 0; animation: data-float 15s linear infinite -5s;"></div>
+  <div class="absolute w-1 h-1 rounded-full bg-cyan-100/60" style="left: 28%; bottom: 0; animation: data-float 20s linear infinite -12s;"></div>
+  
+  <!-- 中央 (35%-65%) -->
+  <div class="absolute w-1.5 h-1.5 rounded-full bg-indigo-300/50" style="left: 38%; bottom: 0; animation: data-float 25s linear infinite -7s;"></div>
+  <div class="absolute w-1 h-1 rounded-full bg-white/60" style="left: 48%; bottom: 0; animation: data-float 19s linear infinite -15s;"></div>
+  <div class="absolute w-1 h-1 rounded-full bg-sky-100/70" style="left: 55%; bottom: 0; animation: data-float 17s linear infinite -3s;"></div>
+  <div class="absolute w-1 h-1 rounded-full bg-white/75" style="left: 62%; bottom: 0; animation: data-float 16s linear infinite -1s;"></div>
+
+  <!-- 右側 (70%-95%) -->
+  <div class="absolute w-1 h-1 rounded-full bg-white/80" style="left: 74%; bottom: 0; animation: data-float 21s linear infinite -9s;"></div>
+  <div class="absolute w-1.5 h-1.5 rounded-full bg-sky-200/60" style="left: 82%; bottom: 0; animation: data-float 23s linear infinite -2s;"></div>
+  <div class="absolute w-1 h-1 rounded-full bg-white/70" style="left: 88%; bottom: 0; animation: data-float 15s linear infinite -13s;"></div>
+  <div class="absolute w-1 h-1 rounded-full bg-cyan-100/60" style="left: 94%; bottom: 0; animation: data-float 18s linear infinite -6s;"></div>
 </div>
