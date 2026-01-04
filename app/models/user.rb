@@ -177,7 +177,7 @@ class User < ApplicationRecord
                           guest_walk = guest_walks[[original_walk.walked_on, original_walk.distance]]
                           guest_walk&.id
                         end
-                      end
+        end
 
         post.attributes.except("id", "user_id", "walk_id").merge(
           "user_id" => guest.id,
@@ -240,11 +240,21 @@ class User < ApplicationRecord
   # Googleトークンの詳細なステータスを返す
   # @return [Symbol] :valid, :not_connected, :expired_need_reauth, :temporary_error
   def google_token_status
-    return :valid if admin? || guest? # 管理者またはゲストユーザーは常に連携済み（デモ用）
-    return :not_connected unless google_token.present? && google_refresh_token.present?
+    # ゲストユーザーは常に連携済み（ダミーデータを使用するため）
+    return :valid if guest?
+
+    # 管理者も一般ユーザーと同様にトークンチェックを行う
+    # （トークンがクリアされた場合は再連携を促す）
+
+    # トークンの存在確認を強化
+    return :not_connected unless google_token.present?
+    return :not_connected unless google_refresh_token.present?
+
+    # 有効期限が未設定の場合は再認証必要（不完全なトークン状態）
+    return :expired_need_reauth unless google_expires_at.present?
 
     # トークンの有効期限をチェック
-    if google_expires_at.present? && google_expires_at > Time.current
+    if google_expires_at > Time.current
       :valid
     else
       # 期限切れの場合、リフレッシュトークンで自動更新を試みる
