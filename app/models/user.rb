@@ -161,13 +161,27 @@ class User < ApplicationRecord
       # 一括挿入（バリデーションスキップ・高速化）
       Walk.insert_all(walks_data) if walks_data.present?
 
+      # 新しく挿入されたゲストのWalkを取得し、walked_onとdistanceでマッピング用のハッシュを作成
+      # キー: [walked_on, distance], 値: ゲストのWalk ID
+      guest_walks = guest.walks.reload.index_by { |w| [w.walked_on, w.distance] }
+
       # 2. 投稿（Posts）のコピー
       # タイムスタンプも維持したいので、created_atもコピーする
       source_posts = admin_user.posts.where(created_at: 3.months.ago..Time.current)
 
       posts_data = source_posts.map do |post|
-        post.attributes.except("id", "user_id").merge(
-          "user_id" => guest.id
+        # walk_idをゲストのWalkにマッピング
+        new_walk_id = if post.walk_id
+                        original_walk = Walk.find_by(id: post.walk_id)
+                        if original_walk
+                          guest_walk = guest_walks[[original_walk.walked_on, original_walk.distance]]
+                          guest_walk&.id
+                        end
+                      end
+
+        post.attributes.except("id", "user_id", "walk_id").merge(
+          "user_id" => guest.id,
+          "walk_id" => new_walk_id  # ゲストのWalk IDにマッピング
         )
       end
 
