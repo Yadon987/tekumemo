@@ -1,9 +1,7 @@
 <% content_for :title, "てくメモ - 新規登録" %>
 
 <div class="flex flex-1 flex-col items-center justify-center p-4 pb-24 relative overflow-hidden">
-  <!-- 背景装飾（アニメーション付きオーブ） -->
-  <div class="hidden dark:block absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow"></div>
-  <div class="hidden dark:block absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style="animation-delay: 1s;"></div>
+
   <div class="w-full max-w-md bg-[radial-gradient(120%_120%_at_50%_50%,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.6)_100%)] dark:bg-none dark:bg-slate-950/60 backdrop-blur-xl border border-white/60 dark:border-white/10 shadow-[20px_20px_60px_rgba(59,130,246,0.15),-20px_-20px_60px_rgba(255,255,255,0.8),inset_0_0_0_1px_rgba(255,255,255,0.5)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-20px_30px_-10px_rgba(6,182,212,0.15)] rounded-[2.5rem] p-6 sm:p-8 transition-all duration-300 relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/5 before:to-transparent before:opacity-0 dark:before:opacity-100 before:pointer-events-none before:animate-pulse">
 
     <!-- Header -->
@@ -112,15 +110,6 @@
   </div>
 </div>
 
-<style>
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.05); }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 4s ease-in-out infinite;
-}
-</style>
 
 <script>
 function togglePasswordVisibility(fieldId, iconId) {
