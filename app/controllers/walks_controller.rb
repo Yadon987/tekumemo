@@ -160,6 +160,51 @@ class WalksController < ApplicationController
     redirect_to walks_path
   end
 
+  # 管理者用：ランダムな散歩記録を一瞬で作成（POST /walks/quick_create）
+  def quick_create
+    unless current_user.admin?
+      redirect_to walks_path, alert: "管理者権限が必要です。"
+      return
+    end
+
+    # ランダムなデータを生成（0.7〜1.6kmを基準）
+    distance = rand(0.7..1.6).round(2)
+    # 歩数: 1kmあたり約1,300歩（身長により若干変動）
+    steps = (distance * 1300).to_i + rand(-100..100)
+    # 時間: 1kmあたり約12〜15分（時速4〜5km）
+    duration = (distance * rand(12..15)).to_i + rand(-2..2)
+    # カロリー: 1kmあたり約40〜60kcal（体重により変動）
+    calories = (distance * rand(40..60)).to_i
+
+    # 最低値を保証
+    steps = [steps, 500].max
+    duration = [duration, 5].max
+    calories = [calories, 20].max
+
+    # 今日の記録があれば更新、なければ新規作成
+    walk = current_user.walks.find_or_initialize_by(walked_on: Date.current)
+    is_new_record = walk.new_record?
+
+    walk.assign_attributes(
+      distance: distance,
+      steps: steps,
+      duration: duration,
+      calories_burned: calories,
+      location: ["近所の公園", "河川敷", "商店街", "隣町まで", "海沿い", "近所のスーパー"].sample,
+      notes: nil,
+      time_of_day: Walk.time_of_days.keys.sample
+    )
+
+    if walk.save
+      action_word = is_new_record ? "登録" : "上書き"
+      redirect_to walks_path, notice: "⚡️テスト入力#{action_word}完了！ (#{distance}km, #{steps}歩)"
+      # OGP画像の生成（非同期）
+      GenerateRankingOgpImageJob.perform_later(current_user, force: true)
+    else
+      redirect_to walks_path, alert: "テスト入力失敗: #{walk.errors.full_messages.join(', ')}"
+    end
+  end
+
   private
 
   # 対象の散歩記録を取得するメソッド

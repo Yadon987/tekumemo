@@ -41,7 +41,7 @@ RSpec.describe "Admin::Users", type: :system do
       # テスト実行前に不要なデータを削除して軽量化（全体実行時の遅延対策）
       Walk.where(user: general_user).delete_all
       Post.where(user: general_user).delete_all
-      
+
       # 画面サイズを明示的に設定（レスポンシブ表示によるズレ防止）
       page.current_window.resize_to(1400, 900)
 
@@ -54,7 +54,7 @@ RSpec.describe "Admin::Users", type: :system do
       within(user_row) do
         # 削除ボタンを特定してからクリックプロセスに入る
         delete_button = find('button', text: '削除')
-        
+
         accept_confirm do
           delete_button.click
         end

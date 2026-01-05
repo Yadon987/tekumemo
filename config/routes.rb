@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :walks do
     collection do
       post :import_google_fit
+      post :quick_create # 管理者用クイック登録機能
     end
   end
 
