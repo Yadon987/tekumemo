@@ -1,6 +1,7 @@
 class Admin::WalksController < Admin::BaseController
   def index
-    @walks = Walk.includes(:user)
+    # N+1対策: userとアバター画像を事前ロード
+    @walks = Walk.includes(user: { uploaded_avatar_attachment: :blob })
 
     # 検索（ユーザー名）
     if params[:q].present?

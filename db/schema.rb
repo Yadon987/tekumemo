@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_05_054822) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -151,8 +151,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
     t.text "google_token"
     t.text "google_refresh_token"
     t.datetime "google_expires_at"
-    t.string "avatar_url"
-    t.string "name"
+    t.text "avatar_url"
+    t.string "name", limit: 50
     t.integer "target_distance", default: 3000, null: false
     t.boolean "is_admin", default: false, null: false
     t.boolean "walk_reminder_enabled", default: false, null: false, comment: "散歩時間リマインド通知の有効/無効"

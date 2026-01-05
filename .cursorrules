@@ -12,6 +12,7 @@
 
 # 禁止事項
 - **config/tailwind.config.js の作成禁止:** Rails 7以降、Tailwind CSSの設定は必ずプロジェクトルートにある `.tailwind.config.js` を編集してください。
+- **.envへのDATABASE_URL設定禁止:** 過去の事故を防ぐため、開発環境用の `.env` ファイルには絶対に `DATABASE_URL` を設定しないでください。本番環境への誤接続を防ぐため、厳格に管理してください。
 
 ---
 
