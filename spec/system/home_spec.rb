@@ -47,7 +47,7 @@ RSpec.describe "Home", type: :system, js: true do
     it "位置情報と天気が表示されること" do
       # 非同期読み込み完了を待つ（特定の要素が表示されるまで待機）
       # 天気アイコンが表示されるまで待つことで、他の情報も読み込まれていることを保証する
-      expect(page).to have_selector(".material-symbols-outlined", text: "sunny", wait: 10)
+      expect(page).to have_selector(".material-symbols-outlined", text: "sunny")
 
       # 位置情報（Shinjuku または Tokyo）が表示されているか
       expect(page).to have_content "Shinjuku"

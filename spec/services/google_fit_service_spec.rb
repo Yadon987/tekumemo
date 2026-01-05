@@ -23,55 +23,51 @@ RSpec.describe GoogleFitService, type: :service do
     let(:start_date) { Date.current }
     let(:end_date) { Date.current }
 
-    # === 共通の値オブジェクト ===
+    # === 値オブジェクト ===
     let(:step_val_obj) { double(int_val: 1000) }
     let(:distance_val_obj) { double(fp_val: 1500.0) } # 1500m
     let(:calorie_val_obj) { double(fp_val: 500.0) }
 
-    # === 1. 日次歩数リクエスト用のモック ===
-    let(:daily_step_point) { double(value: [ step_val_obj ]) }
-    let(:daily_step_dataset) { double(point: [ daily_step_point ]) }
-    let(:daily_bucket) { double(
-      start_time_millis: start_date.beginning_of_day.to_i * 1000,
-      end_time_millis: start_date.end_of_day.to_i * 1000,
-      dataset: [ daily_step_dataset ]
-    )}
-    let(:daily_steps_response) { double(bucket: [ daily_bucket ]) }
-
-    # === 2. アクティビティセグメントリクエスト用のモック ===
-    # データセットの順序: Distance, Calories
+    # === アクティビティセグメントリクエスト用のモック ===
+    # データセットの順序: Steps, Distance, Calories
+    let(:act_step_point) { double(value: [ step_val_obj ]) }
     let(:act_distance_point) { double(value: [ distance_val_obj ]) }
     let(:act_calorie_point) { double(value: [ calorie_val_obj ]) }
 
+    let(:act_step_dataset) { double(point: [ act_step_point ]) }
     let(:act_distance_dataset) { double(point: [ act_distance_point ]) }
     let(:act_calorie_dataset) { double(point: [ act_calorie_point ]) }
 
+    # 1時間（60分）の歩行セグメント
+    let(:segment_start_millis) { start_date.beginning_of_day.to_i * 1000 }
+    let(:segment_end_millis) { segment_start_millis + 3600000 } # 1時間後
+
     let(:activity_bucket) { double(
-      start_time_millis: start_date.beginning_of_day.to_i * 1000,
-      end_time_millis: start_date.beginning_of_day.to_i * 1000 + 3600000, # 1時間
+      start_time_millis: segment_start_millis,
+      end_time_millis: segment_end_millis,
       activity: 7, # Walking
-      dataset: [ act_distance_dataset, act_calorie_dataset ]
+      dataset: [ act_step_dataset, act_distance_dataset, act_calorie_dataset ]
     )}
     let(:activity_segments_response) { double(bucket: [ activity_bucket ]) }
 
     before do
-      # 1回目は日次歩数、2回目はアクティビティデータを返す
-      allow(fitness_service).to receive(:aggregate_dataset).and_return(daily_steps_response, activity_segments_response)
+      # アクティビティセグメントのレスポンスを返す
+      allow(fitness_service).to receive(:aggregate_dataset).and_return(activity_segments_response)
     end
 
     it "正しくデータを取得して整形すること" do
       result = service.fetch_activities(start_date, end_date)
       data = result[:data][start_date]
 
-      # 歩数: 日次データから (1000)
-      # 距離: アクティビティデータから (1500m -> 1.5km)
-      # カロリー: アクティビティデータから (500)
-      # 時間: 歩数(1000) / 100 = 10分 + アクティビティ時間(サイクリングなら加算だが今回はWalkingなので加算なし)
+      # 歩数: アクティビティセグメントから (1000)
+      # 距離: アクティビティセグメントから (1500m -> 1.5km)
+      # カロリー: アクティビティセグメントから (500)
+      # 時間: セグメント時間 (60分)
 
       expect(data[:steps]).to eq 1000
       expect(data[:distance]).to eq 1.5
       expect(data[:calories]).to eq 500
-      expect(data[:duration]).to eq 10 # 1000歩 ÷ 100歩/分
+      expect(data[:duration]).to eq 60 # セグメント時間（1時間）
     end
 
     context "APIエラーが発生した場合" do
