@@ -22,6 +22,11 @@ class GoogleFitService
   # @param end_date [Date] 終了日
   # @return [Hash] 日付(Date)をキー、データ(Hash)を値とするハッシュ
   #   例: { Date.new(2025, 12, 20) => { steps: 5000, distance: 3.5, calories: 150 } }
+  #
+  # 歩数ロジック:
+  #   - 歩行(Walking)・ランニング(Running)セグメント内の歩数のみを取得
+  #   - 車・電車移動中の振動による誤検知歩数を除外
+  #   - 自転車の移動距離を歩数に換算して加算（距離÷4÷0.7m）
   def fetch_activities(start_date, end_date)
     return { data: fetch_dummy_activities(start_date, end_date) } if @user.guest?
 
@@ -30,30 +35,24 @@ class GoogleFitService
     end_time_millis = end_date.end_of_day.to_i * 1000
 
     begin
-      # === 1. 歩数データを日次バケットで取得（全歩数を正確に取得） ===
-      steps_by_date = fetch_daily_steps(start_time_millis, end_time_millis)
-
-      # === 2. 距離・カロリー・アクティビティ時間はアクティビティセグメントから取得 ===
+      # === アクティビティセグメントから歩数・距離・カロリー・時間を取得 ===
+      # 歩行(7)、ランニング(8)、サイクリング(1)のみを対象とし、
+      # 車・電車などの移動は除外される
       activity_data_by_date = fetch_activity_segment_data(start_time_millis, end_time_millis)
 
-      # === 3. マージして結果を作成 ===
+      # === 結果を作成 ===
       result = {}
 
-      # 両方のデータソースの日付を統合
-      all_dates = (steps_by_date.keys + activity_data_by_date.keys).uniq
-
-      all_dates.each do |date|
-        steps = steps_by_date[date] || 0
-        activity = activity_data_by_date[date] || { distance_m: 0.0, calories: 0, activity_duration_min: 0, cycling_duration_min: 0, cycling_distance_m: 0.0, start_time: nil }
-
-        # サイクリングの換算後距離から歩数を推定して加算
+      activity_data_by_date.each do |date, activity|
+        # 歩行・ランニングセグメントの歩数 + サイクリングの換算歩数
         # 平均歩幅 0.7m で計算
+        segment_steps = activity[:steps] || 0
         cycling_steps = (activity[:cycling_distance_m] / 0.7).round
-        total_steps = steps + cycling_steps
+        total_steps = segment_steps + cycling_steps
 
-        # 時間計算: 歩行時間（歩数÷100） + サイクリング時間（1/2換算後）
-        walk_duration = (steps / 100.0).round
-        total_duration = walk_duration + activity[:cycling_duration_min]
+        # 時間計算: セグメント時間を直接使用（より正確）
+        # 歩行・ランニングのセグメント時間 + サイクリング時間（1/2換算後）
+        total_duration = activity[:walk_run_duration_min] + activity[:cycling_duration_min]
 
         result[date] = {
           steps: total_steps,
@@ -114,46 +113,14 @@ class GoogleFitService
 
   private
 
-  # 日次バケットで歩数のみ取得（全歩数を漏れなく取得）
-  def fetch_daily_steps(start_time_millis, end_time_millis)
+  # アクティビティセグメントで歩数・距離・カロリー・時間を取得（電車・車を除外）
+  # 歩行(7)・ランニング(8)・サイクリング(1)のみを対象とする
+  def fetch_activity_segment_data(start_time_millis, end_time_millis)
     request = Google::Apis::FitnessV1::AggregateRequest.new(
       aggregate_by: [
         Google::Apis::FitnessV1::AggregateBy.new(
           data_type_name: "com.google.step_count.delta"
-        )
-      ],
-      bucket_by_time: Google::Apis::FitnessV1::BucketByTime.new(
-        duration_millis: 86400000  # 24時間（ミリ秒）
-      ),
-      start_time_millis: start_time_millis,
-      end_time_millis: end_time_millis
-    )
-
-    response = @client.aggregate_dataset("me", request)
-    result = {}
-
-    response.bucket.each do |bucket|
-      date = Time.at(bucket.start_time_millis / 1000).in_time_zone.to_date
-      steps = 0
-
-      bucket.dataset.each do |dataset|
-        dataset.point.each do |point|
-          point.value.each do |value|
-            steps += value.int_val.to_i if value.int_val
-          end
-        end
-      end
-
-      result[date] = steps if steps > 0
-    end
-
-    result
-  end
-
-  # アクティビティセグメントで距離・カロリー・時間を取得（電車・車を除外）
-  def fetch_activity_segment_data(start_time_millis, end_time_millis)
-    request = Google::Apis::FitnessV1::AggregateRequest.new(
-      aggregate_by: [
+        ),
         Google::Apis::FitnessV1::AggregateBy.new(
           data_type_name: "com.google.distance.delta"
         ),
@@ -169,7 +136,16 @@ class GoogleFitService
     )
 
     response = @client.aggregate_dataset("me", request)
-    daily_stats = Hash.new { |h, k| h[k] = { distance_m: 0.0, calories: 0, activity_duration_min: 0, cycling_duration_min: 0, cycling_distance_m: 0.0, max_calories: 0, start_time: nil } }
+    daily_stats = Hash.new { |h, k| h[k] = {
+      steps: 0,                   # 歩行・ランニングセグメントの歩数
+      distance_m: 0.0,
+      calories: 0,
+      walk_run_duration_min: 0,   # 歩行・ランニングのセグメント時間
+      cycling_duration_min: 0,    # サイクリング時間（1/2換算後）
+      cycling_distance_m: 0.0,    # サイクリング距離（1/4換算後、歩数推定用）
+      max_calories: 0,
+      start_time: nil
+    } }
 
     response.bucket.each do |bucket|
       activity_type = bucket.activity
@@ -183,7 +159,7 @@ class GoogleFitService
       duration_millis = bucket.end_time_millis - bucket.start_time_millis
       duration_min = (duration_millis / 1000.0 / 60.0).round
 
-      distance, calories = extract_distance_and_calories_from_bucket(bucket)
+      steps, distance, calories = extract_data_from_bucket(bucket)
 
       # サイクリングの換算処理
       if activity_type == ACTIVITY_TYPE_BIKING
@@ -196,8 +172,11 @@ class GoogleFitService
         cycling_duration_min = (duration_min / 2.0).round  # 時間1/2
         daily_stats[bucket_date][:cycling_duration_min] += cycling_duration_min
         daily_stats[bucket_date][:cycling_distance_m] += distance  # 換算後距離を記録（歩数推定用）
+        # サイクリング中の歩数は無視（ペダリングの誤検知の可能性）
       else
-        # 歩行・ランニングの時間はそのまま加算しない（歩数から推定するため）
+        # 歩行・ランニングの歩数と時間を加算
+        daily_stats[bucket_date][:steps] += steps
+        daily_stats[bucket_date][:walk_run_duration_min] += duration_min
       end
 
       # 日別に加算
@@ -214,8 +193,10 @@ class GoogleFitService
     daily_stats
   end
 
-  # バケットから距離とカロリーを抽出
-  def extract_distance_and_calories_from_bucket(bucket)
+  # バケットから歩数・距離・カロリーを抽出
+  # aggregate_by の順序: step_count.delta, distance.delta, calories.expended
+  def extract_data_from_bucket(bucket)
+    steps = 0
     distance = 0.0
     calories = 0
 
@@ -223,16 +204,18 @@ class GoogleFitService
       dataset.point.each do |point|
         point.value.each do |value|
           case index
-          when 0  # 距離
+          when 0  # 歩数
+            steps += value.int_val.to_i if value.int_val
+          when 1  # 距離
             distance += value.fp_val.to_f if value.fp_val
-          when 1  # カロリー
+          when 2  # カロリー
             calories += value.fp_val.to_i if value.fp_val
           end
         end
       end
     end
 
-    [ distance, calories ]
+    [ steps, distance, calories ]
   end
 
   # 管理者またはゲストユーザー用のダミーデータを生成する

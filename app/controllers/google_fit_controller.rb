@@ -31,8 +31,21 @@ class GoogleFitController < ApplicationController
     service = GoogleFitService.new(current_user)
 
     # 指定日のデータを取得
-    activities = service.fetch_activities(date, date)
-    data = activities[date]
+    # fetch_activitiesは { data: { Date => {...} } } または { error: ... } を返す
+    result = service.fetch_activities(date, date)
+
+    # エラーチェック
+    if result[:error]
+      case result[:error]
+      when :auth_expired
+        render json: { error: "Google Fit authentication expired" }, status: :unauthorized
+      else
+        render json: { error: result[:message] || "API error" }, status: :internal_server_error
+      end
+      return
+    end
+
+    data = result[:data]&.dig(date)
 
     if data
       render json: {
