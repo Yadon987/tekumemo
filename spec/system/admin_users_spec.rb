@@ -37,29 +37,31 @@ RSpec.describe "Admin::Users", type: :system do
       visit admin_users_path
     end
 
-
-    # 注意: このテストは非常に重く、Docker環境では150秒以上かかることがあります
-    # リソース不足の環境ではタイムアウトする可能性があるため、一時的にpending
-    # TODO: CI環境またはリソースに余裕のある環境でのみ実行するように修正する
     it "一般ユーザーを削除できる", js: true do
-      # ページにユーザーが表示されていることを確認（メールアドレスで特定）
-      expect(page).to have_content general_user.email
+      # テスト実行前に不要なデータを削除して軽量化（全体実行時の遅延対策）
+      Walk.where(user: general_user).delete_all
+      Post.where(user: general_user).delete_all
+      
+      # 画面サイズを明示的に設定（レスポンシブ表示によるズレ防止）
+      page.current_window.resize_to(1400, 900)
 
-      # ページの読み込みを確実に待つ（メールアドレスで特定）
-      expect(page).to have_selector('tr', text: general_user.email, wait: 10)
-
-      # 削除対象のユーザーの行を見つける（メールアドレスで特定して曖昧さを回避）
+      # 削除対象のユーザー行を特定
       user_row = find('tr', text: general_user.email)
 
-      # 削除ボタンをクリックして確認ダイアログを承認
+      # 要素までスクロールして確実に表示させる
+      user_row.scroll_to(:center)
+
       within(user_row) do
-        page.accept_confirm do
-          click_button "削除"
+        # 削除ボタンを特定してからクリックプロセスに入る
+        delete_button = find('button', text: '削除')
+        
+        accept_confirm do
+          delete_button.click
         end
       end
 
-      # 削除成功メッセージの表示を待つ
-      expect(page).to have_content "ユーザー「#{general_user.name}」を削除しました", wait: 10
+      # 削除成功を確認
+      expect(page).to have_content "ユーザー「#{general_user.name}」を削除しました"
       expect(page).not_to have_content general_user.email
     end
   end

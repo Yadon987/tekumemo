@@ -24,6 +24,20 @@
 
 set -e  # エラーが発生したら即座に終了
 
+# 終了時にファイルの所有権を修正（Dockerがrootで作ったファイルをユーザー権限に戻す）
+# sudoがパスワードを要求する場合の対策として、Dockerコンテナ内からchownを実行する
+cleanup() {
+  if [ -n "$DOCKER_FIX_OWNERSHIP" ]; then
+      echo ""
+      echo "🧹 ファイルの所有権を修正中..."
+      # ホストのUID:GID（通常1000:1000）に合わせて修正
+      docker exec tekumemo-web chown -R $(id -u):$(id -g) . || true
+  fi
+}
+trap cleanup EXIT
+# 処理開始フラグ
+DOCKER_FIX_OWNERSHIP=true
+
 echo "========================================="
 echo "  全テスト実行 (Docker環境)"
 echo "========================================="
@@ -57,30 +71,41 @@ else
 fi
 echo ""
 # テストデータベースの準備
-# テストDBへの既存接続を強制切断（ObjectInUseエラー回避の最終手段）
-echo "🔄 DBコンテナを再起動して接続を完全リセット中..."
-docker compose restart db
-# DBの起動待機（最大30秒）
-echo "⏳ DBの起動を待機中..."
-for i in {1..30}; do
-  if docker exec tekumemo-db pg_isready -U postgres > /dev/null 2>&1; then
-    echo "✅ DB起動完了"
-    break
-  fi
-  sleep 1
-done
+echo "--- Step 2/4: テストデータベース準備 ---"
 
-# デバッグ: DB一覧を表示
-# PostgreSQLのFORCEオプションを使って強制的にDBを削除
-echo "💣 テストDBを強制削除中..."
-docker exec tekumemo-db psql -U postgres -d postgres -c "DROP DATABASE IF EXISTS tekumemo_test WITH (FORCE);" > /dev/null 2>&1 || true
+# まず通常の方法でDB準備を試みる
+if docker exec tekumemo-web bash -c "DATABASE_URL='postgresql://postgres:password@db:5432/tekumemo_test' RAILS_ENV=test DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:test:prepare" > /dev/null 2>&1; then
+    echo "✅ テストDB準備完了 (高速モード)"
+else
+    echo "⚠️ 通常の準備に失敗しました。詳細なリセットを実行します..."
+    
+    # テストDBへの既存接続を強制切断（ObjectInUseエラー回避の最終手段）
+    echo "🔄 DBコンテナを再起動して接続を完全リセット中..."
+    docker compose restart db
+    
+    # DBの起動待機（最大30秒）
+    echo "⏳ DBの起動を待機中..."
+    for i in {1..30}; do
+      if docker exec tekumemo-db pg_isready -U postgres > /dev/null 2>&1; then
+        echo "✅ DB起動完了"
+        break
+      fi
+      sleep 1
+    done
 
-docker exec tekumemo-web bash -c "DATABASE_URL='postgresql://postgres:password@db:5432/tekumemo_test' RAILS_ENV=test DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:test:prepare"
-if [ $? -ne 0 ]; then
-    echo "🚨 テストDBの準備に失敗しました"
-    exit 1
+    # PostgreSQLのFORCEオプションを使って強制的にDBを削除
+    echo "💣 テストDBを強制削除中..."
+    docker exec tekumemo-db psql -U postgres -d postgres -c "DROP DATABASE IF EXISTS tekumemo_test WITH (FORCE);" > /dev/null 2>&1 || true
+
+    echo "🔄 テストDBを再作成中..."
+    if docker exec tekumemo-web bash -c "DATABASE_URL='postgresql://postgres:password@db:5432/tekumemo_test' RAILS_ENV=test DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:test:prepare"; then
+        echo "✅ テストDB準備完了 (リカバリー成功)"
+    else
+        echo "🚨 テストDBの準備に失敗しました"
+        exit 1
+    fi
 fi
-echo "✅ テストDB準備完了"
+echo ""
 echo ""
 
 # RuboCopの実行（自動修正）
