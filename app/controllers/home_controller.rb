@@ -3,6 +3,9 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index ]
 
   def index
+    # 5分に1回、古いゲストユーザーをクリーンアップ（UptimeRobotの監視でも発火）
+    cleanup_old_guests_if_needed
+
     # ログイン前ユーザーにはLP土台を表示
     unless user_signed_in?
       render :landing
@@ -101,5 +104,20 @@ class HomeController < ApplicationController
     @my_rank = ranking_data[:rank]
     @ranking_total_users = ranking_data[:total_users]
     @ranking_percentile = ranking_data[:percentile]
+  end
+
+  private
+
+  # 5分に1回だけ古いゲストユーザーをクリーンアップ
+  # Railsキャッシュで実行間隔を制御（DBカラム追加不要）
+  def cleanup_old_guests_if_needed
+    cache_key = "last_guest_cleanup"
+    last_cleanup = Rails.cache.read(cache_key)
+
+    # 最後のクリーンアップから5分以上経過している場合のみ実行
+    if last_cleanup.nil? || last_cleanup < 5.minutes.ago
+      User.cleanup_old_guests
+      Rails.cache.write(cache_key, Time.current, expires_in: 10.minutes)
+    end
   end
 end

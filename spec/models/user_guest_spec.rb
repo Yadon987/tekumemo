@@ -73,9 +73,11 @@ RSpec.describe User, type: :model do
     end
 
     context 'cleanup logic' do
-      it 'removes guests created more than 24 hours ago' do
-        old_guest = FactoryBot.create(:user, role: :guest, created_at: 25.hours.ago)
-        new_guest = FactoryBot.create(:user, role: :guest, created_at: 1.hour.ago)
+      it 'removes guests created more than 1 hour ago' do
+        # 1時間以上前に作成されたゲストは削除される
+        old_guest = FactoryBot.create(:user, role: :guest, created_at: 2.hours.ago)
+        # 30分前に作成されたゲストは削除されない
+        new_guest = FactoryBot.create(:user, role: :guest, created_at: 30.minutes.ago)
 
         User.create_portfolio_guest
 

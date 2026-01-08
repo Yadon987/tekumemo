@@ -237,8 +237,10 @@ class User < ApplicationRecord
 
   # 古いゲストアカウントのお掃除
   def self.cleanup_old_guests
-    # role: guest かつ 作成から24時間以上経過したユーザーを削除
-    User.where(role: :guest).where("created_at < ?", 24.hours.ago).destroy_all
+    # role: guest かつ 作成から1時間以上経過したユーザーを削除
+    # ゲストはお試し用なので1時間で十分
+    deleted_count = User.where(role: :guest).where("created_at < ?", 1.hour.ago).destroy_all.size
+    Rails.logger.info "[Cleanup] Deleted #{deleted_count} old guest users" if deleted_count > 0
   end
 
   def google_token_valid?
