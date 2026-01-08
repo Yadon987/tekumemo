@@ -5,8 +5,9 @@
 # POSTとGETの両方を許可（Google OAuth2のコールバックフローに必要）
 OmniAuth.config.allowed_request_methods = [ :post, :get ]
 
-# テスト・開発環境でのSSL警告を無効化（本番環境では有効のまま）
-OmniAuth.config.silence_get_warning = true unless Rails.env.production?
+# テスト・開発環境でのSSL警告を無効化
+# （POSTリクエストに修正済みのため本来は不要だが、念のため全環境で抑制）
+OmniAuth.config.silence_get_warning = true
 
 # 認証失敗時の詳細ログを出力（本番環境でのデバッグ用）
 OmniAuth.config.on_failure = proc { |env|

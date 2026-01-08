@@ -27,8 +27,11 @@
       <span data-google-fit-target="status" class="block mt-2 text-center text-sm font-bold text-blue-600 dark:text-cyan-400 empty:hidden"></span>
 
     <% else %>
-      <%= link_to user_google_oauth2_omniauth_authorize_path,
+      <%# POSTリクエスト必須: OmniAuth 2.0 CSRF保護対応 %>
+      <%= button_to user_google_oauth2_omniauth_authorize_path,
+          method: :post,
           data: { turbo: false },
+          form: { class: "w-full" },
           class: "w-full bg-[radial-gradient(ellipse_120%_120%_at_35%_35%,#ffffff_30%,#f3f4f6_90%)] dark:bg-none dark:bg-slate-800/80 backdrop-blur-xl hover:shadow-[10px_10px_20px_rgba(156,163,175,0.2),-10px_-10px_20px_#ffffff] dark:hover:bg-slate-700/80 text-gray-700 dark:text-slate-200 font-bold py-4 px-6 rounded-[3.75rem] shadow-[5px_5px_15px_rgba(156,163,175,0.1),-5px_-5px_15px_#ffffff,inset_-2px_-2px_5px_rgba(156,163,175,0.05),inset_2px_2px_5px_rgba(255,255,255,0.5)] dark:shadow-[0_0_20px_rgba(255,255,255,0.1),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all flex items-center justify-center space-x-3 border-2 border-white/60 dark:border-slate-700 dark:border-t-white/30 relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none" do %>
         <svg class="w-6 h-6 relative z-10" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
