@@ -4,27 +4,30 @@
   <%# Google Fit再連携バナー（連携切れ時のみ表示、ゲストは除外） %>
   <% unless current_user.guest? %>
     <% token_status = current_user.google_token_status %>
-    <% if token_status == :expired_need_reauth %>
-      <div class="mb-6 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-l-4 border-yellow-400 dark:border-yellow-500 rounded-xl p-4 shadow-sm">
+    <% if token_status.in?([:expired_need_reauth, :temporary_error]) %>
+      <%# 連携済みだがトークンに問題がある場合 %>
+      <div class="mb-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-l-4 border-amber-400 dark:border-amber-500 rounded-xl p-4 shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div class="flex items-center gap-3">
-            <div class="bg-yellow-100 dark:bg-yellow-900/40 p-2 rounded-full">
-              <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">link_off</span>
+            <div class="bg-amber-100 dark:bg-amber-900/40 p-2 rounded-full">
+              <span class="material-symbols-outlined text-amber-600 dark:text-amber-400">warning</span>
             </div>
             <div>
-              <p class="font-bold text-yellow-800 dark:text-yellow-300 text-sm">Google Fit連携の再設定が必要です</p>
-              <p class="text-xs text-yellow-600/80 dark:text-yellow-400/70 mt-0.5">認証の有効期限が切れました</p>
+              <p class="font-bold text-amber-800 dark:text-amber-300 text-sm">Google Fit連携に問題があります</p>
+              <p class="text-xs text-amber-600/80 dark:text-amber-400/70 mt-0.5">歩数データを取得できません。再連携が必要です。</p>
             </div>
           </div>
-          <%= link_to user_google_oauth2_omniauth_authorize_path,
+          <%= button_to user_google_oauth2_omniauth_authorize_path,
+              method: :post,
               data: { turbo: false },
-              class: "inline-flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white font-bold px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all text-sm whitespace-nowrap" do %>
-            <span class="material-symbols-outlined text-lg">add_link</span>
+              class: "inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all text-sm whitespace-nowrap" do %>
+            <span class="material-symbols-outlined text-lg">link</span>
             <span>再連携する</span>
           <% end %>
         </div>
       </div>
     <% elsif token_status == :not_connected %>
+      <%# まだ連携していない場合の案内 %>
       <div class="mb-6 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-l-4 border-blue-400 dark:border-blue-500 rounded-xl p-4 shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div class="flex items-center gap-3">
@@ -41,7 +44,8 @@
               <p class="text-xs text-blue-600/80 dark:text-blue-400/70 mt-0.5">散歩データを自動で取り込めます</p>
             </div>
           </div>
-          <%= link_to user_google_oauth2_omniauth_authorize_path,
+          <%= button_to user_google_oauth2_omniauth_authorize_path,
+              method: :post,
               data: { turbo: false },
               class: "inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all text-sm whitespace-nowrap" do %>
             <span class="material-symbols-outlined text-lg">add_link</span>

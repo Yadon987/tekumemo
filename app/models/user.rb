@@ -91,15 +91,23 @@ class User < ApplicationRecord
     user = User.find_by(google_uid: auth.uid)
 
     if user
-      # 既存ユーザー（連携済み）の場合、Google認証情報を更新
-      user.update(
+      # 更新用のハッシュを構築
+      # refresh_tokenはnilで返ってくる場合があるため、存在する場合のみ更新
+      # （Google OAuthの仕様：2回目以降の認証ではrefresh_tokenが返らない場合がある）
+      update_hash = {
         google_uid: auth.uid,
         google_token: auth.credentials.token,
-        google_refresh_token: auth.credentials.refresh_token,
         google_expires_at: Time.at(auth.credentials.expires_at),
         avatar_url: auth.info.image, # アバター画像を更新
         avatar_type: :google # アバター種別をGoogleに設定
-      )
+      }
+
+      # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
+      if auth.credentials.refresh_token.present?
+        update_hash[:google_refresh_token] = auth.credentials.refresh_token
+      end
+
+      user.update(update_hash)
     end
 
     user
@@ -229,8 +237,10 @@ class User < ApplicationRecord
 
   # 古いゲストアカウントのお掃除
   def self.cleanup_old_guests
-    # role: guest かつ 作成から24時間以上経過したユーザーを削除
-    User.where(role: :guest).where("created_at < ?", 24.hours.ago).destroy_all
+    # role: guest かつ 作成から1時間以上経過したユーザーを削除
+    # ゲストはお試し用なので1時間で十分
+    deleted_count = User.where(role: :guest).where("created_at < ?", 1.hour.ago).destroy_all.size
+    Rails.logger.info "[Cleanup] Deleted #{deleted_count} old guest users" if deleted_count > 0
   end
 
   def google_token_valid?

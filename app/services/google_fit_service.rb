@@ -78,17 +78,20 @@ class GoogleFitService
 
       { error: :auth_expired }
     rescue Google::Apis::ClientError => e
-      if e.status_code == 401 || e.status_code == 403
+      case e.status_code
+      when 401, 403
+        # 認証エラー - トークンをクリアして再認証を促す
         Rails.logger.error "Google Fit Auth Error (#{e.status_code}) for user #{@user.id}: #{e.message}"
-
-        # 無効なトークンをクリアして次回の再認証を促す
         @user.update_columns(
           google_token: nil,
           google_expires_at: nil
         )
         Rails.logger.info "Cleared invalid Google tokens for user #{@user.id}"
-
         { error: :auth_expired }
+      when 429
+        # レート制限 - トークンはクリアしない（一時的な問題なので）
+        Rails.logger.warn "Google Fit Rate Limited for user #{@user.id}: #{e.message}"
+        { error: :rate_limited, message: "リクエストが多すぎます。数分待ってから再試行してください。" }
       else
         Rails.logger.error "Google Fit Client Error for user #{@user.id}: #{e.message}"
         { error: :api_error, message: e.message }
