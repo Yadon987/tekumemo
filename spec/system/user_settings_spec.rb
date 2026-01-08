@@ -158,7 +158,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
 
     it "Google連携を行い、その後解除できること", js: true do
       # アバター画像のダウンロードをスタブ
-      stub_request(:get, "http://example.com/avatar.jpg").
+      stub_request(:get, "https://example.com/avatar.jpg").
         with(
           headers: {
             'Accept'=>'*/*',
@@ -171,7 +171,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
         provider: "google_oauth2",
         uid: "linked_uid",
-        info: { email: "user@example.com", image: "http://example.com/avatar.jpg" },
+        info: { email: "user@example.com", image: "https://example.com/avatar.jpg" },
         credentials: { token: "token", expires_at: Time.now.to_i + 3600 }
       })
 
@@ -244,7 +244,7 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
           google_uid: "linked_uid",
           google_token: "token",
           google_expires_at: Time.now + 1.hour,
-          avatar_url: "http://example.com/avatar.jpg"
+          avatar_url: "https://example.com/avatar.jpg"
         )
         visit edit_user_registration_path
       end

@@ -37,7 +37,14 @@ class User < ApplicationRecord
   enum :avatar_type, { default: 0, google: 1, uploaded: 2 }
 
   # ユーザー名のバリデーション
-  validates :name, presence: true
+  # - 必須入力
+  # - 最大50文字（DBカラムの制限と一致させる）
+  validates :name, presence: true, length: { maximum: 50 }
+
+  # アバターURLのバリデーション（Google OAuth経由で設定される）
+  # - 最大2048文字（一般的なURL長制限）
+  # - HTTPS形式のみ許可（SSRF対策）
+  validates :avatar_url, length: { maximum: 2048 }, format: { with: /\Ahttps:\/\/.*\z/i, message: "はHTTPSのURLのみ許可されます" }, allow_blank: true
 
   # 目標距離のバリデーション
   # 1. 必須であること（デフォルト値があるため通常は問題ないが、念のため）

@@ -35,7 +35,15 @@ class Post < ApplicationRecord
   # スコープ（よく使うクエリに名前をつける）
   scope :recent, -> { order("posts.created_at DESC, posts.id DESC") }  # 新しい順に並べる（テーブル名明示）
   scope :with_walk, -> { where.not(walk_id: nil) }  # 散歩記録が紐付いている投稿のみ取得
-  scope :with_associations, -> { preload(:user, :walk, :reactions) }  # N+1対策（preloadで別クエリ化）
+  # N+1対策: アソシエーションを事前ロード
+  # - user: 投稿者情報（名前、アバター表示に必要）
+  # - uploaded_avatar_attachment + blob: アバター画像表示時のN+1防止
+  # - walk: 紐付いた散歩記録
+  # - reactions: リアクション数表示用
+  scope :with_associations, -> {
+    preload(:walk, :reactions)
+      .includes(user: { uploaded_avatar_attachment: :blob })
+  }
 
   # 特定ユーザーがつけた全リアクションを取得（複数対応）
   def user_reactions(user)

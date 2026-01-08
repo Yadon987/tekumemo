@@ -66,8 +66,9 @@ class Admin::DashboardController < Admin::BaseController
       # 最近の投稿
       @recent_posts = Post.order(created_at: :desc).limit(5).includes(user: { uploaded_avatar_attachment: :blob })
 
-      # 最近のユーザー
-      @recent_users = User.order(created_at: :desc).limit(5)
+      # 最近のユーザー（N+1対策: アバター画像も事前ロード）
+      @recent_users = User.includes(uploaded_avatar_attachment: :blob)
+                          .order(created_at: :desc).limit(5)
 
       # 異常検知
       detect_anomalies
