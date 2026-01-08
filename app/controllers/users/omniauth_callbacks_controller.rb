@@ -55,15 +55,24 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return
     end
 
-    # メールアドレスを更新して連携
-    if current_user.update(
+    # 更新用のハッシュを構築
+    # refresh_tokenはnilで返ってくる場合があるため、存在する場合のみ更新
+    # （Google OAuthの仕様：2回目以降の認証ではrefresh_tokenが返らない場合がある）
+    update_hash = {
       email: auth_data["email"],
       google_uid: auth_data["uid"],
       google_token: auth_data["token"],
-      google_refresh_token: auth_data["refresh_token"],
       google_expires_at: Time.at(auth_data["expires_at"]),
       avatar_url: auth_data["image"]
-    )
+    }
+
+    # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
+    if auth_data["refresh_token"].present?
+      update_hash[:google_refresh_token] = auth_data["refresh_token"]
+    end
+
+    # メールアドレスを更新して連携
+    if current_user.update(update_hash)
       # アバター画像をキャッシュ
       cache_avatar_image(current_user, auth_data["image"])
 
@@ -78,13 +87,22 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # Googleアカウントとの連携処理（共通化）
   def connect_google_account(auth)
-    if current_user.update(
+    # 更新用のハッシュを構築
+    # refresh_tokenはnilで返ってくる場合があるため、存在する場合のみ更新
+    # （Google OAuthの仕様：2回目以降の認証ではrefresh_tokenが返らない場合がある）
+    update_hash = {
       google_uid: auth.uid,
       google_token: auth.credentials.token,
-      google_refresh_token: auth.credentials.refresh_token,
       google_expires_at: Time.at(auth.credentials.expires_at),
       avatar_url: auth.info.image
-    )
+    }
+
+    # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
+    if auth.credentials.refresh_token.present?
+      update_hash[:google_refresh_token] = auth.credentials.refresh_token
+    end
+
+    if current_user.update(update_hash)
       # アバター画像をキャッシュ（OGP生成高速化のため）
       cache_avatar_image(current_user, auth.info.image)
 

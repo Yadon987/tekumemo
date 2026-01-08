@@ -170,12 +170,11 @@ Devise.setup do |config|
                       # 基本認証情報
                       "userinfo.email",
                       "userinfo.profile",
-                      # フィットネス関連
-                      "https://www.googleapis.com/auth/fitness.activity.read",    # 活動データ
-                      "https://www.googleapis.com/auth/fitness.location.read",    # 位置情報
-                      "https://www.googleapis.com/auth/fitness.body.read"         # 身体データ
-                    ].join(","), # 配列 + .join(','),で文字列に変換できる
-                    # 左だと可読性がバツ "userinfo.email,userinfo.profile,https://www.googleapis.com/auth/fitness.activity.read"
+                      # フィットネス関連（歩数・距離・カロリー取得に必要）
+                      "https://www.googleapis.com/auth/fitness.activity.read"
+                      # 注: location.read, body.read は使用していないため削除
+                      # 最小権限の原則に従い、必要なスコープのみを要求
+                    ].join(","),
 
                     access_type: "offline",
                     prompt: "consent"

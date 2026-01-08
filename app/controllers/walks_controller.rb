@@ -100,6 +100,8 @@ class WalksController < ApplicationController
       flash[:alert] = case result[:error]
       when :auth_expired
                         "Google認証の期限が切れました。再度連携してください。"
+      when :rate_limited
+                        result[:message]
       when :api_error
                         "Google Fit APIエラー: #{result[:message]}"
       else

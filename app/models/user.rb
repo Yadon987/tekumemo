@@ -91,15 +91,23 @@ class User < ApplicationRecord
     user = User.find_by(google_uid: auth.uid)
 
     if user
-      # 既存ユーザー（連携済み）の場合、Google認証情報を更新
-      user.update(
+      # 更新用のハッシュを構築
+      # refresh_tokenはnilで返ってくる場合があるため、存在する場合のみ更新
+      # （Google OAuthの仕様：2回目以降の認証ではrefresh_tokenが返らない場合がある）
+      update_hash = {
         google_uid: auth.uid,
         google_token: auth.credentials.token,
-        google_refresh_token: auth.credentials.refresh_token,
         google_expires_at: Time.at(auth.credentials.expires_at),
         avatar_url: auth.info.image, # アバター画像を更新
         avatar_type: :google # アバター種別をGoogleに設定
-      )
+      }
+
+      # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
+      if auth.credentials.refresh_token.present?
+        update_hash[:google_refresh_token] = auth.credentials.refresh_token
+      end
+
+      user.update(update_hash)
     end
 
     user
