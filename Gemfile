@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Rails本体
-gem "rails", "~> 7.2.3"
+gem "rails", "~> 8.1.2"
 
 # フロントエンド関連
 gem "sprockets-rails"      # アセットパイプライン
