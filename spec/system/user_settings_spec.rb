@@ -63,8 +63,8 @@ RSpec.describe "ユーザー設定", type: :system, js: true do
       })
 
       visit new_user_session_path
-      # Googleログインボタンをクリック
-      click_link "Googleでログイン"
+      # Googleログインボタンをクリック（button_toに変更されたためclick_button）
+      click_button "Googleでログイン"
 
       expect(page).to have_content("このGoogleアカウントは連携されていません")
     end

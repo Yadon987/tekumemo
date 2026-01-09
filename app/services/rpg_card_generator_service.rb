@@ -206,9 +206,9 @@ class RpgCardGeneratorService
       if @user.cached_avatar.attached?
         begin
           # Active StorageからダウンロードしてTempfileに保存
-          @user.cached_avatar.download do |file|
-            File.binwrite(avatar_path, file.read)
-          end
+          # ブロックなしで呼び出すことでCloudinaryアダプターとの互換性を確保
+          avatar_data = @user.cached_avatar.download
+          File.binwrite(avatar_path, avatar_data)
 
           avatar = ::MiniMagick::Image.new(avatar_path)
           avatar.combine_options do |c|
