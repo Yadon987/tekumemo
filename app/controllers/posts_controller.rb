@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [ :show ]
+  before_action :authenticate_user!, except: [:show]
 
   # GET /posts
   # タイムライン（みんなの投稿）を表示
@@ -39,11 +39,9 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params)
 
     # セキュリティ対策：他人の散歩記録を紐付けられないようにチェック
-    if @post.walk_id.present?
-      unless current_user.walks.exists?(id: @post.walk_id)
-        redirect_to posts_path, alert: "不正な操作です。指定された散歩記録は存在しないか、権限がありません。"
-        return
-      end
+    if @post.walk_id.present? && !current_user.walks.exists?(id: @post.walk_id)
+      redirect_to posts_path, alert: "不正な操作です。指定された散歩記録は存在しないか、権限がありません。"
+      return
     end
 
     if @post.save

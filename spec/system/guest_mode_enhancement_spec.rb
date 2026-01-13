@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Guest Mode Enhancements', type: :system do
   before do
-    allow(Cloudinary::Uploader).to receive(:destroy).and_return({ "result" => "ok" })
+    allow(Cloudinary::Uploader).to receive(:destroy).and_return({ 'result' => 'ok' })
     # Google Fit Serviceのダミー化
     allow_any_instance_of(GoogleFitService).to receive(:fetch_activities).and_return({})
 
@@ -23,7 +23,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
       avatar_type: :default
     )
     # 距離データを紐付け（ランキング入りさせる）
-    Walk.create!(user: @general_user, walked_on: Time.zone.today, distance: 10.0, steps: 10000, duration: 60)
+    Walk.create!(user: @general_user, walked_on: Time.zone.today, distance: 10.0, steps: 10_000, duration: 60)
 
     # ゲストユーザー作成（ヘルパー経由だとDBロック怖いので直接作成）
     @guest_user = User.create!(

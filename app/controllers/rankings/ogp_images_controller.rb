@@ -1,6 +1,6 @@
 module Rankings
   class OgpImagesController < ApplicationController
-    skip_before_action :authenticate_user!, only: [ :show ]
+    skip_before_action :authenticate_user!, only: [:show]
 
     def show
       @user = User.find(params[:id])
@@ -8,7 +8,7 @@ module Rankings
       # 期間設定 (今週)
       start_date = Date.current.beginning_of_week
       end_date = Date.current.end_of_week
-      period_key = "#{start_date.strftime("%Y%m%d")}_#{end_date.strftime("%Y%m%d")}"
+      period_key = "#{start_date.strftime('%Y%m%d')}_#{end_date.strftime('%Y%m%d')}"
 
       # 強制リフレッシュ: ?refresh=true があれば既存の画像を削除
       if params[:refresh] == "true"
@@ -27,7 +27,7 @@ module Rankings
       if @user.ranking_ogp_image.attached? &&
          @user.ranking_ogp_image.filename.to_s.include?(period_key) &&
          @user.ranking_ogp_image.blob.created_at > 1.week.ago
-         send_data @user.ranking_ogp_image.download, type: "image/jpeg", disposition: "inline"
+        send_data @user.ranking_ogp_image.download, type: "image/jpeg", disposition: "inline"
         return
       end
 
@@ -68,8 +68,7 @@ module Rankings
         Rails.logger.error "[Ranking OGP] CRITICAL: attach() completed but image not attached after reload!"
         redirect_to ActionController::Base.helpers.image_url("icon.png"), allow_other_host: true
       end
-
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "Failed to handle ranking OGP image request: #{e.message}"
       # エラー時もデフォルト画像へ
       redirect_to ActionController::Base.helpers.image_url("icon.png"), allow_other_host: true

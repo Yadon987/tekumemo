@@ -4,8 +4,7 @@ class CreateUserAchievements < ActiveRecord::Migration[7.2]
       t.references :user, null: false, foreign_key: true
       t.references :achievement, null: false, foreign_key: true
 
-
-      t.index [:user_id, :achievement_id], unique: true
+      t.index %i[user_id achievement_id], unique: true
       t.timestamps
     end
   end

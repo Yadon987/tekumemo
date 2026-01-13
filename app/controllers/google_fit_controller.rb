@@ -2,8 +2,6 @@ class GoogleFitController < ApplicationController
   # ログインしていないユーザーはアクセスできないようにする
   before_action :authenticate_user!
 
-
-
   # Google Fitとの連携状態を確認する
   # GET /google_fit/status
   def status
@@ -65,7 +63,7 @@ class GoogleFitController < ApplicationController
         duration: 0
       }
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "Google Fit API Error: #{e.message}"
     render json: { error: e.message }, status: :internal_server_error
   end

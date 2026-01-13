@@ -39,7 +39,7 @@ class GenerateRankingOgpImageJob < ApplicationJob
       )
 
       Rails.logger.info "Background Ranking OGP generation completed for User ID: #{user.id}"
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "Background Ranking OGP generation failed: #{e.message}"
     end
   end

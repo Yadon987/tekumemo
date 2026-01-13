@@ -3,7 +3,7 @@ class WalksController < ApplicationController
   before_action :authenticate_user!
 
   # show、edit、update、destroyアクションの前に、対象の散歩記録を取得する
-  before_action :set_walk, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_walk, only: %i[show edit update destroy]
 
   # 散歩記録一覧ページ（GET /walks）
   def index
@@ -25,7 +25,7 @@ class WalksController < ApplicationController
 
     # 現在時刻に基づいて時間帯の初期値をセット
     hour = Time.current.hour
-    @walk.time_of_day = case hour
+    @walk.daypart = case hour
     when 4..8 then :early_morning
     when 9..15 then :day
     when 16..18 then :evening
@@ -143,9 +143,7 @@ class WalksController < ApplicationController
       end
 
       # 失敗があった場合はロールバック
-      if failed_dates.any?
-        raise ActiveRecord::Rollback
-      end
+      raise ActiveRecord::Rollback if failed_dates.any?
     end
 
     if failed_dates.any?
@@ -192,9 +190,9 @@ class WalksController < ApplicationController
       steps: steps,
       duration: duration,
       calories_burned: calories,
-      location: ["近所の公園", "河川敷", "商店街", "隣町まで", "海沿い", "近所のスーパー"].sample,
+      location: %w[近所の公園 河川敷 商店街 隣町まで 海沿い 近所のスーパー].sample,
       notes: nil,
-      time_of_day: Walk.time_of_days.keys.sample
+      daypart: Walk.dayparts.keys.sample
     )
 
     if walk.save
@@ -219,6 +217,7 @@ class WalksController < ApplicationController
   # フォームから送信されたパラメータを許可するメソッド
   # セキュリティのため、必要なパラメータだけを許可する
   def walk_params
-    params.require(:walk).permit(:walked_on, :duration, :distance, :steps, :calories_burned, :location, :notes, :time_of_day)
+    params.require(:walk).permit(:walked_on, :duration, :distance, :steps, :calories_burned, :location, :notes,
+                                 :daypart)
   end
 end

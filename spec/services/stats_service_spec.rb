@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe StatsService do
-  let(:user) { create(:user, target_distance: 3000) }
+  let(:user) { create(:user, goal_meters: 3000) }
   let(:service) { StatsService.new(user) }
 
   describe '基本統計' do
@@ -34,10 +34,13 @@ RSpec.describe StatsService do
     context 'データが既に存在する場合' do
       before do
         # 今月のデータ
-        create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000, calories_burned: 250)
+        create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000,
+                      calories_burned: 250)
         # 先月のデータ
-        create(:walk, user: user, walked_on: Date.current.prev_month, distance: 3.0, duration: 30, steps: 4000, calories_burned: 150)
-        create(:walk, user: user, walked_on: Date.current.prev_month - 1.day, distance: 4.0, duration: 45, steps: 5000, calories_burned: 200)
+        create(:walk, user: user, walked_on: Date.current.prev_month, distance: 3.0, duration: 30, steps: 4000,
+                      calories_burned: 150)
+        create(:walk, user: user, walked_on: Date.current.prev_month - 1.day, distance: 4.0, duration: 45, steps: 5000,
+                      calories_burned: 200)
       end
 
       it '今月の距離を正しく計算できる' do
@@ -54,7 +57,8 @@ RSpec.describe StatsService do
           # 目標: 3000m (3.0km)
           # 実績: 5.0km -> 達成
           # 達成率: 1日中1日達成 -> 100.0%
-          create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000, calories_burned: 250)
+          create(:walk, user: user, walked_on: Date.current, distance: 5.0, duration: 60, steps: 6000,
+                        calories_burned: 250)
 
           expect(service.monthly_goal_achievement_rate).to eq(100.0)
         end
@@ -67,11 +71,10 @@ RSpec.describe StatsService do
       # 過去30日間にランダムな記録を作成
       10.times do |i|
         create(:walk,
-          user: user,
-          walked_on: i.days.ago.to_date,
-          distance: (i + 1).to_f,
-          duration: 30
-        )
+               user: user,
+               walked_on: i.days.ago.to_date,
+               distance: (i + 1).to_f,
+               duration: 30)
       end
     end
 
@@ -80,7 +83,7 @@ RSpec.describe StatsService do
 
       expect(result).to have_key(:dates)
       expect(result).to have_key(:distances)
-      expect(result[:dates].length).to eq(31)  # 30日前〜今日まで
+      expect(result[:dates].length).to eq(31) # 30日前〜今日まで
       expect(result[:distances].length).to eq(31)
     end
 
@@ -107,9 +110,9 @@ RSpec.describe StatsService do
     before do
       # 各曜日に記録を作成
       # 月曜日に2000m、火曜日に3000m
-      monday = Date.current.beginning_of_week  # 月曜日
+      monday = Date.current.beginning_of_week # 月曜日
       create(:walk, user: user, walked_on: monday, distance: 2.0)
-      create(:walk, user: user, walked_on: monday + 1.day, distance: 3.0)  # 火曜日
+      create(:walk, user: user, walked_on: monday + 1.day, distance: 3.0) # 火曜日
     end
 
     it '曜日別平均距離を正しく計算できる' do
@@ -135,14 +138,14 @@ RSpec.describe StatsService do
     end
 
     it '時間帯別の散歩回数を正しく集計できる' do
-      result = service.walks_count_by_time_of_day
+      result = service.walks_count_by_daypart
 
       expect(result).to have_key(:labels)
       expect(result).to have_key(:data)
-      expect(result[:labels]).to eq([ "早朝 (4-9時)", "日中 (9-16時)", "夕方 (16-19時)", "夜間 (19-4時)" ])
+      expect(result[:labels]).to eq(['早朝 (4-9時)', '日中 (9-16時)', '夕方 (16-19時)', '夜間 (19-4時)'])
 
       # 早朝: 1, 日中: 2, 夕方: 1, 夜間: 0
-      expect(result[:data]).to eq([ 1, 2, 1, 0 ])
+      expect(result[:data]).to eq([1, 2, 1, 0])
     end
   end
 
@@ -198,11 +201,11 @@ RSpec.describe StatsService do
       it 'レベルに応じたランク名を返す' do
         # Lv1
         create(:walk, user: user, distance: 5, walked_on: Date.current)
-        expect(service.rank_name).to eq("散歩見習い")
+        expect(service.rank_name).to eq('散歩見習い')
 
         # Lv3
         create(:walk, user: user, distance: 25, walked_on: 1.day.ago) # 合計30km
-        expect(service.rank_name).to eq("街の探索者")
+        expect(service.rank_name).to eq('街の探索者')
       end
     end
 
@@ -217,7 +220,7 @@ RSpec.describe StatsService do
         create(:walk, user: user, walked_on: storm_post.created_at.to_date)
 
         # 暁の冒険者の条件: 早朝(4-8時)の記録(Walk)がある
-        # created_atを5時に設定 -> before_saveでtime_of_day: :early_morningになるはず
+        # created_atを5時に設定 -> before_saveでdaypart: :early_morningになるはず
         create(:walk, user: user, created_at: Time.current.change(hour: 5), walked_on: 2.days.ago)
 
         # 太陽の申し子の条件: 日中(9-15時)の記録(Walk)がある

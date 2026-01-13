@@ -9,7 +9,7 @@ RSpec.describe UserAchievement, type: :model do
       UserAchievement.create(user: user, achievement: achievement)
       duplicate = UserAchievement.new(user: user, achievement: achievement)
       duplicate.valid?
-      expect(duplicate.errors[:user_id]).to include("はすでに存在します")
+      expect(duplicate.errors[:user_id]).to include('はすでに存在します')
     end
   end
 end

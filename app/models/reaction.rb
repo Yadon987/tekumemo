@@ -4,9 +4,9 @@ class Reaction < ApplicationRecord
   belongs_to :post, touch: true
 
   # バリデーション（データの検証ルール）
-  validates :kind, presence: true  # リアクションの種類（kind）は必須
+  validates :kind, presence: true # リアクションの種類（kind）は必須
   validates :user_id, uniqueness: {
-    scope: [ :post_id, :kind ],
+    scope: %i[post_id kind],
     message: "は同じ投稿に同じリアクションを複数回つけられません"
   }
 

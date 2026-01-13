@@ -19,8 +19,12 @@ RSpec.describe Notification, type: :model do
     let(:user) { FactoryBot.create(:user) }
     let(:announcement1) { FactoryBot.create(:announcement, is_published: false) }
     let(:announcement2) { FactoryBot.create(:announcement, is_published: false) }
-    let!(:unread_notification) { FactoryBot.create(:notification, user: user, announcement: announcement1, read_at: nil) }
-    let!(:read_notification) { FactoryBot.create(:notification, user: user, announcement: announcement2, read_at: 1.day.ago) }
+    let!(:unread_notification) do
+      FactoryBot.create(:notification, user: user, announcement: announcement1, read_at: nil)
+    end
+    let!(:read_notification) do
+      FactoryBot.create(:notification, user: user, announcement: announcement2, read_at: 1.day.ago)
+    end
 
     describe '.unread' do
       it '未読の通知のみを取得すること' do
@@ -40,13 +44,17 @@ RSpec.describe Notification, type: :model do
       let!(:old_announcement) { FactoryBot.create(:announcement, published_at: 2.days.ago, is_published: false) }
       let!(:new_announcement) { FactoryBot.create(:announcement, published_at: 1.day.ago, is_published: false) }
       # old_announcementの通知を「新しく」作成する（作成順と公開順を逆転させる）
-      let!(:notification_for_old) { FactoryBot.create(:notification, user: user, announcement: old_announcement, created_at: Time.current) }
-      let!(:notification_for_new) { FactoryBot.create(:notification, user: user, announcement: new_announcement, created_at: 1.hour.ago) }
+      let!(:notification_for_old) do
+        FactoryBot.create(:notification, user: user, announcement: old_announcement, created_at: Time.current)
+      end
+      let!(:notification_for_new) do
+        FactoryBot.create(:notification, user: user, announcement: new_announcement, created_at: 1.hour.ago)
+      end
 
       it 'お知らせの公開日順（降順）に並ぶこと' do
         # created_at順だと notification_for_old が先に来るはずだが、
         # ordered_by_announcement なら notification_for_new が先に来るはず
-        target_ids = [ notification_for_old.id, notification_for_new.id ]
+        target_ids = [notification_for_old.id, notification_for_new.id]
         notifications = Notification.where(id: target_ids).ordered_by_announcement
         expect(notifications.first).to eq notification_for_new
         expect(notifications.last).to eq notification_for_old
@@ -61,8 +69,6 @@ RSpec.describe Notification, type: :model do
         notification.mark_as_read!
         expect(notification.reload.read_at).not_to be_nil
       end
-
-
 
       it '既に既読の場合は更新日時を変更しないこと' do
         read_time = 1.day.ago

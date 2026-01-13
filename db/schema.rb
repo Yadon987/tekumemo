@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_13_110800) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -67,7 +67,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
   create_table "announcements", force: :cascade do |t|
     t.string "title", null: false
     t.text "content", null: false
-    t.string "announcement_type", default: "info"
+    t.string "priority", default: "info"
     t.datetime "published_at"
     t.datetime "expires_at"
     t.boolean "is_published", default: false, null: false
@@ -83,12 +83,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
     t.datetime "read_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "notification_type", default: 0, null: false, comment: "通知種類: 0=お知らせ, 1=非アクティブリマインド, 2=リアクションまとめ"
+    t.integer "category", default: 0, null: false, comment: "通知種類: 0=お知らせ, 1=非アクティブリマインド, 2=リアクションまとめ"
     t.text "message", comment: "リマインダー通知のメッセージ"
     t.string "url", comment: "リマインダー通知のリンク先"
     t.index ["announcement_id", "user_id"], name: "index_notifications_on_announcement_user_unique", unique: true, where: "(announcement_id IS NOT NULL)"
     t.index ["announcement_id"], name: "index_notifications_on_announcement_id"
-    t.index ["notification_type"], name: "index_notifications_on_notification_type"
+    t.index ["category"], name: "index_notifications_on_category"
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
@@ -151,22 +151,22 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
     t.text "google_token"
     t.text "google_refresh_token"
     t.datetime "google_expires_at"
-    t.string "avatar_url"
-    t.string "name"
-    t.integer "target_distance", default: 3000, null: false
+    t.text "avatar_url"
+    t.string "name", limit: 50
+    t.integer "goal_meters", default: 3000, null: false
     t.boolean "is_admin", default: false, null: false
-    t.boolean "walk_reminder_enabled", default: false, null: false, comment: "散歩時間リマインド通知の有効/無効"
+    t.boolean "is_walk_reminder", default: false, null: false, comment: "散歩時間リマインド通知の有効/無効"
     t.time "walk_reminder_time", default: "2000-01-01 19:00:00", comment: "散歩リマインド通知の時刻"
-    t.boolean "inactive_days_reminder_enabled", default: true, null: false, comment: "非アクティブリマインド通知の有効/無効"
-    t.integer "inactive_days_threshold", default: 3, null: false, comment: "非アクティブと判定する日数"
-    t.boolean "reaction_summary_enabled", default: true, null: false, comment: "リアクションまとめ通知の有効/無効"
+    t.boolean "is_inactive_reminder", default: true, null: false, comment: "非アクティブリマインド通知の有効/無効"
+    t.integer "inactive_days", default: 3, null: false, comment: "非アクティブと判定する日数"
+    t.boolean "is_reaction_summary", default: true, null: false, comment: "リアクションまとめ通知の有効/無効"
     t.integer "role", default: 0, null: false
-    t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.integer "avatar_type", default: 0, null: false
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "last_sign_in_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["is_admin"], name: "index_users_on_is_admin"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -183,7 +183,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
     t.datetime "updated_at", null: false
     t.integer "steps"
     t.integer "calories_burned"
-    t.integer "time_of_day"
+    t.integer "daypart"
     t.index ["user_id", "walked_on"], name: "index_walks_on_user_id_and_walked_on"
     t.index ["user_id"], name: "index_walks_on_user_id"
     t.index ["walked_on"], name: "index_walks_on_walked_on"

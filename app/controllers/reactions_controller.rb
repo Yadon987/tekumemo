@@ -9,7 +9,10 @@ class ReactionsController < ApplicationController
     if current_user.guest?
       respond_to do |format|
         format.json { render json: { error: "ゲストユーザーはリアクションできません" }, status: :forbidden }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { flash: { alert: "ゲストユーザーはリアクションできません" } }) }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash",
+                                                             locals: { flash: { alert: "ゲストユーザーはリアクションできません" } })
+        end
         format.html { redirect_back(fallback_location: posts_path, alert: "ゲストユーザーはリアクションできません") }
       end
       return
@@ -59,7 +62,10 @@ class ReactionsController < ApplicationController
     # ゲストユーザーは削除不可
     if current_user.guest?
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { flash: { alert: "ゲストユーザーは操作できません" } }) }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash",
+                                                             locals: { flash: { alert: "ゲストユーザーは操作できません" } })
+        end
         format.html { redirect_back(fallback_location: posts_path, alert: "ゲストユーザーは操作できません") }
       end
       return

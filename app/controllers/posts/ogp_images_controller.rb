@@ -1,5 +1,5 @@
 class Posts::OgpImagesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :show ]
+  skip_before_action :authenticate_user!, only: [:show]
 
   def show
     @post = Post.find(params[:post_id])
@@ -61,7 +61,7 @@ class Posts::OgpImagesController < ApplicationController
 
       # 保存した画像のURLにリダイレクト
       redirect_to rails_blob_url(@post.ogp_image, disposition: "inline"), allow_other_host: true
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "Failed to generate OGP image for Post ID #{@post.id}: #{e.message}\n#{e.backtrace.join("\n")}"
 
       # デフォルトのOGP画像にフォールバック（空白画像を避ける）

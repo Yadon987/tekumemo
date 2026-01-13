@@ -11,7 +11,7 @@ class Admin::DashboardController < Admin::BaseController
     if current_user.guest?
       # ゲスト用ダミーデータ
       # アクティブユーザーリストもダミーにする
-      @active_users_today_list = ["ユーザーA", "ユーザーB", "ユーザーC"]
+      @active_users_today_list = %w[ユーザーA ユーザーB ユーザーC]
 
       # 統計情報の非表示やダミー化が必要ならここで行うが、
       # グローバル統計は見せても良い方針なのでそのまま
@@ -26,7 +26,7 @@ class Admin::DashboardController < Admin::BaseController
 
       # 散歩統計
       @total_walks = 5432
-      @total_distance = 12345.6
+      @total_distance = 12_345.6
       @distance_this_month = 789.0
 
       # === リスト系のダミー化（ぼかし表示の下に置くためそれっぽいデータ） ===
@@ -39,9 +39,9 @@ class Admin::DashboardController < Admin::BaseController
     else
       # 管理者用（リアルデータ）
       @active_users_today_list = User.where("current_sign_in_at >= ?", Time.current.beginning_of_day)
-                                      .order(current_sign_in_at: :desc)
-                                      .limit(3)
-                                      .pluck(:name)
+                                     .order(current_sign_in_at: :desc)
+                                     .limit(3)
+                                     .pluck(:name)
       @active_users_this_week = User.where("current_sign_in_at >= ?", Time.current.beginning_of_week).count
       @active_users_this_month = User.where("current_sign_in_at >= ?", Time.current.beginning_of_month).count
 
@@ -112,14 +112,16 @@ class Admin::DashboardController < Admin::BaseController
 
     # 1. スパム疑い
     @anomalies[:spam_users] = [
-      OpenStruct.new(id: 1, name: "SpamBot01", email: "bot1@example.com", post_count: 25, created_at: 1.day.ago, current_sign_in_at: Time.current, display_avatar_url: nil),
-      OpenStruct.new(id: 2, name: "AggressiveUser", email: "agg@example.com", post_count: 22, created_at: 2.days.ago, current_sign_in_at: Time.current, display_avatar_url: nil)
+      OpenStruct.new(id: 1, name: "SpamBot01", email: "bot1@example.com", post_count: 25, created_at: 1.day.ago,
+                     current_sign_in_at: Time.current, display_avatar_url: nil),
+      OpenStruct.new(id: 2, name: "AggressiveUser", email: "agg@example.com", post_count: 22, created_at: 2.days.ago,
+                     current_sign_in_at: Time.current, display_avatar_url: nil)
     ]
 
     # 2. データ整合性エラー (Walkのダミー)
     @anomalies[:invalid_walks] = [
       OpenStruct.new(
-        id: 101, distance: 55000, steps: 100000,
+        id: 101, distance: 55_000, steps: 100_000,
         user: OpenStruct.new(id: 3, name: "WalkerPRO", email: "walk@example.com", display_avatar_url: nil)
       )
     ]

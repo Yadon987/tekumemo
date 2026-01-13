@@ -24,9 +24,9 @@ Rails.application.routes.draw do
 
   # ログインスタンプカレンダー
   # 散歩記録をカレンダー形式で表示
-  resources :login_stamps, only: [ :index ]
-  resources :achievements, only: [ :index ]
-  resources :rankings, only: [ :index ]
+  resources :login_stamps, only: [:index]
+  resources :achievements, only: [:index]
+  resources :rankings, only: [:index]
   namespace :rankings do
     resources :users, only: [] do
       member do
@@ -45,28 +45,28 @@ Rails.application.routes.draw do
   get "google_fit/daily_data", to: "google_fit#daily_data"
 
   # SNS機能
-  resources :posts, only: [ :index, :show, :create, :destroy ] do
+  resources :posts, only: %i[index show create destroy] do
     collection do
       # 自分の投稿履歴を表示
       get "mine"
     end
 
-    resource :ogp_image, only: [ :show ], module: :posts, defaults: { format: :jpg }
-    resources :reactions, only: [ :create, :destroy ]
+    resource :ogp_image, only: [:show], module: :posts, defaults: { format: :jpg }
+    resources :reactions, only: %i[create destroy]
   end
 
   # 通知機能
-  resources :notifications, only: [ :index ] do
+  resources :notifications, only: [:index] do
     member do
-      patch :mark_as_read  # 個別既読
+      patch :mark_as_read # 個別既読
     end
     collection do
-      patch :mark_all_as_read  # 一括既読
+      patch :mark_all_as_read # 一括既読
     end
   end
 
   # Web Push通知購読
-  resources :web_push_subscriptions, only: [ :create ]
+  resources :web_push_subscriptions, only: [:create]
 
   # ユーザープロフィール編集
   resources :users, only: [] do
@@ -80,9 +80,9 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
     get "dashboard", to: "dashboard#index"
 
-    resources :users, only: [ :index, :destroy ]
-    resources :posts, only: [ :index, :show, :destroy ]
-    resources :walks, only: [ :index, :show, :destroy ]
+    resources :users, only: %i[index destroy]
+    resources :posts, only: %i[index show destroy]
+    resources :walks, only: %i[index show destroy]
     resources :announcements do
       member do
         patch :publish    # 公開
@@ -97,9 +97,11 @@ Rails.application.routes.draw do
   # Deviseのスコープ内で独自アクションを定義
   devise_scope :user do
     # メールアドレス変更確認画面
-    get "users/confirm_email_change", to: "users/omniauth_callbacks#confirm_email_change", as: :confirm_email_change_users
+    get "users/confirm_email_change", to: "users/omniauth_callbacks#confirm_email_change",
+                                      as: :confirm_email_change_users
     # メールアドレス更新＆連携実行
-    post "users/update_email_and_connect", to: "users/omniauth_callbacks#update_email_and_connect", as: :update_email_and_connect_users
+    post "users/update_email_and_connect", to: "users/omniauth_callbacks#update_email_and_connect",
+                                           as: :update_email_and_connect_users
     # アップロード画像の削除
     delete "users/uploaded_avatar", to: "users/registrations#delete_uploaded_avatar", as: :delete_user_uploaded_avatar
 

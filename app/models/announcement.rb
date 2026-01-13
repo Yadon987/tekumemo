@@ -5,10 +5,10 @@ class Announcement < ApplicationRecord
   # バリデーション
   validates :title, presence: true, length: { maximum: 100 }
   validates :content, presence: true
-  validates :announcement_type, inclusion: { in: %w[info warning urgent] }
+  validates :priority, inclusion: { in: %w[info warning urgent] }
 
   # コールバック: 公開時に全ユーザーに通知を作成
-  after_commit :create_notifications_for_users, on: [ :create, :update ], if: :should_create_notifications?
+  after_commit :create_notifications_for_users, on: %i[create update], if: :should_create_notifications?
 
   # お知らせの種類
   ANNOUNCEMENT_TYPES = {
@@ -19,7 +19,7 @@ class Announcement < ApplicationRecord
 
   # スコープ: 公開中のお知らせ
   scope :published, -> { where(is_published: true).where("published_at <= ?", Time.current) }
-  scope :active, -> {
+  scope :active, lambda {
     published.where("expires_at IS NULL OR expires_at > ?", Time.current)
   }
   scope :recent, -> { order(published_at: :desc, id: :desc) }
@@ -34,7 +34,7 @@ class Announcement < ApplicationRecord
 
   # お知らせ種類の日本語名
   def type_name
-    ANNOUNCEMENT_TYPES[announcement_type] || "お知らせ"
+    ANNOUNCEMENT_TYPES[priority] || "お知らせ"
   end
 
   private

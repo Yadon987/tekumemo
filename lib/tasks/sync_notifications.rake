@@ -32,7 +32,7 @@ namespace :notification do
           Notification.create!(
             user: user,
             announcement: announcement,
-            notification_type: :announcement,
+            kind: :announcement,
             read_at: nil
           )
           created_count += 1

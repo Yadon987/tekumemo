@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable,
-         :omniauthable, omniauth_providers: [ :google_oauth2 ]
+         :omniauthable, omniauth_providers: [:google_oauth2]
   # ユーザー権限（0: 一般, 1: 管理者, 2: ゲスト管理者）
   # guest: 管理画面へアクセス可だが、閲覧のみ等の制限あり
   enum :role, { general: 0, admin: 1, guest: 2 }
@@ -46,11 +46,12 @@ class User < ApplicationRecord
   # 1. 必須であること（デフォルト値があるため通常は問題ないが、念のため）
   # 2. 数値であること
   # 3. 0より大きいこと
-  validates :target_distance, presence: true, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 100_000 }
+  validates :goal_meters, presence: true,
+                          numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 100_000 }
 
   # 通知設定のバリデーション
-  validates :inactive_days_threshold, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 30 }
-  validates :walk_reminder_time, presence: true, if: :walk_reminder_enabled?
+  validates :inactive_days, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 30 }
+  validates :walk_reminder_time, presence: true, if: :is_walk_reminder?
 
   # アバター画像のバリデーション
   validate :validate_uploaded_avatar
@@ -61,14 +62,12 @@ class User < ApplicationRecord
     return unless uploaded_avatar.attached?
 
     # ファイルサイズ制限 (5MB)
-    if uploaded_avatar.blob.byte_size > 5.megabytes
-      errors.add(:uploaded_avatar, "は5MB以下にしてください")
-    end
+    errors.add(:uploaded_avatar, "は5MB以下にしてください") if uploaded_avatar.blob.byte_size > 5.megabytes
 
     # ファイル形式制限
-    unless uploaded_avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
-      errors.add(:uploaded_avatar, "は画像ファイル（JPG, PNG, GIF, WEBP）のみアップロード可能です")
-    end
+    return if uploaded_avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
+
+    errors.add(:uploaded_avatar, "は画像ファイル（JPG, PNG, GIF, WEBP）のみアップロード可能です")
   end
 
   # 新規ユーザー登録時に、公開済みのお知らせに対する通知を作成
@@ -77,7 +76,7 @@ class User < ApplicationRecord
     Announcement.active.find_each do |announcement|
       notifications.create!(
         announcement: announcement,
-        notification_type: :announcement,
+        kind: :announcement,
         read_at: nil
       )
     rescue ActiveRecord::RecordNotUnique
@@ -122,9 +121,7 @@ class User < ApplicationRecord
       }
 
       # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
-      if auth.credentials.refresh_token.present?
-        update_hash[:google_refresh_token] = auth.credentials.refresh_token
-      end
+      update_hash[:google_refresh_token] = auth.credentials.refresh_token if auth.credentials.refresh_token.present?
 
       user.update(update_hash)
     end
@@ -148,9 +145,7 @@ class User < ApplicationRecord
     Rails.logger.info "Guest Mode: Selected admin user candidate ID: #{admin_user&.id}"
 
     # 万が一管理者がいない場合は、最低限のゲストを作成して返す
-    unless admin_user
-      return create_fallback_guest
-    end
+    return create_fallback_guest unless admin_user
 
     # トランザクションで一括処理
     transaction do
@@ -161,8 +156,8 @@ class User < ApplicationRecord
         password: SecureRandom.urlsafe_base64,
         name: "ゲストユーザー",
         role: :guest,
-        target_distance: admin_user.target_distance,
-        avatar_type: :default,
+        goal_meters: admin_user.goal_meters,
+        avatar_type: :default
         # 通知設定などはデフォルトでOK
       )
 
@@ -208,7 +203,7 @@ class User < ApplicationRecord
 
         post.attributes.except("id", "user_id", "walk_id").merge(
           "user_id" => guest.id,
-          "walk_id" => new_walk_id  # ゲストのWalk IDにマッピング
+          "walk_id" => new_walk_id # ゲストのWalk IDにマッピング
         )
       end
 
@@ -234,8 +229,8 @@ class User < ApplicationRecord
       guest
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error "Guest creation validation failed: #{e.message}"
-      raise  # トランザクションロールバック
-    rescue => e
+      raise # トランザクションロールバック
+    rescue StandardError => e
       Rails.logger.error "Guest creation failed: #{e.class} - #{e.message}"
       raise
     end
@@ -249,7 +244,7 @@ class User < ApplicationRecord
       password: SecureRandom.urlsafe_base64,
       name: "ゲストユーザー",
       role: :guest,
-      target_distance: 5000,
+      goal_meters: 5000,
       avatar_type: :default
     )
   end
@@ -369,14 +364,13 @@ class User < ApplicationRecord
     check_date = start_date
 
     walk_dates.each do |date|
-      if date == check_date
-        # 日付が一致すればカウントアップし、チェック対象を前日にずらす
-        consecutive_count += 1
-        check_date -= 1.day
-      else
-        # 日付が連続していない（飛んでいる）場合、そこで終了
-        break
-      end
+      break unless date == check_date
+
+      # 日付が一致すればカウントアップし、チェック対象を前日にずらす
+      consecutive_count += 1
+      check_date -= 1.day
+
+      # 日付が連続していない（飛んでいる）場合、そこで終了
     end
 
     consecutive_count
@@ -398,14 +392,14 @@ class User < ApplicationRecord
         current_streak += 1
       else
         # 連続が途切れた場合、最大値を更新してリセット
-        max_streak = [ max_streak, current_streak ].max
+        max_streak = [max_streak, current_streak].max
         current_streak = 1
       end
       prev_date = date
     end
 
     # 最後のストリークも含めて最大値を返す
-    [ max_streak, current_streak ].max
+    [max_streak, current_streak].max
   end
 
   # ランキング用クラスメソッド
@@ -441,7 +435,7 @@ class User < ApplicationRecord
   # 閲覧ユーザーに応じたランキングスコープ
   # ゲスト以外が見る場合、ゲストユーザーはランキングから除外して「汚染」を防ぐ
   # ゲスト自身が見る場合、自分（と他のゲスト）も含めて表示し、自分の順位を確認できるようにする
-  scope :ranking_for, ->(user, period: "weekly") {
+  scope :ranking_for, lambda { |user, period: "weekly"|
     if user&.guest?
       # ゲストが見る場合: 全ユーザーを対象（現在のランキングロジックそのまま）
       ranking(period: period)

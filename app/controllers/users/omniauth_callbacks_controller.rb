@@ -1,6 +1,6 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # CSRF保護をスキップ（OmniAuthのコールバックのため）
-  skip_before_action :verify_authenticity_token, only: [ :google_oauth2 ]
+  skip_before_action :verify_authenticity_token, only: [:google_oauth2]
 
   # Google OAuth2のコールバック処理
   # Googleから認証が完了した後に呼ばれる
@@ -67,9 +67,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     }
 
     # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
-    if auth_data["refresh_token"].present?
-      update_hash[:google_refresh_token] = auth_data["refresh_token"]
-    end
+    update_hash[:google_refresh_token] = auth_data["refresh_token"] if auth_data["refresh_token"].present?
 
     # メールアドレスを更新して連携
     if current_user.update(update_hash)
@@ -93,7 +91,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     Rails.logger.error "Origin: #{request.headers['Origin']}"
     Rails.logger.error "======================================"
 
-    redirect_to root_path, alert: t("devise.omniauth_callbacks.failure", kind: "Google", reason: "アクセスが拒否されたか、エラーが発生しました")
+    redirect_to root_path,
+                alert: t("devise.omniauth_callbacks.failure", kind: "Google", reason: "アクセスが拒否されたか、エラーが発生しました")
   end
 
   private
@@ -111,9 +110,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     }
 
     # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
-    if auth.credentials.refresh_token.present?
-      update_hash[:google_refresh_token] = auth.credentials.refresh_token
-    end
+    update_hash[:google_refresh_token] = auth.credentials.refresh_token if auth.credentials.refresh_token.present?
 
     if current_user.update(update_hash)
       # アバター画像をキャッシュ（OGP生成高速化のため）
@@ -144,7 +141,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         content_type: "image/jpeg"
       )
       Rails.logger.info "Avatar cached for user #{user.id}"
-    rescue => e
+    rescue StandardError => e
       Rails.logger.warn "Failed to cache avatar for user #{user.id}: #{e.message}"
       # キャッシュ失敗は致命的ではないので、エラーを無視
     end

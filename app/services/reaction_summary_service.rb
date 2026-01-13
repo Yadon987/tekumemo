@@ -17,7 +17,7 @@ class ReactionSummaryService
 
     reactions_by_recipient.each do |recipient, user_reactions|
       # 通知設定が無効な場合はスキップ
-      next unless recipient.reaction_summary_enabled
+      next unless recipient.is_reaction_summary
 
       # リアクション数を集計
       total_count = user_reactions.size
@@ -31,7 +31,7 @@ class ReactionSummaryService
       # 通知メッセージを作成
       summary_text = top_reactions.map do |kind, count|
         reaction = Reaction.new(kind: kind)
-        emoji = reaction.emoji || "?"  # emojiが取得できない場合は"?"
+        emoji = reaction.emoji || "?" # emojiが取得できない場合は"?"
         "#{emoji}#{count}件"
       end.join(", ")
 
@@ -47,7 +47,7 @@ class ReactionSummaryService
 
       # 通知ボックスにも保存（リマインダーは既読状態で作成）
       recipient.notifications.create!(
-        notification_type: :reaction_summary,
+        category: :reaction_summary,
         message: message_body,
         url: "/posts",
         read_at: Time.current

@@ -61,9 +61,9 @@
                       <span class="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
                     <% end %>
 
-                    <% if notification.announcement.announcement_type == 'urgent' %>
+                    <% if notification.announcement.priority == 'urgent' %>
                       <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">緊急</span>
-                    <% elsif notification.announcement.announcement_type == 'warning' %>
+                    <% elsif notification.announcement.priority == 'warning' %>
                       <span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background-color: #eab308; color: #000;">重要</span>
                     <% else %>
                       <span class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>
@@ -112,11 +112,11 @@
                   <div class="flex items-start gap-3">
                     <%# アイコン %>
                     <div class="flex-shrink-0">
-                      <% if notification.notification_type_inactive_reminder? %>
+                      <% if notification.category_inactive_reminder? %>
                         <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
                           <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">directions_walk</span>
                         </div>
-                      <% elsif notification.notification_type_reaction_summary? %>
+                      <% elsif notification.category_reaction_summary? %>
                         <div class="w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
                           <span class="material-symbols-outlined text-pink-600 dark:text-pink-400">favorite</span>
                         </div>
@@ -152,11 +152,11 @@
                 <div class="flex items-start gap-3">
                   <%# アイコン %>
                   <div class="flex-shrink-0">
-                    <% if notification.notification_type_inactive_reminder? %>
+                    <% if notification.category_inactive_reminder? %>
                       <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
                         <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">directions_walk</span>
                       </div>
-                    <% elsif notification.notification_type_reaction_summary? %>
+                    <% elsif notification.category_reaction_summary? %>
                       <div class="w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
                         <span class="material-symbols-outlined text-pink-600 dark:text-pink-400">favorite</span>
                       </div>

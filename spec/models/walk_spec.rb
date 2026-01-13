@@ -21,19 +21,19 @@ RSpec.describe Walk, type: :model do
       it '日付(walked_on)がない場合は無効であること' do
         walk = FactoryBot.build(:walk, user: user, walked_on: nil)
         expect(walk).to be_invalid
-        expect(walk.errors[:walked_on]).to include("を入力してください")
+        expect(walk.errors[:walked_on]).to include('を入力してください')
       end
 
       it '時間(duration)がない場合は無効であること' do
         walk = FactoryBot.build(:walk, user: user, duration: nil)
         expect(walk).to be_invalid
-        expect(walk.errors[:duration]).to include("を入力してください")
+        expect(walk.errors[:duration]).to include('を入力してください')
       end
 
       it '距離(distance)がない場合は無効であること' do
         walk = FactoryBot.build(:walk, user: user, distance: nil)
         expect(walk).to be_invalid
-        expect(walk.errors[:distance]).to include("を入力してください")
+        expect(walk.errors[:distance]).to include('を入力してください')
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Walk, type: :model do
         # 同じ日付で2つ目の記録を作成しようとする
         duplicate_walk = FactoryBot.build(:walk, user: user, walked_on: Date.current)
         expect(duplicate_walk).to be_invalid
-        expect(duplicate_walk.errors[:walked_on]).to include("の記録は既に存在します。同じ日付の記録を編集、もしくは削除してください。")
+        expect(duplicate_walk.errors[:walked_on]).to include('の記録は既に存在します。同じ日付の記録を編集、もしくは削除してください。')
       end
 
       it '異なるユーザーであれば同じ日付でも記録できること' do
@@ -95,7 +95,7 @@ RSpec.describe Walk, type: :model do
         walk2 = FactoryBot.create(:walk, user: user, walked_on: 1.day.ago)
         walk3 = FactoryBot.create(:walk, user: user, walked_on: 2.days.ago)
 
-        expect(Walk.where(id: [ walk1.id, walk2.id, walk3.id ]).recent).to eq([ walk2, walk3, walk1 ])
+        expect(Walk.where(id: [walk1.id, walk2.id, walk3.id]).recent).to eq([walk2, walk3, walk1])
       end
     end
   end

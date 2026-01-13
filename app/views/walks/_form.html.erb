@@ -89,10 +89,10 @@
          data-icon-select-selected-class="bg-[radial-gradient(ellipse_120%_120%_at_35%_35%,#ffffff_30%,#ffedd5_90%)] dark:bg-none border-white/60 text-orange-600 dark:bg-purple-900/60 dark:border-purple-400 dark:text-purple-300 shadow-[5px_5px_15px_rgba(249,115,22,0.2),-5px_-5px_15px_#ffffff,inset_-2px_-2px_5px_rgba(249,115,22,0.1),inset_2px_2px_5px_rgba(255,255,255,0.7)] transform scale-[1.02] dark:shadow-[0_0_15px_rgba(168,85,247,0.4)] relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-[50%] before:bg-gradient-to-b before:from-white/40 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none"
          data-icon-select-unselected-class="bg-white/50 dark:bg-slate-900/50 border-white/40 dark:border-slate-700 text-gray-400 dark:text-slate-500 hover:bg-white/80 dark:hover:bg-slate-800 hover:border-white/60 dark:hover:border-slate-600 shadow-sm">
 
-      <%= form.label :time_of_day, "時間帯", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1" %>
+      <%= form.label :daypart, "時間帯", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-2 ml-1" %>
 
       <div class="grid grid-cols-4 gap-2 sm:gap-4">
-        <% Walk.time_of_days.keys.each do |key| %>
+        <% Walk.dayparts.keys.each do |key| %>
           <%
             icon_name = case key
                         when "early_morning" then "wb_twilight"
@@ -101,11 +101,11 @@
                         when "night" then "dark_mode"
                         end
             # 翻訳キーは後で追加するが、とりあえずデフォルト値を設定
-            label_text = t("enums.walk.time_of_day.#{key}", default: key.humanize)
+            label_text = t("enums.walk.daypart.#{key}", default: key.humanize)
           %>
 
           <!-- 隠しラジオボタン -->
-          <%= form.radio_button :time_of_day, key, class: "hidden", data: { icon_select_target: "input" } %>
+          <%= form.radio_button :daypart, key, class: "hidden", data: { icon_select_target: "input" } %>
 
           <!-- アイコンボタン -->
           <button type="button"

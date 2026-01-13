@@ -16,17 +16,17 @@ RSpec.describe Announcement, type: :model do
 
     context 'お知らせが公開された場合' do
       it '全ユーザーに通知が作成されること' do
-        expect {
+        expect do
           FactoryBot.create(:announcement, is_published: true, published_at: Time.current)
-        }.to change(Notification, :count).by(2)
+        end.to change(Notification, :count).by(2)
       end
     end
 
     context 'お知らせが非公開で作成された場合' do
       it '通知は作成されないこと' do
-        expect {
+        expect do
           FactoryBot.create(:announcement, is_published: false)
-        }.not_to change(Notification, :count)
+        end.not_to change(Notification, :count)
       end
     end
 
@@ -34,9 +34,9 @@ RSpec.describe Announcement, type: :model do
       let(:announcement) { FactoryBot.create(:announcement, is_published: false) }
 
       it '全ユーザーに通知が作成されること' do
-        expect {
+        expect do
           announcement.update!(is_published: true, published_at: Time.current)
-        }.to change(Notification, :count).by(2)
+        end.to change(Notification, :count).by(2)
       end
     end
 
@@ -47,9 +47,9 @@ RSpec.describe Announcement, type: :model do
         # 最初の作成で通知が作られているはず
         expect(Notification.count).to eq(2)
 
-        expect {
+        expect do
           announcement.update!(title: '更新されたタイトル')
-        }.not_to change(Notification, :count)
+        end.not_to change(Notification, :count)
       end
     end
   end

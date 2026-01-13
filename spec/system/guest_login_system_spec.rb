@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Guest Login', type: :system do
   # Cloudinaryの削除コールをモック
   before do
-    allow(Cloudinary::Uploader).to receive(:destroy).and_return({ "result" => "ok" })
+    allow(Cloudinary::Uploader).to receive(:destroy).and_return({ 'result' => 'ok' })
 
     # DBクリーンアップ
     Reaction.delete_all
@@ -16,11 +16,11 @@ RSpec.describe 'Guest Login', type: :system do
   end
 
   context 'when admin user exists (data source)', js: true do
-    let!(:admin_user) { FactoryBot.create(:user, :admin, target_distance: 8000) }
+    let!(:admin_user) { FactoryBot.create(:user, :admin, goal_meters: 8000) }
 
     before do
-       # 管理者データ作成（コピー元）
-       FactoryBot.create(:walk, user: admin_user, walked_on: 1.day.ago, distance: 5)
+      # 管理者データ作成（コピー元）
+      FactoryBot.create(:walk, user: admin_user, walked_on: 1.day.ago, distance: 5)
     end
 
     it 'logs in as guest and deletes account on logout' do
@@ -28,10 +28,10 @@ RSpec.describe 'Guest Login', type: :system do
       visit new_user_session_path
 
       # 2. ゲストログイン実行
-      expect {
+      # ゲストユーザーが1人増える
+      expect do
         click_button 'ゲストで試してみる'
-      }.to change(User, :count).by(1) # ゲストユーザーが1人増える
-
+      end.to change(User, :count).by(1)
       # 3. ログイン成功を確認
       # ホーム画面（root_path）に遷移していることを確認
       expect(page).to have_current_path(root_path)
@@ -40,16 +40,16 @@ RSpec.describe 'Guest Login', type: :system do
 
       # 4. ゲストユーザーの特定
       guest = User.last
-      expect(guest.role).to eq "guest"
+      expect(guest.role).to eq 'guest'
       expect(guest.walks.count).to eq 1 # データがコピーされていること
 
       # 5. ログアウト実行
-      expect {
+      # ゲストユーザーが削除される
+      expect do
         # ドロップダウンを開く
         find('button[data-action="click->dropdown#toggle"]').click
         click_link 'ログアウト'
-      }.to change(User, :count).by(-1) # ゲストユーザーが削除される
-
+      end.to change(User, :count).by(-1)
       expect(page).to have_content 'ログアウトしました。'
     end
   end
@@ -60,7 +60,7 @@ RSpec.describe 'Guest Login', type: :system do
       click_button 'ゲストで試してみる'
 
       expect(page).to have_content 'ゲストモードとしてログインしました。'
-      expect(User.last.role).to eq "guest"
+      expect(User.last.role).to eq 'guest'
       expect(User.last.walks.count).to eq 0
 
       # Logout

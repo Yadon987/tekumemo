@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   # 未ログインユーザーもトップページ（LP）は見れるようにする
-  skip_before_action :authenticate_user!, only: [ :index ]
+  skip_before_action :authenticate_user!, only: [:index]
 
   def index
     # 5分に1回、古いゲストユーザーをクリーンアップ（UptimeRobotの監視でも発火）
@@ -115,9 +115,9 @@ class HomeController < ApplicationController
     last_cleanup = Rails.cache.read(cache_key)
 
     # 最後のクリーンアップから5分以上経過している場合のみ実行
-    if last_cleanup.nil? || last_cleanup < 5.minutes.ago
-      User.cleanup_old_guests
-      Rails.cache.write(cache_key, Time.current, expires_in: 10.minutes)
-    end
+    return unless last_cleanup.nil? || last_cleanup < 5.minutes.ago
+
+    User.cleanup_old_guests
+    Rails.cache.write(cache_key, Time.current, expires_in: 10.minutes)
   end
 end

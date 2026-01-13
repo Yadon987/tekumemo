@@ -23,7 +23,6 @@ Rails.application.configure do
   # ストレージ設定
   config.active_storage.service = :cloudinary
 
-
   # SSL設定
   config.force_ssl = true
   config.assume_ssl = true # Renderなどのロードバランサ配下でHTTPSとして認識させる
@@ -32,8 +31,8 @@ Rails.application.configure do
 
   # ログ設定
   config.logger = ActiveSupport::Logger.new(STDOUT)
-    .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
-    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+                                       .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
+                                       .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # config.log_tags = [ :request_id ]
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
@@ -60,7 +59,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # インスペクション設定
-  config.active_record.attributes_for_inspect = [ :id ]
+  config.active_record.attributes_for_inspect = [:id]
 
   # ホスト認証設定
   # config.hosts = [

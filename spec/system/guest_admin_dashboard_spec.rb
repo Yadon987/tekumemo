@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Guest Admin Dashboard', type: :system do
   before do
-    allow(Cloudinary::Uploader).to receive(:destroy).and_return({ "result" => "ok" })
+    allow(Cloudinary::Uploader).to receive(:destroy).and_return({ 'result' => 'ok' })
     Reaction.delete_all
     Notification.delete_all
     UserAchievement.delete_all

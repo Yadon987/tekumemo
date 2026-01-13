@@ -7,9 +7,9 @@ class CreateSolidCacheEntries < ActiveRecord::Migration[7.2]
       t.integer  :key_hash,  null: false, limit: 8
       t.integer  :byte_size, null: false, limit: 4
 
-      t.index [ :key_hash, :byte_size ], name: "index_solid_cache_entries_on_key_hash_and_byte_size"
-      t.index [ :key_hash ], name: "index_solid_cache_entries_on_key_hash", unique: true
-      t.index [ :byte_size ], name: "index_solid_cache_entries_on_byte_size"
+      t.index %i[key_hash byte_size], name: 'index_solid_cache_entries_on_key_hash_and_byte_size'
+      t.index [:key_hash], name: 'index_solid_cache_entries_on_key_hash', unique: true
+      t.index [:byte_size], name: 'index_solid_cache_entries_on_byte_size'
     end
   end
 end

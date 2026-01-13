@@ -29,6 +29,7 @@ class StatsService
   # 平均距離/日
   def average_distance_per_day
     return 0 if total_days.zero?
+
     (total_distance / total_days).round(2)
   end
 
@@ -41,7 +42,7 @@ class StatsService
   # 目標距離を達成した日数の割合（習慣化達成率）
   def monthly_goal_achievement_rate
     # 目標距離 (km)
-    target_km = user.target_distance / 1000.0
+    target_km = user.goal_meters / 1000.0
 
     # 今月の記録のうち、目標を達成した日数をカウント
     achieved_days = user.walks
@@ -53,6 +54,7 @@ class StatsService
     days_elapsed = Date.current.day
 
     return 0 if days_elapsed.zero?
+
     ((achieved_days.to_f / days_elapsed) * 100).round(1)
   end
 
@@ -86,7 +88,7 @@ class StatsService
     distances = dates.map { |date| walks_by_date[date]&.to_f&.round(2) || 0 }
 
     {
-      dates: dates.map { |d| d.strftime("%m/%d") },  # "12/01" 形式
+      dates: dates.map { |d| d.strftime("%m/%d") }, # "12/01" 形式
       distances: distances
     }
   end
@@ -101,9 +103,9 @@ class StatsService
     # 週ごとにグループ化して合計
     # PostgreSQLのDATE_TRUNCはTime型を返すため、Date型に変換してハッシュ化
     raw_data = user.walks
-               .where(walked_on: start_date..end_date)
-               .group("DATE_TRUNC('week', walked_on)")
-               .sum(:distance)
+                   .where(walked_on: start_date..end_date)
+                   .group("DATE_TRUNC('week', walked_on)")
+                   .sum(:distance)
 
     data = raw_data.transform_keys { |k| k.to_date }
 
@@ -137,9 +139,9 @@ class StatsService
 
     # 月ごとにグループ化して合計
     raw_data = user.walks
-               .where(walked_on: start_date..end_date)
-               .group("DATE_TRUNC('month', walked_on)")
-               .sum(:distance)
+                   .where(walked_on: start_date..end_date)
+                   .group("DATE_TRUNC('month', walked_on)")
+                   .sum(:distance)
 
     data = raw_data.transform_keys { |k| k.to_date }
 
@@ -172,8 +174,8 @@ class StatsService
     # PostgreSQLのEXTRACT(DOW FROM date)を使用 (0=日曜, 6=土曜)
     # 戻り値はFloatなのでIntegerに変換
     raw_data = user.walks
-               .group("EXTRACT(DOW FROM walked_on)")
-               .average(:distance)
+                   .group("EXTRACT(DOW FROM walked_on)")
+                   .average(:distance)
 
     data = raw_data.transform_keys { |k| k.to_i }
 
@@ -193,10 +195,10 @@ class StatsService
 
   # 時間帯別散歩回数 (円グラフ用)
   # 返り値: { labels: [...], data: [...] }
-  def walks_count_by_time_of_day
+  def walks_count_by_daypart
     # 時間帯ごとにグループ化してカウント
     # キーはDBに保存されている値(Integer)になる
-    raw_data = user.walks.group(:time_of_day).count
+    raw_data = user.walks.group(:daypart).count
 
     # 表示順序とラベルの定義 (Walkモデルのenum定義に準拠)
     # 0:early_morning, 1:day, 2:evening, 3:night
@@ -228,7 +230,7 @@ class StatsService
   # 平均ペース (分/km)
   def average_pace
     # duration(分) / distance(km) = 分/km
-    total_time = user.walks.sum(:duration).to_f  # 分
+    total_time = user.walks.sum(:duration).to_f # 分
     total_dist_km = user.walks.sum(:distance).to_f # km
 
     return 0 if total_dist_km.zero?
@@ -378,6 +380,7 @@ class StatsService
     current_pos = total_dist - current_level_start
 
     return 0 if range.zero?
+
     ((current_pos / range) * 100).clamp(0, 100).round(1)
   end
 
@@ -424,7 +427,7 @@ class StatsService
         name: "雨天強行軍",
         description: "雨の日に散歩に出かけた",
         icon: "rainy",
-        condition: -> {
+        condition: lambda {
           posts.where(weather: :rainy).any? do |post|
             walks.where(walked_on: post.created_at.to_date).exists?
           end
@@ -435,7 +438,7 @@ class StatsService
         name: "嵐を呼ぶ者 (Storm Bringer)",
         description: "嵐の中でも歩みを止めなかった",
         icon: "thunderstorm",
-        condition: -> {
+        condition: lambda {
           posts.where(weather: :stormy).any? do |post|
             walks.where(walked_on: post.created_at.to_date).exists?
           end
@@ -448,8 +451,8 @@ class StatsService
         name: "暁の冒険者",
         description: "早朝(4:00〜8:59)に歩いた",
         icon: "wb_twilight",
-        condition: -> {
-          walks.where(time_of_day: :early_morning).exists?
+        condition: lambda {
+          walks.where(daypart: :early_morning).exists?
         }
       },
       {
@@ -457,8 +460,8 @@ class StatsService
         name: "太陽の申し子",
         description: "日中(9:00〜15:59)に歩いた",
         icon: "sunny",
-        condition: -> {
-          walks.where(time_of_day: :day).exists?
+        condition: lambda {
+          walks.where(daypart: :day).exists?
         }
       },
       {
@@ -466,8 +469,8 @@ class StatsService
         name: "黄昏の旅人",
         description: "夕方(16:00〜18:59)に歩いた",
         icon: "wb_horizon",
-        condition: -> {
-          walks.where(time_of_day: :evening).exists?
+        condition: lambda {
+          walks.where(daypart: :evening).exists?
         }
       },
       {
@@ -475,8 +478,8 @@ class StatsService
         name: "月下の徘徊者 (Moon Walker)",
         description: "夜間(19:00〜3:59)に歩いた",
         icon: "dark_mode",
-        condition: -> {
-          walks.where(time_of_day: :night).exists?
+        condition: lambda {
+          walks.where(daypart: :night).exists?
         }
       },
 
@@ -500,7 +503,7 @@ class StatsService
         name: "週末の英雄 (Weekend Hero)",
         description: "土日で合計20km以上歩いた",
         icon: "event_available",
-        condition: -> {
+        condition: lambda {
           # 土曜日(6)または日曜日(0)の記録を抽出し、合計距離を計算
           # PostgreSQLのDOW (Day Of Week): 日曜=0, 月曜=1, ..., 土曜=6
           walks.where("EXTRACT(DOW FROM walked_on) IN (0, 6)").sum(:distance) >= 20
@@ -520,7 +523,7 @@ class StatsService
         name: "街の人気者",
         description: "投稿へのリアクションを合計100回もらった",
         icon: "favorite",
-        condition: -> {
+        condition: lambda {
           # ReactionモデルがPostに紐付いていると仮定
           Reaction.where(post_id: posts.select(:id)).count >= 100
         }

@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   describe '.create_portfolio_guest' do
     # Cloudinaryの削除コールをモック（テスト環境での外部通信防止）
     before do
-      allow(Cloudinary::Uploader).to receive(:destroy).and_return({ "result" => "ok" })
+      allow(Cloudinary::Uploader).to receive(:destroy).and_return({ 'result' => 'ok' })
 
       # テストデータの強制お掃除（DB汚染対策）
       Reaction.delete_all
@@ -17,7 +17,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'when admin user exists' do
-      let!(:admin_user) { FactoryBot.create(:user, :admin, target_distance: 8000) }
+      let!(:admin_user) { FactoryBot.create(:user, :admin, goal_meters: 8000) }
 
       before do
         # 管理者用のデータ作成
@@ -36,14 +36,14 @@ RSpec.describe User, type: :model do
       end
 
       it 'creates a guest user with copied data' do
-        expect {
+        expect do
           User.create_portfolio_guest
-        }.to change(User, :count).by(1)
+        end.to change(User, :count).by(1)
 
         guest = User.last
         expect(guest.role).to eq 'guest'
         expect(guest.name).to eq 'ゲストユーザー'
-        expect(guest.target_distance).to eq admin_user.target_distance # 管理者の設定を継承
+        expect(guest.goal_meters).to eq admin_user.goal_meters # 管理者の設定を継承
 
         # 散歩記録のコピー確認
         expect(guest.walks.count).to eq 2

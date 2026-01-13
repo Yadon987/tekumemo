@@ -1,8 +1,6 @@
 class NotificationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_notification, only: [ :mark_as_read ]
-
-
+  before_action :set_notification, only: [:mark_as_read]
 
   # 通知一覧
   def index
@@ -14,7 +12,7 @@ class NotificationsController < ApplicationController
     when "reminders"
                        # リマインダーは作成日時の降順
                        current_user.notifications.reminders.recent
-    else  # 'announcements'
+    else # 'announcements'
                        # お知らせは公開日時の降順（ordered_by_announcementがorder句を持っているのでrecentは不要）
                        current_user.notifications.announcements.includes(:announcement).ordered_by_announcement
     end

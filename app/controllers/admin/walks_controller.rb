@@ -9,22 +9,14 @@ class Admin::WalksController < Admin::BaseController
     end
 
     # フィルタ（距離範囲）
-    if params[:min_distance].present?
-      @walks = @walks.where("distance >= ?", params[:min_distance].to_i)
-    end
+    @walks = @walks.where("distance >= ?", params[:min_distance].to_i) if params[:min_distance].present?
 
-    if params[:max_distance].present?
-      @walks = @walks.where("distance <= ?", params[:max_distance].to_i)
-    end
+    @walks = @walks.where("distance <= ?", params[:max_distance].to_i) if params[:max_distance].present?
 
     # フィルタ（日付範囲）
-    if params[:start_date].present?
-      @walks = @walks.where("walked_on >= ?", params[:start_date])
-    end
+    @walks = @walks.where("walked_on >= ?", params[:start_date]) if params[:start_date].present?
 
-    if params[:end_date].present?
-      @walks = @walks.where("walked_on <= ?", params[:end_date])
-    end
+    @walks = @walks.where("walked_on <= ?", params[:end_date]) if params[:end_date].present?
 
     @walks = @walks.order(walked_on: :desc, created_at: :desc).page(params[:page]).per(20)
   end

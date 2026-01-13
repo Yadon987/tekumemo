@@ -3,8 +3,10 @@ require 'rails_helper'
 RSpec.describe 'Achievements', type: :system do
   let(:user) { FactoryBot.create(:user) }
   let!(:achievement_earned) { FactoryBot.create(:achievement, name: '獲得済みバッジ', icon_name: 'star') }
-  let!(:achievement_locked) { FactoryBot.create(:achievement, name: '未獲得バッジ', icon_name: 'lock_open') } # 元のアイコンはlock_openにしておく
-
+  # 元のアイコンはlock_openにしておく
+  let!(:achievement_locked) do
+    FactoryBot.create(:achievement, name: '未獲得バッジ', icon_name: 'lock_open')
+  end
   before do
     UserAchievement.create(user: user, achievement: achievement_earned)
   end

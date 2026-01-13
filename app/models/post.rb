@@ -1,12 +1,11 @@
 class Post < ApplicationRecord
   # アソシエーション（他のモデルとの関連付け）
-  belongs_to :user  # 投稿は必ず1人のユーザー
-  belongs_to :walk, optional: true  # 散歩記録の紐付けは任意
+  belongs_to :user # 投稿は必ず1人のユーザー
+  belongs_to :walk, optional: true # 散歩記録の紐付けは任意
   has_many :reactions, dependent: :destroy
 
   # Active Storage: OGP画像の添付
   has_one_attached :ogp_image
-
 
   # バリデーション
   validates :body, length: { maximum: 200 }, allow_blank: true
@@ -33,31 +32,35 @@ class Post < ApplicationRecord
   }, prefix: true
 
   # スコープ（よく使うクエリに名前をつける）
-  scope :recent, -> { order("posts.created_at DESC, posts.id DESC") }  # 新しい順に並べる（テーブル名明示）
-  scope :with_walk, -> { where.not(walk_id: nil) }  # 散歩記録が紐付いている投稿のみ取得
-  scope :with_associations, -> { preload(:user, :walk, :reactions) }  # N+1対策（preloadで別クエリ化）
+  scope :recent, -> { order("posts.created_at DESC, posts.id DESC") } # 新しい順に並べる（テーブル名明示）
+  scope :with_walk, -> { where.not(walk_id: nil) } # 散歩記録が紐付いている投稿のみ取得
+  scope :with_associations, -> { preload(:user, :walk, :reactions) } # N+1対策（preloadで別クエリ化）
 
   # 特定ユーザーがつけた全リアクションを取得（複数対応）
   def user_reactions(user)
-    return [] unless user  # ログインしていない場合は空配列
+    return [] unless user # ログインしていない場合は空配列
+
     reactions.where(user: user)
   end
 
   # 特定ユーザーが特定のリアクションをつけているか判定
   def reacted_by?(user, kind)
     return false unless user
+
     reactions.exists?(user: user, kind: kind)
   end
 
   # 特定ユーザーがこの投稿に何らかのリアクションをつけているか判定
   def reacted_by_user?(user)
     return false unless user
+
     reactions.exists?(user: user)
   end
 
   # 天気の絵文字を返す
   def weather_emoji
     return nil unless weather
+
     case weather.to_sym
     when :sunny then "☀️"
     when :cloudy then "☁️"
@@ -70,6 +73,7 @@ class Post < ApplicationRecord
   # 気分の絵文字を返す
   def feeling_emoji
     return nil unless feeling
+
     case feeling.to_sym
     when :great then "😆"
     when :good then "😄"
@@ -82,6 +86,7 @@ class Post < ApplicationRecord
   # 天気の日本語ラベルを返す
   def weather_label
     return nil unless weather
+
     case weather.to_sym
     when :sunny then "晴れ"
     when :cloudy then "曇り"
@@ -95,6 +100,7 @@ class Post < ApplicationRecord
   # 気分の日本語ラベルを返す
   def feeling_label
     return nil unless feeling
+
     case feeling.to_sym
     when :great then "最高！"
     when :good then "良い"
@@ -109,8 +115,8 @@ class Post < ApplicationRecord
 
   # カスタムバリデーションメソッド:完全に空の投稿を防ぐ
   def must_have_content
-    if body.blank? && weather.nil? && feeling.nil? && walk_id.nil?
-      errors.add(:base, "本文、天気、気分、散歩記録のいずれか1つは入力してください")
-    end
+    return unless body.blank? && weather.nil? && feeling.nil? && walk_id.nil?
+
+    errors.add(:base, "本文、天気、気分、散歩記録のいずれか1つは入力してください")
   end
 end
