@@ -67,27 +67,28 @@ class GoogleFitService
 
     rescue Google::Apis::AuthorizationError => e
       Rails.logger.error "Google Fit Authorization Error for user #{@user.id}: #{e.message}"
-
-      # 無効なトークンをクリアして次回の再認証を促す
-      # update_columnsを使用してバリデーションとコールバックをスキップ
-      @user.update_columns(
-        google_token: nil,
-        google_expires_at: nil
-      )
-      Rails.logger.info "Cleared invalid Google tokens for user #{@user.id}"
-
+      clear_google_tokens # 無効なトークンをクリアして次回の再認証を促す
       { error: :auth_expired }
     rescue Google::Apis::ClientError => e
       case e.status_code
-      when 401, 403
-        # 認証エラー - トークンをクリアして再認証を促す
-        Rails.logger.error "Google Fit Auth Error (#{e.status_code}) for user #{@user.id}: #{e.message}"
-        @user.update_columns(
-          google_token: nil,
-          google_expires_at: nil
-        )
-        Rails.logger.info "Cleared invalid Google tokens for user #{@user.id}"
+      when 401
+        # 401 Unauthorized: トークンが無効または期限切れ -> 再認証が必要
+        Rails.logger.error "Google Fit Auth Error (401) for user #{@user.id}: #{e.message}"
+        clear_google_tokens
         { error: :auth_expired }
+      when 403
+        # 403 Forbidden: 権限不足の可能性がある
+        Rails.logger.error "Google Fit Auth Error (403) for user #{@user.id}: #{e.message}"
+
+        # メッセージに 'insufficientPermission' や 'forbidden' が含まれる場合は権限不足
+        # トークン自体は有効な可能性が高いため、クリアせずにエラーを返す
+        if e.message.match?(/insufficientPermission|forbidden/i)
+          { error: :api_error, message: "権限が不足しています。Google Fitの設定を確認してください。" }
+        else
+          # その他の403エラーはトークン無効の可能性
+          clear_google_tokens
+          { error: :auth_expired }
+        end
       when 429
         # レート制限 - トークンはクリアしない（一時的な問題なので）
         Rails.logger.warn "Google Fit Rate Limited for user #{@user.id}: #{e.message}"
@@ -100,21 +101,22 @@ class GoogleFitService
       Rails.logger.error "Google Fit Server Error for user #{@user.id}: #{e.message}"
       { error: :api_error, message: "Google Fitサーバーエラー" }
     rescue StandardError => e
+      # 予期しないエラー
+      # 通信エラーなどの一時的な問題の可能性もあるため、トークンは削除しない
       Rails.logger.error "Unexpected error in GoogleFitService for user #{@user.id}: #{e.class} - #{e.message}"
-
-      # 予期しないエラーでもトークンをクリアして再認証を促す
-      # 認証関連の問題の可能性があるため、安全のためクリアする
-      @user.update_columns(
-        google_token: nil,
-        google_expires_at: nil
-      )
-      Rails.logger.info "Cleared Google tokens due to unexpected error for user #{@user.id}"
-
-      { error: :auth_expired }
+      { error: :api_error, message: "予期しないエラーが発生しました: #{e.message}" }
     end
   end
 
   private
+
+  def clear_google_tokens
+    @user.update_columns(
+      google_token: nil,
+      google_expires_at: nil
+    )
+    Rails.logger.info "Cleared invalid Google tokens for user #{@user.id}"
+  end
 
   # アクティビティセグメントで歩数・距離・カロリー・時間を取得（電車・車を除外）
   # 歩行(7)・ランニング(8)・サイクリング(1)のみを対象とする

@@ -105,6 +105,9 @@ Rails.application.routes.draw do
 
     # ゲストログイン
     post "users/guest_sign_in", to: "users/sessions#new_guest", as: :users_guest_sign_in
+
+    # OmniAuth認証失敗時のハンドリング
+    get "users/auth/failure", to: "users/omniauth_callbacks#failure", as: :omniauth_failure
   end
 
   # ===== 静的ページ =====

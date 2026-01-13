@@ -71,13 +71,44 @@ RSpec.describe GoogleFitService, type: :service do
     end
 
     context "APIエラーが発生した場合" do
-      before do
-        allow(fitness_service).to receive(:aggregate_dataset).and_raise(Google::Apis::ClientError.new("API Error"))
+      context "権限不足による403エラーの場合" do
+        before do
+          error = Google::Apis::ClientError.new("insufficientPermission: Request had insufficient authentication scopes.")
+          allow(error).to receive(:status_code).and_return(403)
+          allow(fitness_service).to receive(:aggregate_dataset).and_raise(error)
+        end
+
+        it "トークンはクリアされず、api_errorを返すこと" do
+          expect(user).not_to receive(:update_columns)
+          result = service.fetch_activities(start_date, end_date)
+          expect(result[:error]).to eq :api_error
+          expect(result[:message]).to include("権限が不足")
+        end
       end
 
-      it "エラーハッシュを返すこと" do
-        result = service.fetch_activities(start_date, end_date)
-        expect(result).to include(error: :api_error)
+      context "その他の403エラーの場合" do
+        before do
+          error = Google::Apis::ClientError.new("Token expired")
+          allow(error).to receive(:status_code).and_return(403)
+          allow(fitness_service).to receive(:aggregate_dataset).and_raise(error)
+        end
+
+        it "トークンがクリアされ、auth_expiredを返すこと" do
+          expect(user).to receive(:update_columns).with(hash_including(google_token: nil))
+          result = service.fetch_activities(start_date, end_date)
+          expect(result[:error]).to eq :auth_expired
+        end
+      end
+
+      context "一般的なAPIエラーの場合" do
+        before do
+          allow(fitness_service).to receive(:aggregate_dataset).and_raise(Google::Apis::ClientError.new("API Error"))
+        end
+
+        it "エラーハッシュを返すこと" do
+          result = service.fetch_activities(start_date, end_date)
+          expect(result).to include(error: :api_error)
+        end
       end
     end
   end

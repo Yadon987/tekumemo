@@ -20,6 +20,9 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_many :web_push_subscriptions, dependent: :destroy
 
+  # コールバック: 新規ユーザー登録時に公開済みお知らせの通知を作成
+  after_create :create_notifications_for_active_announcements
+
   # 実績機能の関連付け
   has_many :user_achievements, dependent: :destroy
   has_many :achievements, through: :user_achievements
@@ -65,6 +68,22 @@ class User < ApplicationRecord
     # ファイル形式制限
     unless uploaded_avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
       errors.add(:uploaded_avatar, "は画像ファイル（JPG, PNG, GIF, WEBP）のみアップロード可能です")
+    end
+  end
+
+  # 新規ユーザー登録時に、公開済みのお知らせに対する通知を作成
+  # これにより、新規ユーザーも過去のお知らせを確認できる
+  def create_notifications_for_active_announcements
+    Announcement.active.find_each do |announcement|
+      notifications.create!(
+        announcement: announcement,
+        notification_type: :announcement,
+        read_at: nil
+      )
+    rescue ActiveRecord::RecordNotUnique
+      # ユニークインデックス違反 = すでに通知が存在するためスキップ
+      Rails.logger.debug "Notification already exists for user #{id} and announcement #{announcement.id}"
+      next
     end
   end
 
