@@ -99,4 +99,29 @@ RSpec.describe Walk, type: :model do
       end
     end
   end
+
+  describe 'コールバック(daypart自動設定)' do
+    it '作成時間に応じて適切な時間帯が設定されること' do
+      # 04:00 - 08:59 -> early_morning
+      walk = FactoryBot.create(:walk, created_at: Time.current.change(hour: 5))
+      expect(walk.daypart).to eq 'early_morning'
+
+      # 09:00 - 15:59 -> day
+      walk = FactoryBot.create(:walk, created_at: Time.current.change(hour: 12))
+      expect(walk.daypart).to eq 'day'
+
+      # 16:00 - 18:59 -> evening
+      walk = FactoryBot.create(:walk, created_at: Time.current.change(hour: 17))
+      expect(walk.daypart).to eq 'evening'
+
+      # 19:00 - 03:59 -> night
+      walk = FactoryBot.create(:walk, created_at: Time.current.change(hour: 22))
+      expect(walk.daypart).to eq 'night'
+    end
+
+    it '明示的に指定した場合はその値が優先されること' do
+      walk = FactoryBot.create(:walk, daypart: :night, created_at: Time.current.change(hour: 12))
+      expect(walk.daypart).to eq 'night'
+    end
+  end
 end

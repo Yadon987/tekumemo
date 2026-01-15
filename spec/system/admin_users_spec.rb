@@ -52,11 +52,15 @@ RSpec.describe 'Admin::Users', type: :system do
       user_row.scroll_to(:center)
 
       within(user_row) do
-        # 削除ボタンを特定してからクリックプロセスに入る
-        delete_button = find('button', text: '削除')
+        # 削除リンクを特定（button_to から link_to に変更したため a タグ）
+        delete_link = find('a', text: '削除')
 
+        # 削除リンクがクリック可能になるまで待機
+        expect(delete_link).to be_visible
+
+        # ダイアログを受け入れてクリック
         accept_confirm do
-          delete_button.click
+          delete_link.click
         end
       end
 

@@ -30,7 +30,7 @@
 
       <!-- 種類フィルタ -->
       <div class="w-32">
-        <%= f.select :type, Announcement::ANNOUNCEMENT_TYPES.map { |k, v| [v, k] }, { include_blank: '全ての種類', selected: params[:type] }, { class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" } %>
+        <%= f.select :type, Announcement::PRIORITY_NAMES.map { |k, v| [v, k] }, { include_blank: '全ての種類', selected: params[:type] }, { class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" } %>
       </div>
 
       <!-- ステータスフィルタ -->

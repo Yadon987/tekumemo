@@ -3,15 +3,19 @@ class Announcement < ApplicationRecord
   has_many :notifications, dependent: :destroy
 
   # バリデーション
+  # バリデーション
   validates :title, presence: true, length: { maximum: 100 }
   validates :content, presence: true
-  validates :priority, inclusion: { in: %w[info warning urgent] }
+  validates :priority, presence: true
 
   # コールバック: 公開時に全ユーザーに通知を作成
   after_commit :create_notifications_for_users, on: %i[create update], if: :should_create_notifications?
 
-  # お知らせの種類
-  ANNOUNCEMENT_TYPES = {
+  # お知らせの種類 (Enum)
+  enum :priority, { info: 0, warning: 1, urgent: 2 }, default: :info
+
+  # 日本語名への変換用定数（View等で使用）
+  PRIORITY_NAMES = {
     "info" => "お知らせ",
     "warning" => "重要",
     "urgent" => "緊急"
@@ -34,7 +38,7 @@ class Announcement < ApplicationRecord
 
   # お知らせ種類の日本語名
   def type_name
-    ANNOUNCEMENT_TYPES[priority] || "お知らせ"
+    PRIORITY_NAMES[priority] || "お知らせ"
   end
 
   private

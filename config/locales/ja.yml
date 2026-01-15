@@ -16,7 +16,7 @@ ja:
         password: "パスワード"
         password_confirmation: "パスワード（確認）"
         current_password: "現在のパスワード"
-        target_distance: "目標距離"
+        goal_meters: "目標距離"
       post:
         body: "ひとことメモ"
         weather: "天気"
