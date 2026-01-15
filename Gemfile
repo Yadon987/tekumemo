@@ -67,4 +67,5 @@ group :test do
   gem "cuprite"                  # Capybara用のヘッドレスChromeドライバー
   gem "swimming_fish", "~> 0.2.2"  # テスト用のダミーデータ生成ツール
   gem "webmock"                    # HTTPリクエストのスタブ化
+  gem "simplecov", require: false  # テストカバレッジ計測
 end
