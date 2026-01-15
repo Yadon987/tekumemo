@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_13_110800) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_14_100000) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -27,11 +27,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_13_110800) do
   enable_extension "uuid-ossp"
 
   create_table "achievements", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description", null: false
-    t.integer "condition_type", default: 0, null: false
-    t.integer "condition_value", default: 0, null: false
-    t.string "icon_name", null: false
+    t.string "title", null: false
+    t.text "flavor_text", null: false
+    t.integer "metric", default: 0, null: false
+    t.bigint "requirement", default: 0, null: false
+    t.text "badge_key", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -67,12 +67,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_13_110800) do
   create_table "announcements", force: :cascade do |t|
     t.string "title", null: false
     t.text "content", null: false
-    t.string "priority", default: "info"
     t.datetime "published_at"
     t.datetime "expires_at"
     t.boolean "is_published", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "priority", default: 0, null: false
+    t.index ["expires_at"], name: "index_announcements_on_expires_at"
     t.index ["is_published"], name: "index_announcements_on_is_published"
     t.index ["published_at"], name: "index_announcements_on_published_at"
   end

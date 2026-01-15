@@ -3,32 +3,32 @@
 # 0. 実績マスターデータ作成
 puts 'Creating achievements...'
 achievements_data = [
-  { name: '初めの一歩', description: '初めて歩数を記録した', condition_type: :total_steps, condition_value: 1,
-    icon_name: 'footprint' },
-  { name: 'ウォーキングビギナー', description: '累計10,000歩を達成した', condition_type: :total_steps, condition_value: 10_000,
-    icon_name: 'directions_walk' },
-  { name: 'ウォーキングマスター', description: '累計100,000歩を達成した', condition_type: :total_steps, condition_value: 100_000,
-    icon_name: 'hiking' },
-  { name: 'マラソンランナー', description: '累計42kmを達成した', condition_type: :total_distance, condition_value: 42,
-    icon_name: 'sports_score' },
-  { name: '地球一周', description: '累計40,000kmを達成した', condition_type: :total_distance, condition_value: 40_000,
-    icon_name: 'public' },
-  { name: '三日坊主卒業', description: '3日連続でログインした', condition_type: :login_streak, condition_value: 3,
-    icon_name: 'history' },
-  { name: '習慣化の達人', description: '30日連続でログインした', condition_type: :login_streak, condition_value: 30,
-    icon_name: 'calendar_month' },
-  { name: '初めての投稿', description: '初めて日記を投稿した', condition_type: :post_count, condition_value: 1,
-    icon_name: 'edit_note' },
-  { name: '日記職人', description: '日記を10回投稿した', condition_type: :post_count, condition_value: 10,
-    icon_name: 'library_books' }
+  { title: '初めの一歩', flavor_text: '初めて歩数を記録した', metric: :total_steps, requirement: 1,
+    badge_key: 'footprint' },
+  { title: 'ウォーキングビギナー', flavor_text: '累計10,000歩を達成した', metric: :total_steps, requirement: 10_000,
+    badge_key: 'directions_walk' },
+  { title: 'ウォーキングマスター', flavor_text: '累計100,000歩を達成した', metric: :total_steps, requirement: 100_000,
+    badge_key: 'hiking' },
+  { title: 'マラソンランナー', flavor_text: '累計42kmを達成した', metric: :total_distance, requirement: 42,
+    badge_key: 'sports_score' },
+  { title: '地球一周', flavor_text: '累計40,000kmを達成した', metric: :total_distance, requirement: 40_000,
+    badge_key: 'public' },
+  { title: '三日坊主卒業', flavor_text: '3日連続でログインした', metric: :login_streak, requirement: 3,
+    badge_key: 'history' },
+  { title: '習慣化の達人', flavor_text: '30日連続でログインした', metric: :login_streak, requirement: 30,
+    badge_key: 'calendar_month' },
+  { title: '初めての投稿', flavor_text: '初めて日記を投稿した', metric: :post_count, requirement: 1,
+    badge_key: 'edit_note' },
+  { title: '日記職人', flavor_text: '日記を10回投稿した', metric: :post_count, requirement: 10,
+    badge_key: 'library_books' }
 ]
 
 achievements_data.each do |data|
-  Achievement.find_or_create_by!(name: data[:name]) do |a|
-    a.description = data[:description]
-    a.condition_type = data[:condition_type]
-    a.condition_value = data[:condition_value]
-    a.icon_name = data[:icon_name]
+  Achievement.find_or_create_by!(title: data[:title]) do |a|
+    a.flavor_text = data[:flavor_text]
+    a.metric = data[:metric]
+    a.requirement = data[:requirement]
+    a.badge_key = data[:badge_key]
   end
 end
 
@@ -215,13 +215,13 @@ users.each do |user|
   post_count = user.posts.count
 
   all_achievements.each do |achievement|
-    earned = case achievement.condition_type.to_sym
+    earned = case achievement.metric.to_sym
     when :total_steps
-               total_steps >= achievement.condition_value
+               total_steps >= achievement.requirement
     when :total_distance
-               total_distance >= achievement.condition_value
+               total_distance >= achievement.requirement
     when :post_count
-               post_count >= achievement.condition_value
+               post_count >= achievement.requirement
     when :login_streak
                # シードデータではログイン履歴を厳密に作っていないのでランダムで付与
                rand < 0.5
