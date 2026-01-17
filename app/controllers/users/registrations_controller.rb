@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   # ユーザー情報の更新前に、許可するパラメータを追加する
-  before_action :configure_account_update_params, only: [ :update ]
+  before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/edit
   # Deviseのデフォルトのeditアクションをそのまま使うので、オーバーライド不要
@@ -89,17 +89,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # アカウント更新時に許可するストロングパラメータの設定
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys: [
-      :name,
-      :target_distance,
-      :avatar_type,
-      :uploaded_avatar,
-      # 通知設定
-      :walk_reminder_enabled,
-      :walk_reminder_time,
-      :inactive_days_reminder_enabled,
-      :inactive_days_threshold,
-      :reaction_summary_enabled
-    ])
+                                        :name,
+                                        :goal_meters,
+                                        :avatar_type,
+                                        :uploaded_avatar,
+                                        # 通知設定
+                                        :is_walk_reminder,
+                                        :walk_reminder_time,
+                                        :is_inactive_reminder,
+                                        :inactive_days,
+                                        :is_reaction_summary
+                                      ])
   end
 
   # 更新後のリダイレクト先
@@ -110,9 +110,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # パスワードなしで更新する場合の対応
   def update_resource(resource, params)
     # 画像がアップロードされた場合、アバタータイプを自動的にuploadedにする
-    if params[:uploaded_avatar].present?
-      params[:avatar_type] = "uploaded"
-    end
+    params[:avatar_type] = "uploaded" if params[:uploaded_avatar].present?
 
     # パスワード入力がある、またはメールアドレス変更時はパスワード必須
     if params[:password].present? || (params[:email].present? && params[:email] != resource.email)

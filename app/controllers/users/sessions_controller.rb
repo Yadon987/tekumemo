@@ -14,7 +14,7 @@ class Users::SessionsController < Devise::SessionsController
       # 外部キー制約を考慮し、依存関係のある順序で削除
       # reactions は posts に依存するので先に削除
       host_guest.reactions.delete_all
-      host_guest.notifications.delete_all
+      host_guest.reminder_logs.delete_all
       host_guest.user_achievements.delete_all
       # posts は walks に依存するので、walks より先に削除
       host_guest.posts.delete_all

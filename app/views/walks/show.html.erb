@@ -31,7 +31,7 @@
         <div class="flex items-baseline">
           <span class="inline-block text-xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-green-400 to-emerald-600 dark:from-emerald-300 dark:via-green-300 dark:to-emerald-500 dark:drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]"
                 data-controller="counter"
-                data-counter-target-value="<%= @walk.distance %>">
+                data-counter-target-value="<%= @walk.kilometers %>">
             0
           </span>
           <span class="text-xs sm:text-sm font-bold ml-1 opacity-90 dark:text-emerald-400">km</span>
@@ -50,7 +50,7 @@
         <div class="flex items-baseline">
           <span class="inline-block text-xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-sky-400 to-blue-600 dark:from-cyan-300 dark:via-blue-300 dark:to-cyan-500 dark:drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]"
                 data-controller="counter"
-                data-counter-target-value="<%= @walk.duration %>">
+                data-counter-target-value="<%= @walk.minutes %>">
             0
           </span>
           <span class="text-xs sm:text-sm font-bold ml-1 opacity-90 dark:text-cyan-400">分</span>
@@ -88,7 +88,7 @@
         <div class="flex items-baseline">
           <span class="inline-block text-xl sm:text-4xl font-black tracking-tighter text-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-orange-400 to-red-600 dark:from-orange-300 dark:via-red-300 dark:to-orange-500 dark:drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]"
                 data-controller="counter"
-                data-counter-target-value="<%= @walk.calories_burned || 0 %>">
+                data-counter-target-value="<%= @walk.calories || 0 %>">
             0
           </span>
           <span class="text-xs sm:text-sm font-bold ml-1 opacity-90 dark:text-rose-400">kcal</span>

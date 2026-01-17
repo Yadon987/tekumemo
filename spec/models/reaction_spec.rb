@@ -21,8 +21,8 @@ RSpec.describe Reaction, type: :model do
         expect(reaction).to be_invalid
       end
 
-      it '種類(kind)がない場合は無効であること' do
-        reaction.kind = nil
+      it 'スタンプ(stamp)がない場合は無効であること' do
+        reaction.stamp = nil
         expect(reaction).to be_invalid
       end
 
@@ -30,13 +30,13 @@ RSpec.describe Reaction, type: :model do
         # ユーザーと投稿を作成
         user = create(:user)
         post = create(:post)
-        kind = :thumbs_up
+        stamp = :thumbs_up
 
         # 1つ目のリアクションを作成
-        create(:reaction, user: user, post: post, kind: kind)
+        create(:reaction, user: user, post: post, stamp: stamp)
 
         # 2つ目のリアクション（同じ条件）を作成しようとする
-        duplicate_reaction = build(:reaction, user: user, post: post, kind: kind)
+        duplicate_reaction = build(:reaction, user: user, post: post, stamp: stamp)
 
         expect(duplicate_reaction).to be_invalid
         expect(duplicate_reaction.errors[:user_id]).to include('は同じ投稿に同じリアクションを複数回つけられません')
@@ -47,10 +47,10 @@ RSpec.describe Reaction, type: :model do
         post = create(:post)
 
         # 1つ目のリアクション（ハート）
-        create(:reaction, user: user, post: post, kind: :heart)
+        create(:reaction, user: user, post: post, stamp: :heart)
 
         # 2つ目のリアクション（いいね）
-        second_reaction = build(:reaction, user: user, post: post, kind: :thumbs_up)
+        second_reaction = build(:reaction, user: user, post: post, stamp: :thumbs_up)
 
         expect(second_reaction).to be_valid
       end

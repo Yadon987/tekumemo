@@ -1,14 +1,14 @@
 <%# OGP設定 %>
 <% content_for :head do %>
   <meta property="og:title" content="ADVENTURE LOG - TekuMemo" />
-  <meta property="og:description" content="<%= @post.body.present? ? @post.body.truncate(100) : '散歩の記録をチェックしよう！' %>" />
+  <meta property="og:description" content="<%= @post.content.present? ? @post.content.truncate(100) : '散歩の記録をチェックしよう！' %>" />
   <%# OGP画像のURLにキャッシュバスターと拡張子を追加 %>
   <meta property="og:image" content="<%= post_ogp_image_url(@post, format: :jpg, v: @post.updated_at.to_i) %>" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="<%= post_url(@post) %>" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ADVENTURE LOG - TekuMemo" />
-  <meta name="twitter:description" content="<%= @post.body.present? ? @post.body.truncate(100) : '散歩の記録をチェックしよう！' %>" />
+  <meta name="twitter:description" content="<%= @post.content.present? ? @post.content.truncate(100) : '散歩の記録をチェックしよう！' %>" />
   <meta name="twitter:image" content="<%= post_ogp_image_url(@post, format: :jpg, v: @post.updated_at.to_i) %>" />
 <% end %>
 
@@ -55,9 +55,9 @@
       </button>
     </div>
 
-    <% if @post.body.present? %>
+    <% if @post.content.present? %>
       <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 text-center font-medium leading-relaxed break-words">
-        "<%= @post.body %>"
+        "<%= @post.content %>"
       </p>
     <% end %>
 

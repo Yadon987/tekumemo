@@ -6,15 +6,15 @@
        事前準備：N+1問題を回避するため、一度だけデータを整理
        ======================================== -->
 
-  <!-- 自分がつけたリアクションの種類をSetで保持（高速な検索用） -->
-  <% my_reaction_kinds = post.reactions
+  <!-- 自分がつけたリアクションのスタンプをSetで保持（高速な検索用） -->
+  <% my_reaction_stamps = post.reactions
                              .select { |r| r.user_id == current_user.id }
-                             .map(&:kind)
+                             .map(&:stamp)
                              .to_set %>
 
-  <!-- リアクションの種類ごとの件数をハッシュで保持 -->
+  <!-- リアクションのスタンプごとの件数をハッシュで保持 -->
   <% reaction_counts = post.reactions
-                           .group_by(&:kind)
+                           .group_by(&:stamp)
                            .transform_values(&:count) %>
 
   <!-- ========================================
@@ -33,16 +33,16 @@
     <div data-popover-target="content"
          class="hidden absolute bottom-full left-0 mb-2 p-4 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-[2rem] shadow-[10px_10px_30px_rgba(0,0,0,0.1),-10px_-10px_30px_rgba(255,255,255,0.8)] dark:shadow-xl border border-white/60 dark:border-gray-700 w-64 z-30 animate-fade-in-up origin-bottom-left">
       <div class="grid grid-cols-4 gap-2">
-        <% Reaction.all_kinds.each do |reaction_info| %>
-          <% kind = reaction_info[:kind] %>
-          <% is_reacted = my_reaction_kinds.include?(kind) %>
-          <% count = reaction_counts[kind] || 0 %>
+        <% Reaction.all_stamps.each do |reaction_info| %>
+          <% stamp = reaction_info[:stamp] %>
+          <% is_reacted = my_reaction_stamps.include?(stamp) %>
+          <% count = reaction_counts[stamp] || 0 %>
 
           <button type="button"
-                  id="picker-btn-<%= post.id %>-<%= kind %>"
+                  id="picker-btn-<%= post.id %>-<%= stamp %>"
                   class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex flex-col items-center justify-center group <%= is_reacted ? 'bg-blue-50 dark:bg-blue-900/20' : '' %>"
                   data-action="click->popover#close"
-                  onclick="document.getElementById('reaction-btn-<%= post.id %>-<%= kind %>').click();">
+                  onclick="document.getElementById('reaction-btn-<%= post.id %>-<%= stamp %>').click();">
             <span class="text-2xl group-hover:scale-125 transition-transform duration-200"><%= reaction_info[:emoji] %></span>
             <span class="text-[10px] text-gray-500 dark:text-gray-400 mt-1"><%= reaction_info[:label] %></span>
           </button>
@@ -55,10 +55,10 @@
        右側：スタンプ一覧（横スクロール）
        ======================================== -->
   <div data-controller="scroll-drag" class="flex overflow-x-auto gap-1.5 scrollbar-hide [&::-webkit-scrollbar]:hidden items-center py-1 pr-4 mask-image-linear-gradient">
-    <% Reaction.all_kinds.each do |reaction_info| %>
-      <% kind = reaction_info[:kind] %>
-      <% count = reaction_counts[kind] || 0 %>
-      <% is_reacted = my_reaction_kinds.include?(kind) %>
+    <% Reaction.all_stamps.each do |reaction_info| %>
+      <% stamp = reaction_info[:stamp] %>
+      <% count = reaction_counts[stamp] || 0 %>
+      <% is_reacted = my_reaction_stamps.include?(stamp) %>
 
       <%# カウントが0かつ未リアクションの場合はhiddenクラスで隠す %>
       <% is_hidden = count == 0 && !is_reacted %>
@@ -73,13 +73,13 @@
       <% button_class += " hidden" if is_hidden %>
 
       <button type="button"
-              id="reaction-btn-<%= post.id %>-<%= kind %>"
+              id="reaction-btn-<%= post.id %>-<%= stamp %>"
               class="<%= button_class %>"
               data-controller="reaction"
               data-action="click->reaction#toggle"
               data-reaction-target="button"
               data-reaction-url-value="<%= post_reactions_path(post) %>"
-              data-reaction-kind-value="<%= kind %>"
+              data-reaction-stamp-value="<%= stamp %>"
               data-reaction-count-value="<%= count %>"
               data-reaction-reacted-value="<%= is_reacted %>">
 

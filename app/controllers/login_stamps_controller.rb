@@ -6,16 +6,16 @@ class LoginStampsController < ApplicationController
   def index
     # カレンダーの表示月を設定
     # params[:start_date]がない場合は今月を表示
-    if params[:start_date]
-      # URLパラメータから日付を取得
-      @start_date = begin
-        Date.parse(params[:start_date])
-      rescue Date::Error, ArgumentError
-        Date.current.beginning_of_month
-      end
+    @start_date = if params[:start_date]
+                    # URLパラメータから日付を取得
+                    begin
+                      Date.parse(params[:start_date])
+                    rescue Date::Error, ArgumentError
+                      Date.current.beginning_of_month
+                    end
     else
-      # 今月の1日を設定
-      @start_date = Date.current.beginning_of_month
+                    # 今月の1日を設定
+                    Date.current.beginning_of_month
     end
 
     # 表示する月の範囲を設定

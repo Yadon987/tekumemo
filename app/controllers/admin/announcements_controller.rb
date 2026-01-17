@@ -12,9 +12,7 @@ class Admin::AnnouncementsController < Admin::BaseController
     end
 
     # フィルタ（種類）
-    if params[:type].present?
-      @announcements = @announcements.where(announcement_type: params[:type])
-    end
+    @announcements = @announcements.where(priority: params[:type]) if params[:type].present?
 
     # フィルタ（公開状態）
     if params[:status].present?
@@ -46,8 +44,7 @@ class Admin::AnnouncementsController < Admin::BaseController
   end
 
   # 編集フォーム
-  def edit
-  end
+  def edit; end
 
   # 更新処理
   def update
@@ -80,13 +77,11 @@ class Admin::AnnouncementsController < Admin::BaseController
 
   private
 
-
-
   def set_announcement
     @announcement = Announcement.find(params[:id])
   end
 
   def announcement_params
-    params.require(:announcement).permit(:title, :content, :announcement_type, :published_at, :expires_at)
+    params.require(:announcement).permit(:title, :content, :priority, :published_at, :expires_at)
   end
 end

@@ -11,7 +11,7 @@ class Admin::DashboardController < Admin::BaseController
     if current_user.guest?
       # ゲスト用ダミーデータ
       # アクティブユーザーリストもダミーにする
-      @active_users_today_list = ["ユーザーA", "ユーザーB", "ユーザーC"]
+      @active_users_today_list = %w[ユーザーA ユーザーB ユーザーC]
 
       # 統計情報の非表示やダミー化が必要ならここで行うが、
       # グローバル統計は見せても良い方針なのでそのまま
@@ -26,7 +26,7 @@ class Admin::DashboardController < Admin::BaseController
 
       # 散歩統計
       @total_walks = 5432
-      @total_distance = 12345.6
+      @total_distance = 12_345.6
       @distance_this_month = 789.0
 
       # === リスト系のダミー化（ぼかし表示の下に置くためそれっぽいデータ） ===
@@ -39,9 +39,9 @@ class Admin::DashboardController < Admin::BaseController
     else
       # 管理者用（リアルデータ）
       @active_users_today_list = User.where("current_sign_in_at >= ?", Time.current.beginning_of_day)
-                                      .order(current_sign_in_at: :desc)
-                                      .limit(3)
-                                      .pluck(:name)
+                                     .order(current_sign_in_at: :desc)
+                                     .limit(3)
+                                     .pluck(:name)
       @active_users_this_week = User.where("current_sign_in_at >= ?", Time.current.beginning_of_week).count
       @active_users_this_month = User.where("current_sign_in_at >= ?", Time.current.beginning_of_month).count
 
@@ -52,8 +52,8 @@ class Admin::DashboardController < Admin::BaseController
 
       # 散歩統計
       @total_walks = Walk.count
-      @total_distance = Walk.sum(:distance) || 0
-      @distance_this_month = Walk.where(walked_on: Time.current.beginning_of_month.to_date..Time.current.to_date).sum(:distance) || 0
+      @total_distance = Walk.sum(:kilometers) || 0
+      @distance_this_month = Walk.where(walked_on: Time.current.beginning_of_month.to_date..Time.current.to_date).sum(:kilometers) || 0
 
       # 人気投稿
       @popular_posts = Post.left_joins(:reactions)
@@ -80,7 +80,7 @@ class Admin::DashboardController < Admin::BaseController
     (1..count).map do |i|
       OpenStruct.new(
         id: i,
-        body: "これはダミーの投稿です。内容は表示されません。",
+        content: "これはダミーの投稿です。内容は表示されません。",
         created_at: Time.current - i.hours,
         user: OpenStruct.new(
           name: "ダミーユーザー#{i}",
@@ -112,14 +112,16 @@ class Admin::DashboardController < Admin::BaseController
 
     # 1. スパム疑い
     @anomalies[:spam_users] = [
-      OpenStruct.new(id: 1, name: "SpamBot01", email: "bot1@example.com", post_count: 25, created_at: 1.day.ago, current_sign_in_at: Time.current, display_avatar_url: nil),
-      OpenStruct.new(id: 2, name: "AggressiveUser", email: "agg@example.com", post_count: 22, created_at: 2.days.ago, current_sign_in_at: Time.current, display_avatar_url: nil)
+      OpenStruct.new(id: 1, name: "SpamBot01", email: "bot1@example.com", post_count: 25, created_at: 1.day.ago,
+                     current_sign_in_at: Time.current, display_avatar_url: nil),
+      OpenStruct.new(id: 2, name: "AggressiveUser", email: "agg@example.com", post_count: 22, created_at: 2.days.ago,
+                     current_sign_in_at: Time.current, display_avatar_url: nil)
     ]
 
     # 2. データ整合性エラー (Walkのダミー)
     @anomalies[:invalid_walks] = [
       OpenStruct.new(
-        id: 101, distance: 55000, steps: 100000,
+        id: 101, distance: 55_000, steps: 100_000,
         user: OpenStruct.new(id: 3, name: "WalkerPRO", email: "walk@example.com", display_avatar_url: nil)
       )
     ]
@@ -155,7 +157,7 @@ class Admin::DashboardController < Admin::BaseController
     @anomalies[:spam_users] = (spam_users + new_user_spam).uniq
 
     # 2. データ整合性エラー
-    @anomalies[:invalid_walks] = Walk.where("distance > 50000 OR steps > 100000")
+    @anomalies[:invalid_walks] = Walk.where("kilometers > 50000 OR steps > 100000")
                                      .includes(:user)
                                      .limit(10)
 

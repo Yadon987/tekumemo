@@ -22,11 +22,11 @@
   <!-- 本文入力エリア -->
   <div data-controller="character-counter" data-character-counter-max-value="200">
     <div class="flex justify-between items-center mb-2 px-2">
-      <%= f.label :body, "ひとことメモ", class: "block text-sm font-bold text-gray-700 dark:text-purple-200" %>
+      <%= f.label :content, "ひとことメモ", class: "block text-sm font-bold text-gray-700 dark:text-purple-200" %>
       <span data-character-counter-target="counter" class="text-xs text-gray-400 dark:text-purple-300/70 font-medium">0 / 200</span>
     </div>
     <div class="relative">
-      <%= f.text_area :body, rows: 4,
+      <%= f.text_area :content, rows: 4,
           class: "w-full rounded-3xl border-2 border-transparent focus:border-blue-300/50 bg-white/50 dark:bg-[#2e1a47] text-gray-700 dark:text-purple-100 placeholder-gray-400 dark:placeholder-purple-400/50 focus:ring-0 focus:bg-white dark:focus:bg-[#1a0b2e] p-5 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none dark:border-solid dark:border-purple-400/50 dark:focus:shadow-[0_0_20px_rgba(168,85,247,0.5)] transition-all resize-none backdrop-blur-sm",
           placeholder: "今日の散歩はどうでしたか？",
           "data-character-counter-target": "input",

@@ -30,8 +30,8 @@
 
       <!-- 種類 -->
       <div>
-        <%= f.label :announcement_type, '種類', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
-        <%= f.select :announcement_type, Announcement::ANNOUNCEMENT_TYPES.invert, {}, class: 'w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500' %>
+        <%= f.label :priority, '種類', class: 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2' %>
+        <%= f.select :priority, Announcement::PRIORITY_NAMES.invert, {}, class: 'w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500' %>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

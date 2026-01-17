@@ -2,12 +2,12 @@
 # 異常検知テスト用ダミーデータ削除スクリプト
 # 実行方法: rails runner db/scripts/delete_anomaly_test_data.rb
 
-puts "=== 異常検知テスト用ダミーデータ削除開始 ==="
+puts '=== 異常検知テスト用ダミーデータ削除開始 ==='
 
 id_file_path = Rails.root.join('tmp', 'anomaly_test_user_ids.txt')
 
 unless File.exist?(id_file_path)
-  puts "エラー: ユーザーIDファイルが見つかりません"
+  puts 'エラー: ユーザーIDファイルが見つかりません'
   puts "パス: #{id_file_path}"
   exit 1
 end
@@ -15,7 +15,7 @@ end
 user_ids = File.read(id_file_path).split("\n").map(&:to_i)
 
 if user_ids.empty?
-  puts "削除するユーザーIDがありません"
+  puts '削除するユーザーIDがありません'
   exit 0
 end
 
@@ -39,4 +39,4 @@ File.delete(id_file_path)
 
 puts "\n=== 完了 ==="
 puts "削除されたユーザー数: #{deleted_count}"
-puts "関連する投稿・散歩記録も自動的に削除されました（dependent: :destroy）"
+puts '関連する投稿・散歩記録も自動的に削除されました（dependent: :destroy）'

@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Registrations", type: :request do
+RSpec.describe 'Users::Registrations', type: :request do
   let(:user) { create(:user) }
-  let(:avatar_path) { Rails.root.join("spec/fixtures/files/avatar.jpg") }
+  let(:avatar_path) { Rails.root.join('spec/fixtures/files/avatar.jpg') }
   let(:avatar_file) { fixture_file_upload(avatar_path, 'image/jpeg') }
 
   before do
     sign_in user
   end
 
-  describe "PUT /users" do
-    context "アバター画像のアップロード" do
+  describe 'PUT /users' do
+    context 'アバター画像のアップロード' do
       it "画像をアップロードしてアバタータイプを'uploaded'に更新できること" do
         put user_registration_path, params: {
           user: {
@@ -22,15 +22,15 @@ RSpec.describe "Users::Registrations", type: :request do
 
         user.reload
         expect(user.uploaded_avatar).to be_attached
-        expect(user.avatar_type).to eq("uploaded")
+        expect(user.avatar_type).to eq('uploaded')
         expect(response).to redirect_to(edit_user_registration_path)
       end
     end
 
-    context "アバタータイプの切り替え" do
+    context 'アバタータイプの切り替え' do
       before do
         # 事前に画像をアップロードしておく
-        user.uploaded_avatar.attach(io: File.open(avatar_path), filename: "avatar.jpg", content_type: "image/jpeg")
+        user.uploaded_avatar.attach(io: File.open(avatar_path), filename: 'avatar.jpg', content_type: 'image/jpeg')
         user.update!(avatar_type: :uploaded)
       end
 
@@ -42,7 +42,7 @@ RSpec.describe "Users::Registrations", type: :request do
           }
         }
 
-        expect(user.reload.avatar_type).to eq("default")
+        expect(user.reload.avatar_type).to eq('default')
         # 画像自体は消えていないことを確認
         expect(user.uploaded_avatar).to be_attached
       end
@@ -57,14 +57,14 @@ RSpec.describe "Users::Registrations", type: :request do
           }
         }
 
-        expect(user.reload.avatar_type).to eq("uploaded")
+        expect(user.reload.avatar_type).to eq('uploaded')
       end
     end
   end
 
-  describe "DELETE /users/uploaded_avatar" do
+  describe 'DELETE /users/uploaded_avatar' do
     before do
-      user.uploaded_avatar.attach(io: File.open(avatar_path), filename: "avatar.jpg", content_type: "image/jpeg")
+      user.uploaded_avatar.attach(io: File.open(avatar_path), filename: 'avatar.jpg', content_type: 'image/jpeg')
       user.update!(avatar_type: :uploaded)
     end
 
@@ -73,9 +73,9 @@ RSpec.describe "Users::Registrations", type: :request do
 
       user.reload
       expect(user.uploaded_avatar).not_to be_attached
-      expect(user.avatar_type).to eq("default")
+      expect(user.avatar_type).to eq('default')
       expect(response).to redirect_to(edit_user_registration_path)
-      expect(flash[:notice]).to eq("アップロード画像を削除しました")
+      expect(flash[:notice]).to eq('アップロード画像を削除しました')
     end
   end
 end

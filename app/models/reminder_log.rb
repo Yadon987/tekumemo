@@ -1,12 +1,12 @@
-class Notification < ApplicationRecord
+class ReminderLog < ApplicationRecord
   belongs_to :user
   belongs_to :announcement, optional: true
 
   # Rails 7.2+ では enum 使用前に型を明示的に宣言する必要がある
-  attribute :notification_type, :integer, default: 0
+  attribute :category, :integer, default: 0
 
   # 通知種類のenum
-  enum :notification_type, {
+  enum :category, {
     announcement: 0,           # 運営からのお知らせ
     inactive_reminder: 1,      # 非アクティブリマインド
     reaction_summary: 2        # リアクションまとめ
@@ -19,11 +19,13 @@ class Notification < ApplicationRecord
   # 新しい順に並べ替え
   scope :recent, -> { order(created_at: :desc) }
   # お知らせの公開日順に並べ替え
-  scope :ordered_by_announcement, -> { joins(:announcement).order("announcements.published_at DESC, notifications.created_at DESC") }
+  scope :ordered_by_announcement, lambda {
+    joins(:announcement).order("announcements.published_at DESC, reminder_logs.created_at DESC")
+  }
   # リマインダー通知のみ
-  scope :reminders, -> { where(notification_type: [ :inactive_reminder, :reaction_summary ]) }
+  scope :reminders, -> { where(category: %i[inactive_reminder reaction_summary]) }
   # お知らせのみ
-  scope :announcements, -> { where(notification_type: :announcement) }
+  scope :announcements, -> { where(category: :announcement) }
 
   # 既読にする
   def mark_as_read!
@@ -37,19 +39,19 @@ class Notification < ApplicationRecord
 
   # 通知のタイトルを取得（お知らせの場合はannouncementのtitle、リマインダーの場合は種類に応じたタイトル）
   def title
-    if notification_type_announcement?
+    if category_announcement?
       announcement&.title
-    elsif notification_type_inactive_reminder?
+    elsif category_inactive_reminder?
       "お久しぶりです！"
-    elsif notification_type_reaction_summary?
+    elsif category_reaction_summary?
       "リアクションまとめ"
     end
   end
 
   # 通知の本文を取得
   def body
-    if notification_type_announcement?
-      announcement&.body
+    if category_announcement?
+      announcement&.content
     else
       message
     end
@@ -57,8 +59,8 @@ class Notification < ApplicationRecord
 
   # 通知のリンク先を取得
   def link_url
-    if notification_type_announcement?
-      nil  # お知らせは詳細モーダルで表示
+    if category_announcement?
+      nil # お知らせは詳細モーダルで表示
     else
       url
     end

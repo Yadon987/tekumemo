@@ -18,9 +18,7 @@ module Admin
       end
 
       # フィルタ（権限）
-      if params[:role].present?
-        @users = @users.where(role: params[:role])
-      end
+      @users = @users.where(role: params[:role]) if params[:role].present?
 
       # ソート
       @users = @users.order(sort_clause)

@@ -146,7 +146,7 @@
               </div>
               <div class="flex justify-between items-center">
                 <dt class="text-gray-500 dark:text-gray-400">目標距離</dt>
-                <dd class="font-bold text-gray-800 dark:text-gray-200"><%= current_user.target_distance %> m</dd>
+                <dd class="font-bold text-gray-800 dark:text-gray-200"><%= current_user.goal_meters %> m</dd>
               </div>
               <div class="flex justify-between items-center">
                 <dt class="text-gray-500 dark:text-gray-400">通知機能</dt>
@@ -194,10 +194,10 @@
         </div>
 
         <div>
-          <%= f.label :target_distance, "1日の目標(月間) [m]", class: "block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2" %>
+          <%= f.label :goal_meters, "1日の目標(月間) [m]", class: "block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2" %>
           <div class="relative group">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 group-focus-within:text-cyan-500 transition-colors">flag</span>
-            <%= f.number_field :target_distance,
+            <%= f.number_field :goal_meters,
                 step: 100,
                 placeholder: "例: 3000",
                 class: "w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900/50 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all outline-none text-gray-800 dark:text-slate-50 placeholder-gray-400 dark:placeholder-slate-500 shadow-inner" %>
@@ -231,7 +231,7 @@
             <div class="notification-group p-4 bg-purple-50 dark:bg-purple-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-purple-100 dark:border-purple-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(168,85,247,0.15)]">
               <div class="relative">
                 <label class="cursor-pointer block pr-16">
-                  <%= f.check_box :walk_reminder_enabled,
+                  <%= f.check_box :is_walk_reminder,
                       class: "sr-only peer",
                       onchange: "this.closest('.notification-group').querySelector('.time-input-container').classList.toggle('hidden', !this.checked)" %>
                   <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
@@ -242,7 +242,7 @@
                 </label>
               </div>
 
-              <div class="time-input-container <%= 'hidden' unless resource.walk_reminder_enabled %> mt-4">
+              <div class="time-input-container <%= 'hidden' unless resource.is_walk_reminder %> mt-4">
                 <div class="flex items-center space-x-2">
                   <span class="material-symbols-outlined text-gray-400 text-lg">schedule</span>
                   <%= f.time_field :walk_reminder_time,
@@ -256,7 +256,7 @@
             <div class="notification-group p-4 bg-orange-50 dark:bg-orange-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-orange-100 dark:border-orange-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(251,146,60,0.15)]">
               <div class="relative">
                 <label class="cursor-pointer block pr-16">
-                  <%= f.check_box :inactive_days_reminder_enabled,
+                  <%= f.check_box :is_inactive_reminder,
                       class: "sr-only peer",
                       onchange: "this.closest('.notification-group').querySelector('.threshold-input-container').classList.toggle('hidden', !this.checked)" %>
                   <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
@@ -267,10 +267,10 @@
                 </label>
               </div>
 
-              <div class="threshold-input-container <%= 'hidden' unless resource.inactive_days_reminder_enabled %> mt-4">
+              <div class="threshold-input-container <%= 'hidden' unless resource.is_inactive_reminder %> mt-4">
                 <div class="flex items-center space-x-2">
                   <span class="material-symbols-outlined text-gray-400 text-lg">event_busy</span>
-                  <%= f.number_field :inactive_days_threshold,
+                  <%= f.number_field :inactive_days,
                       min: 1,
                       max: 30,
                       class: "w-20 px-3 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 outline-none dark:text-white text-center" %>
@@ -283,7 +283,7 @@
             <div class="p-4 bg-pink-50 dark:bg-pink-900/20 dark:backdrop-blur-sm rounded-3xl border-2 border-pink-100 dark:border-pink-500/30 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(236,72,153,0.15)]">
               <div class="relative">
                 <label class="cursor-pointer block pr-16">
-                  <%= f.check_box :reaction_summary_enabled, class: "sr-only peer" %>
+                  <%= f.check_box :is_reaction_summary, class: "sr-only peer" %>
                   <div class="absolute top-0 right-0 w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-pink-600"></div>
                   <div>
                     <span class="text-sm font-bold text-gray-700 dark:text-gray-300">リアクションのまとめ通知</span>

@@ -17,21 +17,21 @@ class ReactionSummaryService
 
     reactions_by_recipient.each do |recipient, user_reactions|
       # 通知設定が無効な場合はスキップ
-      next unless recipient.reaction_summary_enabled
+      next unless recipient.is_reaction_summary
 
       # リアクション数を集計
       total_count = user_reactions.size
 
       # リアクションの種類別にカウント
-      reactions_by_kind = user_reactions.group_by(&:kind).transform_values(&:count)
+      reactions_by_stamp = user_reactions.group_by(&:stamp).transform_values(&:count)
 
       # 上位3種類のリアクションを取得
-      top_reactions = reactions_by_kind.sort_by { |_, count| -count }.take(3)
+      top_reactions = reactions_by_stamp.sort_by { |_, count| -count }.take(3)
 
       # 通知メッセージを作成
-      summary_text = top_reactions.map do |kind, count|
-        reaction = Reaction.new(kind: kind)
-        emoji = reaction.emoji || "?"  # emojiが取得できない場合は"?"
+      summary_text = top_reactions.map do |stamp, count|
+        reaction = Reaction.new(stamp: stamp)
+        emoji = reaction.emoji || "?" # emojiが取得できない場合は"?"
         "#{emoji}#{count}件"
       end.join(", ")
 
@@ -46,8 +46,8 @@ class ReactionSummaryService
       )
 
       # 通知ボックスにも保存（リマインダーは既読状態で作成）
-      recipient.notifications.create!(
-        notification_type: :reaction_summary,
+      recipient.reminder_logs.create!(
+        category: :reaction_summary,
         message: message_body,
         url: "/posts",
         read_at: Time.current

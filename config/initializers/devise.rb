@@ -18,10 +18,10 @@ Devise.setup do |config|
   # config.authentication_keys = [:email]
 
   # 大文字小文字を区別しないキー
-  config.case_insensitive_keys = [ :email ]
+  config.case_insensitive_keys = [:email]
 
   # 空白を削除するキー
-  config.strip_whitespace_keys = [ :email ]
+  config.strip_whitespace_keys = [:email]
 
   # パラメータ認証の有効化
   # config.params_authenticatable = true
@@ -35,7 +35,7 @@ Devise.setup do |config|
   # config.paranoid = true
 
   # セッションストレージのスキップ設定
-  config.skip_session_storage = [ :http_auth ]
+  config.skip_session_storage = [:http_auth]
 
   # CSRF トークンのクリーンアップ
   # config.clean_up_csrf_token_on_authentication = true

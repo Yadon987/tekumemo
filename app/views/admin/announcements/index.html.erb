@@ -30,7 +30,7 @@
 
       <!-- 種類フィルタ -->
       <div class="w-32">
-        <%= f.select :type, Announcement::ANNOUNCEMENT_TYPES.map { |k, v| [v, k] }, { include_blank: '全ての種類', selected: params[:type] }, { class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" } %>
+        <%= f.select :type, Announcement::PRIORITY_NAMES.map { |k, v| [v, k] }, { include_blank: '全ての種類', selected: params[:type] }, { class: "block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 sm:text-sm" } %>
       </div>
 
       <!-- ステータスフィルタ -->
@@ -86,7 +86,7 @@
 
             <!-- 種類 -->
             <td class="px-6 py-4 whitespace-nowrap">
-              <% case announcement.announcement_type %>
+              <% case announcement.priority %>
               <% when 'urgent' %>
                 <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
                   🚨 緊急

@@ -13,20 +13,20 @@ class ApplicationController < ActionController::Base
   # Deviseで許可する追加パラメータ
   def configure_permitted_parameters
     # サインアップ時に追加フィールドを許可する場合
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
 
     # アカウント更新時に追加フィールドを許可する場合
-    devise_parameter_sanitizer.permit(:account_update, keys: [
-      :name,
-      :target_distance,
-      :walk_reminder_enabled,
-      :walk_reminder_time,
-      :inactive_days_reminder_enabled,
-      :inactive_days_threshold,
-      :reaction_summary_enabled,
-      :avatar_type,
-      :uploaded_avatar
-    ])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[
+                                        name
+                                        goal_meters
+                                        is_walk_reminder
+                                        walk_reminder_time
+                                        is_inactive_reminder
+                                        inactive_days
+                                        is_reaction_summary
+                                        avatar_type
+                                        uploaded_avatar
+                                      ])
   end
 
   # ログイン後のリダイレクト先を指定
