@@ -14,9 +14,9 @@ RSpec.describe ReactionSummaryService, type: :service do
     context 'リアクションがある場合' do
       before do
         # 今日のリアクションを作成
-        create(:reaction, post: post, user: other_user, kind: 'thumbs_up', created_at: Time.current)
-        create(:reaction, post: post, user: other_user, kind: 'heart', created_at: Time.current)
-        create(:reaction, post: post, user: other_user, kind: 'sparkles', created_at: Time.current)
+        create(:reaction, post: post, user: other_user, stamp: 'thumbs_up', created_at: Time.current)
+        create(:reaction, post: post, user: other_user, stamp: 'heart', created_at: Time.current)
+        create(:reaction, post: post, user: other_user, stamp: 'sparkles', created_at: Time.current)
       end
 
       it '通知設定が有効なユーザーに通知を送信すること' do
@@ -33,19 +33,19 @@ RSpec.describe ReactionSummaryService, type: :service do
       it '通知ボックスに通知を作成すること' do
         expect do
           described_class.send_summaries
-        end.to change(Notification, :count).by(1)
+        end.to change(ReminderLog, :count).by(1)
 
-        notification = Notification.last
-        expect(notification.user).to eq(user)
-        expect(notification.category).to eq('reaction_summary')
-        expect(notification.read_at).not_to be_nil
+        reminder_log = ReminderLog.last
+        expect(reminder_log.user).to eq(user)
+        expect(reminder_log.category).to eq('reaction_summary')
+        expect(reminder_log.read_at).not_to be_nil
       end
     end
 
     context '通知設定が無効な場合' do
       before do
         user.update!(is_reaction_summary: false)
-        create(:reaction, post: post, user: other_user, kind: 'thumbs_up', created_at: Time.current)
+        create(:reaction, post: post, user: other_user, stamp: 'thumbs_up', created_at: Time.current)
       end
 
       it '通知を送信しないこと' do
@@ -63,7 +63,7 @@ RSpec.describe ReactionSummaryService, type: :service do
 
     context '過去のリアクションのみの場合' do
       before do
-        create(:reaction, post: post, user: other_user, kind: 'thumbs_up', created_at: 1.day.ago)
+        create(:reaction, post: post, user: other_user, stamp: 'thumbs_up', created_at: 1.day.ago)
       end
 
       it '通知を送信しないこと' do

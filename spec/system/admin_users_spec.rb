@@ -42,8 +42,8 @@ RSpec.describe 'Admin::Users', type: :system do
       Walk.where(user: general_user).delete_all
       Post.where(user: general_user).delete_all
 
-      # 画面サイズを明示的に設定（レスポンシブ表示によるズレ防止）
-      page.current_window.resize_to(1400, 900)
+      # 画面サイズリサイズを削除（負荷軽減）
+      # page.current_window.resize_to(1400, 900)
 
       # 削除対象のユーザー行を特定
       user_row = find('tr', text: general_user.email)
@@ -57,6 +57,7 @@ RSpec.describe 'Admin::Users', type: :system do
 
         # 削除リンクがクリック可能になるまで待機
         expect(delete_link).to be_visible
+        sleep 0.5 # 描画安定待ち
 
         # ダイアログを受け入れてクリック
         accept_confirm do

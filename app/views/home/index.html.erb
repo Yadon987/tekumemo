@@ -19,7 +19,7 @@
         <p class="text-4xl font-black drop-shadow-lg">
           <span data-controller="counter"
                 class="inline-block bg-gradient-to-b from-white via-blue-50 to-blue-200 bg-clip-text text-transparent"
-                data-counter-target-value="<%= ((@today_walk&.distance || 0).to_f * 1000).to_i %>">0
+                data-counter-target-value="<%= ((@today_walk&.kilometers || 0).to_f * 1000).to_i %>">0
           </span>
           <span class="text-base font-medium ml-1 text-blue-100/80">m</span>
         </p>
@@ -35,7 +35,7 @@
 
       <!-- 距離のプログレスバー -->
       <div class="relative z-10 w-full bg-white/50 dark:bg-white/20 rounded-full h-2.5 my-4 overflow-hidden">
-        <div class="relative bg-gradient-to-r from-lime-300 to-green-400 dark:from-cyan-400 dark:to-blue-500 h-2.5 rounded-full shadow-md overflow-hidden" style="width: <%= (((@today_walk&.distance || 0).to_f * 1000) / [current_user.goal_meters.to_f, 1.0].max * 100).clamp(0, 100) %>%">
+        <div class="relative bg-gradient-to-r from-lime-300 to-green-400 dark:from-cyan-400 dark:to-blue-500 h-2.5 rounded-full shadow-md overflow-hidden" style="width: <%= (((@today_walk&.kilometers || 0).to_f * 1000) / [current_user.goal_meters.to_f, 1.0].max * 100).clamp(0, 100) %>%">
           <!-- シマーエフェクト -->
           <div class="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"></div>
         </div>
@@ -54,7 +54,7 @@
         <div class="flex items-center space-x-2">
           <span class="material-symbols-outlined text-4xl text-blue-50 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-400 dark:to-red-500 dark:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse-fast text-shadow">local_fire_department</span>
           <div>
-            <p class="font-bold text-lg text-blue-50 drop-shadow-sm"><%= number_with_delimiter(@today_walk&.calories_burned || 0) %> <span class="text-sm font-normal text-blue-200/80">kcal</span></p>
+            <p class="font-bold text-lg text-blue-50 drop-shadow-sm"><%= number_with_delimiter(@today_walk&.calories || 0) %> <span class="text-sm font-normal text-blue-200/80">kcal</span></p>
           </div>
         </div>
       </div>
@@ -252,9 +252,9 @@
                 <span class="text-xs text-gray-400 whitespace-nowrap"><%= time_ago_in_words(@latest_post.created_at) %>前</span>
               </div>
 
-              <% if @latest_post.body.present? %>
+              <% if @latest_post.content.present? %>
                 <div class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mt-1 leading-relaxed">
-                  <%= @latest_post.body %>
+                  <%= @latest_post.content %>
                 </div>
               <% else %>
                 <%# 本文がない場合は天気や気分を大きく中央に表示 %>
@@ -301,7 +301,7 @@
     <!-- 運営からのお知らせ（大地カラー） -->
     <% if @announcements.any? %>
       <div class="block mt-6">
-        <%= link_to notifications_path, class: "block relative bg-gradient-to-br from-white/90 to-orange-50/90 dark:from-stone-900 dark:to-stone-950 backdrop-blur-xl border-2 border-white/60 dark:border-stone-800 dark:border-t-white/40 p-5 rounded-[3.75rem] shadow-[inset_2px_2px_0_rgba(249,115,22,0.15),15px_15px_40px_rgba(249,115,22,0.15),-15px_-15px_40px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(249,115,22,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9)] hover:shadow-xl dark:shadow-[0_0_20px_rgba(249,115,22,0.25),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] hover:dark:shadow-[0_0_40px_rgba(249,115,22,0.4),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 hover:scale-105 overflow-hidden group before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse" do %>
+        <%= link_to reminder_logs_path, class: "block relative bg-gradient-to-br from-white/90 to-orange-50/90 dark:from-stone-900 dark:to-stone-950 backdrop-blur-xl border-2 border-white/60 dark:border-stone-800 dark:border-t-white/40 p-5 rounded-[3.75rem] shadow-[inset_2px_2px_0_rgba(249,115,22,0.15),15px_15px_40px_rgba(249,115,22,0.15),-15px_-15px_40px_rgba(255,255,255,0.8),inset_-5px_-5px_15px_rgba(249,115,22,0.05),inset_5px_5px_15px_rgba(255,255,255,0.9)] hover:shadow-xl dark:shadow-[0_0_20px_rgba(249,115,22,0.25),inset_0_0_0_1px_rgba(255,255,255,0.1),inset_0_1px_0_rgba(255,255,255,0.3)] hover:dark:shadow-[0_0_40px_rgba(249,115,22,0.4),inset_0_0_0_1px_rgba(255,255,255,0.3)] transition-all duration-300 hover:scale-105 overflow-hidden group before:absolute before:inset-x-0 before:top-0 before:h-[45%] before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-t-[3.75rem] before:pointer-events-none before:animate-pulse" do %>
           <!-- 背景装飾（巨大アイコン） -->
           <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-amber-200/30 dark:text-orange-500/10 transform rotate-12 transition-transform duration-500 group-hover:rotate-6 pointer-events-none">campaign</span>
 
@@ -310,9 +310,9 @@
             <div class="flex items-center space-x-2">
               <div class="relative bg-white/60 dark:bg-white/10 p-2 rounded-full backdrop-blur-sm shadow-sm group-hover:bg-white/80 dark:group-hover:bg-white/20 transition-all duration-300 group-hover:scale-110">
                 <span class="material-symbols-outlined text-amber-600 dark:text-orange-200 text-xl">notifications_active</span>
-                <% if current_user && current_user.unread_notifications_count > 0 %>
+                <% if current_user && current_user.unread_reminder_logs_count > 0 %>
                   <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md animate-pulse">
-                    <%= current_user.unread_notifications_count %>
+                    <%= current_user.unread_reminder_logs_count %>
                   </span>
                 <% end %>
               </div>

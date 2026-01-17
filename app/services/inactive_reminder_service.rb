@@ -27,7 +27,7 @@ class InactiveReminderService
         )
 
         # 通知ボックスにも保存（リマインダーは既読状態で作成）
-        user.notifications.create!(
+        user.reminder_logs.create!(
           category: :inactive_reminder,
           message: message_body,
           url: "/walks/new",

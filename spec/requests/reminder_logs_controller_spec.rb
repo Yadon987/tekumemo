@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe 'Notifications', type: :request do
+RSpec.describe 'ReminderLogs', type: :request do
   let(:user) { create(:user) }
-  let!(:notification) { create(:notification, user: user, read_at: nil, category: :inactive_reminder, message: 'テストメッセージ') }
+  let!(:reminder_log) { create(:reminder_log, user: user, read_at: nil, category: :inactive_reminder, message: 'テストメッセージ') }
 
   before do
     sign_in user
@@ -11,9 +11,9 @@ RSpec.describe 'Notifications', type: :request do
   describe 'GET /notifications' do
     it '通知一覧が表示されること' do
       # リマインダータブを表示
-      get notifications_path(tab: 'reminders')
+      get reminder_logs_path(tab: 'reminders')
       expect(response).to have_http_status(:success)
-      expect(response.body).to include(notification.body)
+      expect(response.body).to include(reminder_log.body)
     end
   end
 
@@ -27,9 +27,9 @@ RSpec.describe 'Notifications', type: :request do
     end
 
     it '未読通知が既読になること' do
-      patch mark_as_read_notification_path(notification)
-      expect(notification.reload.read_at).not_to be_nil
-      expect(response).to redirect_to(notifications_path)
+      patch mark_as_read_reminder_log_path(reminder_log)
+      expect(reminder_log.reload.read_at).not_to be_nil
+      expect(response).to redirect_to(reminder_logs_path)
     end
   end
 end

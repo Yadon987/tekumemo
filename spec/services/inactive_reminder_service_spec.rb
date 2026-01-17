@@ -31,11 +31,11 @@ RSpec.describe InactiveReminderService, type: :service do
       it '通知ボックスに通知を作成すること' do
         expect do
           described_class.send_reminders
-        end.to change(Notification, :count).by(1)
+        end.to change(ReminderLog, :count).by(1)
 
-        notification = Notification.last
-        expect(notification.user).to eq(user)
-        expect(notification.category).to eq('inactive_reminder')
+        reminder_log = ReminderLog.last
+        expect(reminder_log.user).to eq(user)
+        expect(reminder_log.category).to eq('inactive_reminder')
       end
     end
 

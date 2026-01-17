@@ -61,7 +61,7 @@ RSpec.describe 'Home', type: :system, js: true do
         FactoryBot.create(:walk,
                           user: user,
                           walked_on: Date.current,
-                          distance: 5.5,
+                          kilometers: 5.5,
                           steps: 8000)
         visit root_path # リロードして反映
       end

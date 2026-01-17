@@ -4,14 +4,14 @@ class Reaction < ApplicationRecord
   belongs_to :post, touch: true
 
   # バリデーション（データの検証ルール）
-  validates :kind, presence: true # リアクションの種類（kind）は必須
+  validates :stamp, presence: true # スタンプの種類は必須
   validates :user_id, uniqueness: {
-    scope: %i[post_id kind],
+    scope: %i[post_id stamp],
     message: "は同じ投稿に同じリアクションを複数回つけられません"
   }
 
   # enum（整数値に名前をつける機能）
-  enum :kind, {
+  enum :stamp, {
     thumbs_up: 0,      # 👍 いいね
     heart: 1,          # ❤️ 素敵
     bulb: 2,           # 💡 参考になる
@@ -28,7 +28,7 @@ class Reaction < ApplicationRecord
 
   # インスタンスメソッド（各リアクションが持つ機能）
   def emoji
-    case kind.to_sym
+    case stamp.to_sym
     when :thumbs_up then "👍"
     when :heart then "❤️"
     when :bulb then "💡"
@@ -46,7 +46,7 @@ class Reaction < ApplicationRecord
 
   # リアクションのラベルを返す（日本語）
   def label
-    case kind.to_sym
+    case stamp.to_sym
     when :thumbs_up then "いいね"
     when :heart then "素敵"
     when :bulb then "参考になる"
@@ -62,13 +62,13 @@ class Reaction < ApplicationRecord
     end
   end
 
-  # クラスメソッドで全リアクション種類を配列で返す（ビューで使用）
-  # 例: [{ kind: :thumbs_up, emoji: "👍", label: "いいね" }, ...]
-  def self.all_kinds
-    kinds.keys.map do |kind_key|
-      reaction = new(kind: kind_key)
+  # クラスメソッドで全スタンプ種類を配列で返す（ビューで使用）
+  # 例: [{ stamp: :thumbs_up, emoji: "👍", label: "いいね" }, ...]
+  def self.all_stamps
+    stamps.keys.map do |stamp_key|
+      reaction = new(stamp: stamp_key)
       {
-        kind: kind_key,
+        stamp: stamp_key,
         emoji: reaction.emoji,
         label: reaction.label
       }

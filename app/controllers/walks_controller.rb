@@ -186,10 +186,10 @@ class WalksController < ApplicationController
     is_new_record = walk.new_record?
 
     walk.assign_attributes(
-      distance: distance,
+      kilometers: distance,
       steps: steps,
-      duration: duration,
-      calories_burned: calories,
+      minutes: duration,
+      calories: calories,
       location: %w[近所の公園 河川敷 商店街 隣町まで 海沿い 近所のスーパー].sample,
       notes: nil,
       daypart: Walk.dayparts.keys.sample
@@ -217,7 +217,7 @@ class WalksController < ApplicationController
   # フォームから送信されたパラメータを許可するメソッド
   # セキュリティのため、必要なパラメータだけを許可する
   def walk_params
-    params.require(:walk).permit(:walked_on, :duration, :distance, :steps, :calories_burned, :location, :notes,
+    params.require(:walk).permit(:walked_on, :minutes, :kilometers, :steps, :calories, :location, :notes,
                                  :daypart)
   end
 end

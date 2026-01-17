@@ -40,7 +40,7 @@ RSpec.describe 'UI Components', type: :system, js: true do
   describe 'ドラッグスクロール (統計ページ)' do
     before do
       # 統計データを作成 (称号を表示させるため)
-      create(:walk, user: user, walked_on: Date.current, distance: 5.0)
+      create(:walk, user: user, walked_on: Date.current, kilometers: 5.0)
       visit stats_path
     end
 

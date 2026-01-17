@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'SNS機能', type: :system, js: true do
   let(:user) { create(:user) }
-  let!(:other_post) { create(:post, body: '他人の投稿です') }
+  let!(:other_post) { create(:post, content: '他人の投稿です') }
 
   before do
     login_as(user, scope: :user)
@@ -24,7 +24,7 @@ RSpec.describe 'SNS機能', type: :system, js: true do
           # 気分を選択（great）
           find('label', text: '最高', visible: true).click
           # 本文を入力
-          fill_in 'post[body]', with: 'テスト投稿です！'
+          fill_in 'post[content]', with: 'テスト投稿です！'
 
           # 送信
           click_button '投稿する'
@@ -83,7 +83,7 @@ RSpec.describe 'SNS機能', type: :system, js: true do
   end
 
   describe '投稿の削除' do
-    let!(:my_post) { create(:post, user: user, body: '削除する投稿') }
+    let!(:my_post) { create(:post, user: user, content: '削除する投稿') }
 
     it '自分の投稿は削除できること' do
       visit posts_path

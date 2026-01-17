@@ -1,4 +1,4 @@
-class Notification < ApplicationRecord
+class ReminderLog < ApplicationRecord
   belongs_to :user
   belongs_to :announcement, optional: true
 
@@ -20,7 +20,7 @@ class Notification < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
   # お知らせの公開日順に並べ替え
   scope :ordered_by_announcement, lambda {
-    joins(:announcement).order("announcements.published_at DESC, notifications.created_at DESC")
+    joins(:announcement).order("announcements.published_at DESC, reminder_logs.created_at DESC")
   }
   # リマインダー通知のみ
   scope :reminders, -> { where(category: %i[inactive_reminder reaction_summary]) }
@@ -51,7 +51,7 @@ class Notification < ApplicationRecord
   # 通知の本文を取得
   def body
     if category_announcement?
-      announcement&.body
+      announcement&.content
     else
       message
     end

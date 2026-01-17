@@ -12,7 +12,7 @@ RSpec.describe Post, type: :model do
 
     context '異常系' do
       it '本文、天気、気分、散歩記録のすべてがない場合は無効であること' do
-        post.body = nil
+        post.content = nil
         post.weather = nil
         post.feeling = nil
         post.walk = nil
@@ -21,9 +21,9 @@ RSpec.describe Post, type: :model do
       end
 
       it '本文(body)が200文字を超える場合は無効であること' do
-        post.body = 'a' * 201
+        post.content = 'a' * 201
         expect(post).to be_invalid
-        expect(post.errors[:body]).to include('は200文字以内で入力してください')
+        expect(post.errors[:content]).to include('は200文字以内で入力してください')
       end
     end
   end

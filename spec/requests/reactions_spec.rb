@@ -9,7 +9,7 @@ RSpec.describe 'Reactions', type: :request do
 
   describe 'POST /posts/:post_id/reactions' do
     context '有効なパラメータの場合' do
-      let(:reaction_params) { { reaction: { kind: 'thumbs_up' } } }
+      let(:reaction_params) { { reaction: { stamp: 'thumbs_up' } } }
 
       it 'リアクションが作成されること' do
         expect do
@@ -42,19 +42,19 @@ RSpec.describe 'Reactions', type: :request do
 
     context '重複するリアクションの場合（トグル動作）' do
       before do
-        FactoryBot.create(:reaction, user: user, post: post_item, kind: 'thumbs_up')
+        FactoryBot.create(:reaction, user: user, post: post_item, stamp: 'thumbs_up')
       end
 
       it 'リアクションが削除されること' do
         expect do
-          post post_reactions_path(post_item), params: { reaction: { kind: 'thumbs_up' } },
+          post post_reactions_path(post_item), params: { reaction: { stamp: 'thumbs_up' } },
                                                headers: { 'Accept' => 'text/vnd.turbo-stream.html' }
         end.to change(Reaction, :count).by(-1)
       end
 
       it 'JSON形式でリクエストすると、削除後のステータスがJSON形式で返ること' do
         post post_reactions_path(post_item),
-             params: { reaction: { kind: 'thumbs_up' } },
+             params: { reaction: { stamp: 'thumbs_up' } },
              headers: { 'Accept' => 'application/json', 'Content-Type' => 'application/json' },
              as: :json
 
@@ -69,7 +69,7 @@ RSpec.describe 'Reactions', type: :request do
   end
 
   describe 'DELETE /posts/:post_id/reactions/:id' do
-    let!(:reaction) { FactoryBot.create(:reaction, user: user, post: post_item, kind: 'thumbs_up') }
+    let!(:reaction) { FactoryBot.create(:reaction, user: user, post: post_item, stamp: 'thumbs_up') }
 
     it 'リアクションを削除できること' do
       # ID指定での削除

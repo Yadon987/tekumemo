@@ -8,7 +8,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
 
     # 既存データのクリーンアップ（依存関係順に削除）
     Reaction.delete_all
-    Notification.delete_all
+    ReminderLog.delete_all
     UserAchievement.delete_all
     Post.delete_all
     Walk.delete_all
@@ -23,7 +23,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
       avatar_type: :default
     )
     # 距離データを紐付け（ランキング入りさせる）
-    Walk.create!(user: @general_user, walked_on: Time.zone.today, distance: 10.0, steps: 10_000, duration: 60)
+    Walk.create!(user: @general_user, walked_on: Time.zone.today, kilometers: 10.0, steps: 10_000, minutes: 60)
 
     # ゲストユーザー作成（ヘルパー経由だとDBロック怖いので直接作成）
     @guest_user = User.create!(
@@ -33,7 +33,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
       role: :guest,
       avatar_type: :default
     )
-    Walk.create!(user: @guest_user, walked_on: Time.zone.today, distance: 5.0, steps: 5000, duration: 30)
+    Walk.create!(user: @guest_user, walked_on: Time.zone.today, kilometers: 5.0, steps: 5000, minutes: 30)
   end
 
   context 'Posts Timeline' do
@@ -48,7 +48,7 @@ RSpec.describe 'Guest Mode Enhancements', type: :system do
 
     it 'prevents guest from reacting' do
       # 投稿を作成
-      post = Post.create!(user: @general_user, body: 'Test Post')
+      post = Post.create!(user: @general_user, content: 'Test Post')
       sign_in @guest_user
       visit posts_path
 

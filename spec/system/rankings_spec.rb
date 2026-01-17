@@ -11,9 +11,9 @@ RSpec.describe 'Rankings', type: :system, js: true do
       # ユーザーとライバル1、ライバル2が全員同じ距離（10km）を歩いたとする
       # User.rankingの仕様上、同距離の場合はID順などで順位が決まるが、
       # ここでは全員が表示され、距離が正しいことを確認する
-      create(:walk, user: user, walked_on: Date.current, distance: 10.0, duration: 60)
-      create(:walk, user: other_user, walked_on: Date.current, distance: 10.0, duration: 60)
-      create(:walk, user: rival2, walked_on: Date.current, distance: 10.0, duration: 60)
+      create(:walk, user: user, walked_on: Date.current, kilometers: 10.0, minutes: 60)
+      create(:walk, user: other_user, walked_on: Date.current, kilometers: 10.0, minutes: 60)
+      create(:walk, user: rival2, walked_on: Date.current, kilometers: 10.0, minutes: 60)
 
       # キャッシュクリア
       Rails.cache.clear

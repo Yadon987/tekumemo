@@ -21,10 +21,10 @@ RSpec.describe 'Walks', type: :system, js: true do
       fill_in 'walk_walked_on', with: Date.current.strftime('%Y-%m-%d')
 
       fill_in 'walk_location', with: 'テスト公園'
-      fill_in 'walk_distance', with: '5.5'
-      fill_in 'walk_duration', with: '60'
+      fill_in 'walk_kilometers', with: '5.5'
+      fill_in 'walk_minutes', with: '60'
       fill_in 'walk_steps', with: '8000'
-      fill_in 'walk_calories_burned', with: '300'
+      fill_in 'walk_calories', with: '300'
       fill_in 'walk_notes', with: 'テスト散歩の記録です'
 
       click_button '保存する'
@@ -42,7 +42,7 @@ RSpec.describe 'Walks', type: :system, js: true do
       User.create!(email: 'edit_test@example.com', password: 'password123', name: '編集太郎', goal_meters: 5000)
     end
     let!(:walk) do
-      Walk.create!(user: user, walked_on: Date.current, distance: 3.0, duration: 30, steps: 3000, calories_burned: 150,
+      Walk.create!(user: user, walked_on: Date.current, kilometers: 3.0, minutes: 30, steps: 3000, calories: 150,
                    location: '編集前の場所')
     end
 
@@ -72,7 +72,7 @@ RSpec.describe 'Walks', type: :system, js: true do
       User.create!(email: 'delete_test@example.com', password: 'password123', name: '削除太郎', goal_meters: 5000)
     end
     let!(:walk) do
-      Walk.create!(user: user, walked_on: Date.current, distance: 3.0, duration: 30, steps: 3000, calories_burned: 150,
+      Walk.create!(user: user, walked_on: Date.current, kilometers: 3.0, minutes: 30, steps: 3000, calories: 150,
                    location: '削除する場所')
     end
 
@@ -106,10 +106,10 @@ RSpec.describe 'Walks', type: :system, js: true do
         Walk.create!(
           user: user,
           walked_on: Date.current - i.days,
-          distance: 1.0,
-          duration: 30,
+          kilometers: 1.0,
+          minutes: 30,
           steps: 1000,
-          calories_burned: 50,
+          calories: 50,
           location: "場所#{i}"
         )
       end

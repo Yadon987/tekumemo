@@ -12,7 +12,7 @@ RSpec.describe Walk, type: :model do
       end
 
       it '歩数とカロリーは空でも有効であること' do
-        walk = FactoryBot.build(:walk, user: user, steps: nil, calories_burned: nil)
+        walk = FactoryBot.build(:walk, user: user, steps: nil, calories: nil)
         expect(walk).to be_valid
       end
     end
@@ -24,33 +24,33 @@ RSpec.describe Walk, type: :model do
         expect(walk.errors[:walked_on]).to include('を入力してください')
       end
 
-      it '時間(duration)がない場合は無効であること' do
-        walk = FactoryBot.build(:walk, user: user, duration: nil)
+      it '時間(minutes)がない場合は無効であること' do
+        walk = FactoryBot.build(:walk, user: user, minutes: nil)
         expect(walk).to be_invalid
-        expect(walk.errors[:duration]).to include('を入力してください')
+        expect(walk.errors[:minutes]).to include('を入力してください')
       end
 
-      it '距離(distance)がない場合は無効であること' do
-        walk = FactoryBot.build(:walk, user: user, distance: nil)
+      it '距離(kilometers)がない場合は無効であること' do
+        walk = FactoryBot.build(:walk, user: user, kilometers: nil)
         expect(walk).to be_invalid
-        expect(walk.errors[:distance]).to include('を入力してください')
+        expect(walk.errors[:kilometers]).to include('を入力してください')
       end
     end
 
     context '数値の検証' do
-      it '時間(duration)は0より大きい整数であること' do
-        walk = FactoryBot.build(:walk, user: user, duration: 0)
+      it '時間(minutes)は0より大きい整数であること' do
+        walk = FactoryBot.build(:walk, user: user, minutes: 0)
         expect(walk).to be_invalid
 
-        walk.duration = 1.5 # 整数のみ
+        walk.minutes = 1.5 # 整数のみ
         expect(walk).to be_invalid
       end
 
-      it '距離(distance)は0より大きい数値であること' do
-        walk = FactoryBot.build(:walk, user: user, distance: 0)
+      it '距離(kilometers)は0より大きい数値であること' do
+        walk = FactoryBot.build(:walk, user: user, kilometers: 0)
         expect(walk).to be_invalid
 
-        walk.distance = 0.1 # 小数はOK
+        walk.kilometers = 0.1 # 小数はOK
         expect(walk).to be_valid
       end
 

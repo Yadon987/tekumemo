@@ -95,13 +95,13 @@
               <%= l walk.walked_on, format: :long %>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm">
-              <% if walk.distance > 50 %>
+              <% if walk.kilometers > 50 %>
                 <span class="text-red-600 dark:text-red-400 font-bold">
-                  <%= number_with_delimiter(walk.distance) %>km
+                  <%= number_with_delimiter(walk.kilometers) %>km
                 </span>
               <% else %>
                 <span class="text-gray-900 dark:text-white">
-                  <%= number_with_delimiter(walk.distance) %>km
+                  <%= number_with_delimiter(walk.kilometers) %>km
                 </span>
               <% end %>
             </td>

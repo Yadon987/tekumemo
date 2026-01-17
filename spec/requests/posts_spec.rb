@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe 'Posts', type: :request do
   let(:user) { FactoryBot.create(:user) }
   let(:other_user) { FactoryBot.create(:user) }
-  let(:my_post) { FactoryBot.create(:post, user: user, body: '自分の投稿') }
-  let(:other_post) { FactoryBot.create(:post, user: other_user, body: '他人の投稿') }
+  let(:my_post) { FactoryBot.create(:post, user: user, content: '自分の投稿') }
+  let(:other_post) { FactoryBot.create(:post, user: other_user, content: '他人の投稿') }
 
   describe 'GET /posts' do
     context 'ログインしている場合' do

@@ -19,7 +19,7 @@ class ReactionsController < ApplicationController
     end
 
     # 既に同じリアクションがあるか確認
-    @reaction = @post.reactions.find_by(user: current_user, kind: reaction_params[:kind])
+    @reaction = @post.reactions.find_by(user: current_user, stamp: reaction_params[:stamp])
 
     if @reaction
       # 既にある場合は削除（トグル動作）
@@ -46,7 +46,7 @@ class ReactionsController < ApplicationController
       format.json do
         render json: {
           reacted: @action == "added",
-          count: @post.reactions.where(kind: reaction_params[:kind]).count
+          count: @post.reactions.where(stamp: reaction_params[:stamp]).count
         }
       end
       # Turbo Stream: リアクションボタンのみ更新（既存機能維持）
@@ -92,6 +92,6 @@ class ReactionsController < ApplicationController
 
   # 許可するパラメータ
   def reaction_params
-    params.require(:reaction).permit(:kind)
+    params.require(:reaction).permit(:stamp)
   end
 end

@@ -132,17 +132,17 @@ RSpec.describe User, type: :model do
         # 1/15(木)の週: 1/12(月) - 1/18(日)
 
         # User A: 今日(15日) 5km + 昨日(14日) 3km = 8km
-        FactoryBot.create(:walk, user: user_a, walked_on: Date.current, distance: 5.0)
-        FactoryBot.create(:walk, user: user_a, walked_on: 1.day.ago, distance: 3.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: Date.current, kilometers: 5.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: 1.day.ago, kilometers: 3.0)
 
         # User B: 今日(15日) 10km
-        FactoryBot.create(:walk, user: user_b, walked_on: Date.current, distance: 10.0)
+        FactoryBot.create(:walk, user: user_b, walked_on: Date.current, kilometers: 10.0)
 
         # User C: 昨日(14日) 20km
-        FactoryBot.create(:walk, user: user_c, walked_on: 1.day.ago, distance: 20.0)
+        FactoryBot.create(:walk, user: user_c, walked_on: 1.day.ago, kilometers: 20.0)
 
         # 範囲外のデータ（先月）
-        FactoryBot.create(:walk, user: user_a, walked_on: 1.month.ago, distance: 10.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: 1.month.ago, kilometers: 10.0)
 
         ranking = User.ranking(period: 'weekly')
 
@@ -163,12 +163,12 @@ RSpec.describe User, type: :model do
         last_month = 1.month.ago.beginning_of_month
 
         # User A: 1/2に5km (範囲内)
-        FactoryBot.create(:walk, user: user_a, walked_on: current_month + 1.day, distance: 5.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: current_month + 1.day, kilometers: 5.0)
         # 範囲外（先月）
-        FactoryBot.create(:walk, user: user_a, walked_on: last_month + 1.day, distance: 10.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: last_month + 1.day, kilometers: 10.0)
 
         # User B: 1/3に10km (範囲内)
-        FactoryBot.create(:walk, user: user_b, walked_on: current_month + 2.days, distance: 10.0)
+        FactoryBot.create(:walk, user: user_b, walked_on: current_month + 2.days, kilometers: 10.0)
 
         ranking = User.ranking(period: 'monthly')
 
@@ -186,12 +186,12 @@ RSpec.describe User, type: :model do
         last_year = 1.year.ago.beginning_of_year
 
         # User A: 1/2に5km (範囲内)
-        FactoryBot.create(:walk, user: user_a, walked_on: current_year + 1.day, distance: 5.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: current_year + 1.day, kilometers: 5.0)
         # 範囲外（去年）
-        FactoryBot.create(:walk, user: user_a, walked_on: last_year + 1.day, distance: 10.0)
+        FactoryBot.create(:walk, user: user_a, walked_on: last_year + 1.day, kilometers: 10.0)
 
         # User B: 1/3に10km (範囲内)
-        FactoryBot.create(:walk, user: user_b, walked_on: current_year + 2.days, distance: 10.0)
+        FactoryBot.create(:walk, user: user_b, walked_on: current_year + 2.days, kilometers: 10.0)
 
         ranking = User.ranking(period: 'yearly')
 

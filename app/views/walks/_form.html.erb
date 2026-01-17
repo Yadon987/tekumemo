@@ -137,7 +137,7 @@
     <div class="grid grid-cols-2 gap-4 sm:gap-6">
       <!-- 距離 -->
       <div>
-        <%= form.label :distance, class: "flex items-center text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" do %>
+        <%= form.label :kilometers, class: "flex items-center text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" do %>
           <span>距離</span>
           <span class="ml-2 bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 text-[10px] px-2 py-0.5 rounded-full font-bold">必須</span>
         <% end %>
@@ -145,8 +145,8 @@
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <span class="material-symbols-outlined text-gray-400 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-emerald-300 dark:to-green-300 dark:drop-shadow-[0_0_8px_rgba(16,185,129,0.8)] group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">route</span>
           </div>
-          <%= form.number_field :distance,
-              id: "walk_distance",
+          <%= form.number_field :kilometers,
+              id: "walk_kilometers",
               step: 0.01,
               data: { google_fit_target: "distance" },
               placeholder: "0.0",
@@ -159,7 +159,7 @@
 
       <!-- 時間 -->
       <div>
-        <%= form.label :duration, class: "flex items-center text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" do %>
+        <%= form.label :minutes, class: "flex items-center text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" do %>
           <span>時間</span>
           <span class="ml-2 bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 text-[10px] px-2 py-0.5 rounded-full font-bold">必須</span>
         <% end %>
@@ -167,8 +167,8 @@
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <span class="material-symbols-outlined text-gray-400 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-cyan-300 dark:to-blue-300 dark:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)] group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">schedule</span>
           </div>
-          <%= form.number_field :duration,
-              id: "walk_duration",
+          <%= form.number_field :minutes,
+              id: "walk_minutes",
               data: { google_fit_target: "duration" },
               placeholder: "0",
               class: "block w-full pl-12 pr-12 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-cyan-500 dark:focus:shadow-[0_0_15px_rgba(6,182,212,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-lg sm:text-xl font-bold text-right" %>
@@ -198,13 +198,13 @@
 
       <!-- カロリー -->
       <div>
-        <%= form.label :calories_burned, "カロリー", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
+        <%= form.label :calories, "カロリー", class: "block text-sm font-bold text-gray-500 dark:text-slate-400 mb-1 ml-1" %>
         <div class="relative group">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <span class="material-symbols-outlined text-gray-400 dark:!text-transparent dark:!bg-clip-text dark:bg-gradient-to-br dark:from-orange-300 dark:to-red-300 dark:drop-shadow-[0_0_8px_rgba(251,146,60,0.8)] group-focus-within:text-cyan-500 dark:group-focus-within:text-cyan-400 transition-colors">local_fire_department</span>
           </div>
-          <%= form.number_field :calories_burned,
-              id: "walk_calories_burned",
+          <%= form.number_field :calories,
+              id: "walk_calories",
               data: { google_fit_target: "calories" },
               placeholder: "0",
               class: "block w-full pl-12 pr-16 bg-white/50 dark:bg-slate-900/50 border-2 border-white/60 dark:border-slate-700 rounded-[3.75rem] focus:ring-0 focus:border-cyan-500 dark:focus:border-rose-500 dark:focus:shadow-[0_0_15px_rgba(244,63,94,0.3)] text-gray-900 dark:text-white placeholder-gray-400 transition-all shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-none text-lg sm:text-xl font-bold text-right" %>

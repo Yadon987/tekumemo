@@ -1,6 +1,6 @@
 class Announcement < ApplicationRecord
   # 関連付け
-  has_many :notifications, dependent: :destroy
+  has_many :reminder_logs, dependent: :destroy
 
   # バリデーション
   # バリデーション
@@ -9,9 +9,10 @@ class Announcement < ApplicationRecord
   validates :priority, presence: true
 
   # コールバック: 公開時に全ユーザーに通知を作成
-  after_commit :create_notifications_for_users, on: %i[create update], if: :should_create_notifications?
+  after_commit :create_reminder_logs_for_users, on: %i[create update], if: :should_create_reminder_logs?
 
   # お知らせの種類 (Enum)
+  attribute :priority, :integer
   enum :priority, { info: 0, warning: 1, urgent: 2 }, default: :info
 
   # 日本語名への変換用定数（View等で使用）
@@ -44,15 +45,15 @@ class Announcement < ApplicationRecord
   private
 
   # 通知を作成すべきかどうか
-  def should_create_notifications?
+  def should_create_reminder_logs?
     # 公開状態に変更された場合のみ通知を作成
     saved_change_to_is_published? && is_published?
   end
 
   # 全ユーザーに通知を作成
-  def create_notifications_for_users
+  def create_reminder_logs_for_users
     User.find_each do |user|
-      notifications.find_or_create_by!(user: user)
+      reminder_logs.find_or_create_by!(user: user)
     rescue ActiveRecord::RecordNotUnique
       # ユニークインデックス違反 = すでに通知が存在するためスキップ
       Rails.logger.debug "Notification already exists for user #{user.id} and announcement #{id}"

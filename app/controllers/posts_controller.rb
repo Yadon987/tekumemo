@@ -81,6 +81,6 @@ class PostsController < ApplicationController
 
   # 許可するパラメータを指定
   def post_params
-    params.require(:post).permit(:body, :weather, :feeling, :walk_id)
+    params.require(:post).permit(:content, :weather, :feeling, :walk_id)
   end
 end

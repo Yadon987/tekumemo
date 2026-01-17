@@ -12,7 +12,7 @@
     <%# タブナビゲーション %>
     <div class="mb-6">
       <div class="bg-white/70 dark:bg-slate-900/40 backdrop-blur-md rounded-3xl border-2 border-white/60 dark:border-white/10 dark:border-t-white/40 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_30px_rgba(99,102,241,0.15)] p-1 flex gap-1 relative overflow-hidden">
-        <%= link_to notifications_path(tab: 'announcements'),
+        <%= link_to reminder_logs_path(tab: 'announcements'),
                     class: "flex-1 py-3 px-4 rounded-lg font-medium transition-all text-center #{@tab == 'announcements' ? 'bg-blue-500 text-white shadow-md' : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-white/10'}" do %>
           <div class="flex items-center justify-center gap-2">
             <span class="material-symbols-outlined text-xl">campaign</span>
@@ -23,7 +23,7 @@
           </div>
         <% end %>
 
-        <%= link_to notifications_path(tab: 'reminders'),
+        <%= link_to reminder_logs_path(tab: 'reminders'),
                     class: "flex-1 py-3 px-4 rounded-lg font-medium transition-all text-center #{@tab == 'reminders' ? 'bg-purple-500 text-white shadow-md' : 'text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-white/10'}" do %>
           <div class="flex items-center justify-center gap-2">
             <span class="material-symbols-outlined text-xl">notifications_active</span>
@@ -39,7 +39,7 @@
         <p class="text-gray-600 dark:text-gray-300">
           未読: <span class="font-bold text-blue-600 dark:text-cyan-400"><%= @announcement_unread_count %></span>件
         </p>
-        <%= button_to '全て既読にする', mark_all_as_read_notifications_path,
+        <%= button_to '全て既読にする', mark_all_as_read_reminder_logs_path,
                       method: :patch,
                       class: 'px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-cyan-400 dark:to-blue-500 hover:-translate-y-0.5 active:scale-95 text-white rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_8px_20px_rgba(59,130,246,0.3),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(59,130,246,0.5),inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-[0_0_20px_rgba(34,211,238,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_40px_rgba(34,211,238,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] text-sm transition-all duration-300',
                       data: { turbo_confirm: '全ての通知を既読にしますか？' } %>
@@ -48,47 +48,47 @@
 
     <%# 通知リスト %>
     <div class="space-y-3">
-      <% if @notifications.any? %>
-        <% @notifications.each do |notification| %>
+      <% if @reminder_logs.any? %>
+        <% @reminder_logs.each do |reminder_log| %>
           <% if @tab == 'announcements' %>
             <%# お知らせカード %>
-            <div class="relative bg-[#fdfbf7] dark:bg-slate-900/40 dark:backdrop-blur-xl rounded-3xl border-2 <%= notification.unread? ? 'border-blue-300 dark:border-cyan-500/50 dark:border-t-white/40' : 'border-white/60 dark:border-white/10 dark:border-t-white/40' %> p-4 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8),0_4px_10px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_30px_rgba(34,211,238,0.2)] overflow-hidden group"><div class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none"></div><div class="relative z-10">
+            <div class="relative bg-[#fdfbf7] dark:bg-slate-900/40 dark:backdrop-blur-xl rounded-3xl border-2 <%= reminder_log.unread? ? 'border-blue-300 dark:border-cyan-500/50 dark:border-t-white/40' : 'border-white/60 dark:border-white/10 dark:border-t-white/40' %> p-4 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8),0_4px_10px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_30px_rgba(34,211,238,0.2)] overflow-hidden group"><div class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none"></div><div class="relative z-10">
               <div class="flex items-start justify-between">
                 <div class="flex-1">
                   <%# バッジ %>
                   <div class="flex items-center gap-2 mb-2">
-                    <% if notification.unread? %>
+                    <% if reminder_log.unread? %>
                       <span class="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
                     <% end %>
 
-                    <% if notification.announcement.priority == 'urgent' %>
+                    <% if reminder_log.announcement.priority == 'urgent' %>
                       <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">緊急</span>
-                    <% elsif notification.announcement.priority == 'warning' %>
+                    <% elsif reminder_log.announcement.priority == 'warning' %>
                       <span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background-color: #eab308; color: #000;">重要</span>
                     <% else %>
                       <span class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>
                     <% end %>
 
                     <span class="text-sm text-gray-500 dark:text-gray-400">
-                      <%= notification.announcement.published_at&.strftime('%Y/%m/%d') %>
+                      <%= reminder_log.announcement.published_at&.strftime('%Y/%m/%d') %>
                     </span>
                   </div>
 
                   <%# タイトル %>
                   <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-1">
-                    <%= notification.title %>
+                    <%= reminder_log.title %>
                   </h3>
 
                   <%# 内容 %>
                   <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    <%= notification.announcement.content %>
+                    <%= reminder_log.announcement.content %>
                   </p>
                 </div>
 
                 <%# 既読ボタン/ステータス %>
                 <div class="ml-4 flex-shrink-0">
-                  <% if notification.unread? %>
-                    <%= button_to mark_as_read_notification_path(notification),
+                  <% if reminder_log.unread? %>
+                    <%= button_to mark_as_read_reminder_log_path(reminder_log),
                                   method: :patch,
                                   class: 'px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-cyan-400 dark:to-blue-500 hover:-translate-y-0.5 active:scale-95 text-white rounded-full border-2 border-white/30 dark:border-white/20 shadow-[0_6px_15px_rgba(59,130,246,0.3),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_8px_20px_rgba(59,130,246,0.5),inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-[0_0_15px_rgba(34,211,238,0.4),inset_0_1px_0_rgba(255,255,255,0.4)] dark:hover:shadow-[0_0_30px_rgba(34,211,238,0.6),inset_0_1px_0_rgba(255,255,255,0.6)] text-sm font-medium transition-all duration-300 flex items-center gap-1' do %>
                       <span class="material-symbols-outlined text-base">check_circle</span>
@@ -106,17 +106,17 @@
 
           <% else %>
             <%# リマインダーカード（既読機能なし） %>
-            <% if notification.link_url.present? %>
-              <%= link_to notification.link_url, class: "block" do %>
+            <% if reminder_log.link_url.present? %>
+              <%= link_to reminder_log.link_url, class: "block" do %>
                 <div class="relative bg-[#fdfbf7] dark:bg-slate-900/40 dark:backdrop-blur-xl rounded-3xl border-2 border-purple-200/60 dark:border-purple-500/30 dark:border-t-white/40 p-4 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8),0_4px_10px_rgba(168,85,247,0.08)] hover:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.05),inset_-2px_-2px_5px_rgba(255,255,255,0.8),0_8px_20px_rgba(168,85,247,0.15)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_0_30px_rgba(168,85,247,0.2)] dark:hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_0_60px_rgba(168,85,247,0.4)] hover:border-purple-300 dark:hover:border-purple-500/50 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group"><div class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/40 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none"></div><div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/15 to-pink-400/15 dark:from-purple-400/20 dark:to-fuchsia-400/20 rounded-full blur-2xl dark:blur-3xl pointer-events-none"></div><div class="relative z-10">
                   <div class="flex items-start gap-3">
                     <%# アイコン %>
                     <div class="flex-shrink-0">
-                      <% if notification.category_inactive_reminder? %>
+                      <% if reminder_log.category_inactive_reminder? %>
                         <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
                           <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">directions_walk</span>
                         </div>
-                      <% elsif notification.category_reaction_summary? %>
+                      <% elsif reminder_log.category_reaction_summary? %>
                         <div class="w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
                           <span class="material-symbols-outlined text-pink-600 dark:text-pink-400">favorite</span>
                         </div>
@@ -126,17 +126,17 @@
                     <div class="flex-1">
                       <%# タイトル %>
                       <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-1">
-                        <%= notification.title %>
+                        <%= reminder_log.title %>
                       </h3>
 
                       <%# メッセージ %>
                       <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">
-                        <%= notification.body %>
+                        <%= reminder_log.body %>
                       </p>
 
                       <%# 日時 %>
                       <span class="text-xs text-gray-500 dark:text-gray-400">
-                        <%= notification.created_at.strftime('%Y/%m/%d %H:%M') %>
+                        <%= reminder_log.created_at.strftime('%Y/%m/%d %H:%M') %>
                       </span>
                     </div>
 
@@ -152,11 +152,11 @@
                 <div class="flex items-start gap-3">
                   <%# アイコン %>
                   <div class="flex-shrink-0">
-                    <% if notification.category_inactive_reminder? %>
+                    <% if reminder_log.category_inactive_reminder? %>
                       <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
                         <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">directions_walk</span>
                       </div>
-                    <% elsif notification.category_reaction_summary? %>
+                    <% elsif reminder_log.category_reaction_summary? %>
                       <div class="w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
                         <span class="material-symbols-outlined text-pink-600 dark:text-pink-400">favorite</span>
                       </div>
@@ -166,17 +166,17 @@
                   <div class="flex-1">
                     <%# タイトル %>
                     <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-1">
-                      <%= notification.title %>
+                      <%= reminder_log.title %>
                     </h3>
 
                     <%# メッセージ %>
                     <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">
-                      <%= notification.body %>
+                      <%= reminder_log.body %>
                     </p>
 
                     <%# 日時 %>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
-                      <%= notification.created_at.strftime('%Y/%m/%d %H:%M') %>
+                      <%= reminder_log.created_at.strftime('%Y/%m/%d %H:%M') %>
                     </span>
                   </div>
                 </div>
@@ -200,9 +200,9 @@
     </div>
 
     <%# ページネーション %>
-    <% if @notifications.total_pages > 1 %>
+    <% if @reminder_logs.total_pages > 1 %>
       <div class="mt-6">
-        <%= paginate @notifications, theme: 'twitter-bootstrap-4' %>
+        <%= paginate @reminder_logs, theme: 'twitter-bootstrap-4' %>
       </div>
     <% end %>
   </div>

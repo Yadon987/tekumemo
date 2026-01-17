@@ -29,7 +29,7 @@ RSpec.describe 'Walks', type: :request do
 
     context '有効なパラメータの場合' do
       let(:walk_params) do
-        { walk: { walked_on: 1.week.from_now.to_date, distance: 5.0, duration: 60, steps: 5000, calories_burned: 300 } }
+        { walk: { walked_on: 1.week.from_now.to_date, kilometers: 5.0, minutes: 60, steps: 5000, calories: 300 } }
       end
 
       it '散歩記録が作成されること' do
@@ -45,7 +45,7 @@ RSpec.describe 'Walks', type: :request do
     end
 
     context '無効なパラメータの場合' do
-      let(:invalid_params) { { walk: { walked_on: nil, distance: nil } } }
+      let(:invalid_params) { { walk: { walked_on: nil, kilometers: nil } } }
 
       it '散歩記録が作成されないこと' do
         expect do
@@ -78,20 +78,20 @@ RSpec.describe 'Walks', type: :request do
     before { sign_in user }
 
     context '自分の記録の場合' do
-      let(:update_params) { { walk: { distance: 10.0 } } }
+      let(:update_params) { { walk: { kilometers: 10.0 } } }
 
       it '更新できること' do
         patch walk_path(my_walk), params: update_params
-        expect(my_walk.reload.distance).to eq 10.0
+        expect(my_walk.reload.kilometers).to eq 10.0
       end
     end
 
     context '他人の記録の場合' do
-      let(:update_params) { { walk: { distance: 100.0 } } }
+      let(:update_params) { { walk: { kilometers: 100.0 } } }
 
       it '更新できないこと' do
         patch walk_path(other_walk), params: update_params
-        expect(other_walk.reload.distance).not_to eq 100.0
+        expect(other_walk.reload.kilometers).not_to eq 100.0
       end
     end
   end

@@ -37,7 +37,7 @@ class Posts::OgpImagesController < ApplicationController
         level: level,
         date: walk&.walked_on&.strftime("%Y-%m-%d") || @post.created_at.strftime("%Y-%m-%d"),
         label1: "DISTANCE",
-        value1: "#{walk&.distance || 0} km",
+        value1: "#{walk&.kilometers || 0} km",
         label2: "EXP (STEPS)",
         value2: "#{walk&.steps || 0}",
         label3: "LOCATION",
@@ -47,7 +47,7 @@ class Posts::OgpImagesController < ApplicationController
       image_data = RpgCardGeneratorService.new(
         user: user,
         title: "QUEST COMPLETE",
-        message: @post.body,
+        message: @post.content,
         stats: stats,
         theme: :quest
       ).generate

@@ -112,10 +112,10 @@ users.each_with_index do |user, index|
 
     walk = user.walks.create!(
       walked_on: date,
-      distance: distance,
+      kilometers: distance,
       steps: steps,
-      duration: duration,
-      calories_burned: calories,
+      minutes: duration,
+      calories: calories,
       location: CITIES.sample,
       created_at: walk_time,
       updated_at: walk_time
@@ -124,14 +124,14 @@ users.each_with_index do |user, index|
     # SNS投稿（30%）
     next unless rand < 0.3
 
-    pattern = %i[body_only weather_only feeling_only weather_feeling all].sample
-    body = nil
+    pattern = %i[content_only weather_only feeling_only weather_feeling all].sample
+    content = nil
     weather = nil
     feeling = nil
 
     case pattern
-    when :body_only
-      body = char_data[:quotes].sample
+    when :content_only
+      content = char_data[:quotes].sample
     when :weather_only
       weather = Post.weathers.keys.sample
     when :feeling_only
@@ -140,7 +140,7 @@ users.each_with_index do |user, index|
       weather = Post.weathers.keys.sample
       feeling = Post.feelings.keys.sample
     when :all
-      body = char_data[:quotes].sample
+      content = char_data[:quotes].sample
       weather = Post.weathers.keys.sample
       feeling = Post.feelings.keys.sample
     end
@@ -150,7 +150,7 @@ users.each_with_index do |user, index|
     post_delay = rand(10..[max_post_delay, 10].max).minutes
     post_time = walk_time + post_delay
     post = user.posts.create!(
-      body: body,
+      content: content,
       weather: weather,
       feeling: feeling,
       walk: walk,
@@ -166,7 +166,7 @@ users.each_with_index do |user, index|
       reaction_time = post_time + rand(1..180).minutes
       post.reactions.create!(
         user: reactor,
-        kind: Reaction.kinds.keys.sample,
+        stamp: Reaction.stamps.keys.sample,
         created_at: reaction_time,
         updated_at: reaction_time
       )
@@ -192,10 +192,10 @@ users.each_with_index do |user, index|
 
     user.walks.create!(
       walked_on: date,
-      distance: distance,
+      kilometers: distance,
       steps: steps,
-      duration: duration,
-      calories_burned: calories,
+      minutes: duration,
+      calories: calories,
       location: CITIES.sample,
       created_at: walk_time,
       updated_at: walk_time
@@ -210,7 +210,7 @@ users.each do |user|
   # 累計歩数
   total_steps = user.walks.sum(:steps)
   # 累計距離
-  total_distance = user.walks.sum(:distance)
+  total_distance = user.walks.sum(:kilometers)
   # 投稿数
   post_count = user.posts.count
 

@@ -56,7 +56,7 @@ Rails.application.routes.draw do
   end
 
   # 通知機能
-  resources :notifications, only: [:index] do
+  resources :reminder_logs, only: [:index] do
     member do
       patch :mark_as_read # 個別既読
     end

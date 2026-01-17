@@ -52,8 +52,8 @@ class Admin::DashboardController < Admin::BaseController
 
       # 散歩統計
       @total_walks = Walk.count
-      @total_distance = Walk.sum(:distance) || 0
-      @distance_this_month = Walk.where(walked_on: Time.current.beginning_of_month.to_date..Time.current.to_date).sum(:distance) || 0
+      @total_distance = Walk.sum(:kilometers) || 0
+      @distance_this_month = Walk.where(walked_on: Time.current.beginning_of_month.to_date..Time.current.to_date).sum(:kilometers) || 0
 
       # 人気投稿
       @popular_posts = Post.left_joins(:reactions)
@@ -80,7 +80,7 @@ class Admin::DashboardController < Admin::BaseController
     (1..count).map do |i|
       OpenStruct.new(
         id: i,
-        body: "これはダミーの投稿です。内容は表示されません。",
+        content: "これはダミーの投稿です。内容は表示されません。",
         created_at: Time.current - i.hours,
         user: OpenStruct.new(
           name: "ダミーユーザー#{i}",
@@ -157,7 +157,7 @@ class Admin::DashboardController < Admin::BaseController
     @anomalies[:spam_users] = (spam_users + new_user_spam).uniq
 
     # 2. データ整合性エラー
-    @anomalies[:invalid_walks] = Walk.where("distance > 50000 OR steps > 100000")
+    @anomalies[:invalid_walks] = Walk.where("kilometers > 50000 OR steps > 100000")
                                      .includes(:user)
                                      .limit(10)
 

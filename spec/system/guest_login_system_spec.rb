@@ -7,7 +7,7 @@ RSpec.describe 'Guest Login', type: :system do
 
     # DBクリーンアップ
     Reaction.delete_all
-    Notification.delete_all
+    ReminderLog.delete_all
     WebPushSubscription.delete_all
     UserAchievement.delete_all
     Post.delete_all
@@ -20,7 +20,7 @@ RSpec.describe 'Guest Login', type: :system do
 
     before do
       # 管理者データ作成（コピー元）
-      FactoryBot.create(:walk, user: admin_user, walked_on: 1.day.ago, distance: 5)
+      FactoryBot.create(:walk, user: admin_user, walked_on: 1.day.ago, kilometers: 5)
     end
 
     it 'logs in as guest and deletes account on logout' do

@@ -11,20 +11,21 @@ class Walk < ApplicationRecord
 
   # 距離と時間を必須に ▼▼▼
   # 散歩時間は任意項目で、入力された場合は0以上の整数のみ許可
-  validates :duration, presence: true, numericality: { greater_than: 0, only_integer: true }
+  validates :minutes, presence: true, numericality: { greater_than: 0, only_integer: true }
 
   # 距離は任意項目で、入力された場合は0以上の数値のみ許可（上限50km）
-  validates :distance, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 50 }
+  validates :kilometers, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: 50 }
 
   # 歩数は任意項目で、入力された場合は0以上の整数のみ許可
   validates :steps, numericality: { greater_than_or_equal_to: 0, only_integer: true }, allow_nil: true
 
   # 消費カロリーは任意項目で、入力された場合は0以上の整数のみ許可
-  validates :calories_burned, numericality: { greater_than_or_equal_to: 0, only_integer: true }, allow_nil: true
+  validates :calories, numericality: { greater_than_or_equal_to: 0, only_integer: true }, allow_nil: true
 
   # 場所とメモはバリデーションなし（完全に任意）
 
   # 時間帯 (0:早朝, 1:日中, 2:夕方, 3:夜間)
+  attribute :daypart, :integer
   enum :daypart, {
     early_morning: 0, # 04:00 - 08:59
     day: 1,           # 09:00 - 15:59
@@ -47,15 +48,15 @@ class Walk < ApplicationRecord
   # 既存の値より大きい場合のみ更新する
   def merge_google_fit_data(data)
     if new_record?
-      self.distance = data[:distance]
+      self.kilometers = data[:distance]
       self.steps = data[:steps]
-      self.calories_burned = data[:calories]
-      self.duration = data[:duration] if data[:duration]
+      self.calories = data[:calories]
+      self.minutes = data[:duration] if data[:duration]
     else
-      self.distance = data[:distance] if distance.to_f < data[:distance]
+      self.kilometers = data[:distance] if kilometers.to_f < data[:distance]
       self.steps = data[:steps] if steps.to_i < data[:steps]
-      self.calories_burned = data[:calories] if calories_burned.to_i < data[:calories]
-      self.duration = data[:duration] if data[:duration] && duration.to_i < data[:duration].to_i
+      self.calories = data[:calories] if calories.to_i < data[:calories]
+      self.minutes = data[:duration] if data[:duration] && minutes.to_i < data[:duration].to_i
     end
 
     # 時間帯の設定（未設定の場合のみ）

@@ -98,7 +98,7 @@ class RankingsController < ApplicationController
       else Date.current.beginning_of_week..Date.current.end_of_week
       end
 
-      @my_distance = current_user.walks.where(walked_on: range).sum(:distance) # walked_onカラムを使用
+      @my_distance = current_user.walks.where(walked_on: range).sum(:kilometers) # walked_onカラムを使用
     end
   end
 end

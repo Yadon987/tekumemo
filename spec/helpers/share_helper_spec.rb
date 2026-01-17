@@ -13,12 +13,12 @@ RSpec.describe ShareHelper, type: :helper do
 
   describe '#share_post_on_twitter_url' do
     let(:user) { create(:user) }
-    let(:post) { create(:post, user: user, body: '散歩したよ') }
+    let(:post) { create(:post, user: user, content: '散歩したよ') }
 
     before do
       # 今日の散歩データを作成 (5km, 5000歩)
       # Walkモデルのdistanceはkm単位
-      create(:walk, user: user, walked_on: Date.current, distance: 5.0, steps: 5000)
+      create(:walk, user: user, walked_on: Date.current, kilometers: 5.0, steps: 5000)
     end
 
     it '投稿シェア用のURLを生成すること' do
@@ -36,8 +36,8 @@ RSpec.describe ShareHelper, type: :helper do
     let(:user) { create(:user) }
 
     it 'ランキングシェア用のURLを生成すること' do
-      # distanceはメートル単位で渡す
-      url = helper.share_ranking_on_twitter_url(user: user, rank: 1, distance: 10_000)
+      # distanceはkm単位で渡す
+      url = helper.share_ranking_on_twitter_url(user: user, rank: 1, distance: 10.0)
       expect(url).to include('https://twitter.com/intent/tweet')
 
       decoded_url = URI.decode_www_form_component(url)

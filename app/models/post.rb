@@ -8,7 +8,7 @@ class Post < ApplicationRecord
   has_one_attached :ogp_image
 
   # バリデーション
-  validates :body, length: { maximum: 200 }, allow_blank: true
+  validates :content, length: { maximum: 200 }, allow_blank: true
   # enumを使用しているため、数値範囲のinclusionバリデーションは不要（削除）
 
   # カスタムバリデーション: body、weather、feeling、walkのいずれか1つは必須
@@ -44,10 +44,10 @@ class Post < ApplicationRecord
   end
 
   # 特定ユーザーが特定のリアクションをつけているか判定
-  def reacted_by?(user, kind)
+  def reacted_by?(user, stamp)
     return false unless user
 
-    reactions.exists?(user: user, kind: kind)
+    reactions.exists?(user: user, stamp: stamp)
   end
 
   # 特定ユーザーがこの投稿に何らかのリアクションをつけているか判定
@@ -115,7 +115,7 @@ class Post < ApplicationRecord
 
   # カスタムバリデーションメソッド:完全に空の投稿を防ぐ
   def must_have_content
-    return unless body.blank? && weather.nil? && feeling.nil? && walk_id.nil?
+    return unless content.blank? && weather.nil? && feeling.nil? && walk_id.nil?
 
     errors.add(:base, "本文、天気、気分、散歩記録のいずれか1つは入力してください")
   end

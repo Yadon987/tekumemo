@@ -9,9 +9,9 @@ class Admin::WalksController < Admin::BaseController
     end
 
     # フィルタ（距離範囲）
-    @walks = @walks.where("distance >= ?", params[:min_distance].to_i) if params[:min_distance].present?
+    @walks = @walks.where("kilometers >= ?", params[:min_distance].to_i) if params[:min_distance].present?
 
-    @walks = @walks.where("distance <= ?", params[:max_distance].to_i) if params[:max_distance].present?
+    @walks = @walks.where("kilometers <= ?", params[:max_distance].to_i) if params[:max_distance].present?
 
     # フィルタ（日付範囲）
     @walks = @walks.where("walked_on >= ?", params[:start_date]) if params[:start_date].present?

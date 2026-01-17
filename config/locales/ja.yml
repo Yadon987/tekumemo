@@ -5,8 +5,8 @@ ja:
       walk:
         walked_on: "散歩日"
         steps: "歩数"
-        distance: "距離"
-        duration: "時間"
+        kilometers: "距離"
+        minutes: "時間"
         calories: "カロリー"
         location: "場所"
         notes: "メモ"
@@ -18,7 +18,7 @@ ja:
         current_password: "現在のパスワード"
         goal_meters: "目標距離"
       post:
-        body: "ひとことメモ"
+        content: "ひとことメモ"
         weather: "天気"
         feeling: "気分"
     errors:

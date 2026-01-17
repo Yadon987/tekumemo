@@ -22,7 +22,7 @@ module ShareHelper
     walk = post.walk || user.walks.find_by(walked_on: post.created_at.to_date)
 
     # 距離を取得 (km単位)
-    distance_km = walk&.distance || 0.0
+    distance_km = walk&.kilometers || 0.0
     steps = walk&.steps || 0
 
     # 今月のランキング順位
@@ -38,7 +38,7 @@ module ShareHelper
 
     # メッセージ（投稿本文があれば優先、なければランダム）
     # 改行をスペースに置換して1行にする（Xでの表示崩れ防止と文字数節約のため）
-    message = post.body.present? ? "「#{post.body.gsub(/\R/, ' ').truncate(30)}」" : get_flavor_text(distance_km)
+    message = post.content.present? ? "「#{post.content.gsub(/\R/, ' ').truncate(30)}」" : get_flavor_text(distance_km)
 
     # 投稿詳細ページのURLを含める（OGP画像表示のため）
     post_url = post_url(post, host: request.host, protocol: request.protocol)
@@ -51,7 +51,7 @@ module ShareHelper
 
   # ランキングをXでシェアするURLを生成
   def share_ranking_on_twitter_url(user:, rank:, distance:, period: "monthly")
-    distance_km = (distance / 1000.0).round(2)
+    distance_km = distance.to_f.round(2)
     rank_str = rank ? "#{rank}位" : "-"
 
     # ランキングシェア時はランダムフレーバーテキスト

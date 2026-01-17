@@ -8,7 +8,7 @@ RSpec.describe User, type: :model do
 
       # テストデータの強制お掃除（DB汚染対策）
       Reaction.delete_all
-      Notification.delete_all
+      ReminderLog.delete_all
       WebPushSubscription.delete_all
       UserAchievement.delete_all
       Post.delete_all
@@ -22,10 +22,10 @@ RSpec.describe User, type: :model do
       before do
         # 管理者用のデータ作成
         # 3ヶ月以内の散歩
-        FactoryBot.create(:walk, user: admin_user, walked_on: 1.day.ago, distance: 5)
-        FactoryBot.create(:walk, user: admin_user, walked_on: 2.months.ago, distance: 4)
+        FactoryBot.create(:walk, user: admin_user, walked_on: 1.day.ago, kilometers: 5)
+        FactoryBot.create(:walk, user: admin_user, walked_on: 2.months.ago, kilometers: 4)
         # 3ヶ月より前の散歩（コピーされないはず）
-        FactoryBot.create(:walk, user: admin_user, walked_on: 4.months.ago, distance: 3)
+        FactoryBot.create(:walk, user: admin_user, walked_on: 4.months.ago, kilometers: 3)
 
         # 投稿
         FactoryBot.create(:post, user: admin_user, created_at: 1.day.ago)
@@ -47,7 +47,7 @@ RSpec.describe User, type: :model do
 
         # 散歩記録のコピー確認
         expect(guest.walks.count).to eq 2
-        distances = guest.walks.pluck(:distance)
+        distances = guest.walks.pluck(:kilometers)
         expect(distances).to include(5, 4)
         expect(distances).not_to include(3)
 

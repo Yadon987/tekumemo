@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'OGPプレビュー機能', type: :system do
   let(:user) { create(:user) }
-  let!(:post) { create(:post, user: user, body: 'テスト投稿') }
+  let!(:post) { create(:post, user: user, content: 'テスト投稿') }
 
   before do
     login_as(user)

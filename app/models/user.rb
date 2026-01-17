@@ -17,11 +17,11 @@ class User < ApplicationRecord
   has_many :reactions, dependent: :destroy
 
   # 通知機能の関連付け
-  has_many :notifications, dependent: :destroy
+  has_many :reminder_logs, dependent: :destroy
   has_many :web_push_subscriptions, dependent: :destroy
 
   # コールバック: 新規ユーザー登録時に公開済みお知らせの通知を作成
-  after_create :create_notifications_for_active_announcements
+  after_create :create_reminder_logs_for_active_announcements
 
   # 実績機能の関連付け
   has_many :user_achievements, dependent: :destroy
@@ -72,9 +72,9 @@ class User < ApplicationRecord
 
   # 新規ユーザー登録時に、公開済みのお知らせに対する通知を作成
   # これにより、新規ユーザーも過去のお知らせを確認できる
-  def create_notifications_for_active_announcements
+  def create_reminder_logs_for_active_announcements
     Announcement.active.find_each do |announcement|
-      notifications.create!(
+      reminder_logs.create!(
         announcement: announcement,
         kind: :announcement,
         read_at: nil
@@ -183,9 +183,9 @@ class User < ApplicationRecord
       # 一括挿入（バリデーションスキップ・高速化）
       Walk.insert_all(walks_data) if walks_data.present?
 
-      # 新しく挿入されたゲストのWalkを取得し、walked_onとdistanceでマッピング用のハッシュを作成
-      # キー: [walked_on, distance], 値: ゲストのWalk ID
-      guest_walks = guest.walks.reload.index_by { |w| [w.walked_on, w.distance] }
+      # 新しく挿入されたゲストのWalkを取得し、walked_onとkilometersでマッピング用のハッシュを作成
+      # キー: [walked_on, kilometers], 値: ゲストのWalk ID
+      guest_walks = guest.walks.reload.index_by { |w| [w.walked_on, w.kilometers] }
 
       # 2. 投稿（Posts）のコピー
       # タイムスタンプも維持したいので、created_atもコピーする
@@ -196,7 +196,7 @@ class User < ApplicationRecord
         new_walk_id = if post.walk_id
                         original_walk = Walk.find_by(id: post.walk_id)
                         if original_walk
-                          guest_walk = guest_walks[[original_walk.walked_on, original_walk.distance]]
+                          guest_walk = guest_walks[[original_walk.walked_on, original_walk.kilometers]]
                           guest_walk&.id
                         end
         end
@@ -427,7 +427,7 @@ class User < ApplicationRecord
 
     relation
       .group(:id)
-      .select("users.*, SUM(walks.distance) as total_distance")
+      .select("users.*, SUM(walks.kilometers) as total_distance")
       .order(Arel.sql("total_distance DESC"))
       .limit(limit) # 制限行数
   end
@@ -446,8 +446,8 @@ class User < ApplicationRecord
   }
 
   # 未読通知数を取得
-  def unread_notifications_count
-    notifications.unread.count
+  def unread_reminder_logs_count
+    reminder_logs.unread.count
   end
 
   # ランキングOGP画像生成用の週間統計情報を取得
@@ -457,7 +457,7 @@ class User < ApplicationRecord
 
     # 週間データ集計
     weekly_walks = walks.reload.where(walked_on: start_date..end_date)
-    total_distance = weekly_walks.sum(:distance)
+    total_distance = weekly_walks.sum(:kilometers)
     total_steps = weekly_walks.sum(:steps)
 
     # 順位計算
@@ -465,7 +465,7 @@ class User < ApplicationRecord
     higher_rank_users_count = User.joins(:walks)
                                   .where(walks: { walked_on: start_date..end_date })
                                   .group("users.id")
-                                  .having("SUM(walks.distance) > ?", total_distance)
+                                  .having("SUM(walks.kilometers) > ?", total_distance)
                                   .pluck("users.id")
                                   .count
 

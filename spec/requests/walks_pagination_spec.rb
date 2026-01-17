@@ -11,10 +11,10 @@ RSpec.describe 'WalksPagination', type: :request do
         user: user,
         walked_on: Date.current - i.days,
         location: "場所#{i}",
-        distance: 1.0,
-        duration: 10,
+        kilometers: 1.0,
+        minutes: 10,
         steps: 1000,
-        calories_burned: 50
+        calories: 50
       )
     end
 
