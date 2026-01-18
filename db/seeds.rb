@@ -1,13 +1,17 @@
+# frozen_string_literal: true
+
 # db/seeds.rb
+
+puts "🌱 Starting seeding..."
 
 # 0. 実績マスターデータ作成
 puts "Creating achievements..."
 achievements_data = [
   { name: "初めの一歩", description: "初めて歩数を記録した", condition_type: :total_steps, condition_value: 1, icon_name: "footprint" },
-  { name: "ウォーキングビギナー", description: "累計10,000歩を達成した", condition_type: :total_steps, condition_value: 10000, icon_name: "directions_walk" },
-  { name: "ウォーキングマスター", description: "累計100,000歩を達成した", condition_type: :total_steps, condition_value: 100000, icon_name: "hiking" },
+  { name: "ウォーキングビギナー", description: "累計10,000歩を達成した", condition_type: :total_steps, condition_value: 10_000, icon_name: "directions_walk" },
+  { name: "ウォーキングマスター", description: "累計100,000歩を達成した", condition_type: :total_steps, condition_value: 100_000, icon_name: "hiking" },
   { name: "マラソンランナー", description: "累計42kmを達成した", condition_type: :total_distance, condition_value: 42, icon_name: "sports_score" },
-  { name: "地球一周", description: "累計40,000kmを達成した", condition_type: :total_distance, condition_value: 40000, icon_name: "public" },
+  { name: "地球一周", description: "累計40,000kmを達成した", condition_type: :total_distance, condition_value: 40_000, icon_name: "public" },
   { name: "三日坊主卒業", description: "3日連続でログインした", condition_type: :login_streak, condition_value: 3, icon_name: "history" },
   { name: "習慣化の達人", description: "30日連続でログインした", condition_type: :login_streak, condition_value: 30, icon_name: "calendar_month" },
   { name: "初めての投稿", description: "初めて日記を投稿した", condition_type: :post_count, condition_value: 1, icon_name: "edit_note" },
@@ -25,10 +29,10 @@ end
 
 # 1. キャラクター設定（20人）
 CHARACTERS = [
-  { name: "竈門炭治郎", email: "user1@example.com", quotes: [ "頑張れ炭治郎頑張れ！", "俺は長男だから我慢できたけど次男だったら我慢できなかった。", "心を燃やせ！" ] },
+  { name: "竈門炭治郎", email: "user1@example.com", quotes: [ "頑張れ炭治郎頑張れ！", "俺は長男だから我慢できたけど ...", "心を燃やせ！" ] },
   { name: "うずまきナルト", email: "user2@example.com", quotes: [ "まっすぐ自分の言葉は曲げねぇ。それが俺の忍道だ！", "俺は火影になる男だ！", "だってばよ！" ] },
   { name: "モンキー・D・ルフィ", email: "user3@example.com", quotes: [ "海賊王に俺はなる！", "当たり前だ！！！！！", "腹減った〜！" ] },
-  { name: "エドワード・エルリック", email: "user4@example.com", quotes: [ "立てよド三流。オレ達とおまえとの格の違いってやつを見せてやる！", "等価交換だ！", "降りてこいよド三流！" ] },
+  { name: "エドワード・エルリック", email: "user4@example.com", quotes: [ "等価交換だ！", "降りてこいよド三流！" ] },
   { name: "孫悟空", email: "user5@example.com", quotes: [ "オッス！オラ悟空！", "クリリンのことかーっ！！！！！", "ワクワクすっぞ！" ] },
   { name: "アーニャ・フォージャー", email: "user6@example.com", quotes: [ "アーニャ、ピーナッツが好き。", "わくわく！", "ちち、はは、仲良し！" ] },
   { name: "フリーレン", email: "user7@example.com", quotes: [ "ヒンメルならそうした。", "人の心を知る旅に出ることにしたの。", "魔法を集めるのが趣味だからね。" ] },
@@ -47,12 +51,10 @@ CHARACTERS = [
   { name: "志摩リン", email: "user20@example.com", quotes: [ "買っちった。", "焚き火、いいなぁ。", "ソロキャン最高。" ] }
 ]
 
-# ランダムな日本の市
+# ランダムな日本の市（架空の散歩場所）
 CITIES = [ "札幌市", "仙台市", "さいたま市", "千葉市", "横浜市", "川崎市", "相模原市", "新潟市", "静岡市", "浜松市", "名古屋市", "京都市", "大阪市", "堺市", "神戸市", "岡山市", "広島市", "北九州市", "福岡市", "熊本市" ]
 
-puts "Start seeding..."
-
-# 全ユーザーを先に確保（リアクション用）
+# 全ユーザーを先に確保
 users = []
 CHARACTERS.each do |char_data|
   user = User.find_or_create_by!(email: char_data[:email]) do |u|
@@ -89,13 +91,11 @@ users.each_with_index do |user, index|
     duration = (distance * 15 * rand(0.9..1.1)).to_i
     calories = (distance * 50 * rand(0.9..1.1)).to_i
 
-    # 作成時刻ランダム（今日の場合は現在時刻より前に限定）
+    # 作成時刻ランダム
     if day == 0
-      # 今日の場合：現在時刻の1時間前〜24時間前の範囲でランダム
       hours_ago = rand(1..24)
       walk_time = Time.current - hours_ago.hours - rand(0..59).minutes
     else
-      # 過去の日付：6時〜22時のランダムな時刻
       walk_time = date.to_time + rand(6..22).hours + rand(0..59).minutes
     end
 
@@ -133,10 +133,11 @@ users.each_with_index do |user, index|
         feeling = Post.feelings.keys.sample
       end
 
-      # 投稿時刻は散歩時刻の10分〜2時間後（ただし現在時刻は超えない）
+      # 投稿時刻の調整
       max_post_delay = day == 0 ? [ (Time.current - walk_time - 1.minute).to_i / 60, 120 ].min : 120
       post_delay = rand(10..[ max_post_delay, 10 ].max).minutes
       post_time = walk_time + post_delay
+
       post = user.posts.create!(
         body: body,
         weather: weather,
@@ -167,13 +168,9 @@ users.each_with_index do |user, index|
   # ---------------------------------------------------------
   (1..7).each do |day_offset|
     date = Date.today + day_offset.days
-
-    # 既にその日の記録があればスキップ
     next if user.walks.exists?(walked_on: date)
 
-    # 距離: 0.1km 〜 0.6km のランダム
     distance = rand(0.1..0.6).round(2)
-
     steps = (distance * 1300 * rand(0.9..1.1)).to_i
     duration = (distance * 15 * rand(0.9..1.1)).to_i
     calories = (distance * 50 * rand(0.9..1.1)).to_i
@@ -192,16 +189,12 @@ users.each_with_index do |user, index|
   end
 end
 
-
 # 実績付与のシミュレーション
 puts "Assigning achievements..."
 all_achievements = Achievement.all
 users.each do |user|
-  # 累計歩数
   total_steps = user.walks.sum(:steps)
-  # 累計距離
   total_distance = user.walks.sum(:distance)
-  # 投稿数
   post_count = user.posts.count
 
   all_achievements.each do |achievement|
@@ -213,7 +206,6 @@ users.each do |user|
     when :post_count
       post_count >= achievement.condition_value
     when :login_streak
-      # シードデータではログイン履歴を厳密に作っていないのでランダムで付与
       rand < 0.5
     else
       false
@@ -225,4 +217,4 @@ users.each do |user|
   end
 end
 
-puts "Seeding completed!"
+puts "✨ Seeding completed successfully!"

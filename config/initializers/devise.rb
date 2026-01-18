@@ -157,14 +157,21 @@ Devise.setup do |config|
     Rails.application.credentials.google || {}
   rescue ActiveSupport::MessageEncryptor::InvalidMessage, ActiveSupport::MessageVerifier::InvalidSignature
     # デプロイ時など、マスターキーが不一致の場合にビルドが落ちないようにする
-    # ただし、この状態ではGoogle認証は機能しないため、環境変数の修正が必要
-    warn "WARNING: Failed to decrypt credentials. Google Auth will not work."
     {}
   end
 
+  # Credentialsが空の場合はENVにフォールバック（Clone直後の開発者向け）
+  google_client_id = google_creds[:client_id].presence || ENV["GOOGLE_CLIENT_ID"]
+  google_client_secret = google_creds[:client_secret].presence || ENV["GOOGLE_CLIENT_SECRET"]
+
+  # Google認証が設定されていない場合は警告を出す（アプリ自体は起動する）
+  if google_client_id.blank? || google_client_secret.blank?
+    warn "WARNING: Google OAuth2 credentials are not configured. Google login will not work."
+  end
+
   config.omniauth :google_oauth2,
-                  google_creds[:client_id],
-                  google_creds[:client_secret],
+                  google_client_id,
+                  google_client_secret,
                   {
                     scope: [
                       # 基本認証情報

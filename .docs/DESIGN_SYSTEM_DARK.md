@@ -37,7 +37,7 @@ LP（ランディングページ）のクオリティを絶対基準とし、全
 
 ### 1. Deep Void (深淵なる背景 - Deep Space / Premium Tech)
  
- 画面全体の背景は、「宇宙のような深みのあるネイビーブラック」を使用し、**静的ではなく動的な空間**として表現する。グリッド線は「方眼紙」のような安っぽさを避けるため廃止し、純粋な光と粒子で奥行きを表現する。
+ 画面全体の背景は、「宇宙のような深みのあるネイビーブラック」を使用し、**静的ではなく動的な空間**として表現する。
  
  - **Base Gradient:** `dark:bg-gradient-to-b dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950`
  - **Living Elements:**
