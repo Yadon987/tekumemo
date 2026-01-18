@@ -24,7 +24,7 @@ class StatsController < ApplicationController
     chart_type = params[:type]
 
     # パラメータのホワイトリスト検証
-    allowed_types = %w[daily weekly monthly weekday pace calories time_of_day]
+    allowed_types = %w[daily weekly monthly weekday pace calories daypart]
     unless allowed_types.include?(chart_type)
       render json: { error: "Invalid chart type. Allowed types: #{allowed_types.join(', ')}" }, status: :bad_request
       return
@@ -32,19 +32,19 @@ class StatsController < ApplicationController
 
     data = case chart_type
     when "daily"
-      stats_service.daily_distances_last_30_days
+             stats_service.daily_distances_last_30_days
     when "weekly"
-      stats_service.weekly_distances_last_12_weeks
+             stats_service.weekly_distances_last_12_weeks
     when "monthly"
-      stats_service.monthly_distances_last_12_months
+             stats_service.monthly_distances_last_12_months
     when "weekday"
-      stats_service.average_distance_by_weekday
+             stats_service.average_distance_by_weekday
     when "pace"
-      stats_service.pace_trend_last_30_days
+             stats_service.pace_trend_last_30_days
     when "calories"
-      stats_service.calories_trend_last_30_days
-    when "time_of_day"
-      stats_service.walks_count_by_time_of_day
+             stats_service.calories_trend_last_30_days
+    when "daypart"
+             stats_service.walks_count_by_daypart
     end
 
     render json: data

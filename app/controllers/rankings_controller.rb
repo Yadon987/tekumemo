@@ -1,6 +1,6 @@
 class RankingsController < ApplicationController
   # OGPメタタグ取得のため、ログインなしでもアクセス可能にする
-  skip_before_action :authenticate_user!, only: [ :index ]
+  skip_before_action :authenticate_user!, only: [:index]
 
   def index
     # パラメータ取得
@@ -22,20 +22,20 @@ class RankingsController < ApplicationController
     fetch_rankings_for_period(@period)
 
     # 自分の順位と距離を特定
-    if user_signed_in?
-      find_my_rank
-      calculate_my_distance
+    return unless user_signed_in?
 
-      # OGP画像の事前生成をキック（非同期）
-      GenerateRankingOgpImageJob.perform_later(current_user)
+    find_my_rank
+    calculate_my_distance
 
-      # 1位との差分を計算（自分が1位でない場合）
-      if @my_rank && @my_rank > 1 && @rankings.present?
-        top_distance = @rankings.first.total_distance
-        @distance_to_top = top_distance - @my_distance
-      else
-        @distance_to_top = 0
-      end
+    # OGP画像の事前生成をキック（非同期）
+    GenerateRankingOgpImageJob.perform_later(current_user)
+
+    # 1位との差分を計算（自分が1位でない場合）
+    if @my_rank && @my_rank > 1 && @rankings.present?
+      top_distance = @rankings.first.total_distance
+      @distance_to_top = top_distance - @my_distance
+    else
+      @distance_to_top = 0
     end
   end
 
@@ -98,7 +98,7 @@ class RankingsController < ApplicationController
       else Date.current.beginning_of_week..Date.current.end_of_week
       end
 
-      @my_distance = current_user.walks.where(walked_on: range).sum(:distance) # walked_onカラムを使用
+      @my_distance = current_user.walks.where(walked_on: range).sum(:kilometers) # walked_onカラムを使用
     end
   end
 end

@@ -24,7 +24,7 @@ Geocoder.configure(
   ipapi_com: {
     # ip-api.com は無料で利用可能
     # レート制限: 45リクエスト/分
-  },
+  }
 
   # フォールバック用に別のサービスも設定可能
   # 例: ipinfo_io, ipstack, maxmind など

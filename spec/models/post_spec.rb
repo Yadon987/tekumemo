@@ -12,7 +12,7 @@ RSpec.describe Post, type: :model do
 
     context '異常系' do
       it '本文、天気、気分、散歩記録のすべてがない場合は無効であること' do
-        post.body = nil
+        post.content = nil
         post.weather = nil
         post.feeling = nil
         post.walk = nil
@@ -21,9 +21,9 @@ RSpec.describe Post, type: :model do
       end
 
       it '本文(body)が200文字を超える場合は無効であること' do
-        post.body = 'a' * 201
+        post.content = 'a' * 201
         expect(post).to be_invalid
-        expect(post.errors[:body]).to include('は200文字以内で入力してください')
+        expect(post.errors[:content]).to include('は200文字以内で入力してください')
       end
     end
   end
@@ -50,10 +50,10 @@ RSpec.describe Post, type: :model do
     describe '#weather_emoji' do
       it '天気に対応した絵文字を返すこと' do
         post = build(:post, weather: :sunny)
-        expect(post.weather_emoji).to eq "☀️"
+        expect(post.weather_emoji).to eq '☀️'
 
         post.weather = :rainy
-        expect(post.weather_emoji).to eq "🌧️"
+        expect(post.weather_emoji).to eq '🌧️'
       end
 
       it '天気が未設定の場合はnilを返すこと' do
@@ -65,10 +65,10 @@ RSpec.describe Post, type: :model do
     describe '#feeling_emoji' do
       it '気分に対応した絵文字を返すこと' do
         post = build(:post, feeling: :great)
-        expect(post.feeling_emoji).to eq "😆"
+        expect(post.feeling_emoji).to eq '😆'
 
         post.feeling = :tired
-        expect(post.feeling_emoji).to eq "😮‍💨"
+        expect(post.feeling_emoji).to eq '😮‍💨'
       end
 
       it '気分が未設定の場合はnilを返すこと' do

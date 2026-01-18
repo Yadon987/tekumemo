@@ -52,3 +52,6 @@ vendor/bundle
 
 # テスト結果の一時ファイル
 rspec_*.txt
+
+# SimpleCovカバレッジレポート
+/coverage/

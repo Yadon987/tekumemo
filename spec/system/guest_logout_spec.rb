@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Guest User Logout', type: :system do
-  let!(:guest_user) { User.create!(email: "guest_#{Time.current.to_i}@example.com", password: 'password', role: :guest, name: 'Guest User') }
+  let!(:guest_user) do
+    User.create!(email: "guest_#{Time.current.to_i}@example.com", password: 'password', role: :guest,
+                 name: 'Guest User')
+  end
 
   before do
     driven_by(:rack_test)

@@ -9,14 +9,17 @@ class ReactionsController < ApplicationController
     if current_user.guest?
       respond_to do |format|
         format.json { render json: { error: "ゲストユーザーはリアクションできません" }, status: :forbidden }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { flash: { alert: "ゲストユーザーはリアクションできません" } }) }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash",
+                                                             locals: { flash: { alert: "ゲストユーザーはリアクションできません" } })
+        end
         format.html { redirect_back(fallback_location: posts_path, alert: "ゲストユーザーはリアクションできません") }
       end
       return
     end
 
     # 既に同じリアクションがあるか確認
-    @reaction = @post.reactions.find_by(user: current_user, kind: reaction_params[:kind])
+    @reaction = @post.reactions.find_by(user: current_user, stamp: reaction_params[:stamp])
 
     if @reaction
       # 既にある場合は削除（トグル動作）
@@ -43,7 +46,7 @@ class ReactionsController < ApplicationController
       format.json do
         render json: {
           reacted: @action == "added",
-          count: @post.reactions.where(kind: reaction_params[:kind]).count
+          count: @post.reactions.where(stamp: reaction_params[:stamp]).count
         }
       end
       # Turbo Stream: リアクションボタンのみ更新（既存機能維持）
@@ -59,7 +62,10 @@ class ReactionsController < ApplicationController
     # ゲストユーザーは削除不可
     if current_user.guest?
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { flash: { alert: "ゲストユーザーは操作できません" } }) }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash",
+                                                             locals: { flash: { alert: "ゲストユーザーは操作できません" } })
+        end
         format.html { redirect_back(fallback_location: posts_path, alert: "ゲストユーザーは操作できません") }
       end
       return
@@ -86,6 +92,6 @@ class ReactionsController < ApplicationController
 
   # 許可するパラメータ
   def reaction_params
-    params.require(:reaction).permit(:kind)
+    params.require(:reaction).permit(:stamp)
   end
 end

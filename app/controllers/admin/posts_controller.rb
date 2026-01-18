@@ -9,14 +9,10 @@ class Admin::PostsController < Admin::BaseController
     end
 
     # フィルタ（天気）
-    if params[:weather].present?
-      @posts = @posts.where(weather: params[:weather])
-    end
+    @posts = @posts.where(weather: params[:weather]) if params[:weather].present?
 
     # フィルタ（気分）
-    if params[:feeling].present?
-      @posts = @posts.where(feeling: params[:feeling])
-    end
+    @posts = @posts.where(feeling: params[:feeling]) if params[:feeling].present?
 
     @posts = @posts.recent.page(params[:page]).per(20)
   end

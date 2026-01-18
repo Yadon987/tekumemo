@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_17_024826) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -27,11 +27,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
   enable_extension "uuid-ossp"
 
   create_table "achievements", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description", null: false
-    t.integer "condition_type", default: 0, null: false
-    t.integer "condition_value", default: 0, null: false
-    t.string "icon_name", null: false
+    t.string "title", null: false
+    t.text "flavor_text", null: false
+    t.integer "metric", default: 0, null: false
+    t.integer "requirement", default: 0, null: false
+    t.text "badge_key", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -67,35 +67,21 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
   create_table "announcements", force: :cascade do |t|
     t.string "title", null: false
     t.text "content", null: false
-    t.string "announcement_type", default: "info"
     t.datetime "published_at"
     t.datetime "expires_at"
     t.boolean "is_published", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "priority", default: 0, null: false
+    t.index ["expires_at"], name: "index_announcements_on_expires_at"
     t.index ["is_published"], name: "index_announcements_on_is_published"
     t.index ["published_at"], name: "index_announcements_on_published_at"
-  end
-
-  create_table "notifications", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "announcement_id"
-    t.datetime "read_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "notification_type", default: 0, null: false, comment: "通知種類: 0=お知らせ, 1=非アクティブリマインド, 2=リアクションまとめ"
-    t.text "message", comment: "リマインダー通知のメッセージ"
-    t.string "url", comment: "リマインダー通知のリンク先"
-    t.index ["announcement_id", "user_id"], name: "index_notifications_on_announcement_user_unique", unique: true, where: "(announcement_id IS NOT NULL)"
-    t.index ["announcement_id"], name: "index_notifications_on_announcement_id"
-    t.index ["notification_type"], name: "index_notifications_on_notification_type"
-    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "walk_id"
-    t.text "body"
+    t.text "content"
     t.integer "weather"
     t.integer "feeling"
     t.datetime "created_at", null: false
@@ -109,13 +95,28 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
   create_table "reactions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
-    t.integer "kind", null: false
+    t.integer "stamp", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id", "kind"], name: "index_reactions_on_post_id_and_kind"
+    t.index ["post_id", "stamp"], name: "index_reactions_on_post_id_and_stamp"
     t.index ["post_id"], name: "index_reactions_on_post_id"
-    t.index ["user_id", "post_id", "kind"], name: "index_reactions_on_user_post_kind", unique: true
+    t.index ["user_id", "post_id", "stamp"], name: "index_reactions_on_user_post_stamp", unique: true
     t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
+
+  create_table "reminder_logs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "announcement_id"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "category", default: 0, null: false, comment: "通知種類: 0=お知らせ, 1=非アクティブリマインド, 2=リアクションまとめ"
+    t.text "message", comment: "リマインダー通知のメッセージ"
+    t.string "url", comment: "リマインダー通知のリンク先"
+    t.index ["announcement_id", "user_id"], name: "index_reminder_logs_on_announcement_user_unique", unique: true, where: "(announcement_id IS NOT NULL)"
+    t.index ["announcement_id"], name: "index_reminder_logs_on_announcement_id"
+    t.index ["category"], name: "index_reminder_logs_on_category"
+    t.index ["user_id"], name: "index_reminder_logs_on_user_id"
   end
 
   create_table "solid_cache_entries", force: :cascade do |t|
@@ -151,22 +152,22 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
     t.text "google_token"
     t.text "google_refresh_token"
     t.datetime "google_expires_at"
-    t.string "avatar_url"
-    t.string "name"
-    t.integer "target_distance", default: 3000, null: false
+    t.text "avatar_url"
+    t.string "name", limit: 50
+    t.integer "goal_meters", default: 3000, null: false
     t.boolean "is_admin", default: false, null: false
-    t.boolean "walk_reminder_enabled", default: false, null: false, comment: "散歩時間リマインド通知の有効/無効"
+    t.boolean "is_walk_reminder", default: false, null: false, comment: "散歩時間リマインド通知の有効/無効"
     t.time "walk_reminder_time", default: "2000-01-01 19:00:00", comment: "散歩リマインド通知の時刻"
-    t.boolean "inactive_days_reminder_enabled", default: true, null: false, comment: "非アクティブリマインド通知の有効/無効"
-    t.integer "inactive_days_threshold", default: 3, null: false, comment: "非アクティブと判定する日数"
-    t.boolean "reaction_summary_enabled", default: true, null: false, comment: "リアクションまとめ通知の有効/無効"
+    t.boolean "is_inactive_reminder", default: true, null: false, comment: "非アクティブリマインド通知の有効/無効"
+    t.integer "inactive_days", default: 3, null: false, comment: "非アクティブと判定する日数"
+    t.boolean "is_reaction_summary", default: true, null: false, comment: "リアクションまとめ通知の有効/無効"
     t.integer "role", default: 0, null: false
-    t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.integer "avatar_type", default: 0, null: false
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "last_sign_in_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["is_admin"], name: "index_users_on_is_admin"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -175,15 +176,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
   create_table "walks", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.date "walked_on"
-    t.integer "duration"
-    t.decimal "distance"
+    t.integer "minutes"
+    t.decimal "kilometers", precision: 10, scale: 2
     t.string "location"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "steps"
-    t.integer "calories_burned"
-    t.integer "time_of_day"
+    t.integer "calories"
+    t.integer "daypart"
     t.index ["user_id", "walked_on"], name: "index_walks_on_user_id_and_walked_on"
     t.index ["user_id"], name: "index_walks_on_user_id"
     t.index ["walked_on"], name: "index_walks_on_walked_on"
@@ -203,12 +204,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_03_014700) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "notifications", "announcements"
-  add_foreign_key "notifications", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "posts", "walks"
   add_foreign_key "reactions", "posts"
   add_foreign_key "reactions", "users"
+  add_foreign_key "reminder_logs", "announcements"
+  add_foreign_key "reminder_logs", "users"
   add_foreign_key "user_achievements", "achievements"
   add_foreign_key "user_achievements", "users"
   add_foreign_key "walks", "users"

@@ -74,7 +74,7 @@ export default class extends Controller {
 
     // 時間帯別円グラフ
     if (this.hasTimeOfDayCanvasTarget) {
-      await this.loadChart("time_of_day", this.timeOfDayCanvasTarget, this.timeOfDayUrlValue, "doughnut")
+      await this.loadChart("daypart", this.timeOfDayCanvasTarget, this.timeOfDayUrlValue, "doughnut")
     }
   }
 
@@ -104,7 +104,7 @@ export default class extends Controller {
       const config = this.buildChartConfig(chartId, data, type)
 
       // データが全て0の場合はメッセージを表示して終了 (円グラフのみ)
-      if (chartId === "time_of_day") {
+      if (chartId === "daypart") {
         const total = data.data.reduce((a, b) => a + b, 0)
         if (total === 0) {
           this.showErrorOnCanvas(canvas, "データがありません")
@@ -138,7 +138,7 @@ export default class extends Controller {
         return Array.isArray(data.dates) && Array.isArray(data.paces)
       case "calories":
         return Array.isArray(data.dates) && Array.isArray(data.calories)
-      case "time_of_day":
+      case "daypart":
         return Array.isArray(data.labels) && Array.isArray(data.data)
       default:
         return false
@@ -251,7 +251,7 @@ export default class extends Controller {
           }]
         }
 
-      case "time_of_day":
+      case "daypart":
         return {
           labels: data.labels,
           datasets: [{
@@ -312,7 +312,7 @@ export default class extends Controller {
           }
         }
       }
-    } else if (chartId === "time_of_day") {
+    } else if (chartId === "daypart") {
       // 円グラフの場合
       // scales と interaction は不要なので削除
       delete baseOptions.interaction

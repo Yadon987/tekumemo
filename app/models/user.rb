@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable,
-         :omniauthable, omniauth_providers: [ :google_oauth2 ]
+         :omniauthable, omniauth_providers: [:google_oauth2]
   # ユーザー権限（0: 一般, 1: 管理者, 2: ゲスト管理者）
   # guest: 管理画面へアクセス可だが、閲覧のみ等の制限あり
   enum :role, { general: 0, admin: 1, guest: 2 }
@@ -17,11 +17,11 @@ class User < ApplicationRecord
   has_many :reactions, dependent: :destroy
 
   # 通知機能の関連付け
-  has_many :notifications, dependent: :destroy
+  has_many :reminder_logs, dependent: :destroy
   has_many :web_push_subscriptions, dependent: :destroy
 
   # コールバック: 新規ユーザー登録時に公開済みお知らせの通知を作成
-  after_create :create_notifications_for_active_announcements
+  after_create :create_reminder_logs_for_active_announcements
 
   # 実績機能の関連付け
   has_many :user_achievements, dependent: :destroy
@@ -46,11 +46,12 @@ class User < ApplicationRecord
   # 1. 必須であること（デフォルト値があるため通常は問題ないが、念のため）
   # 2. 数値であること
   # 3. 0より大きいこと
-  validates :target_distance, presence: true, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 100_000 }
+  validates :goal_meters, presence: true,
+                          numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 100_000 }
 
   # 通知設定のバリデーション
-  validates :inactive_days_threshold, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 30 }
-  validates :walk_reminder_time, presence: true, if: :walk_reminder_enabled?
+  validates :inactive_days, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 30 }
+  validates :walk_reminder_time, presence: true, if: :is_walk_reminder?
 
   # アバター画像のバリデーション
   validate :validate_uploaded_avatar
@@ -61,23 +62,21 @@ class User < ApplicationRecord
     return unless uploaded_avatar.attached?
 
     # ファイルサイズ制限 (5MB)
-    if uploaded_avatar.blob.byte_size > 5.megabytes
-      errors.add(:uploaded_avatar, "は5MB以下にしてください")
-    end
+    errors.add(:uploaded_avatar, "は5MB以下にしてください") if uploaded_avatar.blob.byte_size > 5.megabytes
 
     # ファイル形式制限
-    unless uploaded_avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
-      errors.add(:uploaded_avatar, "は画像ファイル（JPG, PNG, GIF, WEBP）のみアップロード可能です")
-    end
+    return if uploaded_avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
+
+    errors.add(:uploaded_avatar, "は画像ファイル（JPG, PNG, GIF, WEBP）のみアップロード可能です")
   end
 
   # 新規ユーザー登録時に、公開済みのお知らせに対する通知を作成
   # これにより、新規ユーザーも過去のお知らせを確認できる
-  def create_notifications_for_active_announcements
+  def create_reminder_logs_for_active_announcements
     Announcement.active.find_each do |announcement|
-      notifications.create!(
+      reminder_logs.create!(
         announcement: announcement,
-        notification_type: :announcement,
+        kind: :announcement,
         read_at: nil
       )
     rescue ActiveRecord::RecordNotUnique
@@ -122,9 +121,7 @@ class User < ApplicationRecord
       }
 
       # refresh_tokenが存在する場合のみ更新（nilで上書きしない）
-      if auth.credentials.refresh_token.present?
-        update_hash[:google_refresh_token] = auth.credentials.refresh_token
-      end
+      update_hash[:google_refresh_token] = auth.credentials.refresh_token if auth.credentials.refresh_token.present?
 
       user.update(update_hash)
     end
@@ -148,9 +145,7 @@ class User < ApplicationRecord
     Rails.logger.info "Guest Mode: Selected admin user candidate ID: #{admin_user&.id}"
 
     # 万が一管理者がいない場合は、最低限のゲストを作成して返す
-    unless admin_user
-      return create_fallback_guest
-    end
+    return create_fallback_guest unless admin_user
 
     # トランザクションで一括処理
     transaction do
@@ -161,8 +156,8 @@ class User < ApplicationRecord
         password: SecureRandom.urlsafe_base64,
         name: "ゲストユーザー",
         role: :guest,
-        target_distance: admin_user.target_distance,
-        avatar_type: :default,
+        goal_meters: admin_user.goal_meters,
+        avatar_type: :default
         # 通知設定などはデフォルトでOK
       )
 
@@ -188,9 +183,9 @@ class User < ApplicationRecord
       # 一括挿入（バリデーションスキップ・高速化）
       Walk.insert_all(walks_data) if walks_data.present?
 
-      # 新しく挿入されたゲストのWalkを取得し、walked_onとdistanceでマッピング用のハッシュを作成
-      # キー: [walked_on, distance], 値: ゲストのWalk ID
-      guest_walks = guest.walks.reload.index_by { |w| [w.walked_on, w.distance] }
+      # 新しく挿入されたゲストのWalkを取得し、walked_onとkilometersでマッピング用のハッシュを作成
+      # キー: [walked_on, kilometers], 値: ゲストのWalk ID
+      guest_walks = guest.walks.reload.index_by { |w| [w.walked_on, w.kilometers] }
 
       # 2. 投稿（Posts）のコピー
       # タイムスタンプも維持したいので、created_atもコピーする
@@ -201,14 +196,14 @@ class User < ApplicationRecord
         new_walk_id = if post.walk_id
                         original_walk = Walk.find_by(id: post.walk_id)
                         if original_walk
-                          guest_walk = guest_walks[[original_walk.walked_on, original_walk.distance]]
+                          guest_walk = guest_walks[[original_walk.walked_on, original_walk.kilometers]]
                           guest_walk&.id
                         end
         end
 
         post.attributes.except("id", "user_id", "walk_id").merge(
           "user_id" => guest.id,
-          "walk_id" => new_walk_id  # ゲストのWalk IDにマッピング
+          "walk_id" => new_walk_id # ゲストのWalk IDにマッピング
         )
       end
 
@@ -234,8 +229,8 @@ class User < ApplicationRecord
       guest
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error "Guest creation validation failed: #{e.message}"
-      raise  # トランザクションロールバック
-    rescue => e
+      raise # トランザクションロールバック
+    rescue StandardError => e
       Rails.logger.error "Guest creation failed: #{e.class} - #{e.message}"
       raise
     end
@@ -249,7 +244,7 @@ class User < ApplicationRecord
       password: SecureRandom.urlsafe_base64,
       name: "ゲストユーザー",
       role: :guest,
-      target_distance: 5000,
+      goal_meters: 5000,
       avatar_type: :default
     )
   end
@@ -369,14 +364,13 @@ class User < ApplicationRecord
     check_date = start_date
 
     walk_dates.each do |date|
-      if date == check_date
-        # 日付が一致すればカウントアップし、チェック対象を前日にずらす
-        consecutive_count += 1
-        check_date -= 1.day
-      else
-        # 日付が連続していない（飛んでいる）場合、そこで終了
-        break
-      end
+      break unless date == check_date
+
+      # 日付が一致すればカウントアップし、チェック対象を前日にずらす
+      consecutive_count += 1
+      check_date -= 1.day
+
+      # 日付が連続していない（飛んでいる）場合、そこで終了
     end
 
     consecutive_count
@@ -398,14 +392,14 @@ class User < ApplicationRecord
         current_streak += 1
       else
         # 連続が途切れた場合、最大値を更新してリセット
-        max_streak = [ max_streak, current_streak ].max
+        max_streak = [max_streak, current_streak].max
         current_streak = 1
       end
       prev_date = date
     end
 
     # 最後のストリークも含めて最大値を返す
-    [ max_streak, current_streak ].max
+    [max_streak, current_streak].max
   end
 
   # ランキング用クラスメソッド
@@ -433,7 +427,7 @@ class User < ApplicationRecord
 
     relation
       .group(:id)
-      .select("users.*, SUM(walks.distance) as total_distance")
+      .select("users.*, SUM(walks.kilometers) as total_distance")
       .order(Arel.sql("total_distance DESC"))
       .limit(limit) # 制限行数
   end
@@ -441,7 +435,7 @@ class User < ApplicationRecord
   # 閲覧ユーザーに応じたランキングスコープ
   # ゲスト以外が見る場合、ゲストユーザーはランキングから除外して「汚染」を防ぐ
   # ゲスト自身が見る場合、自分（と他のゲスト）も含めて表示し、自分の順位を確認できるようにする
-  scope :ranking_for, ->(user, period: "weekly") {
+  scope :ranking_for, lambda { |user, period: "weekly"|
     if user&.guest?
       # ゲストが見る場合: 全ユーザーを対象（現在のランキングロジックそのまま）
       ranking(period: period)
@@ -452,8 +446,8 @@ class User < ApplicationRecord
   }
 
   # 未読通知数を取得
-  def unread_notifications_count
-    notifications.unread.count
+  def unread_reminder_logs_count
+    reminder_logs.unread.count
   end
 
   # ランキングOGP画像生成用の週間統計情報を取得
@@ -463,7 +457,7 @@ class User < ApplicationRecord
 
     # 週間データ集計
     weekly_walks = walks.reload.where(walked_on: start_date..end_date)
-    total_distance = weekly_walks.sum(:distance)
+    total_distance = weekly_walks.sum(:kilometers)
     total_steps = weekly_walks.sum(:steps)
 
     # 順位計算
@@ -471,7 +465,7 @@ class User < ApplicationRecord
     higher_rank_users_count = User.joins(:walks)
                                   .where(walks: { walked_on: start_date..end_date })
                                   .group("users.id")
-                                  .having("SUM(walks.distance) > ?", total_distance)
+                                  .having("SUM(walks.kilometers) > ?", total_distance)
                                   .pluck("users.id")
                                   .count
 

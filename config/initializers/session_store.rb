@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file.
 
 Rails.application.config.session_store :cookie_store,
-  key: "_tekumemo_session_v4",
-  secure: Rails.env.production?,
-  same_site: Rails.env.production? ? :none : :lax,  # 本番環境ではクロスサイトCookieを許可
-  httponly: true  # XSS対策：JavaScriptからのアクセスを防ぐ
+                                       key: "_tekumemo_session_v4",
+                                       secure: Rails.env.production?,
+                                       same_site: Rails.env.production? ? :none : :lax, # 本番環境ではクロスサイトCookieを許可
+                                       httponly: true # XSS対策：JavaScriptからのアクセスを防ぐ

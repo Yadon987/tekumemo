@@ -32,17 +32,17 @@
         <!-- 距離 -->
         <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
           <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">距離</h3>
-          <% if @walk.distance > 50000 %>
+          <% if @walk.kilometers > 50 %>
             <p class="text-3xl font-bold text-red-600 dark:text-red-400">
-              <%= number_with_delimiter(@walk.distance) %>m
+              <%= number_with_delimiter(@walk.kilometers) %>km
             </p>
             <p class="text-xs text-red-500 dark:text-red-400 mt-1">⚠️ 異常値（50km以上）</p>
           <% else %>
             <p class="text-3xl font-bold text-gray-900 dark:text-white">
-              <%= number_with_delimiter(@walk.distance) %>m
+              <%= number_with_delimiter(@walk.kilometers) %>km
             </p>
             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              <%= number_with_delimiter((@walk.distance / 1000.0).round(2)) %>km
+              <%= number_with_delimiter(@walk.kilometers.round(2)) %>km
             </p>
           <% end %>
         </div>

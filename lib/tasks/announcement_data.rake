@@ -7,21 +7,21 @@ namespace :announcement do
       {
         title: "データ分析機能リリースのお知らせ",
         content: "日々の散歩データをグラフで確認できる「データ分析機能」をリリースしました！\n\n■ 機能概要\n・週間/月間の歩行距離グラフ\n・消費カロリーの推移\n・時間帯別の活動傾向\n\nマイページの「データ分析」タブからご確認いただけます。毎日の健康管理にぜひお役立てください。",
-        announcement_type: "info",
+        priority: "info",
         is_published: true,
         published_at: Time.zone.parse("2024-12-10 10:00:00")
       },
       {
         title: "通知機能リリースのお知らせ 🔔",
         content: "運営からのお知らせが届くと、ベルアイコンに通知バッジが表示されるようになりました。\n重要なお知らせを見逃さずにチェックできます。",
-        announcement_type: "info",
+        priority: "info",
         is_published: true,
         published_at: Time.current
       },
       {
         title: "アプリとして使えるようになりました (PWA) 📱",
         content: "スマートフォンやPCのブラウザから「ホーム画面に追加」することで、アプリのように起動できるようになりました！\n\n・ホーム画面からワンタップで起動\n・ページの読み込みが高速化\n・全画面表示で広々使える\n\nぜひホーム画面に追加して、毎日の散歩記録をよりスムーズにお楽しみください！",
-        announcement_type: "info",
+        priority: "info",
         is_published: true,
         published_at: Time.current
       }

@@ -93,7 +93,7 @@ export default class extends Controller {
         }
 
         // 対応するラジオボタンを選択
-        const radio = this.element.querySelector(`input[name="walk[time_of_day]"][value="${timeOfDay}"]`)
+        const radio = this.element.querySelector(`input[name="walk[daypart]"][value="${timeOfDay}"]`)
         if (radio) {
           radio.checked = true
           // changeイベントを発火させてicon-selectコントローラーに通知

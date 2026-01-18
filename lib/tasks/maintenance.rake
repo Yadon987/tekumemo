@@ -1,7 +1,7 @@
 namespace :maintenance do
-  desc "Walkモデルのtime_of_dayカラムをcreated_atに基づいて再計算・更新する"
-  task update_walk_time_of_day: :environment do
-    puts "Starting update_walk_time_of_day..."
+  desc "Walkモデルのdaypartカラムをcreated_atに基づいて再計算・更新する"
+  task update_walk_daypart: :environment do
+    puts "Starting update_walk_daypart..."
 
     updated_count = 0
     Walk.find_each do |walk|
@@ -10,7 +10,7 @@ namespace :maintenance do
       target_time = walk.created_at || Time.zone.parse("#{walk.walked_on} 00:00:00")
 
       hour = target_time.hour
-      new_time_of_day = case hour
+      new_daypart = case hour
       when 4..8 then :early_morning
       when 9..15 then :day
       when 16..18 then :evening
@@ -18,8 +18,8 @@ namespace :maintenance do
       end
 
       # 値が異なる場合のみ更新
-      if walk.time_of_day != new_time_of_day.to_s
-        walk.update_column(:time_of_day, Walk.time_of_days[new_time_of_day])
+      if walk.daypart != new_daypart.to_s
+        walk.update_column(:daypart, Walk.dayparts[new_daypart])
         updated_count += 1
       end
     end

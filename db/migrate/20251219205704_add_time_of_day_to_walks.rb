@@ -1,4 +1,10 @@
 class AddTimeOfDayToWalks < ActiveRecord::Migration[7.2]
+  # マイグレーション内でモデルを参照すると、現在のモデル定義（enum daypartなど）がロードされ
+  # カラムが存在しない状態でエラーになるため、ローカルクラスを定義して回避する
+  class MigrationWalk < ActiveRecord::Base
+    self.table_name = :walks
+  end
+
   def up
     add_column :walks, :time_of_day, :integer
 
@@ -8,8 +14,8 @@ class AddTimeOfDayToWalks < ActiveRecord::Migration[7.2]
     # 2: evening (16:00 - 18:59)
     # 3: night (19:00 - 03:59)
 
-    Walk.reset_column_information
-    Walk.find_each do |walk|
+    MigrationWalk.reset_column_information
+    MigrationWalk.find_each do |walk|
       hour = walk.created_at.hour
       time_of_day = case hour
       when 4..8 then 0

@@ -79,14 +79,14 @@
             </td>
             <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
               <div class="max-w-xs truncate">
-                <% if post.body.present? %>
-                  <%= post.body %>
+                <% if post.content.present? %>
+                  <%= post.content %>
                 <% else %>
                   <span class="text-gray-400 dark:text-gray-500">
                     <%= post.weather_emoji if post.weather %>
                     <%= post.feeling_emoji if post.feeling %>
                     <% if post.walk %>
-                      <%= "🚶 #{post.walk.distance}m" %>
+                      <%= "🚶 #{post.walk.kilometers}km" %>
                     <% end %>
                   </span>
                 <% end %>

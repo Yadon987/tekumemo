@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :notification do
+  factory :reminder_log do
     association :user
     announcement { nil } # デフォルトはnil
     read_at { nil }

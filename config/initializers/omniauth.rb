@@ -2,7 +2,7 @@
 
 # Rails 7のTurboとOmniAuthを連携させるための設定
 # POSTとGETの両方を許可（Google OAuth2のコールバックフローに必要）
-OmniAuth.config.allowed_request_methods = [ :post, :get ]
+OmniAuth.config.allowed_request_methods = %i[post get]
 
 # GET警告を全環境で抑制（POSTリクエストに修正済み）
 OmniAuth.config.silence_get_warning = true

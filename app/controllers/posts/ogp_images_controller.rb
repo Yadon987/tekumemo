@@ -1,5 +1,5 @@
 class Posts::OgpImagesController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :show ]
+  skip_before_action :authenticate_user!, only: [:show]
 
   def show
     @post = Post.find(params[:post_id])
@@ -37,7 +37,7 @@ class Posts::OgpImagesController < ApplicationController
         level: level,
         date: walk&.walked_on&.strftime("%Y-%m-%d") || @post.created_at.strftime("%Y-%m-%d"),
         label1: "DISTANCE",
-        value1: "#{walk&.distance || 0} km",
+        value1: "#{walk&.kilometers || 0} km",
         label2: "EXP (STEPS)",
         value2: "#{walk&.steps || 0}",
         label3: "LOCATION",
@@ -47,7 +47,7 @@ class Posts::OgpImagesController < ApplicationController
       image_data = RpgCardGeneratorService.new(
         user: user,
         title: "QUEST COMPLETE",
-        message: @post.body,
+        message: @post.content,
         stats: stats,
         theme: :quest
       ).generate
@@ -61,7 +61,7 @@ class Posts::OgpImagesController < ApplicationController
 
       # 保存した画像のURLにリダイレクト
       redirect_to rails_blob_url(@post.ogp_image, disposition: "inline"), allow_other_host: true
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "Failed to generate OGP image for Post ID #{@post.id}: #{e.message}\n#{e.backtrace.join("\n")}"
 
       # デフォルトのOGP画像にフォールバック（空白画像を避ける）
