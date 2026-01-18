@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 # db/seeds.rb
+
+puts "🌱 Starting seeding..."
 
 # 0. 実績マスターデータ作成
 puts 'Creating achievements...'
@@ -100,13 +104,11 @@ users.each_with_index do |user, index|
     duration = (distance * 15 * rand(0.9..1.1)).to_i
     calories = (distance * 50 * rand(0.9..1.1)).to_i
 
-    # 作成時刻ランダム（今日の場合は現在時刻より前に限定）
+    # 作成時刻ランダム
     if day == 0
-      # 今日の場合：現在時刻の1時間前〜24時間前の範囲でランダム
       hours_ago = rand(1..24)
       walk_time = Time.current - hours_ago.hours - rand(0..59).minutes
     else
-      # 過去の日付：6時〜22時のランダムな時刻
       walk_time = date.to_time + rand(6..22).hours + rand(0..59).minutes
     end
 
@@ -178,13 +180,9 @@ users.each_with_index do |user, index|
   # ---------------------------------------------------------
   (1..7).each do |day_offset|
     date = Date.today + day_offset.days
-
-    # 既にその日の記録があればスキップ
     next if user.walks.exists?(walked_on: date)
 
-    # 距離: 0.1km 〜 0.6km のランダム
     distance = rand(0.1..0.6).round(2)
-
     steps = (distance * 1300 * rand(0.9..1.1)).to_i
     duration = (distance * 15 * rand(0.9..1.1)).to_i
     calories = (distance * 50 * rand(0.9..1.1)).to_i
@@ -207,7 +205,6 @@ end
 puts 'Assigning achievements...'
 all_achievements = Achievement.all
 users.each do |user|
-  # 累計歩数
   total_steps = user.walks.sum(:steps)
   # 累計距離
   total_distance = user.walks.sum(:kilometers)
@@ -233,4 +230,4 @@ users.each do |user|
   end
 end
 
-puts 'Seeding completed!'
+puts "✨ Seeding completed successfully!"
