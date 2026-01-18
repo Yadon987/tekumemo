@@ -454,7 +454,7 @@ sequenceDiagram
 
 ### 🗺️ 画面遷移図 (Figma)
 
-[![画面遷移図](https://i.gyazo.com/46f161ccd35179b545c2b700eeb17617.png)](https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
+[![画面遷移図](https://i.gyazo.com/22f9fa3b37be5ff4c8dd833611954209.png)](https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
 
 > [Figma Board で見る](https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
 
@@ -527,3 +527,4 @@ chmod +x bin/test_all.sh
 | **v1.5** | 2025-12-03 | **MVP リリース & ドキュメント整理**<br>初期機能の実装完了およびREADMEの全面改訂     |
 | **v1.4** | 2025-11-12 | **名称変更 & 認証機能強化**<br>アプリ名を『てくてくメモリア』に変更、Devise認証導入 |
 | **v1.3** | 2025-11-09 | **設計フェーズ完了**<br>ER図の作成、データベース設計の確定                          |
+
