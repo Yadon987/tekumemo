@@ -2,13 +2,13 @@ class Achievement < ApplicationRecord
   has_many :user_achievements, dependent: :destroy
   has_many :users, through: :user_achievements
 
-  validates :name, presence: true
-  validates :description, presence: true
-  validates :condition_type, presence: true
-  validates :condition_value, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :icon_name, presence: true
+  validates :title, presence: true
+  validates :flavor_text, presence: true
+  validates :metric, presence: true
+  validates :requirement, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :badge_key, presence: true
 
-  enum :condition_type, {
+  enum :metric, {
     total_steps: 0,      # 累計歩数
     total_distance: 1,   # 累計距離
     login_streak: 2,     # 連続ログイン

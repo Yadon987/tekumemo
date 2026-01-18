@@ -43,7 +43,7 @@ class RpgCardGeneratorService
 
     begin
       # 1. ベース画像生成
-      base_tempfile = Tempfile.new([ "ogp_base", ".png" ])
+      base_tempfile = Tempfile.new(["ogp_base", ".png"])
       base_image_path = base_tempfile.path
       base_tempfile.close
 
@@ -175,7 +175,7 @@ class RpgCardGeneratorService
   end
 
   def prepare_avatar_image
-    avatar_tempfile = Tempfile.new([ "avatar", ".png" ])
+    avatar_tempfile = Tempfile.new(["avatar", ".png"])
     avatar_path = avatar_tempfile.path
     avatar_used = false
 
@@ -195,7 +195,7 @@ class RpgCardGeneratorService
         end
         avatar_used = true
         Rails.logger.info "Using uploaded avatar for user #{@user.id}"
-      rescue => e
+      rescue StandardError => e
         Rails.logger.warn "Failed to use uploaded avatar: #{e.message}"
       end
     end
@@ -218,7 +218,7 @@ class RpgCardGeneratorService
           end
           avatar_used = true
           Rails.logger.info "Using cached google avatar for user #{@user.id}"
-        rescue => e
+        rescue StandardError => e
           Rails.logger.warn "Failed to use cached avatar: #{e.message}"
           # キャッシュ使用失敗 → 次のステップへ
         end
@@ -242,7 +242,7 @@ class RpgCardGeneratorService
           # ダウンロード成功したらキャッシュに保存（次回から高速化）
           cache_avatar_for_future_use(downloaded_file)
           Rails.logger.info "Downloaded and cached google avatar for user #{@user.id}"
-        rescue => e
+        rescue StandardError => e
           Rails.logger.error "Failed to download avatar: #{e.message}"
         end
       end
@@ -250,7 +250,11 @@ class RpgCardGeneratorService
 
     unless avatar_used
       # ステップ3: フォールバック - イニシャル画像
-      initial = @user.name[0..1].upcase rescue "U"
+      initial = begin
+        @user.name[0..1].upcase
+      rescue StandardError
+        "U"
+      end
       system("convert", "-size", "#{AVATAR_SIZE}x#{AVATAR_SIZE}", "xc:#3b82f6", avatar_path)
 
       font_path = Rails.root.join("public/fonts/MPLUS1p-Bold.ttf").to_s
@@ -266,7 +270,7 @@ class RpgCardGeneratorService
     end
 
     # Tempfileオブジェクトとパスの両方を返す（ensureブロックでクリーンアップできるように）
-    [ avatar_tempfile, avatar_path ]
+    [avatar_tempfile, avatar_path]
   end
 
   # アバター画像を将来使用するためにキャッシュ
@@ -281,7 +285,7 @@ class RpgCardGeneratorService
         content_type: "image/jpeg"
       )
       Rails.logger.info "Avatar cached for user #{@user.id}"
-    rescue => e
+    rescue StandardError => e
       Rails.logger.warn "Failed to cache avatar for user #{@user.id}: #{e.message}"
       # キャッシュ失敗は無視（次回再試行）
     end
@@ -384,22 +388,20 @@ class RpgCardGeneratorService
     if clean_value3.ascii_only?
       # 半角のみ（距離や期間など）は大きく表示
       # ただし "TekuMemo" (デフォルト値) は幅を取るため少し小さくする
-      if clean_value3 == "TekuMemo"
-        font_size = 26 # 32 -> 26 に縮小して確実にはみ出し防止
+      font_size = if clean_value3 == "TekuMemo"
+                    26 # 32 -> 26 に縮小して確実にはみ出し防止
       else
-        font_size = 40
+                    40
       end
-    else
+    elsif text_length <= 5
       # 全角含む（場所など）は文字数で調整
-      if text_length <= 5
-        font_size = 36
-      elsif text_length <= 8
-        font_size = 24 # 縮小して収める
-      else
-        font_size = 24
-        # 9文字以上の場合、強制的に「7文字 + ...」にする
-        display_text = "#{clean_value3[0...7]}..."
-      end
+      font_size = 36
+    elsif text_length <= 8
+      font_size = 24 # 縮小して収める
+    else
+      font_size = 24
+      # 9文字以上の場合、強制的に「7文字 + ...」にする
+      display_text = "#{clean_value3[0...7]}..."
     end
 
     c.pointsize font_size

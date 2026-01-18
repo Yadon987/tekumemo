@@ -23,6 +23,6 @@ class WebPushSubscriptionsController < ApplicationController
   private
 
   def subscription_params
-    params.permit(:endpoint, keys: [ :p256dh, :auth ])
+    params.permit(:endpoint, keys: %i[p256dh auth])
   end
 end

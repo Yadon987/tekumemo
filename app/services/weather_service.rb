@@ -17,9 +17,7 @@ class WeatherService
     api_key = ENV["OPENWEATHER_API_KEY"]
 
     # APIキーが設定されていない場合はダミーデータを返す
-    if api_key.blank?
-      return dummy_data
-    end
+    return dummy_data if api_key.blank?
 
     begin
       # APIリクエストのURLを組み立てる
@@ -41,7 +39,7 @@ class WeatherService
         # エラーが発生した場合はダミーデータを返す
         dummy_data
       end
-    rescue => e
+    rescue StandardError => e
       # 例外が発生した場合もダミーデータを返す
       Rails.logger.error("天気情報の取得に失敗しました: #{e.message}")
       dummy_data
@@ -53,6 +51,7 @@ class WeatherService
   # APIレスポンスから必要な情報を抽出して整形するメソッド
   def self.format_forecast(data)
     return nil if data["list"].blank?
+
     forecasts = data["list"]
 
     # 今日の日付
@@ -76,11 +75,13 @@ class WeatherService
         description: today_forecast["weather"].first["description"],
         icon: weather_icon(today_forecast["weather"].first["main"])
       },
-      tomorrow: tomorrow_forecast ? {
-        temp: tomorrow_forecast["main"]["temp"].round,
-        description: tomorrow_forecast["weather"].first["description"],
-        icon: weather_icon(tomorrow_forecast["weather"].first["main"])
-      } : nil
+      tomorrow: if tomorrow_forecast
+                  {
+                    temp: tomorrow_forecast["main"]["temp"].round,
+                    description: tomorrow_forecast["weather"].first["description"],
+                    icon: weather_icon(tomorrow_forecast["weather"].first["main"])
+                  }
+                end
     }
   end
 

@@ -28,10 +28,10 @@
       </div>
 
       <!-- 本文 -->
-      <% if @post.body.present? %>
+      <% if @post.content.present? %>
         <div class="mb-4">
           <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">本文</h3>
-          <p class="text-gray-900 dark:text-white whitespace-pre-wrap"><%= @post.body %></p>
+          <p class="text-gray-900 dark:text-white whitespace-pre-wrap"><%= @post.content %></p>
         </div>
       <% end %>
 
@@ -66,7 +66,7 @@
             <div class="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span class="text-gray-500 dark:text-gray-400">距離:</span>
-                <span class="ml-2 text-gray-900 dark:text-white font-medium"><%= @post.walk.distance %>m</span>
+                <span class="ml-2 text-gray-900 dark:text-white font-medium"><%= @post.walk.kilometers %>km</span>
               </div>
               <div>
                 <span class="text-gray-500 dark:text-gray-400">歩数:</span>
@@ -82,9 +82,9 @@
         <div class="mb-4">
           <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">リアクション (<%= @post.reactions.count %>)</h3>
           <div class="flex flex-wrap gap-2">
-            <% @post.reactions.group_by(&:kind).each do |kind, reactions| %>
+            <% @post.reactions.group_by(&:stamp).each do |stamp, reactions| %>
               <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm">
-                <%= Reaction.human_enum_name(:kind, kind) %> × <%= reactions.count %>
+                <%= Reaction.human_enum_name(:stamp, stamp) %> × <%= reactions.count %>
               </span>
             <% end %>
           </div>

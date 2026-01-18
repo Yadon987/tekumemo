@@ -44,7 +44,7 @@ class GeolocationService
         Rails.logger.warn("位置情報が取得できませんでした (IP: #{ip_address})")
         default_location
       end
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error("位置情報の取得に失敗: #{e.message} (IP: #{ip_address})")
       Rails.logger.error(e.backtrace.join("\n"))
       default_location
@@ -56,7 +56,7 @@ class GeolocationService
   # ローカルIPまたはプライベートIPかどうかを判定
   def self.local_ip?(ip)
     return true if ip.nil? || ip.blank?
-    return true if ip == "127.0.0.1" || ip == "::1" || ip == "localhost"
+    return true if ["127.0.0.1", "::1", "localhost"].include?(ip)
 
     # プライベートIPアドレスの範囲
     private_ranges = [

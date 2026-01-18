@@ -189,7 +189,7 @@
                       <div>
                         <p class="text-sm font-medium text-gray-900 dark:text-white"><%= walk.user.name %></p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">
-                          距離: <%= number_with_delimiter(walk.distance) %>m / 歩数: <%= number_with_delimiter(walk.steps || 0) %>歩
+                          距離: <%= number_with_delimiter(walk.kilometers) %>km / 歩数: <%= number_with_delimiter(walk.steps || 0) %>歩
                         </p>
                       </div>
                     </div>
@@ -298,7 +298,7 @@
                       </span>
                     </div>
                     <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-                      <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
+                      <%= post.content.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
                     </p>
                     <div class="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
                       <span class="material-symbols-outlined text-sm mr-1">favorite</span>
@@ -349,7 +349,7 @@
                       </span>
                     </div>
                     <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-                      <%= post.body.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
+                      <%= post.content.presence || "#{post.weather_emoji} #{post.feeling_emoji}" %>
                     </p>
                   </div>
                 </div>

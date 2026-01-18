@@ -6,7 +6,7 @@ class GoogleFitService
   ACTIVITY_TYPE_BIKING = 1
   ACTIVITY_TYPE_WALKING = 7
   ACTIVITY_TYPE_RUNNING = 8
-  TARGET_ACTIVITY_TYPES = [ ACTIVITY_TYPE_BIKING, ACTIVITY_TYPE_WALKING, ACTIVITY_TYPE_RUNNING ].freeze
+  TARGET_ACTIVITY_TYPES = [ACTIVITY_TYPE_BIKING, ACTIVITY_TYPE_WALKING, ACTIVITY_TYPE_RUNNING].freeze
 
   def initialize(user)
     @user = user
@@ -64,7 +64,6 @@ class GoogleFitService
       end
 
       { data: result }
-
     rescue Google::Apis::AuthorizationError => e
       Rails.logger.error "Google Fit Authorization Error for user #{@user.id}: #{e.message}"
       clear_google_tokens # 無効なトークンをクリアして次回の再認証を促す
@@ -141,16 +140,18 @@ class GoogleFitService
     )
 
     response = @client.aggregate_dataset("me", request)
-    daily_stats = Hash.new { |h, k| h[k] = {
-      steps: 0,                   # 歩行・ランニングセグメントの歩数
-      distance_m: 0.0,
-      calories: 0,
-      walk_run_duration_min: 0,   # 歩行・ランニングのセグメント時間
-      cycling_duration_min: 0,    # サイクリング時間（1/2換算後）
-      cycling_distance_m: 0.0,    # サイクリング距離（1/4換算後、歩数推定用）
-      max_calories: 0,
-      start_time: nil
-    } }
+    daily_stats = Hash.new do |h, k|
+      h[k] = {
+        steps: 0, # 歩行・ランニングセグメントの歩数
+        distance_m: 0.0,
+        calories: 0,
+        walk_run_duration_min: 0,   # 歩行・ランニングのセグメント時間
+        cycling_duration_min: 0,    # サイクリング時間（1/2換算後）
+        cycling_distance_m: 0.0,    # サイクリング距離（1/4換算後、歩数推定用）
+        max_calories: 0,
+        start_time: nil
+      }
+    end
 
     response.bucket.each do |bucket|
       activity_type = bucket.activity
@@ -173,10 +174,10 @@ class GoogleFitService
           distance = (duration_min / 60.0) * 15 * 1000 # メートル単位
         end
 
-        distance = distance / 4.0      # 距離1/4
-        cycling_duration_min = (duration_min / 2.0).round  # 時間1/2
+        distance /= 4.0 # 距離1/4
+        cycling_duration_min = (duration_min / 2.0).round # 時間1/2
         daily_stats[bucket_date][:cycling_duration_min] += cycling_duration_min
-        daily_stats[bucket_date][:cycling_distance_m] += distance  # 換算後距離を記録（歩数推定用）
+        daily_stats[bucket_date][:cycling_distance_m] += distance # 換算後距離を記録（歩数推定用）
         # サイクリング中の歩数は無視（ペダリングの誤検知の可能性）
       else
         # 歩行・ランニングの歩数と時間を加算
@@ -220,7 +221,7 @@ class GoogleFitService
       end
     end
 
-    [ steps, distance, calories ]
+    [steps, distance, calories]
   end
 
   # 管理者またはゲストユーザー用のダミーデータを生成する

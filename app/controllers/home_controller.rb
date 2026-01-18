@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   # 未ログインユーザーもトップページ（LP）は見れるようにする
-  skip_before_action :authenticate_user!, only: [ :index ]
+  skip_before_action :authenticate_user!, only: [:index]
 
   def index
     # 5分に1回、古いゲストユーザーをクリーンアップ（UptimeRobotの監視でも発火）
@@ -68,7 +68,7 @@ class HomeController < ApplicationController
       end_date = Date.current
 
       # 1. 自分の今月の総距離
-      my_total_distance = current_user.walks.where(walks: { walked_on: start_date..end_date }).sum(:distance)
+      my_total_distance = current_user.walks.where(walks: { walked_on: start_date..end_date }).sum(:kilometers)
 
       # 2. 全ユーザー数（歩いていないユーザーも含む）
       total_users = User.count
@@ -79,7 +79,7 @@ class HomeController < ApplicationController
       higher_rankers_query = User.joins(:walks)
                                  .where(walks: { walked_on: start_date..end_date })
                                  .group(:id)
-                                 .having("ROUND(SUM(walks.distance), 2) > ?", my_total_distance.round(2))
+                                 .having("ROUND(SUM(walks.kilometers), 2) > ?", my_total_distance.round(2))
                                  .select(:id) # SELECT句を最小限に
 
       # User.from を使ってサブクエリの結果セットの行数をカウント
@@ -115,9 +115,9 @@ class HomeController < ApplicationController
     last_cleanup = Rails.cache.read(cache_key)
 
     # 最後のクリーンアップから5分以上経過している場合のみ実行
-    if last_cleanup.nil? || last_cleanup < 5.minutes.ago
-      User.cleanup_old_guests
-      Rails.cache.write(cache_key, Time.current, expires_in: 10.minutes)
-    end
+    return unless last_cleanup.nil? || last_cleanup < 5.minutes.ago
+
+    User.cleanup_old_guests
+    Rails.cache.write(cache_key, Time.current, expires_in: 10.minutes)
   end
 end
