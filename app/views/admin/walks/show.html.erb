@@ -65,24 +65,20 @@
         </div>
 
         <!-- 時間 -->
-        <% if @walk.duration %>
+        <% if @walk.minutes %>
           <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
             <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">所要時間</h3>
             <p class="text-2xl font-bold text-gray-900 dark:text-white">
-              <%= (@walk.duration / 60).to_i %>分
-            </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              <%= number_with_delimiter(@walk.duration) %>秒
+              <%= @walk.minutes %>分
             </p>
           </div>
         <% end %>
 
-        <!-- カロリー -->
-        <% if @walk.calories_burned %>
+        <% if @walk.calories %>
           <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
             <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">消費カロリー</h3>
             <p class="text-2xl font-bold text-gray-900 dark:text-white">
-              <%= number_with_delimiter(@walk.calories_burned) %>kcal
+              <%= number_with_delimiter(@walk.calories) %>kcal
             </p>
           </div>
         <% end %>
