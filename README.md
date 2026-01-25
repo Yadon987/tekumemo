@@ -444,13 +444,13 @@ sequenceDiagram
 
 ### 🗺️ 画面遷移図 (Figma)
 
-[![画面遷移図](https://i.gyazo.com/46f161ccd35179b545c2b700eeb17617.png)](https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
+[![画面遷移図](https://i.gyazo.com/22f9fa3b37be5ff4c8dd833611954209.png)](https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
 
 > [Figma Board で見る](https://www.figma.com/board/U1dqKDAMsI9lNTAEYcGTOV/FigJam-basics?node-id=0-1&p=f&t=ZDUfKhhX3F41N6dn-0)
 
 ### 🗂️ ER 図 (dbdiagram.io)
 
-[![ER図](https://i.gyazo.com/e7e5ef231e64ab355c1c605a2842cbac.png)](https://gyazo.com/e7e5ef231e64ab355c1c605a2842cbac)
+[![ER図](https://i.gyazo.com/4c5f504126398089ef86c1e913250a56.png)](https://gyazo.com/4c5f504126398089ef86c1e913250a56)
 
 > [dbdiagram.io で詳細を見る](https://dbdiagram.io/d/68f9ef31357668b7323f223e)
 
