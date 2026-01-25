@@ -1,4 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
+  # ゲストログインは認証不要でアクセス可能にする
+  skip_before_action :authenticate_user!, only: [:new_guest]
+
   # ゲストログイン
   def new_guest
     resource = User.create_portfolio_guest
