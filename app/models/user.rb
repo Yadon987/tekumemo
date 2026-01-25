@@ -76,7 +76,7 @@ class User < ApplicationRecord
     Announcement.active.find_each do |announcement|
       reminder_logs.create!(
         announcement: announcement,
-        kind: :announcement,
+        category: :announcement,
         read_at: nil
       )
     rescue ActiveRecord::RecordNotUnique
