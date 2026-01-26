@@ -51,7 +51,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false # コーディング規約チェック
   gem "rspec-rails", "~> 8.0"             # RSpec（テストフレームワーク）
   gem "factory_bot_rails", "~> 6.5"       # テストデータ生成（ファクトリー）
-  gem "faker", "~> 3.5"                   # ダミーデータ生成
+  gem "faker", "~> 3.6"                   # ダミーデータ生成
   gem "parallel_tests", "~> 5.5"          # 並列テスト実行
 end
 
