@@ -52,7 +52,7 @@ group :development, :test do
   gem "rspec-rails", "~> 8.0"             # RSpec（テストフレームワーク）
   gem "factory_bot_rails", "~> 6.5"       # テストデータ生成（ファクトリー）
   gem "faker", "~> 3.5"                   # ダミーデータ生成
-  gem "parallel_tests", "~> 5.5"          # 並列テスト実行
+  gem "parallel_tests", "~> 5.6"          # 並列テスト実行
 end
 
 # 開発環境のみ
